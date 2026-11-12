@@ -1,9 +1,9 @@
 import 'package:declara_ucr/models/declaration_status.dart';
 import 'package:flutter/material.dart';
 
-/// Reference colors of the UCR Visual Identity Manual (lab PDF, 5.1), plus
-/// two neutral tones derived from "Azul UCR". The only place with color
-/// codes: widgets read the theme.
+/// Colors of the UCR Visual Identity Manual (2019, p. 28) and of the
+/// accessible digital palette of the Centro de Informática (2025, p. 3).
+/// The only place with color codes: widgets read the theme.
 class UcrColors {
   const UcrColors._();
 
@@ -13,8 +13,9 @@ class UcrColors {
   /// "Azul UCR": buttons, navigation and titles.
   static const Color blue = Color(0xFF005DA4);
 
-  /// Darker "Azul UCR" for the depth of the brand gradient.
-  static const Color navy = Color(0xFF00335E);
+  /// "Azul 1" of the accessible palette: dark blue for the status bar and
+  /// text on light blue.
+  static const Color navy = Color(0xFF0C344E);
 
   /// "Blanco": backgrounds and surfaces.
   static const Color white = Color(0xFFFFFFFF);
@@ -28,17 +29,13 @@ class UcrColors {
   /// "Verde UCR": accents and states with enough contrast.
   static const Color green = Color(0xFF6DC067);
 
-  /// Dark text for sky blue, yellow and green: white on them stays below
-  /// 4.5:1, this one passes (accessibility, 5.3).
-  static const Color ink = Color(0xFF14202E);
+  /// "Gris 3" of the accessible palette: text on sky blue, yellow and green,
+  /// where white stays below 4.5:1 (accessibility, 5.3).
+  static const Color ink = Color(0xFF232323);
 
-  /// Institutional gradient for the hero areas (login, home, summary).
-  static const LinearGradient brandGradient = LinearGradient(
-    begin: Alignment.topLeft,
-    end: Alignment.bottomRight,
-    colors: [navy, blue, Color(0xFF0878BF)],
-    stops: [0, 0.6, 1],
-  );
+  /// Flat "Azul UCR" for the hero areas (login, home, summary): the manual
+  /// asks apps for flat designs and measured use of gradients (p. 122).
+  static const Color hero = blue;
 }
 
 /// Declaration status colors, as a theme extension.

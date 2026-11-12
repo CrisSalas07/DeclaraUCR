@@ -1,6 +1,4 @@
-Institutional typeface Trueno (SIL Open Font License).
-
-1. Copy TruenoRg.otf and TruenoBd.otf into this folder.
-2. Uncomment the "fonts" block in pubspec.yaml.
-Until then the theme requests Trueno and falls back to Arial / the Android
-system font.
+Institutional typeface Trueno (UCR Visual Identity Manual), SIL Open Font
+License 1.1: see OFL.txt. Files from https://fontlibrary.org/font/trueno:
+TruenoRg.otf (400), TruenoSBd.otf (600), TruenoBd.otf (700).
+Registered in pubspec.yaml; Arial is the fallback.

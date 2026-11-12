@@ -35,14 +35,27 @@ Layered, dependencies point inward only:
 
 ```
 screens/ widgets/ theme/   presentation (Flutter widgets, Spanish texts)
+  shell_screen             sections: Inicio · Declaraciones · Zonaje · Historial
+  auth/                    login, sign-up (with cédula), complete profile
         │
-state/                     DeclarationFormState (ChangeNotifier, provider)
+state/                     DeclarationFormState (ChangeNotifier), Loadable<T>
         │
-domain/                    validator, overlap detector, time and field rules (pure Dart)
-data/                      DeclarationRepository (interface) + Firestore impl + mapper
+domain/                    pure Dart rules: validator, overlap detector,
+                           schedule grid and requirements, course rules,
+                           workload catalog, period, observations, zonaje,
+                           history, field and auth rules
+data/                      interfaces + Firestore implementations:
+                           Auth, Profile (with cédula reservation),
+                           Declaration (+ mapper), Zonaje
         │
-models/                    Declaration, ScheduleInterval, status, weekday (pure Dart)
+models/                    Declaration, ScheduleInterval, ScheduleTask,
+                           CourseLoad, ProjectHours, ExternalJob,
+                           ZonajeRequest, status, weekday (pure Dart)
 ```
+
+Everything per person (repositories, profile, declarations and requests)
+is provided above the `MaterialApp` and keyed by user (`lib/main.dart`), so
+signing out drops every screen and stream of the previous session.
 
 SOLID in practice:
 
@@ -50,8 +63,9 @@ SOLID in practice:
   the repository only persists, the state only coordinates.
 - **O** — new rules are added as new `ValidationIssueCode`s / validator
   methods without touching the screens.
-- **L / I** — `DeclarationRepository` is a small interface; tests swap in a
-  fake Firestore or a failing repository.
+- **L / I** — `AuthRepository`, `ProfileRepository`, `DeclarationRepository`
+  and `ZonajeRepository` are small interfaces; tests swap in a fake
+  Firestore, a fake auth or a failing repository.
 - **D** — `DeclarationFormState` receives the repository and validator in its
   constructor; widgets get the repository from `Provider`, never from
   Firestore directly.
@@ -86,8 +100,15 @@ SOLID in practice:
 Cloud Firestore through repositories: `users/{uid}` (name and cédula,
 `FirestoreProfileRepository`), `declarations`
 (`FirestoreDeclarationRepository`) and `zonajeRequests`
-(`FirestoreZonajeRepository`). The app uses the `demo-declaraucr` project,
-which only talks to the local Firebase Emulator Suite (no real keys or data).
+(`FirestoreZonajeRepository`), with `identifications/{cédula}` reserving
+each cédula for one account.
+
+Two backends, chosen at build time (`lib/config/firebase_config.dart`):
+
+- **Default — emulators:** project `demo-declaraucr`, which only talks to the
+  local Firebase Emulator Suite (no real keys or data). Used on Android.
+- **`--dart-define=FIREBASE_ENV=production`:** the web version hosted at
+  https://declaraucr.web.app on `cristopher-desarrollo-iv` (web only).
 
 - *Guardar borrador* saves with status `BORRADOR` even if fields are missing.
 - *Validar* (summary) saves as `VALIDADA` only when there are no missing fields
@@ -124,13 +145,21 @@ which only talks to the local Firebase Emulator Suite (no real keys or data).
 
 ```bash
 flutter pub get
-firebase emulators:start          # Firestore on :8080, UI enabled
-flutter run                       # Android emulator (host 10.0.2.2)
-flutter run --dart-define=EMULATOR_HOST=<PC_IP>   # physical phone
+firebase emulators:start --only auth,firestore   # Auth :9099, Firestore :8080, UI :4000
+flutter run                                      # Android emulator (host 10.0.2.2)
+flutter run --dart-define=EMULATOR_HOST=<PC_IP>  # physical phone, same Wi-Fi
 ```
 
-Optional institutional assets (see `assets/*/README.txt`): the official UCR
-signature (`assets/images/firma_ucr.png`) and the Trueno typeface.
+Web, for testing on a phone browser:
+
+```bash
+flutter build web --release --dart-define=FIREBASE_ENV=production
+firebase deploy --only hosting:declaraucr,firestore:rules -P prod
+```
+
+Institutional assets are bundled: the official UCR signature
+(`assets/images/firma_ucr.png`) and the Trueno typeface (`assets/fonts/`,
+SIL OFL 1.1); their origin is in `assets/*/README.txt`.
 
 ## Tests
 
@@ -154,20 +183,45 @@ zonaje eligibility and requests, the history by year, malformed stored
 documents, and a save failure that must not leak the exception.
 All test data is fictitious.
 
+## Evidence
+
+Screenshots from the Android app, in `docs/capturas/`:
+
+| Screen | File |
+|--------|------|
+| Inicio (R1) | `docs/capturas/01-inicio.png` |
+| Declaraciones with statuses (R1) | `docs/capturas/02-declaraciones.png` |
+| Courses and their hours (R2/R3) | `docs/capturas/03-cursos.png` |
+| Weekly schedule grid (R3) | `docs/capturas/04-horario.png` |
+| Overlap / missing hours flagged (R4, test 02) | `docs/capturas/05-validacion.png` |
+| Summary (R6) | `docs/capturas/06-resumen.png` |
+| Zonaje | `docs/capturas/07-zonaje.png` |
+
+Video (up to 2 minutes): <!-- link to the video -->
+
 ## Visual identity decisions
 
-<!-- TODO: add the page numbers of the UCR Visual Identity Manual (2019, 3rd ed.) consulted for each decision. -->
+Sources: *Manual de identidad visual*, Universidad de Costa Rica, Oficina de
+Divulgación e Información, 3rd ed., January 2019 (pages as printed, equal to
+the PDF pages); and *Aplicación accesible de la paleta institucional en
+medios digitales de la UCR*, Centro de Informática, 2025 ("CI palette").
 
-- **Color:** UCR reference palette defined once in `lib/theme/ucr_theme.dart`
-  (`UcrColors`) and used only through the theme. Blue `#005DA4` for app bar,
-  buttons and titles (white text, 6.5:1); sky blue `#00C0F3` for header
-  accents; yellow / green / sky blue for status chips, always with dark text
-  because white on them is below 4.5:1.
-- **Typography:** Trueno (manual's typeface), Arial fallback.
-- **Institutional signature:** official file only, never redrawn or distorted
-  (`BoxFit.contain`); text fallback if the file is not bundled.
-- **Components:** Material 3 with 48 dp minimum touch targets, labeled fields,
-  specific error messages, no horizontal scrolling.
+| Decision | Where in the app | Manual |
+|----------|------------------|--------|
+| **Colors.** Main colors Celeste UCR `#00C0F3`, Azul UCR `#005DA4` and white; Amarillo `#FFE06A` and Verde `#6DC067` only as accents (status chips). Defined once in `UcrColors` and read through the theme. Dark blue `#0C344E` (Azul 1) and text gray `#232323` (Gris 3) come from the CI palette. | `lib/theme/ucr_theme.dart` | p. 28 (main colors and codes), p. 31 (hierarchy: celeste, azul and white predominate); CI palette p. 3 |
+| **Contrast.** White on Azul UCR 6.8:1; Gris 3 on celeste 7.4:1, on yellow 12.1:1, on green 7.0:1 (WCAG 2 AA, 4.5:1). White text is never placed on celeste, yellow or green (2.1:1 on celeste). | buttons, app bars, status chips | p. 31 ("contraste adecuado… accesibilidad"); CI palette pp. 5–7 |
+| **Typography.** Trueno (Regular, SemiBold, Bold) bundled under the SIL OFL 1.1, Arial as fallback. | `assets/fonts/`, `pubspec.yaml`, theme `fontFamily` | p. 24 (institutional families; Arial replaces Myriad Pro), p. 25 (Trueno: free license, for web and electronic devices) |
+| **Signature.** Official horizontal two-line signature, color version on a light background, from the SVG published by the Oficina de Comunicación Institucional, rendered without changes; never cropped or distorted (`BoxFit.contain`). | `assets/images/firma_ucr.png`, `UcrSignature` (login, Inicio) | p. 32 (every product carries a signature), p. 33 and 39 (horizontal two-line signature), p. 35 (fixed proportions), p. 49 (color version on light backgrounds) |
+| **Signature size and space.** At least 106 dp high, so the base of the shield is about 1.5 cm; nothing else inside its protection area. | `UcrSignature.minHeight` | p. 36 (protection area), p. 37 (minimum size 1.5 cm) |
+| **App icon.** Own identifier (a declaration sheet with a check) on Azul UCR, with a one-tone version for Android themed icons; the shield is not used as an icon. | `android/app/src/main/res` (adaptive icon), `web/icons/` | p. 122 (icon: own identifier, color and monochrome versions) |
+| **Flat design.** Hero areas are flat Azul UCR, no gradients or decorative shadows; Material 3 components follow the Android standard. | `UcrColors.hero`, `BrandMark` | p. 122 (other screens follow the platform standard; clean look, measured use of gradients and shadows; flat designs) |
+| **Components.** 48 dp minimum touch targets, labeled fields, specific error messages, no horizontal scrolling. | whole app | p. 122 ("Otros elementos": platform guidelines) |
+
+Not done: the loading screen with the promotional signature inside the
+horizon (p. 122, pp. 34 and 57). The promotional signature is only in the
+"Elementos gráficos" package of the ODI, which requires an institutional
+login; it cannot be redrawn (p. 35), so the app keeps the platform's plain
+loading screen.
 
 ## Difficulties
 
@@ -183,16 +237,32 @@ All test data is fictitious.
 
 ## Technical reflection
 
-1. **What could be reused from the web system?** The domain layer (overlap
-   detector, time rules, validation contract, statuses, weekdays) and the
-   repository pattern over Firestore, almost unchanged.
-2. **Difficulties adapting it to a small screen?** Long status names, time
-   entry and showing conflicts next to the field that causes them (see above).
+1. **What could be reused from the web system?** Most of the domain layer,
+   almost unchanged: overlap detector, time rules, validation contract,
+   statuses, weekdays, the half-hour grid, the workday catalog and course
+   rules (lesson, attention and planning hours), project and external-job
+   hours, the observations format, the one-month period rule, the zonaje
+   eligibility rules, the history by year, the position lists and the
+   cédula reservation. Also the repository pattern over Firestore. The
+   screens were rewritten for a phone.
+2. **Difficulties adapting it to a small screen?** The weekly grid (one day
+   at a time, long-press to mark ranges, copy a day to others), long status
+   names, and avoiding typing errors: on a phone everything but names is
+   picked from a list or placed on the grid, and the observations are
+   written from the schedule (see Difficulties).
 3. **How did the Visual Identity Manual help?** It fixed the palette,
    typeface and signature rules up front, so every screen reads from one theme
-   and looks consistent with other UCR systems.
+   and looks consistent with other UCR systems. Reading it closely also
+   changed the design: the hero gradients became flat Azul UCR (p. 122), the
+   signature got a minimum size (p. 37) and the app got its own icon in color
+   and one-tone versions (p. 122). The CI accessible palette added the dark
+   blue and gray used for text, checked against WCAG contrast.
 4. **What would full signature and approval integration need?**
-   Authentication, server-side validation, versioning (new version → back to
-   `BORRADOR`), the remaining status transitions with role-based Firestore
-   rules, digital signature integration and notifications to the supervisor
-   and HR.
+   Authentication and per-person data already exist. Missing: roles
+   (declarant, supervisor, HR) in the profile and in `firestore.rules`;
+   validation recomputed on the server (a Cloud Function) instead of
+   trusting the client's `VALIDADA`; versioning (a new version goes back to
+   `BORRADOR`); the remaining status transitions
+   (`PENDIENTE_FIRMA_DECLARANTE` → … → `FINALIZADA`); digital signature
+   integration; the PDF of the declaration; and notifications to the
+   supervisor and HR. The zonaje request would need the same HR review.

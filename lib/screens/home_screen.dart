@@ -117,6 +117,8 @@ class HomeScreen extends StatelessWidget {
                 subtitle: 'Declaraciones y solicitudes por año',
                 onTap: () => onNavigate(Sections.history),
               ),
+              const SizedBox(height: 24),
+              const Center(child: UcrSignature()),
             ],
           ),
         ),
@@ -142,7 +144,7 @@ class _Header extends StatelessWidget {
     final soft = UcrColors.white.withValues(alpha: 0.82);
     return Container(
       decoration: const BoxDecoration(
-        gradient: UcrColors.brandGradient,
+        color: UcrColors.hero,
         borderRadius: BorderRadius.vertical(bottom: Radius.circular(28)),
       ),
       child: SafeArea(
@@ -406,8 +408,6 @@ class _ProfileSheet extends StatelessWidget {
                 label: const Text('Cerrar sesión'),
               ),
             ),
-            const SizedBox(height: 16),
-            const UcrSignature(height: 32),
           ],
         ),
       ),

@@ -1,6 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Firebase needs the network in every build, not only in debug. -->
+    <uses-permission android:name="android.permission.INTERNET"/>
     <application
-        android:label="declara_ucr"
+        android:label="DeclaraUCR"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

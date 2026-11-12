@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- App icon (manual p. 122): a sworn declaration sheet with a check.
+     108x108 adaptive canvas; the art stays inside the 66dp safe zone. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M39,29h22l10,10v36a4,4 0 0,1 -4,4h-28a4,4 0 0,1 -4,-4v-42a4,4 0 0,1 4,-4z" />
+    <path
+        android:strokeColor="#00C0F3"
+        android:strokeWidth="4"
+        android:strokeLineCap="round"
+        android:pathData="M42,42h12M42,50h20" />
+    <path
+        android:strokeColor="#005DA4"
+        android:strokeWidth="5"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:pathData="M43,65l6,6l13,-13" />
+</vector>

@@ -25,7 +25,7 @@ class AuthLayout extends StatelessWidget {
     return Scaffold(
       backgroundColor: UcrColors.navy,
       body: DecoratedBox(
-        decoration: const BoxDecoration(gradient: UcrColors.brandGradient),
+        decoration: const BoxDecoration(color: UcrColors.hero),
         child: SafeArea(
           bottom: false,
           child: LayoutBuilder(
@@ -92,7 +92,7 @@ class AuthLayout extends StatelessWidget {
                                   child,
                                   const Spacer(),
                                   const SizedBox(height: 24),
-                                  const Center(child: UcrSignature(height: 36)),
+                                  const Center(child: UcrSignature()),
                                   SizedBox(
                                     height:
                                         16 +

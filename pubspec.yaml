@@ -66,13 +66,15 @@ flutter:
   assets:
     - assets/images/
 
-  # Institutional typeface: uncomment after copying the files (see assets/fonts/README.txt).
-  # fonts:
-  #   - family: Trueno
-  #     fonts:
-  #       - asset: assets/fonts/TruenoRg.otf
-  #       - asset: assets/fonts/TruenoBd.otf
-  #         weight: 700
+  # Institutional typeface (SIL OFL 1.1, see assets/fonts/OFL.txt).
+  fonts:
+    - family: Trueno
+      fonts:
+        - asset: assets/fonts/TruenoRg.otf
+        - asset: assets/fonts/TruenoSBd.otf
+          weight: 600
+        - asset: assets/fonts/TruenoBd.otf
+          weight: 700
 
   # To add assets to your application, add an assets section, like this:
   # assets:

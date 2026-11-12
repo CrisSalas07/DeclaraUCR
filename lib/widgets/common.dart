@@ -86,13 +86,6 @@ class BrandMark extends StatelessWidget {
         decoration: BoxDecoration(
           color: UcrColors.white,
           borderRadius: BorderRadius.circular(size * 0.3),
-          boxShadow: [
-            BoxShadow(
-              color: UcrColors.navy.withValues(alpha: 0.25),
-              blurRadius: 12,
-              offset: const Offset(0, 4),
-            ),
-          ],
         ),
         child: Icon(
           Icons.fact_check_rounded,
@@ -124,17 +117,22 @@ class BrandMark extends StatelessWidget {
   );
 }
 
-/// Official UCR signature if it is bundled in assets, never distorted
-/// (5.2); otherwise the institution name as text.
+/// Official UCR signature (horizontal, two lines, color, for light
+/// backgrounds), never distorted (manual p. 35); otherwise the institution
+/// name as text.
+///
+/// Never smaller than [minHeight]: the base of the shield must measure at
+/// least 1.5 cm (manual p. 37), about 94 dp, and in this signature the
+/// shield is about 0.9 of its height.
 class UcrSignature extends StatelessWidget {
-  const UcrSignature({super.key, this.height = 40});
+  const UcrSignature({super.key});
 
-  final double height;
+  static const double minHeight = 106;
 
   @override
   Widget build(BuildContext context) => Image.asset(
     'assets/images/firma_ucr.png',
-    height: height,
+    height: minHeight,
     fit: BoxFit.contain,
     semanticLabel: 'Universidad de Costa Rica',
     errorBuilder: (context, _, _) => Text(

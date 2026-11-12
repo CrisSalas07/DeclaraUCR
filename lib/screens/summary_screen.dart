@@ -173,7 +173,7 @@ class _Hero extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        gradient: UcrColors.brandGradient,
+        color: UcrColors.hero,
         borderRadius: BorderRadius.circular(22),
       ),
       child: Column(
