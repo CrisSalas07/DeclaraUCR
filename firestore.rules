@@ -1,0 +1,51 @@
+rules_version = '2';
+
+// Server-side schema check for the mobile module. The client is never
+// trusted: these rules repeat the limits of lib/domain/field_rules.dart
+// (keep them in sync).
+//
+// shortcut: no authentication, because the lab only runs against the local
+// emulator (demo-* project). Before any real project: require request.auth,
+// store an ownerUid and allow access only when it matches request.auth.uid.
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isShortString(value, max) {
+      return value is string && value.size() <= max;
+    }
+
+    function isOptionalTimestamp(value) {
+      return value == null || value is timestamp;
+    }
+
+    function isValidDeclaration(d) {
+      return d.keys().hasOnly([
+          'declarantName', 'identification', 'institution', 'position',
+          'workdayType', 'validFrom', 'validTo', 'additionalInstitutions',
+          'observations', 'intervals', 'status', 'updatedAt'])
+        && isShortString(d.declarantName, 120)
+        && isShortString(d.identification, 20)
+        && isShortString(d.institution, 120)
+        && isShortString(d.position, 120)
+        && (d.workdayType == null || isShortString(d.workdayType, 60))
+        && isOptionalTimestamp(d.validFrom)
+        && isOptionalTimestamp(d.validTo)
+        && isShortString(d.additionalInstitutions, 500)
+        && isShortString(d.observations, 1000)
+        && d.intervals is list && d.intervals.size() <= 50
+        // The mobile module may only draft or validate: signing, approval
+        // and HR reception are out of scope and must not be faked.
+        && d.status in ['BORRADOR', 'VALIDADA']
+        && d.updatedAt is timestamp;
+    }
+
+    match /declarations/{id} {
+      allow read: if true;
+      allow create: if isValidDeclaration(request.resource.data);
+      // A declaration that left the editable states is locked for this app.
+      allow update: if resource.data.status in ['BORRADOR', 'VALIDADA']
+        && isValidDeclaration(request.resource.data);
+      allow delete: if false;
+    }
+  }
+}
