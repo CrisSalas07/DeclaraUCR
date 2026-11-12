@@ -1,5 +1,14 @@
 {
   "projects": {
-    "default": "demo-declaraucr"
+    "default": "demo-declaraucr",
+    "prod": "cristopher-desarrollo-iv"
+  },
+  "targets": {
+    "demo-declaraucr": {
+      "hosting": { "declaraucr": ["demo-declaraucr"] }
+    },
+    "cristopher-desarrollo-iv": {
+      "hosting": { "declaraucr": ["declaraucr"] }
+    }
   }
 }

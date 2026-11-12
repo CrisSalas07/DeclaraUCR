@@ -1,8 +1,9 @@
 import 'package:declara_ucr/models/declaration_status.dart';
 import 'package:flutter/material.dart';
 
-/// Reference colors of the UCR Visual Identity Manual (lab PDF, 5.1).
-/// The only place with color codes: widgets read the theme.
+/// Reference colors of the UCR Visual Identity Manual (lab PDF, 5.1), plus
+/// two neutral tones derived from "Azul UCR". The only place with color
+/// codes: widgets read the theme.
 class UcrColors {
   const UcrColors._();
 
@@ -12,8 +13,14 @@ class UcrColors {
   /// "Azul UCR": buttons, navigation and titles.
   static const Color blue = Color(0xFF005DA4);
 
+  /// Darker "Azul UCR" for the depth of the brand gradient.
+  static const Color navy = Color(0xFF00335E);
+
   /// "Blanco": backgrounds and surfaces.
   static const Color white = Color(0xFFFFFFFF);
+
+  /// Blue-tinted page background, so white cards stand out.
+  static const Color canvas = Color(0xFFF3F6FA);
 
   /// "Amarillo UCR": secondary accents.
   static const Color yellow = Color(0xFFFFE06A);
@@ -23,7 +30,15 @@ class UcrColors {
 
   /// Dark text for sky blue, yellow and green: white on them stays below
   /// 4.5:1, this one passes (accessibility, 5.3).
-  static const Color ink = Color(0xFF1B1B1F);
+  static const Color ink = Color(0xFF14202E);
+
+  /// Institutional gradient for the hero areas (login, home, summary).
+  static const LinearGradient brandGradient = LinearGradient(
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
+    colors: [navy, blue, Color(0xFF0878BF)],
+    stops: [0, 0.6, 1],
+  );
 }
 
 /// Declaration status colors, as a theme extension.
@@ -48,56 +63,136 @@ ThemeData buildUcrTheme() {
     brightness: Brightness.light,
     primary: UcrColors.blue, // buttons, navigation and titles
     onPrimary: UcrColors.white, // 6.5:1 on blue
+    primaryContainer: Color(0xFFD9ECFA),
+    onPrimaryContainer: UcrColors.navy,
     secondary: UcrColors.skyBlue, // headers and accents
     onSecondary: UcrColors.ink,
     tertiary: UcrColors.green,
     onTertiary: UcrColors.ink,
     error: Color(0xFFB3261E),
     onError: UcrColors.white,
-    errorContainer: Color(0xFFF9DEDC),
-    onErrorContainer: Color(0xFF410E0B),
+    errorContainer: Color(0xFFFBE4E2),
+    onErrorContainer: Color(0xFF5C1410),
     surface: UcrColors.white, // backgrounds and surfaces
     onSurface: UcrColors.ink,
-    onSurfaceVariant: Color(0xFF44474E),
-    outline: Color(0xFF74777F),
-    outlineVariant: Color(0xFFD5DCE3),
-    surfaceContainerLow: Color(0xFFF3F8FC),
-    surfaceContainer: Color(0xFFEAF3FA),
+    onSurfaceVariant: Color(0xFF4A5565),
+    outline: Color(0xFF7A8594),
+    outlineVariant: Color(0xFFDDE4EC),
+    surfaceContainerLowest: UcrColors.white,
+    surfaceContainerLow: Color(0xFFF6F9FC),
+    surfaceContainer: Color(0xFFEDF3F9),
+    surfaceContainerHigh: Color(0xFFE5EDF5),
   );
-
-  return ThemeData(
+  const radius = BorderRadius.all(Radius.circular(14));
+  final base = ThemeData(
     useMaterial3: true,
     colorScheme: scheme,
     // Institutional typeface (5.2). If Trueno is not bundled, Flutter falls
     // back to Arial / the system font; see assets/fonts/README.txt.
     fontFamily: 'Trueno',
     fontFamilyFallback: const <String>['Arial'],
-    scaffoldBackgroundColor: UcrColors.white,
-    appBarTheme: const AppBarTheme(
-      backgroundColor: UcrColors.blue,
-      foregroundColor: UcrColors.white,
+  );
+  final text = base.textTheme.apply(
+    bodyColor: UcrColors.ink,
+    displayColor: UcrColors.ink,
+  );
+
+  return base.copyWith(
+    scaffoldBackgroundColor: UcrColors.canvas,
+    textTheme: text.copyWith(
+      headlineSmall: text.headlineSmall?.copyWith(
+        fontWeight: FontWeight.w700,
+        letterSpacing: -0.3,
+      ),
+      titleLarge: text.titleLarge?.copyWith(fontWeight: FontWeight.w700),
+      titleMedium: text.titleMedium?.copyWith(fontWeight: FontWeight.w600),
+      labelLarge: text.labelLarge?.copyWith(
+        fontWeight: FontWeight.w600,
+        letterSpacing: 0.2,
+      ),
+    ),
+    appBarTheme: AppBarTheme(
+      backgroundColor: UcrColors.canvas,
+      foregroundColor: UcrColors.ink,
+      surfaceTintColor: Colors.transparent,
+      elevation: 0,
+      scrolledUnderElevation: 0.5,
+      shadowColor: scheme.outlineVariant,
+      titleTextStyle: text.titleLarge?.copyWith(fontWeight: FontWeight.w700),
     ),
     floatingActionButtonTheme: const FloatingActionButtonThemeData(
       backgroundColor: UcrColors.blue,
       foregroundColor: UcrColors.white,
+      elevation: 2,
+      highlightElevation: 4,
+      shape: RoundedRectangleBorder(borderRadius: radius),
     ),
     // Touch targets of at least 48 dp (5.2 and 5.3).
     filledButtonTheme: FilledButtonThemeData(
-      style: FilledButton.styleFrom(minimumSize: const Size(64, 48)),
+      style: FilledButton.styleFrom(
+        minimumSize: const Size(64, 52),
+        shape: const RoundedRectangleBorder(borderRadius: radius),
+        textStyle: text.labelLarge?.copyWith(fontSize: 15),
+      ),
     ),
     outlinedButtonTheme: OutlinedButtonThemeData(
-      style: OutlinedButton.styleFrom(minimumSize: const Size(64, 48)),
-    ),
-    inputDecorationTheme: const InputDecorationTheme(
-      border: OutlineInputBorder(),
-    ),
-    cardTheme: const CardThemeData(
-      color: UcrColors.white,
-      elevation: 0,
-      shape: RoundedRectangleBorder(
-        side: BorderSide(color: Color(0xFFD5DCE3)),
-        borderRadius: BorderRadius.all(Radius.circular(12)),
+      style: OutlinedButton.styleFrom(
+        minimumSize: const Size(64, 52),
+        shape: const RoundedRectangleBorder(borderRadius: radius),
+        side: BorderSide(color: scheme.outlineVariant, width: 1.5),
+        backgroundColor: UcrColors.white,
+        textStyle: text.labelLarge?.copyWith(fontSize: 15),
       ),
+    ),
+    textButtonTheme: TextButtonThemeData(
+      style: TextButton.styleFrom(minimumSize: const Size(48, 48)),
+    ),
+    inputDecorationTheme: InputDecorationTheme(
+      filled: true,
+      fillColor: UcrColors.white,
+      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+      border: const OutlineInputBorder(borderRadius: radius),
+      enabledBorder: OutlineInputBorder(
+        borderRadius: radius,
+        borderSide: BorderSide(color: scheme.outlineVariant, width: 1.5),
+      ),
+      focusedBorder: const OutlineInputBorder(
+        borderRadius: radius,
+        borderSide: BorderSide(color: UcrColors.blue, width: 2),
+      ),
+      errorBorder: OutlineInputBorder(
+        borderRadius: radius,
+        borderSide: BorderSide(color: scheme.error, width: 1.5),
+      ),
+      focusedErrorBorder: OutlineInputBorder(
+        borderRadius: radius,
+        borderSide: BorderSide(color: scheme.error, width: 2),
+      ),
+    ),
+    cardTheme: CardThemeData(
+      color: UcrColors.white,
+      surfaceTintColor: Colors.transparent,
+      elevation: 0,
+      margin: EdgeInsets.zero,
+      shape: RoundedRectangleBorder(
+        side: BorderSide(color: scheme.outlineVariant),
+        borderRadius: const BorderRadius.all(Radius.circular(18)),
+      ),
+    ),
+    snackBarTheme: const SnackBarThemeData(
+      behavior: SnackBarBehavior.floating,
+      backgroundColor: UcrColors.ink,
+      shape: RoundedRectangleBorder(borderRadius: radius),
+    ),
+    bottomSheetTheme: const BottomSheetThemeData(
+      backgroundColor: UcrColors.white,
+      surfaceTintColor: Colors.transparent,
+      showDragHandle: true,
+    ),
+    dividerTheme: DividerThemeData(color: scheme.outlineVariant, space: 1),
+    progressIndicatorTheme: ProgressIndicatorThemeData(
+      color: UcrColors.blue,
+      linearTrackColor: scheme.surfaceContainerHigh,
     ),
     extensions: const <ThemeExtension<dynamic>>[
       StatusColors(<DeclarationStatus, Color>{

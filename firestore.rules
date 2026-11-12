@@ -1,14 +1,24 @@
 rules_version = '2';
 
-// Server-side schema check for the mobile module. The client is never
-// trusted: these rules repeat the limits of lib/domain/field_rules.dart
+// Server-side checks for the mobile/web module. The client is never
+// trusted: these rules repeat the limits of lib/domain/field_rules.dart,
+// lib/domain/course_rules.dart and lib/domain/zonaje_eligibility.dart
 // (keep them in sync).
 //
-// shortcut: no authentication, because the lab only runs against the local
-// emulator (demo-* project). Before any real project: require request.auth,
-// store an ownerUid and allow access only when it matches request.auth.uid.
+// Only people signed in with an @ucr.ac.cr e-mail get in, and each one
+// only sees and edits their own profile, declarations and requests.
+// Keep the domain in sync with lib/domain/auth_rules.dart.
 service cloud.firestore {
   match /databases/{database}/documents {
+
+    function isSignedIn() {
+      return request.auth != null
+        && request.auth.token.email.matches('.*@ucr[.]ac[.]cr$');
+    }
+
+    function isOwner(data) {
+      return isSignedIn() && data.ownerUid == request.auth.uid;
+    }
 
     function isShortString(value, max) {
       return value is string && value.size() <= max;
@@ -18,34 +28,134 @@ service cloud.firestore {
       return value == null || value is timestamp;
     }
 
+    function myProfile() {
+      return get(/databases/$(database)/documents/users/$(request.auth.uid)).data;
+    }
+
+    // ---- Profile: name and cédula, typed once at sign-up -------------------
+
+    function isValidProfile(p) {
+      return p.keys().hasOnly(['name', 'identification'])
+        && p.name is string && p.name.size() > 0 && p.name.size() <= 120
+        && p.identification is string
+        && p.identification.matches('^[1-9][0-9]{8}$');
+    }
+
+    function idPath(id) {
+      return /databases/$(database)/documents/identifications/$(id);
+    }
+
+    match /users/{uid} {
+      allow read: if isSignedIn() && request.auth.uid == uid;
+      // Created in the same transaction as the reservation of its cédula.
+      allow create: if isSignedIn() && request.auth.uid == uid
+        && isValidProfile(request.resource.data)
+        && getAfter(idPath(request.resource.data.identification)).data.uid == uid;
+      // The cédula never changes once registered.
+      allow update: if isSignedIn() && request.auth.uid == uid
+        && isValidProfile(request.resource.data)
+        && request.resource.data.identification == resource.data.identification;
+      allow delete: if false;
+    }
+
+    // One document per cédula, {uid}: a cédula belongs to one account
+    // only. Never updated nor deleted, so a taken cédula stays taken.
+    match /identifications/{id} {
+      // Only a free cédula or one's own can be read: enough to tell whether
+      // it is taken, without revealing whose it is.
+      allow read: if isSignedIn()
+        && (resource == null || resource.data.uid == request.auth.uid);
+      allow create: if isSignedIn()
+        && id.matches('^[1-9][0-9]{8}$')
+        && request.resource.data.keys().hasOnly(['uid'])
+        && request.resource.data.uid == request.auth.uid
+        && getAfter(/databases/$(database)/documents/users/$(request.auth.uid)).data.identification == id;
+      allow update, delete: if false;
+    }
+
+    // ---- Declarations ------------------------------------------------------
+
     function isValidDeclaration(d) {
       return d.keys().hasOnly([
+          'ownerUid',
           'declarantName', 'identification', 'institution', 'position',
-          'workdayType', 'validFrom', 'validTo', 'additionalInstitutions',
-          'observations', 'intervals', 'status', 'updatedAt'])
+          'appointmentType', 'validFrom', 'validTo', 'courses', 'projects',
+          'externalJobs', 'notes', 'observations', 'intervals', 'status',
+          'updatedAt'])
         && isShortString(d.declarantName, 120)
-        && isShortString(d.identification, 20)
-        && isShortString(d.institution, 120)
+        // The cédula is the one of the profile, never typed.
+        && d.identification == myProfile().identification
+        && d.institution == 'Universidad de Costa Rica · Sede del Sur'
         && isShortString(d.position, 120)
-        && (d.workdayType == null || isShortString(d.workdayType, 60))
+        && (d.appointmentType == null
+            || d.appointmentType in ['Interino', 'Propiedad'])
         && isOptionalTimestamp(d.validFrom)
         && isOptionalTimestamp(d.validTo)
-        && isShortString(d.additionalInstitutions, 500)
-        && isShortString(d.observations, 1000)
-        && d.intervals is list && d.intervals.size() <= 50
-        // The mobile module may only draft or validate: signing, approval
-        // and HR reception are out of scope and must not be faked.
+        // At least one month (28 days: rules cannot add calendar months;
+        // the app requires the full calendar month).
+        && (d.validFrom == null || d.validTo == null
+            || d.validTo >= d.validFrom + duration.value(28, 'd'))
+        && d.courses is list && d.courses.size() <= 12
+        && d.projects is list && d.projects.size() <= 6
+        && d.externalJobs is list && d.externalJobs.size() <= 4
+        && isShortString(d.notes, 1000)
+        && isShortString(d.observations, 4000)
+        && d.intervals is list && d.intervals.size() <= 80
+        // The module may only draft or validate: signing, approval and HR
+        // reception are out of scope and must not be faked.
         && d.status in ['BORRADOR', 'VALIDADA']
         && d.updatedAt is timestamp;
     }
 
     match /declarations/{id} {
-      allow read: if true;
-      allow create: if isValidDeclaration(request.resource.data);
-      // A declaration that left the editable states is locked for this app.
-      allow update: if resource.data.status in ['BORRADOR', 'VALIDADA']
+      allow read: if isOwner(resource.data);
+      allow create: if isOwner(request.resource.data)
+        && isValidDeclaration(request.resource.data);
+      // Ownership cannot change, and a declaration that left the editable
+      // states is locked for this app.
+      allow update: if isOwner(resource.data)
+        && isOwner(request.resource.data)
+        && resource.data.status in ['BORRADOR', 'VALIDADA']
         && isValidDeclaration(request.resource.data);
       allow delete: if false;
+    }
+
+    // ---- Zonaje requests (R16 to R19) --------------------------------------
+
+    function isValidZonaje(z) {
+      let source = get(/databases/$(database)/documents/declarations/$(z.declarationId)).data;
+      return z.keys().hasOnly([
+          'ownerUid', 'previousAddress', 'currentAddress', 'distanceKm',
+          'salaryRegime', 'hasBonus', 'weeklyMinutes', 'declarationId',
+          'status', 'createdAt'])
+        && z.previousAddress is string && z.previousAddress.size() >= 10
+        && z.previousAddress.size() <= 300
+        && z.currentAddress is string && z.currentAddress.size() >= 10
+        && z.currentAddress.size() <= 300
+        && z.distanceKm is number && z.distanceKm > 60 && z.distanceKm <= 1000
+        && z.salaryRegime == 'COMPUESTO'
+        && z.hasBonus == false
+        && z.weeklyMinutes is int && z.weeklyMinutes >= 1200
+        && z.weeklyMinutes <= 2400
+        // The workday comes from a VALIDADA declaration of the same person.
+        && z.declarationId is string
+        && source.ownerUid == request.auth.uid
+        && source.status == 'VALIDADA'
+        && z.status == 'SOLICITADA'
+        && z.createdAt == request.time;
+    }
+
+    match /zonajeRequests/{id} {
+      allow read: if isOwner(resource.data);
+      allow create: if isOwner(request.resource.data)
+        && isValidZonaje(request.resource.data);
+      // Review belongs to HR, outside this app.
+      allow update, delete: if false;
+    }
+
+    // Anything else is closed by default.
+    match /{document=**} {
+      allow read, write: if false;
     }
   }
 }

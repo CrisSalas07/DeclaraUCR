@@ -17,20 +17,36 @@ abstract class DeclarationRepository {
   Future<String> save(Declaration declaration);
 }
 
+/// Firestore implementation scoped to one owner: it only reads and writes
+/// the declarations of [_ownerUid]. `firestore.rules` enforces the same on
+/// the server; the client check here is defense in depth.
 class FirestoreDeclarationRepository implements DeclarationRepository {
   FirestoreDeclarationRepository(
     FirebaseFirestore firestore, {
+    required this._ownerUid,
     this._mapper = const DeclarationMapper(),
   }) : _collection = firestore.collection('declarations');
 
+  static const _ownerField = 'ownerUid';
+
   final CollectionReference<Map<String, dynamic>> _collection;
+  final String _ownerUid;
   final DeclarationMapper _mapper;
 
+  // Sorted on the client: filtering by owner and ordering by date on the
+  // server would need a composite index.
   @override
   Stream<List<Declaration>> watchAll() => _collection
-      .orderBy('updatedAt', descending: true)
+      .where(_ownerField, isEqualTo: _ownerUid)
       .snapshots()
-      .map((snap) => snap.docs.map(_tryMap).nonNulls.toList());
+      .map(
+        (snap) =>
+            snap.docs.map(_tryMap).nonNulls.toList()
+              ..sort((a, b) => _byDateDesc(a.updatedAt, b.updatedAt)),
+      );
+
+  static int _byDateDesc(DateTime? a, DateTime? b) =>
+      (b ?? DateTime(0)).compareTo(a ?? DateTime(0));
 
   /// One malformed document must not hide the whole list: it is skipped and
   /// logged.
@@ -47,7 +63,8 @@ class FirestoreDeclarationRepository implements DeclarationRepository {
   Future<Declaration?> getById(String id) async {
     final doc = await _collection.doc(id).get();
     final data = doc.data();
-    return data == null ? null : _mapper.fromMap(doc.id, data);
+    if (data == null || data[_ownerField] != _ownerUid) return null;
+    return _mapper.fromMap(doc.id, data);
   }
 
   @override
@@ -56,7 +73,7 @@ class FirestoreDeclarationRepository implements DeclarationRepository {
     final doc = declaration.id == null || declaration.id!.isEmpty
         ? _collection.doc()
         : _collection.doc(declaration.id);
-    await doc.set(_mapper.toMap(declaration));
+    await doc.set({..._mapper.toMap(declaration), _ownerField: _ownerUid});
     declaration.id = doc.id;
     return doc.id;
   }

@@ -49,3 +49,6 @@ app.*.map.json
 
 # Assignment statement (not part of the source)
 *.pdf
+
+# Firebase deploy cache
+.firebase/

@@ -4,20 +4,28 @@
 /// Keep these numbers in sync with `firestore.rules`.
 abstract final class FieldRules {
   static const int nameMaxLength = 120;
-  static const int identificationMaxLength = 20;
-  static const int institutionMaxLength = 120;
   static const int positionMaxLength = 120;
-  static const int additionalInstitutionsMaxLength = 500;
-  static const int observationsMaxLength = 1000;
-  static const int maxIntervals = 50;
+  static const int notesMaxLength = 1000;
+  static const int observationsMaxLength = 4000;
+  static const int maxIntervals = 80;
+  static const int maxCourses = 12;
+  static const int maxProjects = 6;
+  static const int maxExternalJobs = 4;
 
-  /// Characters allowed while typing an identification (national ID, DIMEX
-  /// or passport): digits, letters and hyphens.
-  static final RegExp identificationChars = RegExp(r'[0-9A-Za-z-]');
-
-  /// Full identification format: 5 to 20 allowed characters.
-  static final RegExp identificationFormat = RegExp(r'^[0-9A-Za-z-]{5,20}$');
+  /// Costa Rican cédula: 9 digits with the zeros of each group, no hyphens
+  /// (DeclaraHorario `IdentificationType.nationalId`, e.g. 105430987).
+  static final RegExp nationalIdFormat = RegExp(r'^[1-9][0-9]{8}$');
 
   static bool isValidIdentification(String value) =>
-      identificationFormat.hasMatch(value.trim());
+      nationalIdFormat.hasMatch(value.trim());
+
+  /// `null` when [value] is a valid cédula; otherwise the message.
+  static String? identificationError(String? value) {
+    final id = (value ?? '').trim();
+    if (id.isEmpty) return 'Ingrese su número de cédula.';
+    if (!isValidIdentification(id)) {
+      return 'Use los 9 dígitos de la cédula, sin guiones (ej. 105430987).';
+    }
+    return null;
+  }
 }

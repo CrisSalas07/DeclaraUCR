@@ -11,12 +11,19 @@ Code and technical docs are in English; everything the user sees is in Spanish.
 
 | Req. | Where |
 |------|-------|
-| R1 Home screen (list + statuses, new / open draft) | `lib/screens/home_screen.dart` |
-| R2 Declaration form with required-field validation | `lib/screens/declaration_form_screen.dart` |
-| R3 Weekly schedule (Mon–Sat), interval duration and total hours | `_IntervalCard`, `Declaration.totalMinutes` |
+| R1 Home screen (list + statuses, new / open draft) | `lib/screens/shell_screen.dart` (sections Inicio, Declaraciones, Zonaje, Historial), `home_screen.dart`, `declarations_screen.dart` |
+| R2 Declaration form with required-field validation | `lib/screens/declaration_form_screen.dart`: name and cédula from the profile, fixed institution, positions and appointment type from lists, validity of at least one month (`period_rules.dart`) |
+| R3 Weekly schedule (Mon–Sat), interval duration and total hours | `lib/widgets/schedule_editor.dart` (half-hour grid, one day at a time), `lib/domain/schedule_grid.dart`, `schedule_requirements.dart` |
 | R4 End after start, no overlaps on the same day (any institution) | `lib/domain/declaration_validator.dart`, `overlap_detector.dart` |
 | R5 Draft persistence and recovery through the existing repository | `lib/data/` |
 | R6 Summary with data, schedule, total, validation result and status | `lib/screens/summary_screen.dart` |
+
+Beyond the lab, from the main project: career courses with their lesson,
+attention and planning hours (`course_rules.dart`, `workload_catalog.dart`),
+projects, jobs at other institutions, observations written from the
+schedule (`schedule_observations.dart`), a simple zonaje request
+(`zonaje_eligibility.dart`) and the history by year
+(`declarant_history.dart`).
 
 Out of scope (per the lab): digital signature, hierarchical approval and HR
 reception. The app never shows a declaration as signed, and `firestore.rules`
@@ -60,11 +67,26 @@ SOLID in practice:
   `PENDIENTE_FIRMA_DECLARANTE`, …).
 - `Weekday` — same Monday–Saturday enumeration stored as 1..6.
 - Repository pattern — UI and state depend on an interface, not on Firebase.
+- `WorkloadCatalog` and `CourseRules` — workdays 1/8 to 1 TC; a course's
+  workday fixes its hours: lessons 2 of every 5 h, attention 30 min per
+  lesson hour, planning the rest (VD-12928-2024, VD-13015-2024). Here the
+  declarant adds the courses instead of the career coordinator.
+- `TeachingSchedule` / `ExternalSchedule` → `ScheduleRequirements`: every
+  course (HC, AE, PyE), project and other institution ends with exactly its
+  hours; the grid never takes more.
+- `ScheduleObservations` — the observations in the official format
+  (`IF0009 HC: L 8 am a 10 am. AE: …`), plus notes after
+  `Otras observaciones:`.
+- `PeriodRules.addOneMonth` — the validity lasts at least one calendar month.
+- `ZonajeEligibility` (R16–R19) and `DeclarantHistory`.
+- `PositionField` lists and `IdentificationType.nationalId` format (9 digits).
 
 ## Persistence
 
-Cloud Firestore, collection `declarations`, through
-`FirestoreDeclarationRepository`. The app uses the `demo-declaraucr` project,
+Cloud Firestore through repositories: `users/{uid}` (name and cédula,
+`FirestoreProfileRepository`), `declarations`
+(`FirestoreDeclarationRepository`) and `zonajeRequests`
+(`FirestoreZonajeRepository`). The app uses the `demo-declaraucr` project,
 which only talks to the local Firebase Emulator Suite (no real keys or data).
 
 - *Guardar borrador* saves with status `BORRADOR` even if fields are missing.
@@ -85,10 +107,18 @@ which only talks to the local Firebase Emulator Suite (no real keys or data).
 - **No information leaks:** exceptions go to `debugPrint`; the user only sees a
   generic Spanish message.
 - **No secrets in code:** demo project options only.
-- **Known gap (lab only):** no authentication. Before a real deployment,
-  require `request.auth`, store the owner's uid and restrict read/write to it;
-  move `VALIDADA` to a trusted server-side check (Cloud Function), since a
-  client can always lie about its own validation.
+- **Ownership:** only `@ucr.ac.cr` accounts; each person reads and writes
+  only their own profile, declarations and requests. The cédula cannot change
+  once registered, and a declaration must carry the cédula of the profile.
+- **Zonaje on the server:** `firestore.rules` repeats R16–R19 and requires the
+  source declaration to be the person's own and `VALIDADA`.
+- **Known gaps:** `VALIDADA` and the workday sent with a zonaje request are
+  still computed by the client; a Cloud Function should recompute them.
+- **Unique cédula:** `identifications/{cédula}` = {uid} is written in the same
+  transaction as the profile (as DeclaraHorario); the rules accept the
+  profile only with its reservation and never update or delete one, so a
+  taken cédula cannot be registered again. A person can only read a free
+  cédula or their own, which says it is taken without saying whose it is.
 
 ## Running
 
@@ -117,8 +147,11 @@ flutter test
 | 04 Persistence | `persistence_test.dart` — reopened draft equals the saved one |
 | 05 Mobile view | `widget_test.dart` — 360×690 dp screen, any overflow fails the test |
 
-Also covered: invalid identification, over-long text, malformed stored
-document, and a save failure that must not leak the exception.
+Also covered: a course and its hours placed on the grid up to the summary,
+hours that cannot exceed what a task has, missing and extra hours, a
+validity shorter than a month, the cédula at sign-up and for older accounts,
+zonaje eligibility and requests, the history by year, malformed stored
+documents, and a save failure that must not leak the exception.
 All test data is fictitious.
 
 ## Visual identity decisions
@@ -140,10 +173,13 @@ All test data is fictitious.
 
 - Fitting the long status `PENDIENTE_FIRMA_DECLARANTE` in a list row: it was
   moved below the title.
-- Entering times on a small screen: native time pickers instead of free text,
-  with times shown as "8:00 a. m." / "12:00 m.".
-- Showing overlaps where they can be fixed: each interval card lists its own
-  conflicts and gets a red border.
+- Entering times on a small screen: the half-hour grid of the web system,
+  shown one day at a time with full-width rows; tap marks a half hour,
+  long-press and slide marks a range, and a day can be copied to others.
+- Overlaps: one task per half hour on the grid, so they cannot be entered;
+  the validator still checks stored data.
+- Fewer typing errors: everything but names is picked from a list or placed
+  on the grid, and the observations are written from the schedule.
 
 ## Technical reflection
 
