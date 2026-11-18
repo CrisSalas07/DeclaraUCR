@@ -123,7 +123,7 @@ Son incompatibles: el zonaje del P1 necesita mapa, Storage y el régimen del per
 ## 6. Orden propuesto
 
 1. Registrar la app Android en `declarahorario-b186f` y configurar producción (sin tocar datos).
-2. Probar contra el **emulador con las reglas del P1** (`firebase emulators:start` desde `DeclaraHorario`).
+2. Probar contra el **emulador con las reglas del P1** y datos de prueba: `backend/proyecto1/README.md`.
 3. Perfil y registro (decisión C).
 4. Lectura: períodos, asignación, lista de declaraciones con todos los estados.
 5. Crear, guardar y recuperar borrador (proceso 1).

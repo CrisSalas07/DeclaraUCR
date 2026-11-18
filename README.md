@@ -158,6 +158,9 @@ flutter run --dart-define=EMULATOR_HOST=<PC_IP>  # physical phone, same Wi-Fi
 flutter run --dart-define=FIREBASE_ENV=production # Android against the Proyecto 1 backend
 ```
 
+Emulators with the **Proyecto 1 rules and test data** (the target schema of
+the data layer migration): see `backend/proyecto1/README.md`.
+
 Web, for testing on a phone browser:
 
 ```bash

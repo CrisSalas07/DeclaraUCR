@@ -52,3 +52,6 @@ app.*.map.json
 
 # Firebase deploy cache
 .firebase/
+
+# Local data of the Proyecto 1 emulators (backend/proyecto1/seed.mjs)
+backend/proyecto1/emulator-data/
