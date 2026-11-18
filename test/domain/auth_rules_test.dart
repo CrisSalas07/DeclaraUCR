@@ -8,9 +8,16 @@ void main() {
       expect(AuthRules.emailError(' Ana.Perez@UCR.ac.cr '), isNull);
     });
 
+    test('accepts the other providers of the Proyecto 1', () {
+      for (final email in ['ana@gmail.com', 'ana@outlook.com', 'a@zoho.com']) {
+        expect(AuthRules.emailError(email), isNull, reason: email);
+      }
+    });
+
     test('rejects other domains, look-alikes and bad formats', () {
       for (final email in [
-        'ana@gmail.com',
+        'ana@yahoo.com',
+        'ana@gmail.com.evil.com',
         'ana@ucr.ac.cr.evil.com',
         'ana@fakeucr.ac.cr',
         'ana ucr.ac.cr',

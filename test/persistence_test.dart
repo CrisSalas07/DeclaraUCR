@@ -137,12 +137,28 @@ void main() {
     expect(await other.watchAll().first, hasLength(1));
   });
 
-  test('the profile keeps the cédula and the name', () async {
+  const ana = UserProfile(
+    fullName: 'Ana Pérez Mora',
+    identification: '105430987',
+    phone: '88881234',
+    email: 'ana.perez@ucr.ac.cr',
+  );
+
+  test('sign-up stores the profile in the Proyecto 1 format', () async {
     final profiles = FirestoreProfileRepository(firestore);
-    await profiles.save(
-      'user-a',
-      const UserProfile(name: 'Ana Pérez Mora', identification: '105430987'),
-    );
+    await profiles.create('user-a', ana);
+
+    final stored = await firestore.collection('users').doc('user-a').get();
+    // Exactly the fields the Proyecto 1 rules accept at sign-up.
+    expect(stored.data(), {
+      'fullName': 'Ana Pérez Mora',
+      'identification': '105430987',
+      'identificationType': 'CEDULA',
+      'phone': '88881234',
+      'email': 'ana.perez@ucr.ac.cr',
+      'roles': ['declarant'],
+      'active': true,
+    });
 
     // The fake applies a transaction just after it returns.
     final profile = await profiles.watch('user-a').firstWhere((p) => p != null);
@@ -150,26 +166,127 @@ void main() {
       repository: repository,
       profile: profile,
     );
-
     expect(state.declaration.identification, '105430987');
     expect(state.declaration.declarantName, 'Ana Pérez Mora');
   });
 
   test('a cédula belongs to one account only', () async {
     final profiles = FirestoreProfileRepository(firestore);
-    const ana = UserProfile(name: 'Ana', identification: '105430987');
-    await profiles.save('user-a', ana);
+    await profiles.create('user-a', ana);
 
     await expectLater(
-      profiles.save('user-b', ana),
+      profiles.create('user-b', ana),
       throwsA(isA<IdentificationTakenException>()),
     );
     expect(await profiles.watch('user-b').first, isNull);
     final reservation = await firestore
         .collection('identifications')
-        .doc('105430987')
+        .doc('CEDULA_105430987')
         .get();
     expect(reservation.data(), {'uid': 'user-a'});
+  });
+
+  test('reads a profile written by the web system', () {
+    final profile = FirestoreProfileRepository.fromMap({
+      'fullName': 'Ana Pérez Mora',
+      'identification': '105430987',
+      'identificationType': 'CEDULA',
+      'phone': '88881234',
+      'email': 'ana@gmail.com',
+      'roles': ['declarant', 'someFutureRole'],
+      'active': true,
+      'campusId': 'sede-sur',
+      'unitId': 'ie',
+      'superiorUid': 'rev',
+      'salaryRegime': 'COMPUESTO',
+    });
+    expect(profile.roles, {UserRole.declarant});
+    expect(profile.needsCampus || profile.needsCareer, isFalse);
+    expect(profile.hasSuperior, isTrue);
+
+    // Without the flag an account counts as disabled, like in the web.
+    final noFlag = FirestoreProfileRepository.fromMap({
+      'fullName': 'X',
+      'identification': '105430987',
+      'roles': ['declarant'],
+    });
+    expect(noFlag.active, isFalse);
+    expect(noFlag.needsCampus, isTrue);
+    expect(noFlag.needsCareer, isTrue);
+
+    // The old mobile format is not a profile of the Proyecto 1.
+    expect(
+      () => FirestoreProfileRepository.fromMap({
+        'name': 'Ana',
+        'identification': '105430987',
+      }),
+      throwsFormatException,
+    );
+  });
+
+  test(
+    'choosing campus and career lists the teacher for the coordination',
+    () async {
+      final profiles = FirestoreProfileRepository(firestore);
+      await firestore.collection('campuses').doc('sede-sur').set({
+        'name': 'Sede del Sur',
+        'active': true,
+      });
+      await firestore.collection('campuses').doc('vieja').set({
+        'name': 'Sede cerrada',
+        'active': false,
+      });
+      await firestore.collection('units').doc('ie').set({
+        'name': 'Informática Empresarial',
+        'active': true,
+        'campusId': 'sede-sur',
+      });
+      expect((await profiles.activeCampuses()).map((c) => c.name), [
+        'Sede del Sur',
+      ]);
+      expect((await profiles.activeCareers('sede-sur')).map((c) => c.id), [
+        'ie',
+      ]);
+
+      await profiles.create('user-a', ana);
+      await profiles.chooseWorkplace(
+        'user-a',
+        ana,
+        campusId: 'sede-sur',
+        unitId: 'ie',
+      );
+
+      final user = (await firestore.collection('users').doc('user-a').get())
+          .data()!;
+      expect(user['campusId'], 'sede-sur');
+      expect(user['unitId'], 'ie');
+      final entry =
+          (await firestore.collection('teacherDirectory').doc('user-a').get())
+              .data()!;
+      expect(entry['fullName'], 'Ana Pérez Mora');
+      expect(entry['unitId'], 'ie');
+      expect(entry['identification'], '105430987');
+    },
+  );
+
+  test('a campus set by administration is never rewritten', () async {
+    final profiles = FirestoreProfileRepository(firestore);
+    await firestore.collection('users').doc('user-a').set({'campusId': 'a'});
+    const assigned = UserProfile(
+      fullName: 'Ana',
+      identification: '105430987',
+      campusId: 'a',
+    );
+    await profiles.chooseWorkplace(
+      'user-a',
+      assigned,
+      campusId: 'b',
+      unitId: 'ie',
+    );
+    final user = (await firestore.collection('users').doc('user-a').get())
+        .data()!;
+    expect(user['campusId'], 'a');
+    expect(user['unitId'], 'ie');
   });
 
   test('a zonaje request is sent as SOLICITADA and listed', () async {

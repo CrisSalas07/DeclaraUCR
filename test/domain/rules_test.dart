@@ -1,4 +1,5 @@
 import 'package:declara_ucr/domain/declarant_history.dart';
+import 'package:declara_ucr/domain/field_rules.dart';
 import 'package:declara_ucr/domain/period_rules.dart';
 import 'package:declara_ucr/domain/zonaje_eligibility.dart';
 import 'package:declara_ucr/models/declaration.dart';
@@ -77,5 +78,14 @@ void main() {
     ]);
     expect(DeclarantHistory.declarationsOf([old, recent]), [recent, old]);
     expect(DeclarantHistory.declarationsOf([old, recent], year: 2025), [old]);
+  });
+
+  test('phone: 8 digits starting as the Proyecto 1 rules require', () {
+    for (final ok in ['88881234', '22223333', '40001234']) {
+      expect(FieldRules.phoneError(ok), isNull, reason: ok);
+    }
+    for (final bad in ['', '8888-1234', '1234567', '12345678', '888812345']) {
+      expect(FieldRules.phoneError(bad), isNotNull, reason: bad);
+    }
   });
 }

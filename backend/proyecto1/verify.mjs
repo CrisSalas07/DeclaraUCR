@@ -7,6 +7,37 @@ const auth = `http://${process.env.FIREBASE_AUTH_EMULATOR_HOST}`.replace('0.0.0.
 const project = process.env.GCLOUD_PROJECT || 'demo-declaraucr';
 const documents = `${firestore}/v1/projects/${project}/databases/(default)/documents`;
 
+async function signUp(email) {
+  const response = await fetch(
+    `${auth}/identitytoolkit.googleapis.com/v1/accounts:signUp?key=emulator`,
+    {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password: '123456', returnSecureToken: true }),
+    },
+  );
+  if (!response.ok) throw new Error(`No se pudo crear la cuenta ${email}`);
+  return response.json();
+}
+
+/** Firestore REST fields for strings, booleans and lists of strings. */
+const fields = (data) => Object.fromEntries(Object.entries(data).map(([key, v]) => [
+  key,
+  Array.isArray(v) ? { arrayValue: { values: v.map((x) => ({ stringValue: x })) } }
+    : typeof v === 'boolean' ? { booleanValue: v } : { stringValue: v },
+]));
+const docName = (path) => `projects/${project}/databases/(default)/documents/${path}`;
+
+/** Several writes in one atomic commit, as a batch or transaction of the app. */
+async function commit(token, writes) {
+  const response = await fetch(`${documents}:commit`, {
+    method: 'POST',
+    headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
+    body: JSON.stringify({ writes }),
+  });
+  return response.status;
+}
+
 async function signIn(email) {
   const response = await fetch(
     `${auth}/identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=emulator`,
@@ -57,6 +88,54 @@ const checks = [
       },
     })],
 ];
+
+// The writes of the mobile sign-up and "Complete su perfil"
+// (FirestoreProfileRepository.create and chooseWorkplace), byte for byte.
+const nuevo = await signUp(`nuevo${Date.now()}@ucr.ac.cr`);
+const cedula = String(200000000 + Math.floor(Math.random() * 99999999));
+const signUpWrites = (account, id) => [
+  { update: { name: docName(`users/${account.localId}`), fields: fields({
+    fullName: 'Nora Nueva', identification: id, identificationType: 'CEDULA',
+    phone: '88881234', email: account.email, roles: ['declarant'], active: true,
+  }) } },
+  { update: { name: docName(`identifications/CEDULA_${id}`), fields: fields({ uid: account.localId }) } },
+];
+checks.push(['Registro desde el móvil (perfil + reserva de cédula)', 200,
+  await commit(nuevo.idToken, signUpWrites(nuevo, cedula))]);
+
+const otro = await signUp(`otro${Date.now()}@ucr.ac.cr`);
+checks.push(['Rechaza registrar una cédula ya reservada', 403,
+  await commit(otro.idToken, signUpWrites(otro, cedula))]);
+
+checks.push(['Rechaza un registro que se asigna otro rol', 403,
+  await commit(otro.idToken, [
+    { update: { name: docName(`users/${otro.localId}`), fields: fields({
+      fullName: 'Otro', identification: '299999999', identificationType: 'CEDULA',
+      phone: '88881234', email: otro.email, roles: ['admin'], active: true,
+    }) } },
+    { update: { name: docName('identifications/CEDULA_299999999'), fields: fields({ uid: otro.localId }) } },
+  ])]);
+
+checks.push(['Elige sede y carrera, y queda en el directorio de docentes', 200,
+  await commit(nuevo.idToken, [
+    {
+      update: { name: docName(`users/${nuevo.localId}`),
+        fields: fields({ campusId: 'sede-sur', unitId: 'informatica-empresarial' }) },
+      updateMask: { fieldPaths: ['campusId', 'unitId'] },
+    },
+    {
+      update: { name: docName(`teacherDirectory/${nuevo.localId}`), fields: fields({
+        fullName: 'Nora Nueva', unitId: 'informatica-empresarial', identification: cedula,
+      }) },
+      updateTransforms: [{ fieldPath: 'updatedAt', setToServerValue: 'REQUEST_TIME' }],
+    },
+  ])]);
+
+checks.push(['Rechaza cambiar la sede ya elegida', 403,
+  await commit(nuevo.idToken, [{
+    update: { name: docName(`users/${nuevo.localId}`), fields: fields({ campusId: 'otra-sede' }) },
+    updateMask: { fieldPaths: ['campusId'] },
+  }])]);
 
 let failed = 0;
 for (const [name, expected, actual] of checks) {

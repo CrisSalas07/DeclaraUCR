@@ -7,8 +7,10 @@ import 'package:declara_ucr/data/zonaje_repository.dart';
 import 'package:declara_ucr/models/app_user.dart';
 import 'package:declara_ucr/models/declaration.dart';
 import 'package:declara_ucr/models/zonaje_request.dart';
+import 'package:declara_ucr/screens/auth/account_notice_screen.dart';
 import 'package:declara_ucr/screens/auth/complete_profile_screen.dart';
 import 'package:declara_ucr/screens/auth/login_screen.dart';
+import 'package:declara_ucr/screens/auth/workplace_screen.dart';
 import 'package:declara_ucr/screens/shell_screen.dart';
 import 'package:declara_ucr/state/loadable.dart';
 import 'package:declara_ucr/theme/ucr_theme.dart';
@@ -160,7 +162,9 @@ class _DeclaraUcrAppState extends State<DeclaraUcrApp> {
   );
 }
 
-/// Waits for the profile: without a cédula, asks for it once.
+/// Waits for the profile and asks, once, for what is missing: the profile
+/// itself (an unfinished sign-up), then the campus and career. Accounts that
+/// cannot declare see why.
 class _ProfileGate extends StatelessWidget {
   const _ProfileGate();
 
@@ -184,7 +188,12 @@ class _ProfileGate extends StatelessWidget {
         ),
       );
     }
-    if (profile.value == null) return const CompleteProfileScreen();
+    final value = profile.value;
+    if (value == null) return const CompleteProfileScreen();
+    if (!value.active || !value.isDeclarant) {
+      return const AccountNoticeScreen();
+    }
+    if (value.needsCampus || value.needsCareer) return const WorkplaceScreen();
     return const ShellScreen();
   }
 }

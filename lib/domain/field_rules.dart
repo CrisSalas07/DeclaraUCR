@@ -19,6 +19,20 @@ abstract final class FieldRules {
   static bool isValidIdentification(String value) =>
       nationalIdFormat.hasMatch(value.trim());
 
+  /// Costa Rican phone: 8 digits starting with 2, 4, 5, 6, 7 or 8, no
+  /// hyphens. Same as `validPhone` in the Proyecto 1 `firestore.rules`.
+  static final RegExp phoneFormat = RegExp(r'^[245678][0-9]{7}$');
+
+  /// `null` when [value] is a valid phone; otherwise the message.
+  static String? phoneError(String? value) {
+    final phone = (value ?? '').trim();
+    if (phone.isEmpty) return 'Ingrese su número de teléfono.';
+    if (!phoneFormat.hasMatch(phone)) {
+      return 'Use los 8 dígitos del teléfono, sin guiones (ej. 88881234).';
+    }
+    return null;
+  }
+
   /// `null` when [value] is a valid cédula; otherwise the message.
   static String? identificationError(String? value) {
     final id = (value ?? '').trim();

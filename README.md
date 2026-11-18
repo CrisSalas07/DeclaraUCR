@@ -36,7 +36,8 @@ Layered, dependencies point inward only:
 ```
 screens/ widgets/ theme/   presentation (Flutter widgets, Spanish texts)
   shell_screen             sections: Inicio · Declaraciones · Zonaje · Historial
-  auth/                    login, sign-up (with cédula), complete profile
+  auth/                    login, sign-up (cédula, phone), complete profile
+                           (campus, career), account notice
         │
 state/                     DeclarationFormState (ChangeNotifier), Loadable<T>
         │
@@ -97,11 +98,21 @@ SOLID in practice:
 
 ## Persistence
 
-Cloud Firestore through repositories: `users/{uid}` (name and cédula,
-`FirestoreProfileRepository`), `declarations`
+Cloud Firestore through repositories: `users/{uid}`
+(`FirestoreProfileRepository`), `declarations`
 (`FirestoreDeclarationRepository`) and `zonajeRequests`
-(`FirestoreZonajeRepository`), with `identifications/{cédula}` reserving
-each cédula for one account.
+(`FirestoreZonajeRepository`).
+
+**Migration to the Proyecto 1 schema** (`docs/COMPARACION_BACKEND_P1.md`):
+
+| Part | Status |
+|------|--------|
+| Profile and sign-up | Done: `users/{uid}` with `fullName`, `identification`, `identificationType`, `phone`, `email`, `roles`, `active`, `campusId`, `unitId`, `superiorUid`; reservation `identifications/CEDULA_{number}`; campus and career chosen once, with the entry in `teacherDirectory`. Only active declarants get into the app; without a reviewer, Inicio says so |
+| Declarations, history, zonaje | Pending: still the mobile's own documents, which the Proyecto 1 rules reject |
+
+The root `firestore.rules` still describes the old mobile schema; the
+target rules are the Proyecto 1 copy in `backend/proyecto1/`, and
+`backend/proyecto1/verify.mjs` checks the profile writes against them.
 
 Two backends, chosen at build time (`lib/config/firebase_config.dart`):
 

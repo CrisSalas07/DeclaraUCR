@@ -18,6 +18,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final _formKey = GlobalKey<FormState>();
   final _name = TextEditingController();
   final _id = TextEditingController();
+  final _phone = TextEditingController();
   final _email = TextEditingController();
   final _password = TextEditingController();
   final _confirm = TextEditingController();
@@ -26,7 +27,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   @override
   void dispose() {
-    for (final c in [_name, _id, _email, _password, _confirm]) {
+    for (final c in [_name, _id, _phone, _email, _password, _confirm]) {
       c.dispose();
     }
     super.dispose();
@@ -44,6 +45,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       await context.read<AuthRepository>().register(
         name: _name.text,
         identification: _id.text,
+        phone: _phone.text,
         email: _email.text,
         password: _password.text,
       );
@@ -57,7 +59,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
   @override
   Widget build(BuildContext context) => AuthLayout(
     title: 'Crear cuenta',
-    subtitle: 'Regístrese con su correo institucional @ucr.ac.cr.',
+    subtitle:
+        'Regístrese con su correo @ucr.ac.cr. Es la misma cuenta del '
+        'sistema web de declaraciones.',
     showBack: true,
     child: AutofillGroup(
       child: Form(
@@ -81,13 +85,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
             const SizedBox(height: 16),
             IdentificationField(controller: _id),
             const SizedBox(height: 16),
+            PhoneField(controller: _phone),
+            const SizedBox(height: 16),
             TextFormField(
               controller: _email,
               keyboardType: TextInputType.emailAddress,
               autofillHints: const [AutofillHints.email],
               textInputAction: TextInputAction.next,
               decoration: const InputDecoration(
-                labelText: 'Correo institucional',
+                labelText: 'Correo electrónico',
                 hintText: 'nombre.apellido@ucr.ac.cr',
                 prefixIcon: Icon(Icons.alternate_email),
               ),
@@ -165,5 +171,31 @@ class IdentificationField extends StatelessWidget {
     ),
     validator: FieldRules.identificationError,
     onFieldSubmitted: onSubmitted == null ? null : (_) => onSubmitted!(),
+  );
+}
+
+/// Phone: 8 digits only, validated with [FieldRules.phoneError]. Shared by
+/// sign-up and the profile completion.
+class PhoneField extends StatelessWidget {
+  const PhoneField({super.key, required this.controller});
+
+  final TextEditingController controller;
+
+  @override
+  Widget build(BuildContext context) => TextFormField(
+    controller: controller,
+    keyboardType: TextInputType.phone,
+    autofillHints: const [AutofillHints.telephoneNumber],
+    textInputAction: TextInputAction.next,
+    inputFormatters: [
+      FilteringTextInputFormatter.digitsOnly,
+      LengthLimitingTextInputFormatter(8),
+    ],
+    decoration: const InputDecoration(
+      labelText: 'Teléfono',
+      helperText: '8 dígitos, sin guiones (ej. 88881234)',
+      prefixIcon: Icon(Icons.phone_outlined),
+    ),
+    validator: FieldRules.phoneError,
   );
 }

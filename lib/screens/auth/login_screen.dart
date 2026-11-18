@@ -87,7 +87,7 @@ class _LoginScreenState extends State<LoginScreen> {
               autofillHints: const [AutofillHints.email],
               textInputAction: TextInputAction.next,
               decoration: const InputDecoration(
-                labelText: 'Correo institucional',
+                labelText: 'Correo electrónico',
                 hintText: 'nombre.apellido@ucr.ac.cr',
                 prefixIcon: Icon(Icons.alternate_email),
               ),
@@ -191,13 +191,13 @@ class _ResetPasswordDialogState extends State<_ResetPasswordDialog> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          const Text('Le enviaremos un enlace a su correo institucional.'),
+          const Text('Le enviaremos un enlace a su correo.'),
           const SizedBox(height: 16),
           TextFormField(
             controller: _email,
             keyboardType: TextInputType.emailAddress,
             decoration: const InputDecoration(
-              labelText: 'Correo institucional',
+              labelText: 'Correo electrónico',
               prefixIcon: Icon(Icons.alternate_email),
             ),
             validator: AuthRules.emailError,

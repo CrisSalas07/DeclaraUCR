@@ -1,5 +1,6 @@
 import 'package:declara_ucr/data/auth_repository.dart';
 import 'package:declara_ucr/data/profile_repository.dart';
+import 'package:declara_ucr/domain/auth_rules.dart';
 import 'package:declara_ucr/models/app_user.dart';
 import 'package:declara_ucr/screens/auth/auth_layout.dart';
 import 'package:declara_ucr/screens/auth/register_screen.dart';
@@ -7,8 +8,9 @@ import 'package:declara_ucr/widgets/common.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-/// Asked once to accounts created before the cédula was part of sign-up:
-/// it is loaded into every declaration and cannot be typed there.
+/// Shown to an account without a profile: its sign-up did not finish (for
+/// example, the cédula belonged to another account). Name, cédula and phone
+/// are asked once; the cédula is loaded into every declaration.
 class CompleteProfileScreen extends StatefulWidget {
   const CompleteProfileScreen({super.key});
 
@@ -18,13 +20,19 @@ class CompleteProfileScreen extends StatefulWidget {
 
 class _CompleteProfileScreenState extends State<CompleteProfileScreen> {
   final _formKey = GlobalKey<FormState>();
+  late final _name = TextEditingController(
+    text: context.read<AppUser?>()?.displayName,
+  );
   final _id = TextEditingController();
+  final _phone = TextEditingController();
   bool _busy = false;
   late String? _error = context.read<AuthRepository>().takeSignUpNotice();
 
   @override
   void dispose() {
-    _id.dispose();
+    for (final c in [_name, _id, _phone]) {
+      c.dispose();
+    }
     super.dispose();
   }
 
@@ -36,12 +44,14 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen> {
       _error = null;
     });
     try {
-      // The profile stream then opens the app.
-      await context.read<ProfileRepository>().save(
+      // The profile stream then moves on to the next step.
+      await context.read<ProfileRepository>().create(
         user.uid,
         UserProfile(
-          name: user.displayName.isEmpty ? user.firstName : user.displayName,
+          fullName: _name.text,
           identification: _id.text,
+          phone: _phone.text,
+          email: user.email,
         ),
       );
     } on IdentificationTakenException {
@@ -51,7 +61,11 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen> {
     } catch (e) {
       debugPrint('Saving profile failed: $e');
       if (mounted) {
-        setState(() => _error = 'No se pudo guardar. Intente de nuevo.');
+        setState(
+          () => _error =
+              'No se pudo guardar. Revise la conexión e intente '
+              'de nuevo.',
+        );
       }
     } finally {
       if (mounted) setState(() => _busy = false);
@@ -62,13 +76,29 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen> {
   Widget build(BuildContext context) => AuthLayout(
     title: 'Complete su perfil',
     subtitle:
-        'Su cédula se carga en cada declaración. Solo se registra una vez.',
+        'Su nombre y su cédula se cargan en cada declaración. Solo se '
+        'registran una vez.',
     child: Form(
       key: _formKey,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          IdentificationField(controller: _id, onSubmitted: _submit),
+          TextFormField(
+            controller: _name,
+            textCapitalization: TextCapitalization.words,
+            textInputAction: TextInputAction.next,
+            maxLength: AuthRules.nameMaxLength,
+            decoration: const InputDecoration(
+              labelText: 'Nombre completo',
+              prefixIcon: Icon(Icons.person_outline),
+              counterText: '',
+            ),
+            validator: AuthRules.nameError,
+          ),
+          const SizedBox(height: 16),
+          IdentificationField(controller: _id),
+          const SizedBox(height: 16),
+          PhoneField(controller: _phone),
           const SizedBox(height: 24),
           if (_error != null) ...[
             InfoBanner(

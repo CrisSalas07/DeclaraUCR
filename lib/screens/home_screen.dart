@@ -61,6 +61,19 @@ class HomeScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
+              // The rules reject a new declaration without a reviewer, and
+              // only administration assigns one (from the web).
+              if (profile != null && !profile.hasSuperior) ...[
+                const InfoBanner(
+                  icon: Icons.supervisor_account_outlined,
+                  title: 'Aún no tiene revisor asignado.',
+                  lines: [
+                    'Administración debe asignarlo en el sistema web antes '
+                        'de que pueda crear su declaración.',
+                  ],
+                ),
+                const SizedBox(height: 16),
+              ],
               Row(
                 children: [
                   _Counter(
