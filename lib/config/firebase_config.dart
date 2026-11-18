@@ -4,8 +4,11 @@ import 'package:flutter/foundation.dart';
 /// Which Firebase backend the app talks to, chosen at build time.
 ///
 /// - Default: local emulators (`demo-declaraucr`, no real data).
-/// - `--dart-define=FIREBASE_ENV=production`: the hosted web app on
-///   `cristopher-desarrollo-iv` (only the web platform is configured).
+/// - `--dart-define=FIREBASE_ENV=production`:
+///   - Android: the Proyecto 1 backend (`declarahorario-b186f`), shared with
+///     the DeclaraHorario web system. Its `firestore.rules` apply, not the
+///     ones in this repository.
+///   - Web: the hosted web app on `cristopher-desarrollo-iv`.
 abstract final class FirebaseConfig {
   static const String _env = String.fromEnvironment(
     'FIREBASE_ENV',
@@ -22,10 +25,13 @@ abstract final class FirebaseConfig {
 
   static FirebaseOptions get options {
     if (useEmulators) return _emulatorOptions;
-    if (!kIsWeb) {
-      throw UnsupportedError('Production is only configured for the web.');
+    if (kIsWeb) return _webProductionOptions;
+    if (defaultTargetPlatform == TargetPlatform.android) {
+      return _androidProductionOptions;
     }
-    return _webProductionOptions;
+    throw UnsupportedError(
+      'Production is only configured for Android and the web.',
+    );
   }
 
   /// `demo-*` project: the SDK only talks to the local emulators, never to
@@ -35,6 +41,17 @@ abstract final class FirebaseConfig {
     appId: '1:000000000000:android:0000000000000000',
     messagingSenderId: '000000000000',
     projectId: 'demo-declaraucr',
+  );
+
+  /// Android app "DeclaraUCR (Android)" registered in the Proyecto 1 project
+  /// (`firebase apps:sdkconfig ANDROID <appId>`). Same as the web key: a
+  /// public identifier, access is enforced by Firebase Auth and the rules.
+  static const _androidProductionOptions = FirebaseOptions(
+    apiKey: 'AIzaSyBDoexAl7lWuz7yymCdBLu1CRCV_Ifn2G0',
+    appId: '1:15638785744:android:8e94f5071822db051238d5',
+    messagingSenderId: '15638785744',
+    projectId: 'declarahorario-b186f',
+    storageBucket: 'declarahorario-b186f.firebasestorage.app',
   );
 
   /// Firebase web config. The API key is a public project identifier, not a

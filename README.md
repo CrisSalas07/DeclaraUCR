@@ -107,8 +107,15 @@ Two backends, chosen at build time (`lib/config/firebase_config.dart`):
 
 - **Default — emulators:** project `demo-declaraucr`, which only talks to the
   local Firebase Emulator Suite (no real keys or data). Used on Android.
-- **`--dart-define=FIREBASE_ENV=production`:** the web version hosted at
-  https://declaraucr.web.app on `cristopher-desarrollo-iv` (web only).
+- **`--dart-define=FIREBASE_ENV=production`:**
+  - **Android:** the Proyecto 1 backend `declarahorario-b186f` (app
+    "DeclaraUCR (Android)"), shared with the DeclaraHorario web system. Its
+    own `firestore.rules` apply, not the ones in this repository. The data
+    layer is being adapted to its schema (see
+    `docs/COMPARACION_BACKEND_P1.md`); until then, writes are rejected by
+    those rules and nothing is stored.
+  - **Web:** the version hosted at https://declaraucr.web.app on
+    `cristopher-desarrollo-iv`.
 
 - *Guardar borrador* saves with status `BORRADOR` even if fields are missing.
 - *Validar* (summary) saves as `VALIDADA` only when there are no missing fields
@@ -148,6 +155,7 @@ flutter pub get
 firebase emulators:start --only auth,firestore   # Auth :9099, Firestore :8080, UI :4000
 flutter run                                      # Android emulator (host 10.0.2.2)
 flutter run --dart-define=EMULATOR_HOST=<PC_IP>  # physical phone, same Wi-Fi
+flutter run --dart-define=FIREBASE_ENV=production # Android against the Proyecto 1 backend
 ```
 
 Web, for testing on a phone browser:
