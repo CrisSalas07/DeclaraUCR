@@ -207,11 +207,74 @@ async function main() {
     updatedAt: now,
   });
 
+  // 7. A closed earlier period with a FINALIZADA declaration of "docente",
+  // as the web leaves it after both signatures and HR approval: something
+  // to see in the list and the history.
+  const PAST = '2026_I';
+  const past = ASSIGNED[0];
+  await put(`periods/${PAST}`, {
+    name: 'I Ciclo - 2026', cycle: 'I', year: 2026,
+    startDate: new Date('2026-03-09T06:00:00Z'), endDate: new Date('2026-07-04T06:00:00Z'),
+    enabled: false, createdBy: uid.admin,
+  });
+  await put(`workloadAssignments/${PAST}_${uid.docente}`, {
+    declarantUid: uid.docente, periodId: PAST,
+    courses: [{
+      name: past.course.name, courseId: past.course.id, code: past.course.code,
+      lessonMinutes: past.lessonMinutes, workloadMinutes: past.workloadMinutes,
+    }],
+    courseIds: [past.course.id], campusId: CAMPUS_ID, unitId: UNIT_ID,
+    slots: past.slots.map((s) => ({ ...s, course: past.course.name })),
+    lessonMinutes: past.lessonMinutes, workloadMinutes: past.workloadMinutes,
+    assignedBy: uid.coordinacion, updatedAt: now,
+  });
+  const DECL = 'seed-2026-I-docente';
+  const VERSION = 'v1';
+  const docente = PEOPLE.docente;
+  const name = past.course.name;
+  await put(`declarations/${DECL}`, {
+    declarantUid: uid.docente, declarantName: docente.fullName, periodId: PAST,
+    superiorUid: uid.revisor, campusId: CAMPUS_ID, status: 'FINALIZADA',
+    currentVersionId: VERSION, currentVersionNumber: 1,
+    hrResult: 'FINALIZADA', hrResultAt: now, lastEventId: 'seed-cierre',
+    createdAt: now, updatedAt: now,
+  });
+  await put(`declarationSlots/${PAST}_${uid.docente}`, { declarationId: DECL });
+  await put(`declarations/${DECL}/versions/${VERSION}`, {
+    number: 1,
+    declarantSnapshot: {
+      fullName: docente.fullName, identification: docente.identification,
+      phone: '88880000', email: docente.email,
+      unitName: 'Informática Empresarial', campusName: 'Sede del Sur',
+    },
+    observations: 'IF0009 HC: L 8 am a 10 am; K 8 am a 10 am. AE: V 8 am a 10 am. PyE: V 10 am a 12 md; J 8 am a 10 am.',
+    hoursSummary: { expectedMinutes: 600, declaredMinutes: 600, differenceMinutes: 0 },
+    validationPassed: true, isLocked: true, lockedAt: now, contentHash: 'seed',
+    createdAt: now, createdBy: uid.docente,
+  });
+  // 240 lesson (fixed slots) + 120 attention + 240 planning = 600 (1/4 TC).
+  await put(`declarations/${DECL}/versions/${VERSION}/appointments/a1`, {
+    workplace: 'Universidad de Costa Rica · Sede del Sur', position: 'Adjunto',
+    workload: '1/4 TC',
+    startDate: new Date('2026-03-09T06:00:00Z'), endDate: new Date('2026-07-04T06:00:00Z'),
+    blocks: [
+      ...past.slots.map((s) => ({ ...s, category: 'lesson', course: name })),
+      { day: 5, startMinutes: 8 * 60, endMinutes: 10 * 60, category: 'attention', course: name },
+      { day: 5, startMinutes: 10 * 60, endMinutes: 12 * 60, category: 'planning', course: name },
+      { day: 4, startMinutes: 8 * 60, endMinutes: 10 * 60, category: 'planning', course: name },
+    ],
+  });
+  await put(`declarations/${DECL}/events/seed-cierre`, {
+    type: 'CIERRE', userId: uid.rrhh, timestamp: now, version: 1,
+    previousStatus: 'ENVIADA_A_RRHH', newStatus: 'FINALIZADA',
+  });
+
   console.log(`Emuladores del proyecto ${project} con datos de prueba (contraseña de todas: ${PASSWORD}):`);
   for (const person of Object.values(PEOPLE)) {
     console.log(`  ${person.email.padEnd(24)} ${person.roles.join(', ')}`);
   }
-  console.log(`Período ${PERIOD_ID} habilitado; docente@ucr.ac.cr tiene 2 cursos asignados (1/2 TC).`);
+  console.log(`Período ${PERIOD_ID} habilitado; docente@ucr.ac.cr tiene 2 cursos asignados (1/2 TC)`);
+  console.log(`y una declaración FINALIZADA del período ${PAST} (cerrado).`);
 }
 
 main().catch((error) => {

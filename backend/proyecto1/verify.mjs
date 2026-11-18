@@ -137,6 +137,39 @@ checks.push(['Rechaza cambiar la sede ya elegida', 403,
     updateMask: { fieldPaths: ['campusId'] },
   }])]);
 
+// The reads of the declaration list (Proyecto1DeclarationRepository and
+// FirestorePeriodRepository).
+async function query(token, collectionId, field, value) {
+  const response = await fetch(`${documents}:runQuery`, {
+    method: 'POST',
+    headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
+    body: JSON.stringify({ structuredQuery: {
+      from: [{ collectionId }],
+      where: { fieldFilter: { field: { fieldPath: field }, op: 'EQUAL', value } },
+    } }),
+  });
+  return response.status;
+}
+const seeded = 'declarations/seed-2026-I-docente';
+const docente2 = await signIn('docente2@ucr.ac.cr');
+checks.push(
+  ['Lista sus declaraciones (filtradas por declarantUid)', 200,
+    await query(docente.idToken, 'declarations', 'declarantUid', { stringValue: docente.localId })],
+  ['Rechaza listar las declaraciones de otra persona', 403,
+    await query(docente2.idToken, 'declarations', 'declarantUid', { stringValue: docente.localId })],
+  ['Lista los períodos habilitados', 200,
+    await query(docente.idToken, 'periods', 'enabled', { booleanValue: true })],
+  ['Lee la versión y el nombramiento de su declaración', 200,
+    Math.max(
+      await request('GET', `${seeded}/versions/v1`, docente.idToken),
+      await request('GET', `${seeded}/versions/v1/appointments/a1`, docente.idToken),
+    )],
+  ['No lee la declaración de otra persona', 403,
+    await request('GET', seeded, docente2.idToken)],
+  ['No lee la asignación de cursos de otra persona', 403,
+    await request('GET', `workloadAssignments/2026_II_${docente.localId}`, docente2.idToken)],
+);
+
 let failed = 0;
 for (const [name, expected, actual] of checks) {
   const ok = expected === actual;

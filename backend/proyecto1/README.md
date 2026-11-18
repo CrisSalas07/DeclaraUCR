@@ -66,4 +66,7 @@ Además: sede **Sede del Sur** (con ubicación), carrera **Informática Empresar
 (`2026_II`, habilitado) y los cursos IF0009 *Desarrollo de Software IV* (lunes y miércoles 8–10) e IF4001
 *Sistemas Operativos* (martes y jueves 13–15), 1/4 TC cada uno.
 
+Para ver la lista y el historial con algo: el período **I Ciclo - 2026** (`2026_I`, cerrado), con una
+declaración **FINALIZADA** de `docente@ucr.ac.cr` (IF0009, 1/4 TC, versión 1 firmada y aprobada por RRHH).
+
 Las personas son ficticias y las cédulas solo cumplen el formato.

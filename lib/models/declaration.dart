@@ -66,6 +66,11 @@ class Declaration {
     List<ScheduleInterval>? intervals,
     this.status = DeclarationStatus.draft,
     this.updatedAt,
+    this.periodId,
+    this.periodName,
+    this.versionId,
+    this.versionNumber,
+    this.pendingObservation,
   }) : courses = courses ?? <CourseLoad>[],
        projects = projects ?? <ProjectHours>[],
        externalJobs = externalJobs ?? <ExternalJob>[],
@@ -88,6 +93,20 @@ class Declaration {
   final List<ScheduleInterval> intervals;
   DeclarationStatus status;
   DateTime? updatedAt;
+
+  /// Proyecto 1 period (`periods/{id}`, e.g. `2026_II`): one declaration
+  /// per person and period. `null` in the old mobile schema.
+  String? periodId;
+
+  /// Name of the period, e.g. "II Ciclo - 2026".
+  String? periodName;
+
+  /// Current version (`declarations/{id}/versions/{versionId}`).
+  String? versionId;
+  int? versionNumber;
+
+  /// Why the reviewer or HR returned it (status DEVUELTA).
+  String? pendingObservation;
 
   String get institution => Workplace.full;
 
@@ -138,5 +157,10 @@ class Declaration {
     intervals: intervals.map((i) => i.copy()).toList(),
     status: status,
     updatedAt: updatedAt,
+    periodId: periodId,
+    periodName: periodName,
+    versionId: versionId,
+    versionNumber: versionNumber,
+    pendingObservation: pendingObservation,
   );
 }

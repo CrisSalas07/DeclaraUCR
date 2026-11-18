@@ -108,7 +108,8 @@ Cloud Firestore through repositories: `users/{uid}`
 | Part | Status |
 |------|--------|
 | Profile and sign-up | Done: `users/{uid}` with `fullName`, `identification`, `identificationType`, `phone`, `email`, `roles`, `active`, `campusId`, `unitId`, `superiorUid`; reservation `identifications/CEDULA_{number}`; campus and career chosen once, with the entry in `teacherDirectory`. Only active declarants get into the app; without a reviewer, Inicio says so |
-| Declarations, history, zonaje | Pending: still the mobile's own documents, which the Proyecto 1 rules reject |
+| Reading declarations | Ready, not wired yet: `lib/data/proyecto1/` builds each `Declaration` from the declaration, its current version, appointment and external jobs, the period and the coordination's assignment (courses with their lesson hours); `FirestorePeriodRepository` lists open periods and reads the assignment. `main.dart` switches to it together with saving |
+| Saving, status changes, zonaje | Pending: still the mobile's own documents, which the Proyecto 1 rules reject |
 
 The root `firestore.rules` still describes the old mobile schema; the
 target rules are the Proyecto 1 copy in `backend/proyecto1/`, and

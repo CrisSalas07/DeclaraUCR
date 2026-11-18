@@ -13,6 +13,7 @@ class CourseLoad {
     required this.name,
     required this.code,
     required this.workloadMinutes,
+    this._lessonMinutes,
   });
 
   /// Course name, unique in the declaration.
@@ -24,7 +25,12 @@ class CourseLoad {
   /// Weekly load: lessons + attention + planning.
   final int workloadMinutes;
 
-  int get lessonMinutes => workloadMinutes * 2 ~/ 5;
+  /// Lesson minutes set by the career coordination in the Proyecto 1
+  /// assignment, if any.
+  final int? _lessonMinutes;
+
+  /// Lesson minutes: the coordination's, or 2 of every 5 hours of the load.
+  int get lessonMinutes => _lessonMinutes ?? workloadMinutes * 2 ~/ 5;
   int get attentionMinutes => lessonMinutes ~/ 2;
   int get planningMinutes => workloadMinutes - lessonMinutes - attentionMinutes;
 
