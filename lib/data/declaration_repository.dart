@@ -1,5 +1,7 @@
 import 'package:declara_ucr/models/declaration.dart';
 
+export 'package:declara_ucr/data/network_status.dart' show OfflineException;
+
 /// Access to declarations (R5). Same pattern as DeclaraHorario: the UI and
 /// the state layer only know this interface, never Firestore (DIP). The
 /// implementation is `Proyecto1DeclarationRepository`.

@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:declara_ucr/config/firebase_config.dart';
 import 'package:declara_ucr/data/auth_repository.dart';
 import 'package:declara_ucr/data/declaration_repository.dart';
+import 'package:declara_ucr/data/network_status.dart';
 import 'package:declara_ucr/data/profile_repository.dart';
 import 'package:declara_ucr/data/proyecto1/period_repository.dart';
 import 'package:declara_ucr/data/proyecto1/proyecto1_declaration_repository.dart';
@@ -16,6 +17,7 @@ import 'package:declara_ucr/screens/auth/workplace_screen.dart';
 import 'package:declara_ucr/screens/shell_screen.dart';
 import 'package:declara_ucr/state/loadable.dart';
 import 'package:declara_ucr/theme/ucr_theme.dart';
+import 'package:declara_ucr/widgets/offline_banner.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -45,6 +47,7 @@ Future<void> main() async {
           periods: periods,
         ),
         zonajeFor: (uid) => FirestoreZonajeRepository(firestore, uid: uid),
+        network: PluginNetworkStatus(),
       ),
     );
   } catch (e) {
@@ -92,6 +95,7 @@ class DeclaraUcrApp extends StatefulWidget {
     required this.periodsFor,
     required this.repositoryFor,
     required this.zonajeFor,
+    this.network = const AlwaysOnline(),
   });
 
   final AuthRepository auth;
@@ -100,6 +104,10 @@ class DeclaraUcrApp extends StatefulWidget {
   final DeclarationRepository Function(String uid, PeriodRepository periods)
   repositoryFor;
   final ZonajeRepository Function(String uid) zonajeFor;
+
+  /// Whether the phone has a network: an offline strip on every screen,
+  /// and saves are not attempted without one.
+  final NetworkStatus network;
 
   @override
   State<DeclaraUcrApp> createState() => _DeclaraUcrAppState();
@@ -154,6 +162,13 @@ class _DeclaraUcrAppState extends State<DeclaraUcrApp> {
       return MultiProvider(
         key: ValueKey(user?.uid),
         providers: [
+          Provider<NetworkStatus>.value(value: widget.network),
+          StreamProvider<Connection>(
+            create: (_) => widget.network.watchOnline().map(
+              (online) => Connection(online: online),
+            ),
+            initialData: const Connection(online: true),
+          ),
           Provider<AuthRepository>.value(value: widget.auth),
           Provider<ProfileRepository>.value(value: widget.profiles),
           Provider<AppUser?>.value(value: user),
@@ -166,6 +181,7 @@ class _DeclaraUcrAppState extends State<DeclaraUcrApp> {
           locale: const Locale('es', 'CR'),
           supportedLocales: const [Locale('es', 'CR'), Locale('es')],
           localizationsDelegates: GlobalMaterialLocalizations.delegates,
+          builder: (context, child) => OfflineFrame(child: child!),
           home: user == null ? const LoginScreen() : const _ProfileGate(),
         ),
       );

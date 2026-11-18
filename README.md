@@ -146,6 +146,28 @@ Two backends, chosen at build time (`lib/config/firebase_config.dart`):
 - Opening an item from the list reloads it from Firestore (`getById`), so what
   you see is what was stored.
 
+## Connectivity
+
+The phone may lose the signal; nothing is lost silently and nothing waits
+forever (§5 and §7 of the Proyecto 2):
+
+- **Offline strip:** `PluginNetworkStatus` (`connectivity_plus`) feeds
+  `OfflineFrame`, a strip on every screen: "Sin conexión: ve lo último
+  guardado en el teléfono…". Lists keep showing the copy Firestore keeps in
+  the phone.
+- **No save without a network:** `DeclarationFormState` (and "Complete su
+  perfil") does not try; it says so and the changes stay on the screen.
+- **Server first:** every save starts by reading from the server
+  (`Source.server`), never from the phone's copy, so without a connection it
+  fails at once instead of leaving writes queued that the rules might
+  reject later, unnoticed. Validating and reopening are transactions, which
+  need the server anyway.
+- **Time limit:** a save waits at most 15 s for the server, then tells the
+  person to check the connection and save again.
+
+Tests: `test/connectivity_test.dart` and the offline case of
+`test/widget_test.dart`.
+
 ## Security
 
 - **Input validation at every boundary:** form limits (`maxLength`, input

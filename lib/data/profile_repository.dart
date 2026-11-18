@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:declara_ucr/data/network_status.dart';
 import 'package:declara_ucr/models/user_profile.dart';
 
 export 'package:declara_ucr/models/user_profile.dart';
@@ -137,6 +138,14 @@ class FirestoreProfileRepository implements ProfileRepository {
       if (profile.unitId == null && unitId != null) 'unitId': unitId,
     };
     if (changes.isEmpty) return;
+    // From the server first: offline it fails at once instead of leaving
+    // the batch queued in the phone.
+    try {
+      await _users.doc(uid).get(const GetOptions(source: Source.server));
+    } on FirebaseException catch (e) {
+      if (e.code == 'unavailable') throw const OfflineException();
+      rethrow;
+    }
     final batch = _firestore.batch()..update(_users.doc(uid), changes);
     final unit = unitId ?? profile.unitId;
     if (profile.active && profile.isDeclarant && unit != null) {

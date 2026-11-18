@@ -1,4 +1,5 @@
 import 'package:declara_ucr/data/declaration_repository.dart';
+import 'package:declara_ucr/data/network_status.dart';
 import 'package:declara_ucr/data/profile_repository.dart';
 import 'package:declara_ucr/domain/field_rules.dart';
 import 'package:declara_ucr/domain/schedule_observations.dart';
@@ -31,6 +32,7 @@ class DeclarationFormScreen extends StatelessWidget {
   Widget build(BuildContext context) => ChangeNotifierProvider(
     create: (_) => DeclarationFormState(
       repository: context.read<DeclarationRepository>(),
+      network: context.read<NetworkStatus>(),
       initial: initial,
       profile: context.read<UserProfile?>(),
     ),

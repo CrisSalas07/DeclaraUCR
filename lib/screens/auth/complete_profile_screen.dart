@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:declara_ucr/data/auth_repository.dart';
+import 'package:declara_ucr/data/network_status.dart';
 import 'package:declara_ucr/data/profile_repository.dart';
 import 'package:declara_ucr/domain/auth_rules.dart';
 import 'package:declara_ucr/models/app_user.dart';
@@ -39,24 +42,41 @@ class _CompleteProfileScreenState extends State<CompleteProfileScreen> {
   Future<void> _submit() async {
     if (!_formKey.currentState!.validate()) return;
     final user = context.read<AppUser?>()!;
+    final network = context.read<NetworkStatus>();
+    final profiles = context.read<ProfileRepository>();
     setState(() {
       _busy = true;
       _error = null;
     });
     try {
       // The profile stream then moves on to the next step.
-      await context.read<ProfileRepository>().create(
-        user.uid,
-        UserProfile(
-          fullName: _name.text,
-          identification: _id.text,
-          phone: _phone.text,
-          email: user.email,
-        ),
-      );
+      if (!await network.isOnline()) {
+        throw const OfflineException();
+      }
+      await profiles
+          .create(
+            user.uid,
+            UserProfile(
+              fullName: _name.text,
+              identification: _id.text,
+              phone: _phone.text,
+              email: user.email,
+            ),
+          )
+          .timeout(const Duration(seconds: 15));
     } on IdentificationTakenException {
       if (mounted) {
         setState(() => _error = IdentificationTakenException.message);
+      }
+    } on OfflineException {
+      if (mounted) setState(() => _error = OfflineException.message);
+    } on TimeoutException {
+      if (mounted) {
+        setState(
+          () => _error =
+              'El servidor no respondió a tiempo. Revise la '
+              'conexión e intente de nuevo.',
+        );
       }
     } catch (e) {
       debugPrint('Saving profile failed: $e');

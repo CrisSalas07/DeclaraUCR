@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:declara_ucr/data/auth_repository.dart';
+import 'package:declara_ucr/data/network_status.dart';
 import 'package:declara_ucr/data/profile_repository.dart';
 import 'package:declara_ucr/models/app_user.dart';
 import 'package:declara_ucr/screens/auth/auth_layout.dart';
@@ -57,12 +60,27 @@ class _WorkplaceScreenState extends State<WorkplaceScreen> {
     });
     try {
       // The profile stream then opens the app.
-      await _profiles.chooseWorkplace(
-        user.uid,
-        profile,
-        campusId: _campusId,
-        unitId: _unitId,
-      );
+      if (!await context.read<NetworkStatus>().isOnline()) {
+        throw const OfflineException();
+      }
+      await _profiles
+          .chooseWorkplace(
+            user.uid,
+            profile,
+            campusId: _campusId,
+            unitId: _unitId,
+          )
+          .timeout(const Duration(seconds: 15));
+    } on OfflineException {
+      if (mounted) setState(() => _error = OfflineException.message);
+    } on TimeoutException {
+      if (mounted) {
+        setState(
+          () => _error =
+              'El servidor no respondió a tiempo. Revise la '
+              'conexión e intente de nuevo.',
+        );
+      }
     } catch (e) {
       debugPrint('Saving workplace failed: $e');
       if (mounted) {

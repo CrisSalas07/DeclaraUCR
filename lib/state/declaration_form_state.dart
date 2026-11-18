@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:declara_ucr/data/declaration_repository.dart';
+import 'package:declara_ucr/data/network_status.dart';
 import 'package:declara_ucr/data/profile_repository.dart';
 import 'package:declara_ucr/domain/course_rules.dart';
 import 'package:declara_ucr/domain/declaration_validator.dart';
@@ -22,6 +25,8 @@ class DeclarationFormState extends ChangeNotifier {
   DeclarationFormState({
     required this._repository,
     this._validator = const DeclarationValidator(),
+    this._network = const AlwaysOnline(),
+    this._saveTimeout = const Duration(seconds: 15),
     Declaration? initial,
     UserProfile? profile,
   }) : declaration = initial?.copy() ?? Declaration() {
@@ -87,6 +92,15 @@ class DeclarationFormState extends ChangeNotifier {
 
   final DeclarationRepository _repository;
   final DeclarationValidator _validator;
+  final NetworkStatus _network;
+
+  /// How long a save may wait for the server before telling the person.
+  final Duration _saveTimeout;
+
+  /// Shown when the server does not confirm a save in time.
+  static const String timeoutMessage =
+      'El servidor no confirmó el guardado a tiempo. Sus cambios siguen en '
+      'pantalla: revise la conexión y vuelva a guardar.';
   final Declaration declaration;
 
   bool saving = false;
@@ -316,9 +330,19 @@ class DeclarationFormState extends ChangeNotifier {
     notifyListeners();
     final previous = declaration.status;
     try {
+      // Without a network nothing is attempted: the changes stay here.
+      if (!await _network.isOnline()) throw const OfflineException();
       declaration.status = status;
-      await _repository.save(declaration);
+      await _repository.save(declaration).timeout(_saveTimeout);
       return true;
+    } on OfflineException {
+      declaration.status = previous;
+      error = OfflineException.message;
+      return false;
+    } on TimeoutException {
+      declaration.status = previous;
+      error = timeoutMessage;
+      return false;
     } on DeclarationSaveException catch (e) {
       declaration.status = previous;
       error = e.message;

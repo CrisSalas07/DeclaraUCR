@@ -1,12 +1,15 @@
 import 'package:declara_ucr/data/proyecto1/proyecto1_declaration_repository.dart';
 import 'package:declara_ucr/data/profile_repository.dart';
+import 'package:declara_ucr/data/network_status.dart';
 import 'package:declara_ucr/data/zonaje_repository.dart';
 import 'package:declara_ucr/main.dart';
+import 'package:declara_ucr/widgets/offline_banner.dart';
 import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'support/fake_auth_repository.dart';
+import 'support/fake_network_status.dart';
 import 'support/proyecto1_fixture.dart';
 
 /// Ana's profile as the web system leaves it after administration assigned
@@ -32,6 +35,7 @@ Future<Widget> _app({
   Map<String, Object>? profile = _ana,
   bool assignment = true,
   Future<void> Function(FakeFirebaseFirestore db)? extra,
+  NetworkStatus network = const AlwaysOnline(),
 }) async {
   final firestore = FakeFirebaseFirestore();
   // Campus, career, the open period and, for Ana, the coordination's
@@ -51,6 +55,7 @@ Future<Widget> _app({
     repositoryFor: (uid, periods) =>
         Proyecto1DeclarationRepository(firestore, uid: uid, periods: periods),
     zonajeFor: (uid) => FirestoreZonajeRepository(firestore, uid: uid),
+    network: network,
   );
 }
 
@@ -407,6 +412,32 @@ void main() {
     await tester.tap(find.text('Historial').last);
     await tester.pumpAndSettle();
     expect(find.text('Aún no hay historial.'), findsOneWidget);
+  });
+
+  testWidgets('offline: a strip says so and saving keeps the changes', (
+    tester,
+  ) async {
+    final network = FakeNetworkStatus();
+    await tester.pumpWidget(
+      await _app(mode: AppUserMode.signedIn, network: network),
+    );
+    await tester.pumpAndSettle();
+    expect(find.textContaining('Sin conexión'), findsNothing);
+    await _openNewDeclaration(tester);
+
+    network.online = false;
+    await tester.pumpAndSettle();
+    expect(find.text(OfflineFrame.message), findsOneWidget);
+
+    await tester.tap(find.text('Guardar borrador'));
+    await tester.pumpAndSettle();
+    expect(find.text(OfflineException.message), findsOneWidget);
+    // Still in the form, with its data.
+    expect(find.text('II Ciclo - 2026'), findsOneWidget);
+
+    network.online = true;
+    await tester.pumpAndSettle();
+    expect(find.text(OfflineFrame.message), findsNothing);
   });
 
   testWidgets('zonaje shows the status and the HR answer, read only', (

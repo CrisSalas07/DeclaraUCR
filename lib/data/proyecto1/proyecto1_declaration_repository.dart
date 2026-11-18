@@ -175,10 +175,22 @@ class Proyecto1DeclarationRepository implements DeclarationRepository {
       }
       declaration.updatedAt = DateTime.now();
       return declaration.id!;
+    } on FirebaseException catch (e) {
+      // Offline, or the server did not answer: nothing was written (the
+      // first read of every save goes to the server, see [_fromServer]).
+      if (e.code == 'unavailable' || e.code == 'deadline-exceeded') {
+        throw const OfflineException();
+      }
+      rethrow;
     } finally {
       _changes.add(null);
     }
   }
+
+  /// Every save starts by reading from the server, never from the copy in
+  /// the phone: without a connection it fails at once instead of leaving
+  /// writes queued that the server might reject later, unnoticed.
+  static const _fromServer = GetOptions(source: Source.server);
 
   /// `createDraft` of DeclaraHorario plus the content, in one batch: the
   /// declaration in BORRADOR, version 1, the DECLARACION_CREADA event, the
@@ -190,8 +202,9 @@ class Proyecto1DeclarationRepository implements DeclarationRepository {
         'Elija el período de la declaración.',
       );
     }
-    final profileData = (await _firestore.collection('users').doc(_uid).get())
-        .data();
+    final profileData =
+        (await _firestore.collection('users').doc(_uid).get(_fromServer))
+            .data();
     if (profileData == null) {
       throw const DeclarationSaveException('Su perfil no está completo.');
     }
@@ -286,7 +299,7 @@ class Proyecto1DeclarationRepository implements DeclarationRepository {
   /// when there was nothing to write (a VALIDADA declaration validated
   /// again without changes).
   Future<bool> _update(Declaration d, String id) async {
-    final stored = (await _declarations.doc(id).get()).data();
+    final stored = (await _declarations.doc(id).get(_fromServer)).data();
     if (stored == null || stored['declarantUid'] != _uid) {
       throw const DeclarationSaveException('La declaración ya no existe.');
     }
