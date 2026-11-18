@@ -128,6 +128,16 @@ void main() {
     );
   });
 
+  test('a project missing hours reads "del proyecto"', () {
+    final d = complete(placed())
+      ..projects.add(const ProjectHours(name: 'Huertas', weeklyMinutes: 120));
+
+    expect(
+      validator.scheduleIssues(d).map((i) => i.message),
+      contains('Faltan 2 h del proyecto «Huertas» en el horario.'),
+    );
+  });
+
   test('blocks of a course no longer declared are reported', () {
     final d = complete(placed())
       ..intervals.add(

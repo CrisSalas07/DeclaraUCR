@@ -245,12 +245,12 @@ class DeclarationFormState extends ChangeNotifier {
     for (final MapEntry(key: task, value: limit) in required.entries) {
       final after = placed(next, task);
       if (after > limit && after > placed(current, task)) {
-        final what = ScheduleRequirements.describe(task, declaration);
+        final what = ScheduleRequirements.ofTask(task, declaration);
         final left = limit - placed(current, task);
         return left <= 0
-            ? 'Ya ubicó todas las horas de $what '
+            ? 'Ya ubicó todas las horas $what '
                   '(${TimeRules.hoursLabel(limit)}).'
-            : 'Solo quedan ${TimeRules.hoursLabel(left)} de $what por ubicar.';
+            : 'Solo quedan ${TimeRules.hoursLabel(left)} $what por ubicar.';
       }
     }
     final intervals = ScheduleGrid.intervalsOf(

@@ -185,7 +185,8 @@ All test data is fictitious.
 
 ## Evidence
 
-Screenshots from the Android app, in `docs/capturas/`:
+Screenshots from the Android app (Pixel 4 emulator, Android 11, local
+Firebase emulators, fictitious data), in `docs/capturas/`:
 
 | Screen | File |
 |--------|------|
@@ -196,6 +197,7 @@ Screenshots from the Android app, in `docs/capturas/`:
 | Overlap / missing hours flagged (R4, test 02) | `docs/capturas/05-validacion.png` |
 | Summary (R6) | `docs/capturas/06-resumen.png` |
 | Zonaje | `docs/capturas/07-zonaje.png` |
+| Historial by year, with a sent zonaje request | `docs/capturas/08-historial.png` |
 
 Video (up to 2 minutes): <!-- link to the video -->
 

@@ -69,51 +69,32 @@ class StatusChip extends StatelessWidget {
   }
 }
 
-/// App mark: icon tile plus the product name.
+/// App mark: the product name as a wordmark, no icon.
 class BrandMark extends StatelessWidget {
-  const BrandMark({super.key, this.size = 40, this.showName = true});
+  const BrandMark({super.key, this.fontSize = 20, this.onDark = true});
 
-  final double size;
-  final bool showName;
+  final double fontSize;
+
+  /// On the blue hero: white and sky blue. On white: navy and UCR blue.
+  final bool onDark;
 
   @override
-  Widget build(BuildContext context) => Row(
-    mainAxisSize: MainAxisSize.min,
-    children: [
-      Container(
-        width: size,
-        height: size,
-        decoration: BoxDecoration(
-          color: UcrColors.white,
-          borderRadius: BorderRadius.circular(size * 0.3),
-        ),
-        child: Icon(
-          Icons.fact_check_rounded,
-          color: UcrColors.blue,
-          size: size * 0.58,
-        ),
-      ),
-      if (showName) ...[
-        SizedBox(width: size * 0.3),
-        Text.rich(
-          TextSpan(
-            children: const [
-              TextSpan(text: 'Declara'),
-              TextSpan(
-                text: 'UCR',
-                style: TextStyle(color: UcrColors.skyBlue),
-              ),
-            ],
-            style: TextStyle(
-              color: UcrColors.white,
-              fontSize: size * 0.5,
-              fontWeight: FontWeight.w800,
-              letterSpacing: -0.4,
-            ),
-          ),
+  Widget build(BuildContext context) => Text.rich(
+    TextSpan(
+      children: [
+        const TextSpan(text: 'Declara'),
+        TextSpan(
+          text: 'UCR',
+          style: TextStyle(color: onDark ? UcrColors.skyBlue : UcrColors.blue),
         ),
       ],
-    ],
+      style: TextStyle(
+        color: onDark ? UcrColors.white : UcrColors.navy,
+        fontSize: fontSize,
+        fontWeight: FontWeight.w800,
+        letterSpacing: -0.4,
+      ),
+    ),
   );
 }
 
@@ -373,6 +354,26 @@ class InfoBanner extends StatelessWidget {
 enum BannerTone { success, error, info }
 
 /// Two-button bar pinned at the bottom of form and summary.
+/// Two buttons side by side on a phone: less side padding, so labels such
+/// as "Guardar borrador" stay on one line.
+const ButtonStyle _compact = ButtonStyle(
+  padding: WidgetStatePropertyAll(EdgeInsets.symmetric(horizontal: 12)),
+);
+
+/// A button label kept on one line; it shrinks only if it still does not
+/// fit (very large accessibility text).
+class _OneLine extends StatelessWidget {
+  const _OneLine(this.text);
+
+  final String text;
+
+  @override
+  Widget build(BuildContext context) => FittedBox(
+    fit: BoxFit.scaleDown,
+    child: Text(text, maxLines: 1),
+  );
+}
+
 class BottomActions extends StatelessWidget {
   const BottomActions({
     super.key,
@@ -402,15 +403,17 @@ class BottomActions extends StatelessWidget {
           children: [
             Expanded(
               child: OutlinedButton(
+                style: _compact,
                 onPressed: onSecondary,
-                child: Text(secondaryLabel),
+                child: _OneLine(secondaryLabel),
               ),
             ),
             const SizedBox(width: 12),
             Expanded(
               child: FilledButton(
+                style: _compact,
                 onPressed: onPrimary,
-                child: Text(primaryLabel),
+                child: _OneLine(primaryLabel),
               ),
             ),
           ],

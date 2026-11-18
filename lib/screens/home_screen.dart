@@ -156,7 +156,7 @@ class _Header extends StatelessWidget {
             children: [
               Row(
                 children: [
-                  const BrandMark(size: 34),
+                  const BrandMark(),
                   const Spacer(),
                   Semantics(
                     container: true,

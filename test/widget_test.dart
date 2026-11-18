@@ -57,6 +57,19 @@ void main() {
   });
 
   group('session', () {
+    testWidgets('the login card ends its entrance fully visible', (
+      tester,
+    ) async {
+      await tester.pumpWidget(await _app());
+      await tester.pump();
+      final fades = find.byType(FadeTransition);
+      expect(fades, findsWidgets);
+      await tester.pumpAndSettle();
+      for (final fade in tester.widgetList<FadeTransition>(fades)) {
+        expect(fade.opacity.value, 1);
+      }
+    });
+
     testWidgets('signed out: shows the login screen', (tester) async {
       await tester.pumpWidget(await _app());
       await tester.pumpAndSettle();
@@ -136,6 +149,7 @@ void main() {
     ) async {
       await tester.pumpWidget(await _app());
       await tester.pumpAndSettle();
+      await tester.ensureVisible(find.text('Crear cuenta'));
       await tester.tap(find.text('Crear cuenta'));
       await tester.pumpAndSettle();
 
@@ -189,6 +203,7 @@ void main() {
       // Ana's profile already holds 105430987.
       await tester.pumpWidget(await _app());
       await tester.pumpAndSettle();
+      await tester.ensureVisible(find.text('Crear cuenta'));
       await tester.tap(find.text('Crear cuenta'));
       await tester.pumpAndSettle();
       for (final (label, value) in [

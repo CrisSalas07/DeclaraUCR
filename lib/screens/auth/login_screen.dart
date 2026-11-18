@@ -125,25 +125,31 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
             const SizedBox(height: 20),
             Row(
-              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Flexible(
+                const Expanded(child: Divider()),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 12),
                   child: Text(
                     '¿Primera vez aquí?',
-                    style: Theme.of(context).textTheme.bodyMedium,
+                    style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                      color: Theme.of(context).colorScheme.onSurfaceVariant,
+                    ),
                   ),
                 ),
-                TextButton(
-                  onPressed: _busy
-                      ? null
-                      : () => Navigator.of(context).push(
-                          MaterialPageRoute<void>(
-                            builder: (_) => const RegisterScreen(),
-                          ),
-                        ),
-                  child: const Text('Crear cuenta'),
-                ),
+                const Expanded(child: Divider()),
               ],
+            ),
+            const SizedBox(height: 16),
+            OutlinedButton.icon(
+              onPressed: _busy
+                  ? null
+                  : () => Navigator.of(context).push(
+                      MaterialPageRoute<void>(
+                        builder: (_) => const RegisterScreen(),
+                      ),
+                    ),
+              icon: const Icon(Icons.person_add_alt_1_outlined),
+              label: const Text('Crear cuenta'),
             ),
           ],
         ),

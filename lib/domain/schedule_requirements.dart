@@ -34,15 +34,15 @@ abstract final class ScheduleRequirements {
     final messages = <String>[];
     for (final MapEntry(key: task, value: minutes) in required.entries) {
       final placed = placedMinutes(d, task);
-      final what = describe(task, d);
+      final what = ofTask(task, d);
       if (placed < minutes) {
         messages.add(
-          'Faltan ${TimeRules.hoursLabel(minutes - placed)} de $what en el '
+          'Faltan ${TimeRules.hoursLabel(minutes - placed)} $what en el '
           'horario.',
         );
       } else if (placed > minutes) {
         messages.add(
-          'Sobran ${TimeRules.hoursLabel(placed - minutes)} de $what en el '
+          'Sobran ${TimeRules.hoursLabel(placed - minutes)} $what en el '
           'horario.',
         );
       }
@@ -53,12 +53,19 @@ abstract final class ScheduleRequirements {
     };
     for (final task in orphans) {
       messages.add(
-        'El horario tiene horas de ${describe(task, d)}, que ya no está en la '
+        'El horario tiene horas ${ofTask(task, d)}, que ya no está en la '
         'declaración.',
       );
     }
     return messages;
   }
+
+  /// [describe] after "horas": "de clases de IF0009", "del proyecto
+  /// «Huertas»" (never "de el").
+  static String ofTask(ScheduleTask task, Declaration d) =>
+      task.kind == TaskKind.project
+      ? 'del proyecto «${task.name}»'
+      : 'de ${describe(task, d)}';
 
   /// "atención de IF0009", "el proyecto «Huertas»", "«Colegio X»".
   static String describe(ScheduleTask task, Declaration d) {

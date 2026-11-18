@@ -169,7 +169,7 @@ class _FormBodyState extends State<_FormBody> {
                   children: [
                     Expanded(
                       child: _DateField(
-                        label: 'Inicio de vigencia *',
+                        label: 'Desde *',
                         value: d.validFrom,
                         onTap: () async {
                           final picked = await _pickDate(d.validFrom);
@@ -191,7 +191,7 @@ class _FormBodyState extends State<_FormBody> {
                     const SizedBox(width: 12),
                     Expanded(
                       child: _DateField(
-                        label: 'Fin de vigencia *',
+                        label: 'Hasta *',
                         value: d.validTo,
                         onTap: () async {
                           final picked = await _pickDate(
@@ -211,7 +211,7 @@ class _FormBodyState extends State<_FormBody> {
                 Padding(
                   padding: const EdgeInsets.fromLTRB(4, 6, 4, 8),
                   child: Text(
-                    'El período dura al menos un mes.',
+                    'Período de vigencia: al menos un mes.',
                     style: Theme.of(context).textTheme.bodySmall,
                   ),
                 ),
