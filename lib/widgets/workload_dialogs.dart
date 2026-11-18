@@ -3,23 +3,11 @@ import 'package:declara_ucr/domain/time_rules.dart';
 import 'package:declara_ucr/domain/workload_catalog.dart';
 import 'package:declara_ucr/models/workload_items.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
-/// Dialogs to add or edit a course, a project or a job at another
+/// Dialogs to add or edit a project or a job at another
 /// institution. Everything but names is picked from a list, so it is always
 /// in the same format. [onSave] stores the item and returns why it could
 /// not (in Spanish); the dialog closes only when it returns `null`.
-Future<void> showCourseDialog(
-  BuildContext context, {
-  CourseLoad? initial,
-  required int freeMinutes,
-  required String? Function(CourseLoad) onSave,
-}) => showDialog<void>(
-  context: context,
-  builder: (_) =>
-      _CourseDialog(initial: initial, freeMinutes: freeMinutes, onSave: onSave),
-);
-
 Future<void> showProjectDialog(
   BuildContext context, {
   ProjectHours? initial,
@@ -92,121 +80,6 @@ class _ItemDialog extends StatelessWidget {
       FilledButton(onPressed: onAccept, child: const Text('Aceptar')),
     ],
   );
-}
-
-class _CourseDialog extends StatefulWidget {
-  const _CourseDialog({
-    this.initial,
-    required this.freeMinutes,
-    required this.onSave,
-  });
-
-  final CourseLoad? initial;
-  final int freeMinutes;
-  final String? Function(CourseLoad) onSave;
-
-  @override
-  State<_CourseDialog> createState() => _CourseDialogState();
-}
-
-class _CourseDialogState extends State<_CourseDialog> {
-  late final _name = TextEditingController(text: widget.initial?.name);
-  late final _code = TextEditingController(text: widget.initial?.code);
-  late int? _workload = widget.initial?.workloadMinutes;
-  String? _problem;
-
-  @override
-  void dispose() {
-    _name.dispose();
-    _code.dispose();
-    super.dispose();
-  }
-
-  void _accept() {
-    if (_name.text.trim().isEmpty) {
-      return setState(() => _problem = 'Escriba el nombre del curso.');
-    }
-    if (_workload == null) {
-      return setState(() => _problem = 'Elija la jornada del curso.');
-    }
-    final problem = widget.onSave(
-      CourseLoad(
-        name: _name.text.trim(),
-        code: _code.text.trim(),
-        workloadMinutes: _workload!,
-      ),
-    );
-    if (problem == null) {
-      Navigator.of(context).pop();
-    } else {
-      setState(() => _problem = problem);
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final options = WorkloadCatalog.fitting(
-      WorkloadCatalog.maxUniversityMinutes - widget.freeMinutes,
-      WorkloadCatalog.maxUniversityMinutes,
-    );
-    final preview = _workload == null
-        ? null
-        : CourseLoad(name: '', code: '', workloadMinutes: _workload!);
-    return _ItemDialog(
-      title: widget.initial == null ? 'Agregar curso' : 'Editar curso',
-      problem: _problem,
-      onAccept: _accept,
-      children: [
-        TextField(
-          controller: _name,
-          autofocus: widget.initial == null,
-          maxLength: CourseRules.nameMaxLength,
-          textCapitalization: TextCapitalization.sentences,
-          decoration: const InputDecoration(labelText: 'Nombre del curso *'),
-        ),
-        const SizedBox(height: 8),
-        TextField(
-          controller: _code,
-          maxLength: CourseRules.codeMaxLength,
-          textCapitalization: TextCapitalization.characters,
-          inputFormatters: [
-            FilteringTextInputFormatter.allow(RegExp('[A-Za-z0-9]')),
-            const _UpperCase(),
-          ],
-          decoration: const InputDecoration(
-            labelText: 'Sigla',
-            hintText: 'Ej.: IF0009',
-          ),
-        ),
-        const SizedBox(height: 8),
-        DropdownButtonFormField<int>(
-          initialValue: _workload,
-          isExpanded: true,
-          decoration: const InputDecoration(labelText: 'Jornada del curso *'),
-          items: [
-            for (final o in options)
-              DropdownMenuItem(value: o.weeklyMinutes, child: Text(o.title)),
-          ],
-          onChanged: (v) => setState(() => _workload = v),
-        ),
-        if (options.isEmpty)
-          const Padding(
-            padding: EdgeInsets.only(top: 8),
-            child: Text('Ya completó el tiempo completo (40 h).'),
-          ),
-        if (preview != null)
-          Padding(
-            padding: const EdgeInsets.only(top: 12),
-            child: Text(
-              'Clases: ${TimeRules.hoursLabel(preview.lessonMinutes)} · '
-              'Atención: ${TimeRules.hoursLabel(preview.attentionMinutes)} · '
-              'Planificación: ${TimeRules.hoursLabel(preview.planningMinutes)}',
-              style: Theme.of(context).textTheme.bodyMedium,
-            ),
-          ),
-      ],
-    );
-  }
 }
 
 class _ProjectDialog extends StatefulWidget {
@@ -407,14 +280,4 @@ class _ExternalJobDialogState extends State<_ExternalJobDialog> {
       ],
     );
   }
-}
-
-class _UpperCase extends TextInputFormatter {
-  const _UpperCase();
-
-  @override
-  TextEditingValue formatEditUpdate(
-    TextEditingValue oldValue,
-    TextEditingValue newValue,
-  ) => newValue.copyWith(text: newValue.text.toUpperCase());
 }

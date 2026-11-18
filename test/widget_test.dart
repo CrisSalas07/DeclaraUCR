@@ -1,13 +1,13 @@
-import 'package:declara_ucr/data/declaration_repository.dart';
+import 'package:declara_ucr/data/proyecto1/proyecto1_declaration_repository.dart';
 import 'package:declara_ucr/data/profile_repository.dart';
 import 'package:declara_ucr/data/zonaje_repository.dart';
 import 'package:declara_ucr/main.dart';
 import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'support/fake_auth_repository.dart';
+import 'support/proyecto1_fixture.dart';
 
 /// Ana's profile as the web system leaves it after administration assigned
 /// her career and reviewer.
@@ -30,25 +30,12 @@ const Map<String, Object> _ana = {
 Future<Widget> _app({
   AppUserMode mode = AppUserMode.signedOut,
   Map<String, Object>? profile = _ana,
+  bool assignment = true,
 }) async {
   final firestore = FakeFirebaseFirestore();
-  await firestore.collection('campuses').doc('sede-sur').set({
-    'name': 'Sede del Sur',
-    'active': true,
-  });
-  await firestore.collection('units').doc('ie').set({
-    'name': 'Informática Empresarial',
-    'active': true,
-    'campusId': 'sede-sur',
-  });
-  final uid = FakeAuthRepository.verifiedUser.uid;
-  if (profile != null) {
-    await firestore.collection('users').doc(uid).set(profile);
-    await firestore
-        .collection('identifications')
-        .doc('CEDULA_${profile['identification']}')
-        .set({'uid': uid});
-  }
+  // Campus, career, the open period and, for Ana, the coordination's
+  // assignment of "Redes" (lessons Monday 8:00-10:00).
+  await Proyecto1Fixture.seed(firestore, user: profile, assignment: assignment);
   final profiles = FirestoreProfileRepository(firestore);
   return DeclaraUcrApp(
     auth: FakeAuthRepository(
@@ -58,8 +45,9 @@ Future<Widget> _app({
       profiles: profiles,
     ),
     profiles: profiles,
-    repositoryFor: (uid) =>
-        FirestoreDeclarationRepository(firestore, ownerUid: uid),
+    periodsFor: (uid) => Proyecto1Fixture.periods(firestore, uid),
+    repositoryFor: (uid, periods) =>
+        Proyecto1DeclarationRepository(firestore, uid: uid, periods: periods),
     zonajeFor: (uid) => FirestoreZonajeRepository(firestore, ownerUid: uid),
   );
 }
@@ -431,8 +419,10 @@ void main() {
       find.widgetWithText(FloatingActionButton, 'Nueva declaración'),
     );
     await tester.pumpAndSettle();
-    // Name and cédula come from the profile.
-    expect(find.text('2 de 7 datos obligatorios'), findsOneWidget);
+    // Name and cédula come from the profile; the validity and the
+    // courses, from the period and the coordination's assignment.
+    expect(find.text('5 de 6 datos obligatorios'), findsOneWidget);
+    expect(find.text('II Ciclo - 2026'), findsOneWidget);
     expect(
       find.text('Universidad de Costa Rica · Sede del Sur'),
       findsOneWidget,
@@ -440,14 +430,56 @@ void main() {
     await tester.tap(find.text('Guardar borrador'));
     await tester.pumpAndSettle();
 
-    expect(find.text('Este campo es obligatorio.'), findsWidgets);
-    expect(find.textContaining('Faltan 5 datos obligatorios'), findsOneWidget);
+    // Only the position is missing.
+    expect(find.text('Este campo es obligatorio.'), findsOneWidget);
+    expect(
+      find.text('Borrador guardado. Falta 1 dato obligatorio.'),
+      findsOneWidget,
+    );
 
     // Back to the list: the draft shows up with its status and count.
     await tester.tap(find.byType(BackButton));
     await tester.pumpAndSettle();
     expect(find.text('BORRADOR'), findsOneWidget);
     expect(find.bySemanticsLabel('Borradores: 1'), findsOneWidget);
+
+    // One declaration per period.
+    tester
+        .state<ScaffoldMessengerState>(find.byType(ScaffoldMessenger).first)
+        .removeCurrentSnackBar();
+    await tester.pumpAndSettle();
+    await tester.tap(
+      find.widgetWithText(FloatingActionButton, 'Nueva declaración'),
+    );
+    await tester.pumpAndSettle();
+    expect(
+      find.text('Ya tiene una declaración en cada período abierto.'),
+      findsOneWidget,
+    );
+  });
+
+  testWidgets('without courses assigned, a new declaration is not started', (
+    tester,
+  ) async {
+    await tester.pumpWidget(
+      await _app(mode: AppUserMode.signedIn, assignment: false),
+    );
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Declaraciones'));
+    await tester.pumpAndSettle();
+    await tester.tap(
+      find.widgetWithText(FloatingActionButton, 'Nueva declaración'),
+    );
+    await tester.pumpAndSettle();
+    expect(
+      find.text(
+        'La Coordinación de su carrera aún no le asignó cursos en '
+        'II Ciclo - 2026.',
+      ),
+      findsOneWidget,
+    );
+    // The form did not open.
+    expect(find.text('Guardar borrador'), findsNothing);
   });
 
   testWidgets('a course gives its hours, placed on the grid, to the summary', (
@@ -457,38 +489,15 @@ void main() {
     await tester.pumpAndSettle();
     await _openNewDeclaration(tester);
 
-    // Course with sigla and workday: 1/8 TC = 2 h HC, 1 h AE, 2 h PyE.
+    // The course of the coordination, 1/8 TC = 2 h HC, 1 h AE, 2 h PyE,
+    // with its lesson slot already on the grid: Monday 8:00-10:00.
     await tester.scrollUntilVisible(
-      find.text('Agregar curso'),
+      find.text('IF0009 · Redes'),
       300,
       scrollable: find.byType(Scrollable).first,
     );
-    await Scrollable.ensureVisible(
-      tester.element(find.text('Agregar curso')),
-      alignment: 0.5,
-    );
-    await tester.pumpAndSettle();
-    await tester.tap(find.text('Agregar curso'));
-    await tester.pumpAndSettle();
-    await tester.enterText(
-      find.widgetWithText(TextField, 'Nombre del curso *'),
-      'Redes',
-    );
-    await tester.enterText(find.widgetWithText(TextField, 'Sigla'), 'if0009');
-    await tester.tap(find.text('Jornada del curso *'));
-    await tester.pumpAndSettle();
-    await tester.tap(find.text('1/8 TC = 5 h').last);
-    await tester.pumpAndSettle();
-    expect(
-      find.text('Clases: 2 h · Atención: 1 h · Planificación: 2 h'),
-      findsOneWidget,
-    );
-    await tester.tap(find.text('Aceptar'));
-    await tester.pumpAndSettle();
     expect(find.text('IF0009 · Redes'), findsOneWidget);
-
-    // Lessons: tap one half hour, then long-press and slide over three
-    // more: Monday 8:00-10:00.
+    expect(find.text('Agregar curso'), findsNothing);
     await tester.scrollUntilVisible(
       find.byKey(const ValueKey('cell-1-480')),
       300,
@@ -498,18 +507,6 @@ void main() {
       tester.element(find.byKey(const ValueKey('cell-1-480'))),
       alignment: 0.2,
     );
-    await tester.pumpAndSettle();
-    await tester.tap(find.byKey(const ValueKey('cell-1-480')));
-    await tester.pumpAndSettle();
-    final gesture = await tester.startGesture(
-      tester.getCenter(find.byKey(const ValueKey('cell-1-510'))),
-    );
-    await tester.pump(kLongPressTimeout + const Duration(milliseconds: 100));
-    await gesture.moveTo(
-      tester.getCenter(find.byKey(const ValueKey('cell-1-570'))),
-    );
-    await tester.pump();
-    await gesture.up();
     await tester.pumpAndSettle();
     expect(find.bySemanticsLabel('Lunes: 2 h'), findsOneWidget);
 

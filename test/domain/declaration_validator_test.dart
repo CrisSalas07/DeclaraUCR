@@ -40,10 +40,10 @@ List<ScheduleInterval> placed() => [
 
 /// Complete declaration with fictitious data and the course [redes].
 Declaration complete(List<ScheduleInterval> intervals) => Declaration(
+  periodId: '2026_II',
   declarantName: 'Ana Pérez Mora',
   identification: '105430987',
   position: 'Adjunto',
-  appointmentType: 'Interino',
   validFrom: DateTime(2026, 3, 1),
   validTo: DateTime(2026, 7, 31),
   courses: [redes],
@@ -185,7 +185,7 @@ void main() {
 
     expect(missing, contains('Cédula'));
     expect(missing, contains('Cursos o proyectos'));
-    expect(missing, hasLength(7));
+    expect(missing, hasLength(6));
   });
 
   test('an identification that is not a cédula blocks validation', () {

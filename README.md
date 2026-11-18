@@ -12,10 +12,10 @@ Code and technical docs are in English; everything the user sees is in Spanish.
 | Req. | Where |
 |------|-------|
 | R1 Home screen (list + statuses, new / open draft) | `lib/screens/shell_screen.dart` (sections Inicio, Declaraciones, Zonaje, Historial), `home_screen.dart`, `declarations_screen.dart` |
-| R2 Declaration form with required-field validation | `lib/screens/declaration_form_screen.dart`: name and cédula from the profile, fixed institution, positions and appointment type from lists, validity of at least one month (`period_rules.dart`) |
+| R2 Declaration form with required-field validation | `lib/screens/declaration_form_screen.dart`: name and cédula from the profile, fixed institution, position from a list, period and validity from the Proyecto 1 period, courses from the career coordination's assignment |
 | R3 Weekly schedule (Mon–Sat), interval duration and total hours | `lib/widgets/schedule_editor.dart` (half-hour grid, one day at a time), `lib/domain/schedule_grid.dart`, `schedule_requirements.dart` |
 | R4 End after start, no overlaps on the same day (any institution) | `lib/domain/declaration_validator.dart`, `overlap_detector.dart` |
-| R5 Draft persistence and recovery through the existing repository | `lib/data/` |
+| R5 Draft persistence and recovery through the existing repository | `lib/data/proyecto1/` (Proyecto 1 backend) |
 | R6 Summary with data, schedule, total, validation result and status | `lib/screens/summary_screen.dart` |
 
 Beyond the lab, from the main project: career courses with their lesson,
@@ -108,8 +108,12 @@ Cloud Firestore through repositories: `users/{uid}`
 | Part | Status |
 |------|--------|
 | Profile and sign-up | Done: `users/{uid}` with `fullName`, `identification`, `identificationType`, `phone`, `email`, `roles`, `active`, `campusId`, `unitId`, `superiorUid`; reservation `identifications/CEDULA_{number}`; campus and career chosen once, with the entry in `teacherDirectory`. Only active declarants get into the app; without a reviewer, Inicio says so |
-| Reading declarations | Ready, not wired yet: `lib/data/proyecto1/` builds each `Declaration` from the declaration, its current version, appointment and external jobs, the period and the coordination's assignment (courses with their lesson hours); `FirestorePeriodRepository` lists open periods and reads the assignment. `main.dart` switches to it together with saving |
-| Saving, status changes, zonaje | Pending: still the mobile's own documents, which the Proyecto 1 rules reject |
+| Declarations | Done, in use: `Proyecto1DeclarationRepository` reads each `Declaration` from the declaration, its current version, appointment and external jobs, the period and the coordination's assignment, and writes as DeclaraHorario does: `createDraft` (declaration, version 1, event, period reservation and content in one batch), content saves, `BORRADOR → VALIDADA` with `VALIDACION_EJECUTADA` and the hours summary, and `VALIDADA → BORRADOR` with `HORARIO_MODIFICADO` when edited. A new declaration picks an open period (one per period) and takes the assigned courses and lesson slots. From the signatures on (and DEVUELTA) it is read only in the phone |
+| Zonaje | Pending: still the mobile's own documents, which the Proyecto 1 rules reject |
+
+Adaptation decision: the appointment type (Interino/Propiedad) was removed.
+The Proyecto 1 does not store it, and the lab's "tipo de jornada o
+nombramiento" is covered by the workday (e.g. `1/4 TC`) of the appointment.
 
 The root `firestore.rules` still describes the old mobile schema; the
 target rules are the Proyecto 1 copy in `backend/proyecto1/`, and
@@ -193,10 +197,10 @@ flutter test
 
 | Lab test | Automated test |
 |----------|----------------|
-| 01 Valid declaration | `persistence_test.dart` — saves a draft and recovers it unchanged |
-| 02 Overlapping schedules | `declaration_validator_test.dart` — mandatory case Mon 8:00–12:00 vs 11:00–14:00; `persistence_test.dart` — does not become VALIDADA until fixed |
+| 01 Valid declaration | `data/proyecto1_write_test.dart` — saves a draft and recovers it unchanged |
+| 02 Overlapping schedules | `declaration_validator_test.dart` — mandatory case Mon 8:00–12:00 vs 11:00–14:00; `data/proyecto1_write_test.dart` — does not become VALIDADA until fixed |
 | 03 Incomplete data | `widget_test.dart` — saving without data flags the required fields |
-| 04 Persistence | `persistence_test.dart` — reopened draft equals the saved one |
+| 04 Persistence | `data/proyecto1_write_test.dart` — reopened draft equals the saved one |
 | 05 Mobile view | `widget_test.dart` — 360×690 dp screen, any overflow fails the test |
 
 Also covered: a course and its hours placed on the grid up to the summary,

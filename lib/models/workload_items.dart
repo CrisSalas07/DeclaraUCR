@@ -108,6 +108,3 @@ abstract final class Positions {
     'Consultor',
   ];
 }
-
-/// Kinds of appointment (R2: "tipo de nombramiento").
-const List<String> appointmentTypes = <String>['Interino', 'Propiedad'];

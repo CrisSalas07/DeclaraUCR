@@ -1,11 +1,11 @@
 import 'package:declara_ucr/data/declaration_repository.dart';
 import 'package:declara_ucr/data/profile_repository.dart';
 import 'package:declara_ucr/domain/field_rules.dart';
-import 'package:declara_ucr/domain/period_rules.dart';
 import 'package:declara_ucr/domain/schedule_observations.dart';
 import 'package:declara_ucr/domain/time_rules.dart';
 import 'package:declara_ucr/domain/workload_catalog.dart';
 import 'package:declara_ucr/models/declaration.dart';
+import 'package:declara_ucr/models/declaration_status.dart';
 import 'package:declara_ucr/models/workload_items.dart';
 import 'package:declara_ucr/screens/summary_screen.dart';
 import 'package:declara_ucr/state/declaration_form_state.dart';
@@ -63,6 +63,8 @@ class _FormBodyState extends State<_FormBody> {
               ? state.error!
               : missing == 0
               ? 'Borrador guardado.'
+              : missing == 1
+              ? 'Borrador guardado. Falta 1 dato obligatorio.'
               : 'Borrador guardado. Faltan $missing datos obligatorios.',
         ),
       ),
@@ -82,28 +84,20 @@ class _FormBodyState extends State<_FormBody> {
     );
   }
 
-  Future<DateTime?> _pickDate(DateTime? current, {DateTime? first}) {
-    final firstDate = first ?? DateTime(2020);
-    final initial = current == null || current.isBefore(firstDate)
-        ? firstDate.isAfter(DateTime.now())
-              ? firstDate
-              : DateTime.now()
-        : current;
-    return showDatePicker(
-      context: context,
-      initialDate: initial,
-      firstDate: firstDate,
-      lastDate: DateTime(2035),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     final state = context.watch<DeclarationFormState>();
     final d = state.declaration;
+    final editable = state.editable;
     return Scaffold(
       appBar: AppBar(
-        title: Text(d.id == null ? 'Nueva declaración' : 'Editar declaración'),
+        title: Text(
+          d.id == null
+              ? 'Nueva declaración'
+              : editable
+              ? 'Editar declaración'
+              : 'Declaración',
+        ),
         bottom: _ProgressHeader(
           total: state.requiredFieldCount,
           missing: state.missingFields.length,
@@ -114,6 +108,10 @@ class _FormBodyState extends State<_FormBody> {
         child: ListView(
           padding: const EdgeInsets.fromLTRB(16, 16, 16, 24),
           children: [
+            if (!editable) ...[
+              _ReadOnlyNotice(declaration: d),
+              const SizedBox(height: 16),
+            ],
             SectionCard(
               icon: Icons.badge_outlined,
               title: 'Persona declarante',
@@ -144,79 +142,22 @@ class _FormBodyState extends State<_FormBody> {
                   ],
                   validator: (v) =>
                       v == null ? 'Este campo es obligatorio.' : null,
-                  onChanged: (v) => state.edit((d) => d.position = v ?? ''),
-                ),
-                const SizedBox(height: 16),
-                DropdownButtonFormField<String>(
-                  initialValue: appointmentTypes.contains(d.appointmentType)
-                      ? d.appointmentType
+                  onChanged: editable
+                      ? (v) => state.edit((d) => d.position = v ?? '')
                       : null,
-                  isExpanded: true,
-                  decoration: const InputDecoration(
-                    labelText: 'Tipo de nombramiento *',
-                  ),
-                  items: [
-                    for (final t in appointmentTypes)
-                      DropdownMenuItem(value: t, child: Text(t)),
-                  ],
-                  validator: (v) =>
-                      v == null ? 'Este campo es obligatorio.' : null,
-                  onChanged: (v) => state.edit((d) => d.appointmentType = v),
                 ),
                 const SizedBox(height: 16),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Expanded(
-                      child: _DateField(
-                        label: 'Desde *',
-                        value: d.validFrom,
-                        onTap: () async {
-                          final picked = await _pickDate(d.validFrom);
-                          if (picked == null) return;
-                          state.edit((d) {
-                            d.validFrom = picked;
-                            // Keeps the end valid: at least one month later.
-                            if (d.validTo != null &&
-                                !PeriodRules.lastsOneMonth(
-                                  picked,
-                                  d.validTo!,
-                                )) {
-                              d.validTo = PeriodRules.minEnd(picked);
-                            }
-                          });
-                        },
-                      ),
-                    ),
-                    const SizedBox(width: 12),
-                    Expanded(
-                      child: _DateField(
-                        label: 'Hasta *',
-                        value: d.validTo,
-                        onTap: () async {
-                          final picked = await _pickDate(
-                            d.validTo,
-                            first: d.validFrom == null
-                                ? null
-                                : PeriodRules.minEnd(d.validFrom!),
-                          );
-                          if (picked != null) {
-                            state.edit((d) => d.validTo = picked);
-                          }
-                        },
-                      ),
-                    ),
-                  ],
-                ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(4, 6, 4, 8),
-                  child: Text(
-                    'Período de vigencia: al menos un mes.',
-                    style: Theme.of(context).textTheme.bodySmall,
-                  ),
+                // The validity is the period's: the rules require it.
+                if (d.periodName != null)
+                  ReadOnlyLine(label: 'Período', value: d.periodName!),
+                ReadOnlyLine(
+                  label: 'Vigencia',
+                  value:
+                      '${formatDate(d.validFrom)} – ${formatDate(d.validTo)}',
                 ),
               ],
             ),
+            _CoursesSection(state: state),
             _CoursesSection(state: state),
             _ProjectsSection(state: state),
             _ExternalJobsSection(state: state),
@@ -225,7 +166,13 @@ class _FormBodyState extends State<_FormBody> {
               title: 'Horario semanal',
               subtitle:
                   'Ubicado: ${TimeRules.hoursOf(d.totalMinutes, d.universityMinutes + d.externalMinutes)}',
-              children: const [ScheduleEditor(), SizedBox(height: 8)],
+              children: [
+                IgnorePointer(
+                  ignoring: !editable,
+                  child: const ScheduleEditor(),
+                ),
+                const SizedBox(height: 8),
+              ],
             ),
             _ObservationsSection(state: state),
           ],
@@ -233,7 +180,7 @@ class _FormBodyState extends State<_FormBody> {
       ),
       bottomNavigationBar: BottomActions(
         secondaryLabel: 'Guardar borrador',
-        onSecondary: state.saving ? null : _saveDraft,
+        onSecondary: state.saving || !editable ? null : _saveDraft,
         primaryLabel: 'Ver resumen',
         onPrimary: state.saving ? null : _openSummary,
       ),
@@ -278,14 +225,15 @@ class _ItemsCard extends StatelessWidget {
           ),
         ),
       ...items,
-      Align(
-        alignment: Alignment.centerLeft,
-        child: TextButton.icon(
-          onPressed: onAdd,
-          icon: const Icon(Icons.add),
-          label: Text(addLabel),
+      if (onAdd != null)
+        Align(
+          alignment: Alignment.centerLeft,
+          child: TextButton.icon(
+            onPressed: onAdd,
+            icon: const Icon(Icons.add),
+            label: Text(addLabel),
+          ),
         ),
-      ),
     ],
   );
 }
@@ -294,14 +242,14 @@ class _ItemTile extends StatelessWidget {
   const _ItemTile({
     required this.title,
     required this.detail,
-    required this.onEdit,
-    required this.onRemove,
+    this.onEdit,
+    this.onRemove,
   });
 
   final String title;
   final String detail;
-  final VoidCallback onEdit;
-  final VoidCallback onRemove;
+  final VoidCallback? onEdit;
+  final VoidCallback? onRemove;
 
   @override
   Widget build(BuildContext context) {
@@ -317,26 +265,24 @@ class _ItemTile extends StatelessWidget {
         title: Text(title, maxLines: 2, overflow: TextOverflow.ellipsis),
         subtitle: Text(detail),
         onTap: onEdit,
-        trailing: IconButton(
-          tooltip: 'Quitar $title',
-          icon: const Icon(Icons.delete_outline),
-          onPressed: onRemove,
-        ),
+        trailing: onRemove == null
+            ? null
+            : IconButton(
+                tooltip: 'Quitar $title',
+                icon: const Icon(Icons.delete_outline),
+                onPressed: onRemove,
+              ),
       ),
     );
   }
 }
 
+/// The courses of the period, as the career coordination assigned them
+/// (Proyecto 1): shown with their hours, never edited here.
 class _CoursesSection extends StatelessWidget {
   const _CoursesSection({required this.state});
 
   final DeclarationFormState state;
-
-  int _free({int? except}) {
-    final d = state.declaration;
-    final own = except == null ? 0 : d.courses[except].workloadMinutes;
-    return WorkloadCatalog.maxUniversityMinutes - d.universityMinutes + own;
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -346,31 +292,21 @@ class _CoursesSection extends StatelessWidget {
       icon: Icons.menu_book_outlined,
       title: 'Cursos de carrera',
       subtitle: d.courses.isEmpty
-          ? 'La jornada de cada curso fija sus horas'
-          : 'Jornada en cursos: ${label ?? TimeRules.hoursLabel(d.coursesMinutes)}',
-      empty: 'Aún no agrega cursos.',
-      addLabel: 'Agregar curso',
-      onAdd: () => showCourseDialog(
-        context,
-        freeMinutes: _free(),
-        onSave: state.saveCourse,
-      ),
+          ? 'Los asigna la Coordinación de su carrera'
+          : 'Asignados por la Coordinación · '
+                '${label ?? TimeRules.hoursLabel(d.coursesMinutes)}',
+      empty: 'La Coordinación aún no le asignó cursos en este período.',
+      addLabel: '',
+      onAdd: null,
       items: [
-        for (final (i, c) in d.courses.indexed)
+        for (final c in d.courses)
           _ItemTile(
             title: c.code.isEmpty ? c.name : '${c.code} · ${c.name}',
             detail:
-                '${WorkloadCatalog.labelFor(c.workloadMinutes)}: '
+                '${WorkloadCatalog.labelFor(c.workloadMinutes) ?? TimeRules.hoursLabel(c.workloadMinutes)}: '
                 '${TimeRules.hoursLabel(c.lessonMinutes)} clase, '
                 '${TimeRules.hoursLabel(c.attentionMinutes)} atención, '
                 '${TimeRules.hoursLabel(c.planningMinutes)} planificación',
-            onEdit: () => showCourseDialog(
-              context,
-              initial: c,
-              freeMinutes: _free(except: i),
-              onSave: (course) => state.saveCourse(course, index: i),
-            ),
-            onRemove: () => state.removeCourse(i),
           ),
       ],
     );
@@ -391,29 +327,34 @@ class _ProjectsSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final d = state.declaration;
+    final editable = state.editable;
     return _ItemsCard(
       icon: Icons.science_outlined,
       title: 'Proyectos',
       subtitle: 'Investigación, acción social u otros, dentro de la UCR',
       empty: 'Sin proyectos.',
       addLabel: 'Agregar proyecto',
-      onAdd: () => showProjectDialog(
-        context,
-        freeMinutes: _free(),
-        onSave: state.saveProject,
-      ),
+      onAdd: !editable
+          ? null
+          : () => showProjectDialog(
+              context,
+              freeMinutes: _free(),
+              onSave: state.saveProject,
+            ),
       items: [
         for (final (i, p) in d.projects.indexed)
           _ItemTile(
             title: p.name,
             detail: '${TimeRules.hoursLabel(p.weeklyMinutes)} por semana',
-            onEdit: () => showProjectDialog(
-              context,
-              initial: p,
-              freeMinutes: _free(except: i),
-              onSave: (project) => state.saveProject(project, index: i),
-            ),
-            onRemove: () => state.removeProject(i),
+            onEdit: !editable
+                ? null
+                : () => showProjectDialog(
+                    context,
+                    initial: p,
+                    freeMinutes: _free(except: i),
+                    onSave: (project) => state.saveProject(project, index: i),
+                  ),
+            onRemove: !editable ? null : () => state.removeProject(i),
           ),
       ],
     );
@@ -434,17 +375,20 @@ class _ExternalJobsSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final d = state.declaration;
+    final editable = state.editable;
     return _ItemsCard(
       icon: Icons.apartment_outlined,
       title: 'Otras instituciones',
       subtitle: 'Opcional: si labora en otra institución',
       empty: 'No declara horas en otras instituciones.',
       addLabel: 'Agregar institución',
-      onAdd: () => showExternalJobDialog(
-        context,
-        freeMinutes: _free(),
-        onSave: state.saveExternalJob,
-      ),
+      onAdd: !editable
+          ? null
+          : () => showExternalJobDialog(
+              context,
+              freeMinutes: _free(),
+              onSave: state.saveExternalJob,
+            ),
       items: [
         for (final (i, j) in d.externalJobs.indexed)
           _ItemTile(
@@ -453,13 +397,15 @@ class _ExternalJobsSection extends StatelessWidget {
                 '${j.type.label} · ${j.position} · '
                 '${WorkloadCatalog.labelFor(j.weeklyMinutes) ?? ''} '
                 '(${TimeRules.hoursLabel(j.weeklyMinutes)})',
-            onEdit: () => showExternalJobDialog(
-              context,
-              initial: j,
-              freeMinutes: _free(except: i),
-              onSave: (job) => state.saveExternalJob(job, index: i),
-            ),
-            onRemove: () => state.removeExternalJob(i),
+            onEdit: !editable
+                ? null
+                : () => showExternalJobDialog(
+                    context,
+                    initial: j,
+                    freeMinutes: _free(except: i),
+                    onSave: (job) => state.saveExternalJob(job, index: i),
+                  ),
+            onRemove: !editable ? null : () => state.removeExternalJob(i),
           ),
       ],
     );
@@ -506,6 +452,7 @@ class _ObservationsSection extends StatelessWidget {
           minLines: 1,
           maxLines: 4,
           maxLength: FieldRules.notesMaxLength,
+          readOnly: !state.editable,
           onChanged: (v) => state.edit((d) => d.notes = v),
         ),
       ],
@@ -554,34 +501,30 @@ class _ProgressHeader extends StatelessWidget implements PreferredSizeWidget {
   }
 }
 
-class _DateField extends StatelessWidget {
-  const _DateField({
-    required this.label,
-    required this.value,
-    required this.onTap,
-  });
+/// Why the declaration cannot be edited in the phone, and, when it was
+/// returned, the reviewer's or HR's observation.
+class _ReadOnlyNotice extends StatelessWidget {
+  const _ReadOnlyNotice({required this.declaration});
 
-  final String label;
-  final DateTime? value;
-  final VoidCallback onTap;
+  final Declaration declaration;
 
   @override
-  Widget build(BuildContext context) => FormField<DateTime>(
-    // Rebuilt with the new value so validation sees it.
-    key: ValueKey(value),
-    initialValue: value,
-    validator: (v) => v == null ? 'Seleccione una fecha.' : null,
-    builder: (field) => InkWell(
-      onTap: onTap,
-      borderRadius: BorderRadius.circular(14),
-      child: InputDecorator(
-        decoration: InputDecoration(
-          labelText: label,
-          errorText: field.errorText,
-          suffixIcon: const Icon(Icons.calendar_today_outlined, size: 20),
-        ),
-        child: Text(formatDate(value)),
-      ),
-    ),
-  );
+  Widget build(BuildContext context) {
+    final returned = declaration.status == DeclarationStatus.returned;
+    return InfoBanner(
+      icon: returned ? Icons.assignment_return_outlined : Icons.lock_outline,
+      tone: returned ? BannerTone.error : BannerTone.info,
+      title: returned
+          ? 'Su declaración fue devuelta.'
+          : 'Esta declaración ya no se edita desde el teléfono.',
+      lines: [
+        if (returned && (declaration.pendingObservation ?? '').isNotEmpty)
+          'Observación: ${declaration.pendingObservation}',
+        returned
+            ? 'Corríjala en el sistema web: allí se crea la versión nueva.'
+            : 'Las firmas, la revisión y Recursos Humanos se atienden en el '
+                  'sistema web.',
+      ],
+    );
+  }
 }

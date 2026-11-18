@@ -97,10 +97,8 @@ class SummaryScreen extends StatelessWidget {
             children: [
               ReadOnlyLine(label: 'Institución y sede', value: d.institution),
               ReadOnlyLine(label: 'Puesto', value: d.position),
-              ReadOnlyLine(
-                label: 'Tipo de nombramiento',
-                value: d.appointmentType ?? '',
-              ),
+              if (d.periodName != null)
+                ReadOnlyLine(label: 'Período', value: d.periodName!),
               ReadOnlyLine(
                 label: 'Vigencia',
                 value: '${formatDate(d.validFrom)} – ${formatDate(d.validTo)}',

@@ -170,6 +170,142 @@ checks.push(
     await request('GET', `workloadAssignments/2026_II_${docente.localId}`, docente2.idToken)],
 );
 
+// Process 1 of the mobile app (Proyecto1DeclarationRepository): create the
+// draft (createDraft batch + content), save it again, validate it
+// (markValidated) and edit it after validating (reopen). Same documents and
+// fields the app writes; server times as REQUEST_TIME transforms.
+{
+  const raw = (v) => {
+    if (v === null) return { nullValue: null };
+    if (Array.isArray(v)) return { arrayValue: { values: v.map(raw) } };
+    if (typeof v === 'boolean') return { booleanValue: v };
+    if (typeof v === 'number') return { integerValue: String(v) };
+    if (typeof v === 'object' && v.ts) return { timestampValue: v.ts };
+    if (typeof v === 'object') return { mapValue: { fields: rawFields(v) } };
+    return { stringValue: v };
+  };
+  const rawFields = (data) =>
+    Object.fromEntries(Object.entries(data).map(([k, v]) => [k, raw(v)]));
+  const serverTime = (...paths) =>
+    paths.map((fieldPath) => ({ fieldPath, setToServerValue: 'REQUEST_TIME' }));
+  const set = (path, data, times = []) => ({
+    update: { name: docName(path), fields: rawFields(data) },
+    ...(times.length ? { updateTransforms: serverTime(...times) } : {}),
+  });
+  const patch = (path, data, times = []) => ({
+    ...set(path, data, times),
+    updateMask: { fieldPaths: Object.keys(data) },
+  });
+
+  const uid = docente.localId;
+  const period = (await ownerGet('periods/2026_II')).fields;
+  const dates = {
+    startDate: { ts: period.startDate.timestampValue },
+    endDate: { ts: period.endDate.timestampValue },
+  };
+  const id = `movil-${Date.now()}`;
+  const decl = `declarations/${id}`;
+  const version = `${decl}/versions/v1`;
+  const course = 'Desarrollo de Software IV';
+  const appointment = (blocks) => set(`${version}/appointments/a1`, {
+    workplace: 'Universidad de Costa Rica · Sede del Sur · Informática Empresarial',
+    position: 'Adjunto', workload: '1/2 TC', ...dates, blocks,
+  });
+  const lessons = [
+    { day: 1, startMinutes: 480, endMinutes: 600, category: 'lesson', course },
+    { day: 3, startMinutes: 480, endMinutes: 600, category: 'lesson', course },
+  ];
+  const event = (eventId, data) => set(`${decl}/events/${eventId}`, {
+    userId: uid, version: 1, ...data,
+  }, ['timestamp']);
+  const transition = (eventId, from, to, extra = []) => commit(docente.idToken, [
+    event(eventId, { type: to === 'VALIDADA' ? 'VALIDACION_EJECUTADA' : 'HORARIO_MODIFICADO', previousStatus: from, newStatus: to }),
+    patch(decl, {
+      status: to, lastEventId: eventId,
+      currentResponsibleUid: uid, currentResponsibleRole: 'declarant',
+    }, ['updatedAt']),
+    ...extra,
+  ]);
+
+  checks.push(['Proceso 1: crea el borrador (declaración, versión, evento, reserva y nombramiento)', 200,
+    await commit(docente.idToken, [
+      set(decl, {
+        declarantUid: uid, declarantName: 'Daniela Docente', periodId: '2026_II',
+        superiorUid: profile.fields.superiorUid.stringValue, campusId: 'sede-sur',
+        status: 'BORRADOR', currentVersionId: 'v1', currentVersionNumber: 1,
+        currentResponsibleUid: uid, currentResponsibleRole: 'declarant', lastEventId: 'e1',
+      }, ['createdAt', 'updatedAt']),
+      set(version, {
+        number: 1,
+        declarantSnapshot: {
+          fullName: 'Daniela Docente', identification: '100000005', phone: '88880000',
+          email: 'docente@ucr.ac.cr', unitName: 'Informática Empresarial', campusName: 'Sede del Sur',
+        },
+        observations: 'IF0009 HC: L 8 am a 10 am; K 8 am a 10 am.',
+        isLocked: false, createdBy: uid,
+      }, ['createdAt']),
+      event('e1', { type: 'DECLARACION_CREADA', newStatus: 'BORRADOR' }),
+      set(`declarationSlots/2026_II_${uid}`, { declarationId: id }),
+      appointment(lessons),
+      set(`${version}/externalJobs/x1`, {
+        institution: 'MEP', institutionType: 'public', position: 'Docente',
+        workload: '1/8 TC', weeklyMinutes: 300, ...dates,
+        blocks: [{ day: 6, startMinutes: 480, endMinutes: 780 }],
+      }),
+    ])]);
+
+  checks.push(['Proceso 1: rechaza una segunda declaración en el mismo período', 403,
+    await commit(docente.idToken, [
+      set(`declarations/${id}-2`, {
+        declarantUid: uid, declarantName: 'Daniela Docente', periodId: '2026_II',
+        superiorUid: profile.fields.superiorUid.stringValue, campusId: 'sede-sur',
+        status: 'BORRADOR', currentVersionId: 'v1', currentVersionNumber: 1, lastEventId: 'e1',
+      }, ['createdAt', 'updatedAt']),
+      set(`declarations/${id}-2/versions/v1`, { number: 1, isLocked: false }),
+      set(`declarations/${id}-2/events/e1`, { userId: uid, version: 1, type: 'DECLARACION_CREADA', newStatus: 'BORRADOR' }, ['timestamp']),
+      set(`declarationSlots/2026_II_${uid}`, { declarationId: `${id}-2` }),
+    ])]);
+
+  const placed = [
+    ...lessons,
+    { day: 2, startMinutes: 480, endMinutes: 600, category: 'attention', course },
+    { day: 4, startMinutes: 480, endMinutes: 720, category: 'planning', course },
+  ];
+  checks.push(['Proceso 2: guarda el horario del borrador (versión y nombramiento)', 200,
+    await commit(docente.idToken, [
+      patch(version, { observations: 'IF0009 HC: L 8 am a 10 am. AE: K 8 am a 10 am.' }),
+      appointment(placed),
+    ])]);
+
+  checks.push(['Proceso 2: rechaza un nombramiento con otra vigencia que la del período', 403,
+    await commit(docente.idToken, [
+      set(`${version}/appointments/a1`, {
+        workplace: 'UCR', position: 'Adjunto', workload: '1/2 TC',
+        startDate: { ts: '2026-01-01T00:00:00Z' }, endDate: dates.endDate, blocks: placed,
+      }),
+    ])]);
+
+  checks.push(['Proceso 3: valida (BORRADOR → VALIDADA, evento y horas de la versión)', 200,
+    await transition('e2', 'BORRADOR', 'VALIDADA', [
+      patch(version, {
+        hoursSummary: { expectedMinutes: 600, declaredMinutes: 600, differenceMinutes: 0 },
+        validationPassed: true,
+      }),
+    ])]);
+
+  checks.push(['Proceso 3: rechaza editar el horario de una declaración VALIDADA', 403,
+    await commit(docente.idToken, [appointment(lessons)])]);
+
+  checks.push(['Proceso 1: al editarla vuelve a BORRADOR (HORARIO_MODIFICADO)', 200,
+    await transition('e3', 'VALIDADA', 'BORRADOR')]);
+
+  checks.push(['Proceso 3: rechaza que la persona se salte la firma (→ ENVIADA_A_RRHH)', 403,
+    await commit(docente.idToken, [
+      event('e4', { type: 'FIRMA_REGISTRADA', previousStatus: 'BORRADOR', newStatus: 'ENVIADA_A_RRHH' }),
+      patch(decl, { status: 'ENVIADA_A_RRHH', lastEventId: 'e4' }, ['updatedAt']),
+    ])]);
+}
+
 let failed = 0;
 for (const [name, expected, actual] of checks) {
   const ok = expected === actual;

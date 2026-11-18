@@ -50,9 +50,17 @@ class DeclarationFormState extends ChangeNotifier {
   List<ValidationIssue> get issues => _validator.issues(declaration);
   bool get canValidate => _validator.isValid(declaration);
 
+  /// Only BORRADOR and VALIDADA are edited here (a VALIDADA one goes back
+  /// to BORRADOR). From the signatures on, the declaration is read only in
+  /// the phone: signing, review and HR happen in the web system.
+  bool get editable =>
+      declaration.status == DeclarationStatus.draft ||
+      declaration.status == DeclarationStatus.validated;
+
   /// Applies a change. As in DeclaraHorario, editing a VALIDADA declaration
   /// sends it back to BORRADOR until it is validated again.
   void edit(void Function(Declaration d) change) {
+    if (!editable) return;
     change(declaration);
     if (declaration.status == DeclarationStatus.validated) {
       declaration.status = DeclarationStatus.draft;
@@ -60,55 +68,8 @@ class DeclarationFormState extends ChangeNotifier {
     notifyListeners();
   }
 
-  // ---- Courses, projects and other institutions ---------------------------
-
-  /// Adds [course], or replaces the one at [index]. Its blocks follow a new
-  /// name; a smaller workday leaves the extra hours to remove (the
-  /// validation says how many). Returns why it was not saved, in Spanish.
-  String? saveCourse(CourseLoad course, {int? index}) {
-    final d = declaration;
-    final courses = [...d.courses];
-    if (index == null) {
-      if (courses.length >= FieldRules.maxCourses) {
-        return 'Puede agregar como máximo ${FieldRules.maxCourses} cursos.';
-      }
-      courses.add(course);
-    } else {
-      courses[index] = course;
-    }
-    final problem = CourseRules.validateAll(
-      courses,
-      d.projects,
-      d.externalJobs,
-    );
-    if (problem != null) return problem;
-    edit((d) {
-      if (index != null) {
-        final old = d.courses[index].name;
-        for (final kind in [
-          TaskKind.lesson,
-          TaskKind.attention,
-          TaskKind.planning,
-        ]) {
-          _renameTask(
-            d,
-            ScheduleTask(kind, old),
-            ScheduleTask(kind, course.name),
-          );
-        }
-      }
-      d.courses
-        ..clear()
-        ..addAll(courses);
-    });
-    return null;
-  }
-
-  /// Removes the course at [index] and its blocks.
-  void removeCourse(int index) => edit((d) {
-    final name = d.courses.removeAt(index).name;
-    d.intervals.removeWhere((i) => i.task.kind.isCourse && i.task.name == name);
-  });
+  // ---- Projects and other institutions ------------------------------------
+  // (Courses come from the career coordination's assignment.)
 
   String? saveProject(ProjectHours project, {int? index}) {
     final d = declaration;
@@ -289,6 +250,10 @@ class DeclarationFormState extends ChangeNotifier {
       declaration.status = status;
       await _repository.save(declaration);
       return true;
+    } on DeclarationSaveException catch (e) {
+      declaration.status = previous;
+      error = e.message;
+      return false;
     } catch (e) {
       declaration.status = previous;
       // Technical details go to the log, never to the user.

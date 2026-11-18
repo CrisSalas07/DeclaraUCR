@@ -1,8 +1,11 @@
 import 'package:declara_ucr/data/declaration_repository.dart';
+import 'package:declara_ucr/data/profile_repository.dart';
+import 'package:declara_ucr/data/proyecto1/period_repository.dart';
 import 'package:declara_ucr/domain/time_rules.dart';
 import 'package:declara_ucr/domain/workload_catalog.dart';
 import 'package:declara_ucr/models/declaration.dart';
 import 'package:declara_ucr/models/declaration_status.dart';
+import 'package:declara_ucr/models/schedule_task.dart';
 import 'package:declara_ucr/screens/declaration_form_screen.dart';
 import 'package:declara_ucr/state/loadable.dart';
 import 'package:declara_ucr/theme/ucr_theme.dart';
@@ -17,7 +20,10 @@ Future<void> openDeclaration(BuildContext context, String? id) async {
   final messenger = ScaffoldMessenger.of(context);
   final navigator = Navigator.of(context);
   Declaration? declaration;
-  if (id != null) {
+  if (id == null) {
+    declaration = await _newDeclaration(context);
+    if (declaration == null) return;
+  } else {
     try {
       declaration = await repository.getById(id);
     } catch (e) {
@@ -32,6 +38,106 @@ Future<void> openDeclaration(BuildContext context, String? id) async {
     MaterialPageRoute<void>(
       builder: (_) => DeclarationFormScreen(initial: declaration),
     ),
+  );
+}
+
+/// A new declaration for an open period (Proyecto 1): one per period, with
+/// the courses and the fixed lesson slots of the career coordination. Says
+/// why, and returns `null`, when one cannot be started.
+Future<Declaration?> _newDeclaration(BuildContext context) async {
+  final messenger = ScaffoldMessenger.of(context);
+  void tell(String message) =>
+      messenger.showSnackBar(SnackBar(content: Text(message)));
+
+  final profile = context.read<UserProfile?>();
+  final periods = context.read<PeriodRepository>();
+  final existing =
+      context.read<Loadable<List<Declaration>>>().value ??
+      const <Declaration>[];
+  if (profile != null && !profile.hasSuperior) {
+    tell(
+      'Aún no tiene revisor asignado. Administración debe asignarlo en el '
+      'sistema web.',
+    );
+    return null;
+  }
+  List<Period> open;
+  try {
+    open = await periods.watchEnabled().first;
+  } catch (e) {
+    debugPrint('Loading periods failed: $e');
+    tell('No se pudieron cargar los períodos. Revise la conexión.');
+    return null;
+  }
+  final used = {for (final d in existing) d.periodId};
+  final free = open.where((p) => !used.contains(p.id)).toList();
+  if (open.isEmpty) {
+    tell('No hay períodos abiertos para nuevas declaraciones.');
+    return null;
+  }
+  if (free.isEmpty) {
+    tell('Ya tiene una declaración en cada período abierto.');
+    return null;
+  }
+  if (!context.mounted) return null;
+  final period = free.length == 1
+      ? free.single
+      : await showModalBottomSheet<Period>(
+          context: context,
+          builder: (sheet) => SafeArea(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const ListTile(
+                  title: Text('¿De qué período es la declaración?'),
+                ),
+                for (final p in free)
+                  ListTile(
+                    leading: const Icon(Icons.event_outlined),
+                    title: Text(p.name),
+                    subtitle: Text(
+                      '${formatDate(p.startDate)} – ${formatDate(p.endDate)}',
+                    ),
+                    onTap: () => Navigator.of(sheet).pop(p),
+                  ),
+              ],
+            ),
+          ),
+        );
+  if (period == null) return null;
+
+  WorkloadAssignment? assignment;
+  try {
+    assignment = await periods.assignmentFor(period.id);
+  } catch (e) {
+    debugPrint('Loading assignment failed: $e');
+    tell('No se pudieron cargar sus cursos. Revise la conexión.');
+    return null;
+  }
+  if (assignment == null) {
+    tell(
+      'La Coordinación de su carrera aún no le asignó cursos en '
+      '${period.name}.',
+    );
+    return null;
+  }
+  return Declaration(
+    periodId: period.id,
+    periodName: period.name,
+    validFrom: period.startDate,
+    validTo: period.endDate,
+    courses: [...assignment.courses],
+    // The lessons are the coordination's slots.
+    intervals: [
+      for (final (i, slot) in assignment.slots.indexed)
+        ScheduleInterval(
+          id: 'slot-$i',
+          day: slot.day,
+          startMinutes: slot.startMinutes,
+          endMinutes: slot.endMinutes,
+          task: ScheduleTask(TaskKind.lesson, slot.course),
+        ),
+    ],
   );
 }
 
@@ -261,8 +367,9 @@ class DeclarationCard extends StatelessWidget {
                       children: [
                         _Meta(
                           Icons.event_outlined,
-                          '${formatDate(d.validFrom)} – '
-                          '${formatDate(d.validTo)}',
+                          d.periodName ??
+                              '${formatDate(d.validFrom)} – '
+                                  '${formatDate(d.validTo)}',
                         ),
                         _Meta(
                           Icons.schedule_outlined,
@@ -300,9 +407,15 @@ class _Meta extends StatelessWidget {
       children: [
         Icon(icon, size: 16, color: color),
         const SizedBox(width: 4),
-        Text(
-          text,
-          style: Theme.of(context).textTheme.bodySmall?.copyWith(color: color),
+        Flexible(
+          child: Text(
+            text,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: Theme.of(
+              context,
+            ).textTheme.bodySmall?.copyWith(color: color),
+          ),
         ),
       ],
     );

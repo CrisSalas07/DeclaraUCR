@@ -3,6 +3,8 @@ import 'package:declara_ucr/config/firebase_config.dart';
 import 'package:declara_ucr/data/auth_repository.dart';
 import 'package:declara_ucr/data/declaration_repository.dart';
 import 'package:declara_ucr/data/profile_repository.dart';
+import 'package:declara_ucr/data/proyecto1/period_repository.dart';
+import 'package:declara_ucr/data/proyecto1/proyecto1_declaration_repository.dart';
 import 'package:declara_ucr/data/zonaje_repository.dart';
 import 'package:declara_ucr/models/app_user.dart';
 import 'package:declara_ucr/models/declaration.dart';
@@ -36,8 +38,12 @@ Future<void> main() async {
       DeclaraUcrApp(
         auth: FirebaseAuthRepository(auth, profiles),
         profiles: profiles,
-        repositoryFor: (uid) =>
-            FirestoreDeclarationRepository(firestore, ownerUid: uid),
+        periodsFor: (uid) => FirestorePeriodRepository(firestore, uid: uid),
+        repositoryFor: (uid, periods) => Proyecto1DeclarationRepository(
+          firestore,
+          uid: uid,
+          periods: periods,
+        ),
         zonajeFor: (uid) => FirestoreZonajeRepository(firestore, ownerUid: uid),
       ),
     );
@@ -83,13 +89,16 @@ class DeclaraUcrApp extends StatefulWidget {
     super.key,
     required this.auth,
     required this.profiles,
+    required this.periodsFor,
     required this.repositoryFor,
     required this.zonajeFor,
   });
 
   final AuthRepository auth;
   final ProfileRepository profiles;
-  final DeclarationRepository Function(String uid) repositoryFor;
+  final PeriodRepository Function(String uid) periodsFor;
+  final DeclarationRepository Function(String uid, PeriodRepository periods)
+  repositoryFor;
   final ZonajeRepository Function(String uid) zonajeFor;
 
   @override
@@ -106,9 +115,11 @@ class _DeclaraUcrAppState extends State<DeclaraUcrApp> {
   }
 
   List<SingleChildWidget> _sessionProviders(AppUser user) {
-    final declarations = widget.repositoryFor(user.uid);
+    final periods = widget.periodsFor(user.uid);
+    final declarations = widget.repositoryFor(user.uid, periods);
     final zonaje = widget.zonajeFor(user.uid);
     return [
+      Provider<PeriodRepository>.value(value: periods),
       Provider<DeclarationRepository>.value(value: declarations),
       Provider<ZonajeRepository>.value(value: zonaje),
       StreamProvider<Loadable<UserProfile?>>(

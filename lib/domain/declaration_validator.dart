@@ -27,7 +27,6 @@ class DeclarationValidator {
     if (d.declarantName.trim().isEmpty) 'Nombre de la persona declarante',
     if (d.identification.trim().isEmpty) 'Cédula',
     if (d.position.trim().isEmpty) 'Puesto',
-    if (d.appointmentType == null) 'Tipo de nombramiento',
     if (d.validFrom == null) 'Inicio de vigencia',
     if (d.validTo == null) 'Fin de vigencia',
     if (d.courses.isEmpty && d.projects.isEmpty) 'Cursos o proyectos',
@@ -52,9 +51,6 @@ class DeclarationValidator {
       _blocking('El nombre supera ${FieldRules.nameMaxLength} caracteres.'),
     if (d.position.isNotEmpty && !Positions.university.contains(d.position))
       _blocking('Elija el puesto de la lista.'),
-    if (d.appointmentType != null &&
-        !appointmentTypes.contains(d.appointmentType))
-      _blocking('Elija el tipo de nombramiento de la lista.'),
     if (d.notes.length > FieldRules.notesMaxLength)
       _blocking(
         'Las otras observaciones superan '

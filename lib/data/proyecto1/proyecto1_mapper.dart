@@ -134,7 +134,6 @@ abstract final class Proyecto1Mapper {
           '',
       identification: snapshot['identification'] as String? ?? '',
       position: appointment?['position'] as String? ?? '',
-      appointmentType: appointment?['appointmentType'] as String?,
       validFrom: _date(appointment?['startDate']) ?? period?.startDate,
       validTo: _date(appointment?['endDate']) ?? period?.endDate,
       courses: [...?assignment?.courses],

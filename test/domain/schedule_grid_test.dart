@@ -70,13 +70,21 @@ void main() {
     late DeclarationFormState state;
     const hc = ScheduleTask(TaskKind.lesson, 'Redes');
     const pye = ScheduleTask(TaskKind.planning, 'Redes');
-    setUp(() {
-      state = DeclarationFormState(repository: _NoRepository());
-      // 1 TC: 16 h lessons, 8 h attention, 16 h planning.
-      state.saveCourse(
-        const CourseLoad(name: 'Redes', code: 'IF0009', workloadMinutes: 2400),
-      );
-    });
+    DeclarationFormState withCourse(int workloadMinutes) =>
+        DeclarationFormState(
+          repository: _NoRepository(),
+          initial: Declaration(
+            courses: [
+              CourseLoad(
+                name: 'Redes',
+                code: 'IF0009',
+                workloadMinutes: workloadMinutes,
+              ),
+            ],
+          ),
+        );
+    // 1 TC: 16 h lessons, 8 h attention, 16 h planning.
+    setUp(() => state = withCourse(2400));
 
     test('paints, erases and never places the lunch hour', () {
       expect(state.paint(_range(Weekday.monday, 11 * 60, 14 * 60), hc), isNull);
@@ -104,10 +112,7 @@ void main() {
     });
 
     test('never places more hours than the task has', () {
-      state.saveCourse(
-        const CourseLoad(name: 'Redes', code: 'IF0009', workloadMinutes: 300),
-        index: 0,
-      );
+      state = withCourse(300);
       expect(state.paint(_range(Weekday.monday, 8 * 60, 10 * 60), hc), isNull);
 
       final error = state.paint([const GridCell(Weekday.monday, 10 * 60)], hc);
@@ -131,31 +136,6 @@ void main() {
       expect(state.declaration.totalMinutes, 3 * 2 * 60);
     });
 
-    test('renaming a course renames its blocks; removing it frees them', () {
-      state.paint(_range(Weekday.monday, 8 * 60, 9 * 60), hc);
-
-      state.saveCourse(
-        const CourseLoad(
-          name: 'Redes I',
-          code: 'IF0009',
-          workloadMinutes: 2400,
-        ),
-        index: 0,
-      );
-      expect(state.declaration.intervals.single.task.name, 'Redes I');
-
-      state.removeCourse(0);
-      expect(state.declaration.intervals, isEmpty);
-    });
-
-    test('a second course over the full time is refused', () {
-      final error = state.saveCourse(
-        const CourseLoad(name: 'Otro', code: '', workloadMinutes: 300),
-      );
-
-      expect(error, contains('superan el tiempo completo'));
-      expect(state.declaration.courses, hasLength(1));
-    });
   });
 }
 

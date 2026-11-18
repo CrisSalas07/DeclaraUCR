@@ -108,14 +108,15 @@ Son incompatibles: el zonaje del P1 necesita mapa, Storage y el régimen del per
 
 ## 5. Decisiones pendientes del equipo
 
-- **A. Cursos.** En el P1 los asigna la Coordinación. Propuesta: el móvil los lee de la asignación y la persona
-  solo los ubica en la cuadrícula. (Las reglas no dejan otra opción sin cambiar el P1.)
+- **A. Cursos.** **Hecho:** el móvil los lee de la asignación de la Coordinación (sin agregar, editar ni
+  quitar cursos) y la persona ubica sus horas en la cuadrícula.
 - **B. Zonaje en el móvil.** Propuesta: **solo consulta** del estado de la solicitud (hecha en la web). Hacerlo
   completo exige mapa, Storage y distancia por carretera, y no es uno de los tres procesos obligatorios.
 - **C. Registro.** Propuesta: registro en el móvil con los campos del P1 (nombre, cédula, teléfono, correo) y
   "Completa tu perfil" (sede y carrera). El revisor lo asigna administración en la web.
-- **D. Tipo de nombramiento (Interino/Propiedad).** El P1 no lo guarda. Propuesta: quitarlo del móvil, o
-  agregarlo al P1 como mejora registrada en la matriz.
+- **D. Tipo de nombramiento (Interino/Propiedad).** **Decidido: se quitó del móvil.** El P1 no lo guarda,
+  ningún enunciado lo exige y el "tipo de jornada o nombramiento" del laboratorio lo cubre la jornada del
+  nombramiento (`workload`, p. ej. `1/4 TC`).
 - **E. Datos de prueba.** Para recorrer los procesos se necesitan, en el proyecto real: una sede y carrera, un
   período habilitado, una persona declarante con revisor y una asignación de cursos de la Coordinación. Se
   pueden crear desde la web con cuentas de administración y de Coordinación.

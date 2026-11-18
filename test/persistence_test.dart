@@ -1,17 +1,14 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:declara_ucr/data/declaration_repository.dart';
 import 'package:declara_ucr/data/profile_repository.dart';
 import 'package:declara_ucr/data/zonaje_repository.dart';
 import 'package:declara_ucr/models/zonaje_request.dart';
 import 'package:declara_ucr/models/declaration.dart';
 import 'package:declara_ucr/models/declaration_status.dart';
-import 'package:declara_ucr/models/schedule_task.dart';
-import 'package:declara_ucr/models/weekday.dart';
 import 'package:declara_ucr/state/declaration_form_state.dart';
 import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'domain/declaration_validator_test.dart' show complete, interval, placed;
+import 'support/proyecto1_fixture.dart';
 
 void main() {
   late FakeFirebaseFirestore firestore;
@@ -19,122 +16,7 @@ void main() {
 
   setUp(() {
     firestore = FakeFirebaseFirestore();
-    repository = FirestoreDeclarationRepository(firestore, ownerUid: 'user-a');
-  });
-
-  test('tests 01/04: saves a draft and recovers it unchanged', () async {
-    final state = DeclarationFormState(
-      repository: repository,
-      initial: complete(placed())..notes = 'Nota',
-    );
-
-    expect(await state.saveDraft(), isTrue);
-    final saved = await repository.getById(state.declaration.id!);
-
-    expect(saved!.status, DeclarationStatus.draft);
-    expect(saved.declarantName, 'Ana Pérez Mora');
-    expect(saved.identification, '105430987');
-    expect(saved.validFrom, DateTime(2026, 3, 1));
-    expect(saved.courses.single.code, 'IF0009');
-    expect(saved.intervals.map((i) => i.task.key), [
-      'HC|Redes',
-      'AE|Redes',
-      'PyE|Redes',
-    ]);
-    expect(saved.intervals.last.day, Weekday.tuesday);
-    expect(saved.totalMinutes, 5 * 60);
-    expect(saved.notes, 'Nota');
-    final doc = await firestore
-        .collection('declarations')
-        .doc(state.declaration.id)
-        .get();
-    expect(
-      doc.data()!['observations'],
-      startsWith('IF0009 HC: L 8 am a 10 am.'),
-    );
-  });
-
-  test('test 02: with an overlap it does not become VALIDADA', () async {
-    final state = DeclarationFormState(
-      repository: repository,
-      // Attention overlaps the lessons: Monday 9:00-10:00.
-      initial: complete([
-        interval('hc', 8 * 60, 10 * 60),
-        interval('ae', 9 * 60, 10 * 60, kind: TaskKind.attention),
-        interval(
-          'pye',
-          8 * 60,
-          10 * 60,
-          day: Weekday.tuesday,
-          kind: TaskKind.planning,
-        ),
-      ]),
-    );
-
-    expect(await state.validateAndSave(), isFalse);
-    expect(state.declaration.status, DeclarationStatus.draft);
-
-    state.edit(
-      (d) => d.intervals[1]
-        ..startMinutes = 10 * 60
-        ..endMinutes = 11 * 60,
-    );
-    expect(await state.validateAndSave(), isTrue);
-    final saved = await repository.getById(state.declaration.id!);
-    expect(saved!.status, DeclarationStatus.validated);
-  });
-
-  test('editing a VALIDADA declaration sends it back to BORRADOR', () async {
-    final state = DeclarationFormState(
-      repository: repository,
-      initial: complete(placed()),
-    );
-    expect(await state.validateAndSave(), isTrue);
-
-    state.edit((d) => d.notes = 'Cambio');
-
-    expect(state.declaration.status, DeclarationStatus.draft);
-  });
-
-  test('the home list shows what was saved', () async {
-    await DeclarationFormState(
-      repository: repository,
-      initial: complete(placed()),
-    ).saveDraft();
-
-    final list = await repository.watchAll().first;
-
-    expect(list.single.status, DeclarationStatus.draft);
-  });
-
-  test('a malformed document is skipped, not shown or crashed on', () async {
-    await firestore.collection('declarations').add({
-      'ownerUid': 'user-a',
-      'status': 'FIRMADA_FALSA',
-      'intervals': 'not a list',
-      'updatedAt': Timestamp.now(),
-    });
-    await DeclarationFormState(
-      repository: repository,
-      initial: complete(placed()),
-    ).saveDraft();
-
-    final list = await repository.watchAll().first;
-
-    expect(list, hasLength(1));
-  });
-
-  test("another user's declarations are neither listed nor opened", () async {
-    final other = FirestoreDeclarationRepository(firestore, ownerUid: 'user-b');
-    final state = DeclarationFormState(
-      repository: other,
-      initial: complete(placed()),
-    );
-    await state.saveDraft();
-
-    expect(await repository.watchAll().first, isEmpty);
-    expect(await repository.getById(state.declaration.id!), isNull);
-    expect(await other.watchAll().first, hasLength(1));
+    repository = Proyecto1Fixture.declarations(firestore);
   });
 
   const ana = UserProfile(

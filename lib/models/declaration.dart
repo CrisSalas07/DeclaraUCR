@@ -56,7 +56,6 @@ class Declaration {
     this.declarantName = '',
     this.identification = '',
     this.position = '',
-    this.appointmentType,
     this.validFrom,
     this.validTo,
     List<CourseLoad>? courses,
@@ -80,7 +79,6 @@ class Declaration {
   String declarantName;
   String identification;
   String position;
-  String? appointmentType;
   DateTime? validFrom;
   DateTime? validTo;
   final List<CourseLoad> courses;
@@ -147,7 +145,6 @@ class Declaration {
     declarantName: declarantName,
     identification: identification,
     position: position,
-    appointmentType: appointmentType,
     validFrom: validFrom,
     validTo: validTo,
     courses: [...courses],
