@@ -44,7 +44,7 @@ Future<void> main() async {
           uid: uid,
           periods: periods,
         ),
-        zonajeFor: (uid) => FirestoreZonajeRepository(firestore, ownerUid: uid),
+        zonajeFor: (uid) => FirestoreZonajeRepository(firestore, uid: uid),
       ),
     );
   } catch (e) {

@@ -103,15 +103,16 @@ Son incompatibles: el zonaje del P1 necesita mapa, Storage y el régimen del per
 | Nuevos repositorios (lectura) | `periods`, `workloadAssignments`, `campuses`, `units` | Medio |
 | Formulario | Período en lugar de fechas; cursos de la asignación (solo lectura) | Medio |
 | Lista e historial | Mostrar todos los estados del P1; agrupar por período | Pequeño |
-| Zonaje | Según la decisión B (§5) | Variable |
+| Zonaje | Hecho: solo consulta (decisión B) | Pequeño |
 | `firestore.rules` de este repo | Ya no se despliegan: mandan las del P1. Pruebas con el emulador cargando las reglas del P1 | Pequeño |
 
 ## 5. Decisiones pendientes del equipo
 
 - **A. Cursos.** **Hecho:** el móvil los lee de la asignación de la Coordinación (sin agregar, editar ni
   quitar cursos) y la persona ubica sus horas en la cuadrícula.
-- **B. Zonaje en el móvil.** Propuesta: **solo consulta** del estado de la solicitud (hecha en la web). Hacerlo
-  completo exige mapa, Storage y distancia por carretera, y no es uno de los tres procesos obligatorios.
+- **B. Zonaje en el móvil.** **Decidido y hecho: solo consulta, sin mapa en el móvil.** La solicitud se hace en
+  la web (mapa, certificación del TSE y distancia por carretera); el teléfono muestra el estado, las distancias y
+  la respuesta de RRHH. No es uno de los tres procesos obligatorios.
 - **C. Registro.** Propuesta: registro en el móvil con los campos del P1 (nombre, cédula, teléfono, correo) y
   "Completa tu perfil" (sede y carrera). El revisor lo asigna administración en la web.
 - **D. Tipo de nombramiento (Interino/Propiedad).** **Decidido: se quitó del móvil.** El P1 no lo guarda,

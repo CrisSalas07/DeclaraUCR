@@ -21,8 +21,8 @@ Code and technical docs are in English; everything the user sees is in Spanish.
 Beyond the lab, from the main project: career courses with their lesson,
 attention and planning hours (`course_rules.dart`, `workload_catalog.dart`),
 projects, jobs at other institutions, observations written from the
-schedule (`schedule_observations.dart`), a simple zonaje request
-(`zonaje_eligibility.dart`) and the history by year
+schedule (`schedule_observations.dart`), the status of the zonaje
+requests (read only, `zonaje_screen.dart`) and the history by year
 (`declarant_history.dart`).
 
 Out of scope (per the lab): digital signature, hierarchical approval and HR
@@ -93,7 +93,7 @@ SOLID in practice:
   (`IF0009 HC: L 8 am a 10 am. AE: …`), plus notes after
   `Otras observaciones:`.
 - `PeriodRules.addOneMonth` — the validity lasts at least one calendar month.
-- `ZonajeEligibility` (R16–R19) and `DeclarantHistory`.
+- `DeclarantHistory`.
 - `PositionField` lists and `IdentificationType.nationalId` format (9 digits).
 
 ## Persistence
@@ -110,7 +110,12 @@ Cloud Firestore through repositories: `users/{uid}`
 | Profile and sign-up | Done: `users/{uid}` with `fullName`, `identification`, `identificationType`, `phone`, `email`, `roles`, `active`, `campusId`, `unitId`, `superiorUid`; reservation `identifications/CEDULA_{number}`; campus and career chosen once, with the entry in `teacherDirectory`. Only active declarants get into the app; without a reviewer, Inicio says so |
 | Declarations | Done, in use: `Proyecto1DeclarationRepository` reads each `Declaration` from the declaration, its current version, appointment and external jobs, the period and the coordination's assignment, and writes as DeclaraHorario does: `createDraft` (declaration, version 1, event, period reservation and content in one batch), content saves, `BORRADOR → VALIDADA` with `VALIDACION_EJECUTADA` and the hours summary, and `VALIDADA → BORRADOR` with `HORARIO_MODIFICADO` when edited. A new declaration picks an open period (one per period) and takes the assigned courses and lesson slots. From the signatures on (and DEVUELTA) it is read only in the phone |
 | Fixed lessons | Done: as in DeclaraHorario, the lessons are the coordination's slots (`Declaration.lessonSlots`). `DeclarationFormState` places them when the form opens (correcting moved ones, which sends a VALIDADA declaration back to BORRADOR) and `paint`, clearing a day and `copyDay` never move them; the grid does not offer lessons to place and shows them with a lock. The person places attention, planning, projects and other institutions |
-| Zonaje | Pending: still the mobile's own documents, which the Proyecto 1 rules reject |
+| Zonaje | Done, read only: `FirestoreZonajeRepository` lists the person's `zonajeRequests` (filtered by `declarantUid`, as the rules require) with their status, distances, workday and HR's observation or annulment reason. Requests are made in the web |
+
+Adaptation decision: no map in the phone, so zonaje is read only here. The
+Proyecto 1 request needs the home location (marked on a map), the TSE
+certificate and the road distance; the web keeps doing that, and the
+phone shows the status and HR's answer.
 
 Adaptation decision: the appointment type (Interino/Propiedad) was removed.
 The Proyecto 1 does not store it, and the lab's "tipo de jornada o
@@ -155,10 +160,8 @@ Two backends, chosen at build time (`lib/config/firebase_config.dart`):
 - **Ownership:** only `@ucr.ac.cr` accounts; each person reads and writes
   only their own profile, declarations and requests. The cédula cannot change
   once registered, and a declaration must carry the cédula of the profile.
-- **Zonaje on the server:** `firestore.rules` repeats R16–R19 and requires the
-  source declaration to be the person's own and `VALIDADA`.
-- **Known gaps:** `VALIDADA` and the workday sent with a zonaje request are
-  still computed by the client; a Cloud Function should recompute them.
+- **Known gaps:** `VALIDADA` is still computed by the client (as in the
+  Proyecto 1); a Cloud Function should recompute it.
 - **Unique cédula:** `identifications/{cédula}` = {uid} is written in the same
   transaction as the profile (as DeclaraHorario); the rules accept the
   profile only with its reservation and never update or delete one, so a

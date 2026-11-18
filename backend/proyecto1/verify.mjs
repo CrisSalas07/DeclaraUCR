@@ -166,6 +166,10 @@ checks.push(
     )],
   ['No lee la declaración de otra persona', 403,
     await request('GET', seeded, docente2.idToken)],
+  ['Lista sus solicitudes de zonaje (filtradas por declarantUid)', 200,
+    await query(docente.idToken, 'zonajeRequests', 'declarantUid', { stringValue: docente.localId })],
+  ['Rechaza listar las solicitudes de zonaje de otra persona', 403,
+    await query(docente2.idToken, 'zonajeRequests', 'declarantUid', { stringValue: docente.localId })],
   ['No lee la asignación de cursos de otra persona', 403,
     await request('GET', `workloadAssignments/2026_II_${docente.localId}`, docente2.idToken)],
 );

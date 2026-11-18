@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:declara_ucr/data/declaration_repository.dart';
 import 'package:declara_ucr/data/profile_repository.dart';
 import 'package:declara_ucr/data/zonaje_repository.dart';
@@ -171,31 +172,42 @@ void main() {
     expect(user['unitId'], 'ie');
   });
 
-  test('a zonaje request is sent as SOLICITADA and listed', () async {
-    final zonaje = FirestoreZonajeRepository(firestore, ownerUid: 'user-a');
-    await zonaje.send(
-      const ZonajeRequest(
-        previousAddress: 'San José, Central, Carmen',
-        currentAddress: 'Puntarenas, Golfito, Golfito',
-        distanceKm: 280.5,
-        regime: SalaryRegime.composite,
-        hasBonus: false,
-        weeklyMinutes: 1200,
-        declarationId: 'd1',
-      ),
-    );
+  test('lists the zonaje requests made in the web, newest first', () async {
+    final requests = firestore.collection('zonajeRequests');
+    Map<String, Object> request(String period, String status, int day) => {
+      'declarantUid': 'user-a',
+      'periodId': period,
+      'previousAddress': 'San José, Central, Carmen',
+      'currentAddress': 'Puntarenas, Golfito, Golfito',
+      'declaredDistanceKm': 280.5,
+      'salaryRegime': 'COMPUESTO',
+      'weeklyMinutes': 1200,
+      'status': status,
+      'createdAt': Timestamp.fromDate(DateTime(2026, 9, day)),
+    };
+    await requests.doc('2026_I_user-a').set({
+      ...request('2026_I', 'RECHAZADA', 1),
+      'hrObservation': 'La certificación del TSE no es legible.',
+    });
+    await requests.doc('2026_II_user-a').set({
+      ...request('2026_II', 'APROBADA', 20),
+      'confirmedDistanceKm': 275,
+    });
+    await requests.doc('2026_II_user-b').set({
+      ...request('2026_II', 'SOLICITADA', 5),
+      'declarantUid': 'user-b',
+    });
+    await requests.doc('broken').set({'declarantUid': 'user-a'});
 
-    final list = await zonaje.watchAll().first;
+    final list = await FirestoreZonajeRepository(
+      firestore,
+      uid: 'user-a',
+    ).watchAll().first;
 
-    expect(list.single.status, ZonajeStatus.requested);
-    expect(list.single.distanceKm, 280.5);
-    expect(
-      await FirestoreZonajeRepository(
-        firestore,
-        ownerUid: 'user-b',
-      ).watchAll().first,
-      isEmpty,
-    );
+    expect(list.map((r) => r.periodId), ['2026_II', '2026_I']);
+    expect(list.first.status, ZonajeStatus.approved);
+    expect(list.first.distanceKm, 275);
+    expect(list.last.hrObservation, 'La certificación del TSE no es legible.');
   });
 
   test('a save failure shows a generic message, not the exception', () async {

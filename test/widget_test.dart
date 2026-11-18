@@ -31,11 +31,13 @@ Future<Widget> _app({
   AppUserMode mode = AppUserMode.signedOut,
   Map<String, Object>? profile = _ana,
   bool assignment = true,
+  Future<void> Function(FakeFirebaseFirestore db)? extra,
 }) async {
   final firestore = FakeFirebaseFirestore();
   // Campus, career, the open period and, for Ana, the coordination's
   // assignment of "Redes" (lessons Monday 8:00-10:00).
   await Proyecto1Fixture.seed(firestore, user: profile, assignment: assignment);
+  await extra?.call(firestore);
   final profiles = FirestoreProfileRepository(firestore);
   return DeclaraUcrApp(
     auth: FakeAuthRepository(
@@ -48,7 +50,7 @@ Future<Widget> _app({
     periodsFor: (uid) => Proyecto1Fixture.periods(firestore, uid),
     repositoryFor: (uid, periods) =>
         Proyecto1DeclarationRepository(firestore, uid: uid, periods: periods),
-    zonajeFor: (uid) => FirestoreZonajeRepository(firestore, ownerUid: uid),
+    zonajeFor: (uid) => FirestoreZonajeRepository(firestore, uid: uid),
   );
 }
 
@@ -399,11 +401,53 @@ void main() {
 
     await tester.tap(find.text('Zonaje').last);
     await tester.pumpAndSettle();
-    expect(find.text('Valide primero una declaración'), findsOneWidget);
+    expect(find.text('La solicitud se hace en el sistema web'), findsOneWidget);
+    expect(find.text('Aún no tiene solicitudes de zonaje.'), findsOneWidget);
 
     await tester.tap(find.text('Historial').last);
     await tester.pumpAndSettle();
     expect(find.text('Aún no hay historial.'), findsOneWidget);
+  });
+
+  testWidgets('zonaje shows the status and the HR answer, read only', (
+    tester,
+  ) async {
+    await tester.pumpWidget(
+      await _app(
+        mode: AppUserMode.signedIn,
+        extra: (db) =>
+            db.collection('zonajeRequests').doc('2026_I_user-a').set({
+              'declarantUid': 'user-a',
+              'periodId': '2026_I',
+              'previousAddress': 'San José, Central, Carmen',
+              'currentAddress': 'Puntarenas, Golfito, Golfito',
+              'declaredDistanceKm': 280.5,
+              'salaryRegime': 'COMPUESTO',
+              'weeklyMinutes': 1200,
+              'status': 'RECHAZADA',
+              'hrObservation': 'La certificación del TSE no es legible.',
+            }),
+      ),
+    );
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Zonaje').last);
+    await tester.pumpAndSettle();
+
+    expect(find.text('Zonaje · I Ciclo - 2026'), findsOneWidget);
+    expect(find.text('Rechazada'), findsOneWidget);
+    expect(find.text('280,5 km'), findsOneWidget);
+    expect(find.text('1/2 TC'), findsOneWidget);
+    await tester.scrollUntilVisible(
+      find.text('La certificación del TSE no es legible.'),
+      200,
+      scrollable: find.byType(Scrollable).last,
+    );
+    expect(
+      find.text('La certificación del TSE no es legible.'),
+      findsOneWidget,
+    );
+    // Nothing to send from the phone.
+    expect(find.text('Enviar solicitud'), findsNothing);
   });
 
   testWidgets('test 03: saving without data flags the required fields', (

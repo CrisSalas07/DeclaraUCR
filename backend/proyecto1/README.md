@@ -67,6 +67,7 @@ Además: sede **Sede del Sur** (con ubicación), carrera **Informática Empresar
 *Sistemas Operativos* (martes y jueves 13–15), 1/4 TC cada uno.
 
 Para ver la lista y el historial con algo: el período **I Ciclo - 2026** (`2026_I`, cerrado), con una
-declaración **FINALIZADA** de `docente@ucr.ac.cr` (IF0009, 1/4 TC, versión 1 firmada y aprobada por RRHH).
+declaración **FINALIZADA** de `docente@ucr.ac.cr` (IF0009, 1/4 TC, versión 1 firmada y aprobada por RRHH) y
+una solicitud de zonaje **RECHAZADA** con la observación de RRHH.
 
 Las personas son ficticias y las cédulas solo cumplen el formato.

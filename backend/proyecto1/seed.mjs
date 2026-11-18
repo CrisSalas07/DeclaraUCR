@@ -269,12 +269,29 @@ async function main() {
     previousStatus: 'ENVIADA_A_RRHH', newStatus: 'FINALIZADA',
   });
 
+  // 8. A zonaje request of that closed period, rejected by HR: the mobile
+  // app only shows zonaje (no map in the phone; requests are made in the
+  // web).
+  await put(`zonajeRequests/${PAST}_${uid.docente}`, {
+    declarantUid: uid.docente, declarantName: docente.fullName, campusId: CAMPUS_ID,
+    year: 2026, periodId: PAST, declarationId: DECL, salaryRegime: 'COMPUESTO',
+    weeklyMinutes: 1200,
+    previousAddress: 'San José, Montes de Oca, San Pedro',
+    currentAddress: 'Puntarenas, Golfito, Golfito',
+    homeLocation: { lat: 9.93, lng: -84.05 }, distanceMethod: 'LINEA_RECTA',
+    declaredDistanceKm: 280.5,
+    tseCertificatePath: `zonaje/${uid.docente}/${PAST}/tse.pdf`,
+    status: 'RECHAZADA', createdAt: now,
+    hrObservation: 'La certificación del TSE no es legible. Adjunte una nueva.',
+    reviewedBy: uid.rrhh, reviewedAt: now,
+  });
+
   console.log(`Emuladores del proyecto ${project} con datos de prueba (contraseña de todas: ${PASSWORD}):`);
   for (const person of Object.values(PEOPLE)) {
     console.log(`  ${person.email.padEnd(24)} ${person.roles.join(', ')}`);
   }
   console.log(`Período ${PERIOD_ID} habilitado; docente@ucr.ac.cr tiene 2 cursos asignados (1/2 TC)`);
-  console.log(`y una declaración FINALIZADA del período ${PAST} (cerrado).`);
+  console.log(`y una declaración FINALIZADA y una solicitud de zonaje RECHAZADA del período ${PAST} (cerrado).`);
 }
 
 main().catch((error) => {
