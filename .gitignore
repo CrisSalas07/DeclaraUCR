@@ -55,3 +55,6 @@ app.*.map.json
 
 # Local data of the Proyecto 1 emulators (backend/proyecto1/seed.mjs)
 backend/proyecto1/emulator-data/
+
+# APKs built by tool/build_apk.dart (published, not committed)
+/dist/

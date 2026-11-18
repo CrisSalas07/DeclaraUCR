@@ -1,3 +1,4 @@
+import 'package:declara_ucr/config/build_info.dart';
 import 'package:declara_ucr/data/auth_repository.dart';
 import 'package:declara_ucr/data/profile_repository.dart';
 import 'package:declara_ucr/domain/time_rules.dart';
@@ -419,6 +420,14 @@ class _ProfileSheet extends StatelessWidget {
                 onPressed: onSignOut,
                 icon: const Icon(Icons.logout),
                 label: const Text('Cerrar sesión'),
+              ),
+            ),
+            const SizedBox(height: 12),
+            Text(
+              BuildInfo.label,
+              textAlign: TextAlign.center,
+              style: text.labelSmall?.copyWith(
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
               ),
             ),
           ],

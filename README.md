@@ -203,6 +203,12 @@ flutter run --dart-define=FIREBASE_ENV=production # Android against the Proyecto
 Emulators with the **Proyecto 1 rules and test data** (the target schema of
 the data layer migration): see `backend/proyecto1/README.md`.
 
+APK to hand out (signed with the team's release key, against the
+Proyecto 1 backend, named by version and commit): `dart run
+tool/build_apk.dart`. Installing, updating, going back to an earlier
+version, the release key and the test data of the real backend are in
+`docs/INSTALACION.md`.
+
 Web, for testing on a phone browser:
 
 ```bash

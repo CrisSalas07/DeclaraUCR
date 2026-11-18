@@ -1,3 +1,4 @@
+import 'package:declara_ucr/config/build_info.dart';
 import 'package:declara_ucr/data/auth_repository.dart';
 import 'package:declara_ucr/domain/auth_rules.dart';
 import 'package:declara_ucr/screens/auth/auth_layout.dart';
@@ -150,6 +151,15 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
               icon: const Icon(Icons.person_add_alt_1_outlined),
               label: const Text('Crear cuenta'),
+            ),
+            const SizedBox(height: 16),
+            // Which build this is, for test sessions and bug reports.
+            Text(
+              BuildInfo.label,
+              textAlign: TextAlign.center,
+              style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
+              ),
             ),
           ],
         ),
