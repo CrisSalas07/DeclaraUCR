@@ -5,7 +5,6 @@ import 'package:declara_ucr/domain/time_rules.dart';
 import 'package:declara_ucr/domain/workload_catalog.dart';
 import 'package:declara_ucr/models/declaration.dart';
 import 'package:declara_ucr/models/declaration_status.dart';
-import 'package:declara_ucr/models/schedule_task.dart';
 import 'package:declara_ucr/screens/declaration_form_screen.dart';
 import 'package:declara_ucr/state/loadable.dart';
 import 'package:declara_ucr/theme/ucr_theme.dart';
@@ -127,17 +126,8 @@ Future<Declaration?> _newDeclaration(BuildContext context) async {
     validFrom: period.startDate,
     validTo: period.endDate,
     courses: [...assignment.courses],
-    // The lessons are the coordination's slots.
-    intervals: [
-      for (final (i, slot) in assignment.slots.indexed)
-        ScheduleInterval(
-          id: 'slot-$i',
-          day: slot.day,
-          startMinutes: slot.startMinutes,
-          endMinutes: slot.endMinutes,
-          task: ScheduleTask(TaskKind.lesson, slot.course),
-        ),
-    ],
+    // The form places these lessons and keeps them fixed.
+    lessonSlots: assignment.slots,
   );
 }
 
@@ -412,9 +402,8 @@ class _Meta extends StatelessWidget {
             text,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
-            style: Theme.of(
-              context,
-            ).textTheme.bodySmall?.copyWith(color: color),
+            style: Theme.of(context).textTheme.bodySmall
+                ?.copyWith(color: color),
           ),
         ),
       ],

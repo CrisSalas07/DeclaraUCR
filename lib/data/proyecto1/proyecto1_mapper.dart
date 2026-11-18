@@ -154,6 +154,7 @@ abstract final class Proyecto1Mapper {
       versionId: declaration['currentVersionId'] as String,
       versionNumber: declaration['currentVersionNumber'] as int,
       pendingObservation: declaration['pendingObservation'] as String?,
+      lessonSlots: [...?assignment?.slots],
     );
   });
 

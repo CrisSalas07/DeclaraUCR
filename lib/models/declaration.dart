@@ -1,4 +1,5 @@
 import 'package:declara_ucr/models/declaration_status.dart';
+import 'package:declara_ucr/models/period.dart';
 import 'package:declara_ucr/models/schedule_task.dart';
 import 'package:declara_ucr/models/weekday.dart';
 import 'package:declara_ucr/models/workload_items.dart';
@@ -70,7 +71,9 @@ class Declaration {
     this.versionId,
     this.versionNumber,
     this.pendingObservation,
-  }) : courses = courses ?? <CourseLoad>[],
+    List<LessonSlot>? lessonSlots,
+  }) : lessonSlots = lessonSlots ?? const <LessonSlot>[],
+       courses = courses ?? <CourseLoad>[],
        projects = projects ?? <ProjectHours>[],
        externalJobs = externalJobs ?? <ExternalJob>[],
        intervals = intervals ?? <ScheduleInterval>[];
@@ -105,6 +108,11 @@ class Declaration {
 
   /// Why the reviewer or HR returned it (status DEVUELTA).
   String? pendingObservation;
+
+  /// The lesson slots the career coordination assigned for the period. When
+  /// there are any, the lessons on the schedule are exactly these and the
+  /// person does not move them (as in DeclaraHorario).
+  final List<LessonSlot> lessonSlots;
 
   String get institution => Workplace.full;
 
@@ -159,5 +167,6 @@ class Declaration {
     versionId: versionId,
     versionNumber: versionNumber,
     pendingObservation: pendingObservation,
+    lessonSlots: lessonSlots,
   );
 }

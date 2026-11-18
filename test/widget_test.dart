@@ -510,13 +510,24 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.bySemanticsLabel('Lunes: 2 h'), findsOneWidget);
 
-    // The lessons are complete: one more half hour is refused.
-    await tester.tap(find.byKey(const ValueKey('cell-1-600')));
-    await tester.pumpAndSettle();
+    // The lessons are the coordination's: not offered to place, shown
+    // locked, and a tap on them does not move them.
+    // Only the locked block on the grid, no chip to place lessons.
+    expect(find.text('IF0009 · Clases'), findsOneWidget);
+    expect(find.textContaining('las asignó la Coordinación'), findsOneWidget);
     expect(
-      find.text('Ya ubicó todas las horas de clases de IF0009 (2 h).'),
+      find.bySemanticsLabel(RegExp('asignada por la Coordinación')),
       findsOneWidget,
     );
+    await tester.tap(find.byKey(const ValueKey('cell-1-480')));
+    await tester.pumpAndSettle();
+    expect(
+      find.text(
+        'Las clases las asigna la Coordinación de su carrera: no se mueven.',
+      ),
+      findsOneWidget,
+    );
+    expect(find.bySemanticsLabel('Lunes: 2 h'), findsOneWidget);
 
     await tester.tap(find.text('Ver resumen'));
     await tester.pumpAndSettle();

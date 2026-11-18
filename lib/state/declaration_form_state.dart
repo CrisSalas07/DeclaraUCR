@@ -31,6 +31,58 @@ class DeclarationFormState extends ChangeNotifier {
         ..declarantName = profile.name
         ..identification = profile.identification;
     }
+    _placeAssignedLessons();
+  }
+
+  /// Message when a fixed lesson would be moved, in Spanish.
+  static const String lessonsAreFixed =
+      'Las clases las asigna la Coordinación de su carrera: no se mueven.';
+
+  /// The lessons are the coordination's slots (Proyecto 1): the person only
+  /// places attention, planning, projects and other institutions.
+  bool get lessonsFixed => declaration.lessonSlots.isNotEmpty;
+
+  /// Half hours taken by the assigned lessons.
+  Set<GridCell> get fixedCells => {
+    for (final slot in declaration.lessonSlots)
+      for (
+        var m = slot.startMinutes;
+        m < slot.endMinutes;
+        m += ScheduleGrid.stepMinutes
+      )
+        GridCell(slot.day, m),
+  };
+
+  /// Puts the lessons exactly where the coordination assigned them. A
+  /// declaration whose lessons differ (the assignment changed, or they were
+  /// moved) is corrected, which counts as an edit.
+  void _placeAssignedLessons() {
+    if (!lessonsFixed || !editable) return;
+    String keyOf(ScheduleInterval i) =>
+        '${i.day.number}|${i.startMinutes}|${i.endMinutes}|${i.task.name}';
+    final assigned = [
+      for (final (index, slot) in declaration.lessonSlots.indexed)
+        ScheduleInterval(
+          id: 'slot-$index',
+          day: slot.day,
+          startMinutes: slot.startMinutes,
+          endMinutes: slot.endMinutes,
+          task: ScheduleTask(TaskKind.lesson, slot.course),
+        ),
+    ];
+    final current = declaration.intervals
+        .where((i) => i.task.kind == TaskKind.lesson)
+        .map(keyOf)
+        .toSet();
+    if (current.length == assigned.length &&
+        current.containsAll(assigned.map(keyOf))) {
+      return;
+    }
+    edit(
+      (d) => d.intervals
+        ..removeWhere((i) => i.task.kind == TaskKind.lesson)
+        ..addAll(assigned),
+    );
   }
 
   final DeclarationRepository _repository;
@@ -160,10 +212,18 @@ class DeclarationFormState extends ChangeNotifier {
   /// Places [task] on [cells], or frees them when it is `null`. Lunch cells
   /// are skipped. Returns why nothing changed (in Spanish), or `null`.
   String? paint(Iterable<GridCell> cells, ScheduleTask? task) {
+    final fixed = lessonsFixed ? fixedCells : const <GridCell>{};
+    final touched = cells.where((c) => !ScheduleGrid.isLunch(c.startMinutes));
+    if (lessonsFixed &&
+        (task?.kind == TaskKind.lesson ||
+            (touched.isNotEmpty && touched.every(fixed.contains)))) {
+      return lessonsAreFixed;
+    }
     final current = ScheduleGrid.cellsOf(declaration.intervals);
     final next = Map<GridCell, String>.of(current);
-    for (final cell in cells) {
-      if (ScheduleGrid.isLunch(cell.startMinutes)) continue;
+    for (final cell in touched) {
+      // The assigned lessons stay; the rest of the range is painted.
+      if (fixed.contains(cell)) continue;
       if (task == null) {
         next.remove(cell);
       } else {
@@ -176,12 +236,21 @@ class DeclarationFormState extends ChangeNotifier {
   /// Replaces the schedule of every day in [to] with the one of [from].
   String? copyDay(Weekday from, Iterable<Weekday> to) {
     final targets = to.toSet()..remove(from);
+    final fixed = lessonsFixed ? fixedCells : const <GridCell>{};
+    bool isLesson(String key) =>
+        lessonsFixed && ScheduleTask.fromKey(key).kind == TaskKind.lesson;
     final current = ScheduleGrid.cellsOf(declaration.intervals);
+    // The target days keep their own assigned lessons; the source day's
+    // lessons are not copied.
     final next = Map<GridCell, String>.of(current)
-      ..removeWhere((cell, _) => targets.contains(cell.day));
+      ..removeWhere(
+        (cell, _) => targets.contains(cell.day) && !fixed.contains(cell),
+      );
     for (final entry in current.entries.where((e) => e.key.day == from)) {
+      if (isLesson(entry.value)) continue;
       for (final day in targets) {
-        next[GridCell(day, entry.key.startMinutes)] = entry.value;
+        final cell = GridCell(day, entry.key.startMinutes);
+        if (!fixed.contains(cell)) next[cell] = entry.value;
       }
     }
     return _commit(current, next);
