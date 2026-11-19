@@ -17,7 +17,8 @@ y evidencia.
 (Android 16, letra al 110 %) con un build de desarrollo del **mismo commit `fc21a84`** de la 2.0.0+5, contra los
 emuladores con las reglas del Proyecto 1 y los datos ficticios de `backend/proyecto1/seed.mjs` (cuentas
 `docente`, `docente2` y `revisor`). Así las capturas no muestran datos de las cuentas reales del equipo y los
-casos se pueden repetir desde cero. CP-03, CP-06 y CP-08 se ejecutan con el APK publicado y el backend real.
+casos se pueden repetir desde cero. CP-03 se ejecutó el mismo día con el APK publicado y el backend real; CP-06 y CP-08
+también se ejecutan así.
 En las capturas se taparon los íconos de notificaciones de la barra de estado del teléfono.
 
 Cómo llenar cada caso: **Resultado obtenido** describe lo que pasó; **Estado** es *Aprobado*, *Fallido* o
@@ -29,7 +30,7 @@ Cómo llenar cada caso: **Resultado obtenido** describe lo que pasó; **Estado**
 |---|---|---|
 | [CP-01](#cp-01) | Proceso 1: crear, editar y recuperar un borrador | Aprobado |
 | [CP-02](#cp-02) | Proceso 2: horario, cálculo de horas y traslapes | Aprobado |
-| [CP-03](#cp-03) | Proceso 3: resumen, validación y estado (hasta la firma) | Pendiente |
+| [CP-03](#cp-03) | Proceso 3: resumen, validación y estado (hasta la firma) | Aprobado |
 | [CP-04](#cp-04) | Datos incompletos o inválidos | Aprobado |
 | [CP-05](#cp-05) | Restricciones de acceso por rol | Aprobado |
 | [CP-06](#cp-06) | Persistencia y recuperación | Pendiente |
@@ -80,10 +81,10 @@ traslape bloquea la validación con el mensaje "Traslape el lunes entre … y �
 | **Precondiciones** | El borrador de CP-02 con todas las horas ubicadas. Con conexión |
 | **Pasos** | 1. En el resumen, revisar el estado y tocar **Validar**.<br>2. Revisar el botón y el ícono rojo del PDF; abrir el PDF.<br>3. Tocar **Firmar y enviar a mi revisor** (tarjeta "Siguiente paso: firmar"), leer el juramento, marcar la casilla y firmar.<br>4. Volver a **Inicio** |
 | **Resultado esperado** | 1: "Sin problemas: la declaración puede validarse." → aviso "Declaración validada y guardada." y estado **VALIDADA**.<br>2: el botón dice **Validada** y queda deshabilitado; el PDF muestra la marca "BORRADOR".<br>3: aviso "Declaración firmada y enviada a su revisor."; estado **PENDIENTE_FIRMA_SUPERIOR**.<br>4: el seguimiento muestra Elaboración ✓, Firmada ✓ y **Revisor** resaltado, con "Firmada y enviada: su revisor la está revisando."; el PDF pasa a "COPIA PARA REVISIÓN" con la firma |
-| **Resultado obtenido** | |
-| **Versión** | 2.0.0+5 |
-| **Evidencia** | `CP-03-1.png` (validada), `CP-03-2.png` (firma), `CP-03-3.png` (seguimiento en Inicio) |
-| **Estado** | Pendiente |
+| **Resultado obtenido** | Precondición real: la declaración de la declarante de prueba en el backend real, devuelta por Recursos Humanos y corregida en la web como **versión 2** (BORRADOR), con las horas completas.<br>1: "Sin problemas: la declaración puede validarse." → "Declaración validada y guardada." y estado **VALIDADA**.<br>2: el botón dice **Validada** y está deshabilitado; el PDF muestra "VISTA PREVIA - BORRADOR SIN FIRMAS".<br>3: la pantalla de firma muestra "Versión 2" y el juramento con los datos de la declarante; al firmar, vuelve a Inicio y la declaración queda en **PENDIENTE_FIRMA_SUPERIOR**.<br>4: seguimiento con Elaboración ✓, Firmada ✓ y **Revisor** resaltado, "Firmada y enviada: su revisor la está revisando."; el PDF dice "COPIA PARA REVISIÓN", con la firma de la declarante ("Firmado electrónicamente el 19/11/2026") y al pie "Versión 2 · huella SHA-256 …". Al abrirla, queda de solo lectura (**Guardar borrador** deshabilitado). La firma de una versión que no es la primera funciona contra las reglas reales |
+| **Versión** | 2.0.0+5 (`fc21a84`), APK publicado, backend real (2026-11-19) |
+| **Evidencia** | `CP-03-1.png` (validada), `CP-03-2.png` (firma), `CP-03-3.png` (seguimiento en Inicio). Son de una cuenta del backend real: el nombre, la cédula y el saludo están tapados con barras grises |
+| **Estado** | Aprobado |
 
 > La firma queda registrada en el backend real y la persona declarante no puede deshacerla. Para repetir el
 > caso, el revisor **devuelve** la declaración desde la web y se corrige como versión nueva.
@@ -200,5 +201,5 @@ Defectos encontrados al ejecutar los casos de este documento:
 
 | Caso | Defecto | Corrección | Nueva comprobación |
 |---|---|---|---|
-| CP-01, 02, 04, 05, 07 | Ninguno (2026-11-19) | — | — |
+| CP-01, 02, 03, 04, 05, 07 | Ninguno (2026-11-19) | — | — |
 | | | | |
