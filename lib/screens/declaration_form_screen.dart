@@ -160,7 +160,6 @@ class _FormBodyState extends State<_FormBody> {
               ],
             ),
             _CoursesSection(state: state),
-            _CoursesSection(state: state),
             _ProjectsSection(state: state),
             _ExternalJobsSection(state: state),
             SectionCard(
