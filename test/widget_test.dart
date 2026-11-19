@@ -1,3 +1,4 @@
+import 'package:declara_ucr/data/proyecto1/declaration_document_reader.dart';
 import 'package:declara_ucr/data/proyecto1/proyecto1_declaration_repository.dart';
 import 'package:declara_ucr/data/profile_repository.dart';
 import 'package:declara_ucr/data/network_status.dart';
@@ -55,6 +56,8 @@ Future<Widget> _app({
     repositoryFor: (uid, periods) =>
         Proyecto1DeclarationRepository(firestore, uid: uid, periods: periods),
     zonajeFor: (uid) => FirestoreZonajeRepository(firestore, uid: uid),
+    documentsFor: (uid) =>
+        FirestoreDeclarationDocumentReader(firestore, uid: uid),
     network: network,
   );
 }

@@ -41,6 +41,8 @@ dependencies:
     sdk: flutter
   firebase_auth: ^7.0.1
   connectivity_plus: ^7.3.2
+  pdf: ^3.13.1
+  printing: ^5.15.1
 dev_dependencies:
   flutter_test:
     sdk: flutter

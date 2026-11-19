@@ -4,6 +4,7 @@ import 'package:declara_ucr/data/auth_repository.dart';
 import 'package:declara_ucr/data/declaration_repository.dart';
 import 'package:declara_ucr/data/network_status.dart';
 import 'package:declara_ucr/data/profile_repository.dart';
+import 'package:declara_ucr/data/proyecto1/declaration_document_reader.dart';
 import 'package:declara_ucr/data/proyecto1/period_repository.dart';
 import 'package:declara_ucr/data/proyecto1/proyecto1_declaration_repository.dart';
 import 'package:declara_ucr/data/zonaje_repository.dart';
@@ -47,6 +48,8 @@ Future<void> main() async {
           periods: periods,
         ),
         zonajeFor: (uid) => FirestoreZonajeRepository(firestore, uid: uid),
+        documentsFor: (uid) =>
+            FirestoreDeclarationDocumentReader(firestore, uid: uid),
         network: PluginNetworkStatus(),
       ),
     );
@@ -95,6 +98,7 @@ class DeclaraUcrApp extends StatefulWidget {
     required this.periodsFor,
     required this.repositoryFor,
     required this.zonajeFor,
+    required this.documentsFor,
     this.network = const AlwaysOnline(),
   });
 
@@ -104,6 +108,9 @@ class DeclaraUcrApp extends StatefulWidget {
   final DeclarationRepository Function(String uid, PeriodRepository periods)
   repositoryFor;
   final ZonajeRepository Function(String uid) zonajeFor;
+
+  /// Reads a declaration as stored, to print its PDF.
+  final DeclarationDocumentReader Function(String uid) documentsFor;
 
   /// Whether the phone has a network: an offline strip on every screen,
   /// and saves are not attempted without one.
@@ -130,6 +137,9 @@ class _DeclaraUcrAppState extends State<DeclaraUcrApp> {
       Provider<PeriodRepository>.value(value: periods),
       Provider<DeclarationRepository>.value(value: declarations),
       Provider<ZonajeRepository>.value(value: zonaje),
+      Provider<DeclarationDocumentReader>.value(
+        value: widget.documentsFor(user.uid),
+      ),
       StreamProvider<Loadable<UserProfile?>>(
         create: (_) => widget.profiles
             .watch(user.uid)

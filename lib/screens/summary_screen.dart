@@ -4,6 +4,7 @@ import 'package:declara_ucr/domain/time_rules.dart';
 import 'package:declara_ucr/domain/workload_catalog.dart';
 import 'package:declara_ucr/models/declaration.dart';
 import 'package:declara_ucr/models/schedule_task.dart';
+import 'package:declara_ucr/screens/declaration_pdf_screen.dart';
 import 'package:declara_ucr/state/declaration_form_state.dart';
 import 'package:declara_ucr/theme/ucr_theme.dart';
 import 'package:declara_ucr/widgets/common.dart';
@@ -42,7 +43,11 @@ class SummaryScreen extends StatelessWidget {
     final sorted = d.sortedIntervals;
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Resumen de la declaración')),
+      appBar: AppBar(
+        title: const Text('Resumen de la declaración'),
+        // Appears once it is validated and saved.
+        actions: [DeclarationPdfAction(id: d.id, status: d.status)],
+      ),
       body: ListView(
         padding: const EdgeInsets.fromLTRB(16, 8, 16, 24),
         children: [

@@ -8,6 +8,7 @@ import 'package:declara_ucr/domain/workload_catalog.dart';
 import 'package:declara_ucr/models/declaration.dart';
 import 'package:declara_ucr/models/declaration_status.dart';
 import 'package:declara_ucr/models/workload_items.dart';
+import 'package:declara_ucr/screens/declaration_pdf_screen.dart';
 import 'package:declara_ucr/screens/summary_screen.dart';
 import 'package:declara_ucr/state/declaration_form_state.dart';
 import 'package:declara_ucr/theme/ucr_theme.dart';
@@ -100,6 +101,7 @@ class _FormBodyState extends State<_FormBody> {
               ? 'Editar declaración'
               : 'Declaración',
         ),
+        actions: [DeclarationPdfAction(id: d.id, status: d.status)],
         bottom: _ProgressHeader(
           total: state.requiredFieldCount,
           missing: state.missingFields.length,

@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:declara_ucr/domain/schedule_observations.dart';
 import 'package:declara_ucr/models/declaration.dart';
+import 'package:declara_ucr/models/declaration_document.dart';
 import 'package:declara_ucr/models/declaration_status.dart';
 import 'package:declara_ucr/models/period.dart';
 import 'package:declara_ucr/models/schedule_task.dart';
@@ -168,6 +169,73 @@ abstract final class Proyecto1Mapper {
               .substring(at + ScheduleObservations.manualMarker.length)
               .trim();
   }
+
+  /// The stored declaration, to print it ([DeclarationDocument]).
+  static DeclarationDocument document({
+    required Map<String, dynamic> declaration,
+    required Map<String, dynamic> version,
+    required List<Map<String, dynamic>> appointments,
+    required List<Map<String, dynamic>> externalJobs,
+    required List<Map<String, dynamic>> signatures,
+    required String periodName,
+    required String? oathTemplate,
+  }) => _guard('document', () {
+    final person = Map<String, dynamic>.from(
+      version['declarantSnapshot'] as Map? ?? const {},
+    );
+    String text(Map<String, dynamic> map, String key) =>
+        map[key] as String? ?? '';
+    List<DocumentBlock> blocks(Map<String, dynamic> map) => [
+      for (final b in _maps(map['blocks']))
+        DocumentBlock(
+          Weekday.fromNumber(b['day'] as int),
+          b['startMinutes'] as int,
+          b['endMinutes'] as int,
+        ),
+    ];
+    DocumentJob job(Map<String, dynamic> map, String workplaceKey) =>
+        DocumentJob(
+          workplace: text(map, workplaceKey),
+          position: text(map, 'position'),
+          workload: text(map, 'workload'),
+          from: (map['startDate'] as Timestamp).toDate(),
+          to: (map['endDate'] as Timestamp).toDate(),
+          blocks: blocks(map),
+          weeklyMinutes: map['weeklyMinutes'] as int?,
+        );
+    return DeclarationDocument(
+      status: DeclarationStatus.fromValue(declaration['status'] as String),
+      versionNumber:
+          version['number'] as int? ??
+          declaration['currentVersionNumber'] as int,
+      person: DocumentPerson(
+        fullName: text(person, 'fullName'),
+        identification: text(person, 'identification'),
+        phone: text(person, 'phone'),
+        email: text(person, 'email'),
+        unitName: text(person, 'unitName'),
+        campusName: text(person, 'campusName'),
+      ),
+      periodName: periodName,
+      observations: version['observations'] as String? ?? '',
+      appointments: [for (final a in appointments) job(a, 'workplace')],
+      externalJobs: [for (final j in externalJobs) job(j, 'institution')],
+      signatures: [
+        for (final s in signatures)
+          if (SignatureType.fromValue(s['type'] as String?) case final type?)
+            DocumentSignature(
+              type: type,
+              fullName: s['fullName'] as String? ?? '',
+              signedAt: _date(s['signedAt']),
+              oathText: s['oathText'] as String?,
+              contentHash: s['contentHash'] as String?,
+            ),
+      ],
+      oathTemplate: oathTemplate,
+      contentHash: version['contentHash'] as String?,
+      createdAt: _date(version['createdAt']),
+    );
+  });
 
   static DateTime? _date(Object? value) =>
       value is Timestamp ? value.toDate() : null;
