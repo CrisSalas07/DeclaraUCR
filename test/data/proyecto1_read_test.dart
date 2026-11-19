@@ -151,9 +151,15 @@ void main() {
   });
 
   test('lists only open periods', () async {
-    final open = await periods.watchEnabled().first;
+    final open = await periods.openPeriods();
     expect(open.map((p) => p.id), ['2026_II']);
     expect(open.single.name, 'II Ciclo - 2026');
+  });
+
+  test('a period closed after a first read is no longer offered', () async {
+    expect(await periods.openPeriods(), hasLength(1));
+    await db.collection('periods').doc('2026_II').update({'enabled': false});
+    expect(await periods.openPeriods(), isEmpty);
   });
 
   test('reads the assignment of the person, with its lesson slots', () async {

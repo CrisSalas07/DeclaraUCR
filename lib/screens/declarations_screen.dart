@@ -62,7 +62,7 @@ Future<Declaration?> _newDeclaration(BuildContext context) async {
   }
   List<Period> open;
   try {
-    open = await periods.watchEnabled().first;
+    open = await periods.openPeriods();
   } catch (e) {
     debugPrint('Loading periods failed: $e');
     tell('No se pudieron cargar los períodos. Revise la conexión.');
