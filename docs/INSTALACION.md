@@ -25,13 +25,17 @@ Inicie sesión con una cuenta de prueba (tabla siguiente) o cree una con **Crear
 declarante y pide elegir sede y carrera. Una cuenta nueva **no puede crear declaraciones** hasta que
 Administración le asigne revisor y la Coordinación le asigne cursos, desde la web.
 
-| Cuenta | Rol | Para qué |
-|---|---|---|
-| *(completar)* | Declarante con revisor y cursos asignados | Recorrer los tres procesos |
-| *(completar)* | Declarante sin cursos asignados | Ver el mensaje que lo explica |
-| *(completar)* | Revisor, RRHH o administración | Ver que la app es solo para declarantes |
+| Rol | Para qué |
+|---|---|
+| Declarante con revisor y cursos asignados | Recorrer los tres procesos |
+| Declarante sin cursos asignados | Ver el mensaje que lo explica |
+| Revisor, RRHH o administración | Ver que la app es solo para declarantes |
 
-Las contraseñas se entregan aparte, no en este documento. Todos los datos son ficticios (§8).
+Las cuentas de prueba usan correos reales del equipo, porque el registro verifica el correo. Por eso los
+correos y las contraseñas se entregan aparte y no van en este documento. Los demás datos (sede, carrera,
+cursos) son ficticios.
+
+Para evaluar la app basta la cuenta de declarante con cursos; el equipo la entrega con su contraseña.
 
 ## 3. Actualizar a una versión nueva
 
@@ -104,7 +108,7 @@ Para recorrer los procesos en el teléfono, desde la **web del Proyecto 1** con 
 4. A las declarantes, asignarles **revisor** (Administración › Usuarios).
 5. Con la cuenta de Coordinación, **asignar cursos** y franjas de clase en el período a **una** de las
    declarantes (la otra queda sin cursos, para el caso de prueba).
-6. Anotar las cuentas en la tabla del punto 2.
+6. Entregar al equipo los correos y contraseñas de las cuentas por un canal privado, no en el repositorio.
 
 ## 7. Limitaciones conocidas
 
