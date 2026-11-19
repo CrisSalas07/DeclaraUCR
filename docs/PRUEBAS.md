@@ -17,8 +17,8 @@ y evidencia.
 (Android 16, letra al 110 %) con un build de desarrollo del **mismo commit `fc21a84`** de la 2.0.0+5, contra los
 emuladores con las reglas del Proyecto 1 y los datos ficticios de `backend/proyecto1/seed.mjs` (cuentas
 `docente`, `docente2` y `revisor`). Así las capturas no muestran datos de las cuentas reales del equipo y los
-casos se pueden repetir desde cero. CP-03 se ejecutó el mismo día con el APK publicado y el backend real; CP-06 y CP-08
-también se ejecutan así.
+casos se pueden repetir desde cero. CP-03 y CP-06 se ejecutaron el mismo día con el APK publicado y el backend real (CP-06 también
+en la web del Proyecto 1); CP-08 también se ejecuta así.
 En las capturas se taparon los íconos de notificaciones de la barra de estado del teléfono.
 
 Cómo llenar cada caso: **Resultado obtenido** describe lo que pasó; **Estado** es *Aprobado*, *Fallido* o
@@ -33,7 +33,7 @@ Cómo llenar cada caso: **Resultado obtenido** describe lo que pasó; **Estado**
 | [CP-03](#cp-03) | Proceso 3: resumen, validación y estado (hasta la firma) | Aprobado |
 | [CP-04](#cp-04) | Datos incompletos o inválidos | Aprobado |
 | [CP-05](#cp-05) | Restricciones de acceso por rol | Aprobado |
-| [CP-06](#cp-06) | Persistencia y recuperación | Pendiente |
+| [CP-06](#cp-06) | Persistencia y recuperación | Aprobado |
 | [CP-07](#cp-07) | Pérdida de conectividad | Aprobado |
 | [CP-08](#cp-08) | Instalación y ejecución de la versión distribuida | Pendiente |
 
@@ -131,10 +131,10 @@ que el revisor lee exactamente lo firmado y que no se firma dos veces.
 | **Precondiciones** | La declaración firmada de CP-03. Acceso a la web <https://declarahorario-b186f.web.app> |
 | **Pasos** | 1. En la web, iniciar sesión con la misma declarante y abrir la declaración.<br>2. En el teléfono, cerrar sesión y volver a iniciarla.<br>3. Abrir la declaración en el teléfono |
 | **Resultado esperado** | 1: la web muestra la misma declaración: estado, horario, cursos y la firma de la declarante.<br>2: tras volver a entrar aparecen las mismas declaraciones (los datos están en el servidor, no solo en el teléfono).<br>3: queda de **solo lectura** (firmada): no se editan el puesto ni el horario y no aparece **Guardar borrador** habilitado; el PDF sí se abre |
-| **Resultado obtenido** | |
-| **Versión** | 2.0.0+5 |
-| **Evidencia** | `CP-06-1.png` (la declaración en la web), `CP-06-2.png` (solo lectura en el teléfono) |
-| **Estado** | Pendiente |
+| **Resultado obtenido** | 1: en la web (con la misma declarante), "Mis declaraciones" muestra II Ciclo - 2026, **Versión 2**, "Pendiente de firma del revisor" y el seguimiento en **Revisor**, igual que el teléfono. "Seguimiento del trámite" indica responsable actual **Revisor**, versión 2, y la bitácora registra lo que hizo el teléfono en la versión 2 con los mismos eventos que escribe la web: "Validación ejecutada" (17:22), "Firma iniciada", "Firma registrada · Firmada por el declarante" y "Firma registrada · Pendiente de firma del revisor" (17:24).<br>2: la app se desinstaló y se volvió a instalar en el teléfono (2.0.0+5) y, al iniciar sesión de nuevo, mostró las mismas declaraciones; también después de actualizar a la 2.0.0+6.<br>3: con la 2.0.0+6, la declaración abre con "Esta declaración ya fue firmada y no se edita.", el estado "Pendiente de firma del revisor", **Guardar borrador** deshabilitado y el PDF disponible |
+| **Versión** | Web del Proyecto 1 y app 2.0.0+5 / 2.0.0+6 (APK publicado), backend real (2026-11-19) |
+| **Evidencia** | `CP-06-1.png` (seguimiento en la web), `CP-06-2.png` (bitácora en la web con los eventos de la firma desde el teléfono). El nombre de la cuenta está tapado con barras grises. El paso 3 se comprobó en la pantalla del teléfono; la vista de solo lectura es la de CP-03 |
+| **Estado** | Aprobado |
 
 ## CP-07
 
@@ -201,5 +201,5 @@ Defectos encontrados al ejecutar los casos de este documento:
 
 | Caso | Defecto | Corrección | Nueva comprobación |
 |---|---|---|---|
-| CP-01, 02, 03, 04, 05, 07 | Ninguno (2026-11-19) | — | — |
+| CP-01 a CP-07 | Ninguno (2026-11-19) | — | — |
 | | | | |
