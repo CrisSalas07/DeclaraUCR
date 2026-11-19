@@ -30,27 +30,43 @@ class _ShellScreenState extends State<ShellScreen> {
         const HistoryScreen(),
       ],
     ),
-    bottomNavigationBar: NavigationBar(
-      selectedIndex: _index,
-      onDestinationSelected: _go,
-      destinations: const [
-        NavigationDestination(
-          icon: Icon(Icons.home_outlined),
-          selectedIcon: Icon(Icons.home),
-          label: 'Inicio',
+    // "Declaraciones" must fit in a quarter of a phone: the labels do not
+    // grow past 100 % (the icons go with them), and the rest of the app
+    // still follows the phone's text size.
+    bottomNavigationBar: MediaQuery.withClampedTextScaling(
+      maxScaleFactor: 1,
+      child: NavigationBarTheme(
+        data: NavigationBarTheme.of(context).copyWith(
+          labelTextStyle: WidgetStatePropertyAll(
+            Theme.of(context).textTheme.labelMedium?.copyWith(fontSize: 11.5),
+          ),
         ),
-        NavigationDestination(
-          icon: Icon(Icons.description_outlined),
-          selectedIcon: Icon(Icons.description),
-          label: 'Declaraciones',
+        child: NavigationBar(
+          selectedIndex: _index,
+          onDestinationSelected: _go,
+          destinations: const [
+            NavigationDestination(
+              icon: Icon(Icons.home_outlined),
+              selectedIcon: Icon(Icons.home),
+              label: 'Inicio',
+            ),
+            NavigationDestination(
+              icon: Icon(Icons.description_outlined),
+              selectedIcon: Icon(Icons.description),
+              label: 'Declaraciones',
+            ),
+            NavigationDestination(
+              icon: Icon(Icons.directions_car_outlined),
+              selectedIcon: Icon(Icons.directions_car),
+              label: 'Zonaje',
+            ),
+            NavigationDestination(
+              icon: Icon(Icons.history),
+              label: 'Historial',
+            ),
+          ],
         ),
-        NavigationDestination(
-          icon: Icon(Icons.directions_car_outlined),
-          selectedIcon: Icon(Icons.directions_car),
-          label: 'Zonaje',
-        ),
-        NavigationDestination(icon: Icon(Icons.history), label: 'Historial'),
-      ],
+      ),
     ),
   );
 }

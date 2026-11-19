@@ -26,7 +26,8 @@ void main() {
       ),
     );
     for (final step in DeclarationProgress.steps) {
-      expect(find.text(step), findsOneWidget);
+      // One word per line, so no word is split.
+      expect(find.text(step.replaceAll(' ', '\n')), findsOneWidget);
     }
     expect(
       find.text('Validada: falta firmarla y enviarla a su revisor.'),
