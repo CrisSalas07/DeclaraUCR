@@ -1,0 +1,1877 @@
+rules_version = '2';
+
+// DeclaraHorario security rules (Integrante A, reviewed with Integrante C).
+//
+// The client is never trusted: every status change, signature and audit
+// event is checked here. A status change is only accepted when its audit
+// event (and its signature, when it is a signing step) is written in the
+// same batch, verified with getAfter()/existsAfter().
+//
+// Status values must match DeclarationStatus and the transition table in
+// lib/domain/workflow/declaration_status_transitions.dart. Field names
+// must match lib/core/constants/firestore_paths.dart.
+//
+// Run the tests against the emulator, never against real data:
+// firebase emulators:exec --only firestore,storage --project demo-declarahorario "npm test"
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // =========================================================
+    // AUTHENTICATION AND ROLES
+    //
+    // Roles are always read from users/{uid} on the server, never from
+    // data sent by the app, so a modified client cannot grant itself a
+    // role. A deactivated user (active == false) loses every role at once.
+    // =========================================================
+
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function userPath(uid) {
+      return /databases/$(database)/documents/users/$(uid);
+    }
+
+    // Profile of the user making the request.
+    function myUser() {
+      return get(userPath(request.auth.uid)).data;
+    }
+
+    // The profile is read once into a local binding: role checks run in
+    // almost every rule, and each request has a budget of 1000 evaluated
+    // expressions. The ternary keeps the old guards: no profile is read
+    // when signed out or when it does not exist, and the result is false.
+    function hasRole(role) {
+      let user = signedIn() && exists(userPath(request.auth.uid))
+        ? myUser()
+        : null;
+      return user != null
+        && user.active == true
+        && user.roles is list
+        && role in user.roles;
+    }
+
+    function isAdmin() {
+      return hasRole('admin');
+    }
+
+    function isHr() {
+      return hasRole('hr');
+    }
+
+    // Career coordinator: assigns the lesson hours of each teacher.
+    function isCareerCoordinator() {
+      return hasRole('careerCoordinator');
+    }
+
+    // Campus of the signed-in person, or null.
+    function myCampus() {
+      return myUser().get('campusId', null);
+    }
+
+    // HR acts only on the declarations (and zonaje requests) of its own
+    // campus. Older documents without a campus are outside every HR
+    // campus.
+    function isHrOf(data) {
+      return isHr()
+        && myCampus() != null
+        && data.get('campusId', null) == myCampus();
+    }
+
+    // An administrator manages only the people, careers, courses and
+    // processes of their own campus (chosen once in "Completa tu perfil",
+    // like everybody). [data] is the document, or the profile of the person
+    // it belongs to. Queries must filter by campusId. Periods stay global.
+    function isAdminOf(data) {
+      return isAdmin()
+        && myCampus() != null
+        && data.get('campusId', null) == myCampus();
+    }
+
+    // HR or an administrator of the campus of [data].
+    function isStaffOf(data) {
+      return isHrOf(data) || isAdminOf(data);
+    }
+
+    function campusPath(campusId) {
+      return /databases/$(database)/documents/campuses/$(campusId);
+    }
+
+    function unitPath(unitId) {
+      return /databases/$(database)/documents/units/$(unitId);
+    }
+
+    // =========================================================
+    // DECLARATIONS AND PARTICIPANTS
+    //
+    // Identity, not only role: a declarant acts only on their own
+    // declarations and a superior only on the ones assigned to them.
+    // =========================================================
+
+    function declarationPath(declarationId) {
+      return /databases/$(database)/documents/declarations/$(declarationId);
+    }
+
+    function versionPath(declarationId, versionId) {
+      return /databases/$(database)/documents/declarations/$(declarationId)/versions/$(versionId);
+    }
+
+    // Declaration BEFORE the current write or batch.
+    function declData(declarationId) {
+      return get(declarationPath(declarationId)).data;
+    }
+
+    // Declaration AFTER the current batch, as if it were already applied.
+    function declAfter(declarationId) {
+      return getAfter(declarationPath(declarationId)).data;
+    }
+
+    // Anyone allowed to read a declaration: its declarant, its assigned
+    // superior, and HR or administrators of its campus. Their queries must
+    // filter by campusId so this can be proven for every result.
+    function isParticipant(decl) {
+      return signedIn()
+        && (
+          decl.declarantUid == request.auth.uid
+          || decl.superiorUid == request.auth.uid
+          || isStaffOf(decl)
+        );
+    }
+
+    // The declarant who owns the declaration.
+    function isOwner(decl) {
+      return signedIn()
+        && decl.declarantUid == request.auth.uid
+        && hasRole('declarant');
+    }
+
+    // The superior assigned to the declaration.
+    function isSuperiorOf(decl) {
+      return signedIn()
+        && decl.superiorUid == request.auth.uid
+        && hasRole('superior');
+    }
+
+        // =========================================================
+    // AUDIT EVENTS AND SIGNATURES IN THE SAME BATCH
+    //
+    // A status change is accepted only with evidence written in the same
+    // batch: a NEW audit event referenced by lastEventId and, for signing
+    // steps, the signature and the intermediate FIRMADA_POR_* event
+    // (duda 3, agreed option A: one batch, one event per step).
+    // =========================================================
+
+    function eventPath(declarationId, eventId) {
+      return /databases/$(database)/documents/declarations/$(declarationId)/events/$(eventId);
+    }
+
+    // Fixed id of the intermediate signing event ('declarant' or
+    // 'superior'). Must match EventDocIds in
+    // lib/core/constants/firestore_paths.dart.
+    function signedEventId(signer, versionNumber) {
+      return 'signed-' + signer + '-v' + string(versionNumber);
+    }
+
+    // The event referenced by lastEventId is created in THIS batch (an old
+    // event cannot be reused to skip the audit), was written by the current
+    // user and records the expected new status.
+    function eventMatches(declarationId, expectedStatus) {
+      let evPath = eventPath(declarationId, request.resource.data.lastEventId);
+      return request.resource.data.lastEventId is string
+        && !exists(evPath)
+        && existsAfter(evPath)
+        && getAfter(evPath).data.userId == request.auth.uid
+        && getAfter(evPath).data.newStatus == expectedStatus;
+    }
+
+    // Same as eventMatches, and the event also records the status it comes
+    // from, so the audit trail cannot be falsified.
+    function transitionEventMatches(declarationId, previousStatus, newStatus) {
+      let evPath = eventPath(declarationId, request.resource.data.lastEventId);
+      return eventMatches(declarationId, newStatus)
+        && getAfter(evPath).data.previousStatus == previousStatus;
+    }
+
+    // The intermediate FIRMADA_POR_* event of a signing batch, stored under
+    // its fixed id for the current version.
+    function signingEventMatches(declarationId, signer, fromStatus, signedStatus) {
+      let evPath = eventPath(
+        declarationId,
+        signedEventId(signer, resource.data.currentVersionNumber)
+      );
+      return !exists(evPath)
+        && existsAfter(evPath)
+        && getAfter(evPath).data.userId == request.auth.uid
+        && getAfter(evPath).data.previousStatus == fromStatus
+        && getAfter(evPath).data.newStatus == signedStatus;
+    }
+
+    function signatureExistsAfter(declarationId, versionId, signatureId) {
+      return existsAfter(
+        /databases/$(database)/documents/declarations/$(declarationId)/versions/$(versionId)/signatures/$(signatureId)
+      );
+    }
+
+    // =========================================================
+    // STATUS TRANSITIONS
+    //
+    // Same table as DeclarationStatusTransitions in the app. The automatic
+    // steps FIRMADA_POR_DECLARANTE and FIRMADA_POR_SUPERIOR are recorded
+    // only as events; they are never stored in declarations.status.
+    // Sworn declarations are never annulled (duda 4, closed): ANULADA has
+    // no transitions; older documents with it are only read.
+    // =========================================================
+
+    function transitionAllowed(from, to) {
+      return (from == 'BORRADOR' && to == 'VALIDADA')
+        || (from == 'VALIDADA'
+          && to in ['PENDIENTE_FIRMA_DECLARANTE', 'BORRADOR'])
+        || (from == 'PENDIENTE_FIRMA_DECLARANTE'
+          && to in ['PENDIENTE_FIRMA_SUPERIOR', 'BORRADOR'])
+        || (from == 'PENDIENTE_FIRMA_SUPERIOR'
+          && to in ['DEVUELTA', 'ENVIADA_A_RRHH'])
+        || (from == 'DEVUELTA' && to == 'BORRADOR')
+        || (from == 'ENVIADA_A_RRHH'
+          && to in ['RECIBIDA_RRHH', 'FINALIZADA', 'DEVUELTA'])
+        || (from == 'RECIBIDA_RRHH' && to in ['FINALIZADA', 'DEVUELTA']);
+    }
+
+    // Who may make each change. Mirrors DeclarationWorkflow in the app.
+    // In each branch the statuses are compared before the role lookup, so
+    // only the branch of this transition reads the profile (each request has
+    // a budget of 1000 evaluated expressions). The transitions of the three
+    // branches do not overlap.
+    function actorAllowed(decl, from, to) {
+      return (
+        (
+          (from == 'BORRADOR' && to == 'VALIDADA')
+          || (from == 'VALIDADA'
+            && to in ['PENDIENTE_FIRMA_DECLARANTE', 'BORRADOR'])
+          || (from == 'PENDIENTE_FIRMA_DECLARANTE'
+            && to in ['PENDIENTE_FIRMA_SUPERIOR', 'BORRADOR'])
+          || (from == 'DEVUELTA' && to == 'BORRADOR')
+        )
+        && isOwner(decl)
+        // Validating needs the coordination's assignment: if it was
+        // removed after the draft was created, the draft waits for it.
+        && (
+          !(from == 'BORRADOR' && to == 'VALIDADA')
+          || exists(myAssignmentPath(decl.periodId))
+        )
+      )
+      || (
+        from == 'PENDIENTE_FIRMA_SUPERIOR'
+        && to in ['DEVUELTA', 'ENVIADA_A_RRHH']
+        && isSuperiorOf(decl)
+      )
+      || (
+        (
+          (from == 'ENVIADA_A_RRHH'
+            && to in ['RECIBIDA_RRHH', 'FINALIZADA', 'DEVUELTA'])
+          // Whoever received it took it: only they approve or return it.
+          || (
+            from == 'RECIBIDA_RRHH'
+            && to in ['FINALIZADA', 'DEVUELTA']
+            && decl.get('currentResponsibleUid', null) == request.auth.uid
+          )
+        )
+        && isHrOf(decl)
+        // Nobody approves or returns their own declaration, even with HR.
+        && !isOwner(decl)
+      );
+    }
+
+    // Status the final event comes from: in a signing batch the final event
+    // follows the intermediate FIRMADA_POR_* event.
+    function finalEventFrom(from, to) {
+      return to == 'PENDIENTE_FIRMA_SUPERIOR'
+        ? 'FIRMADA_POR_DECLARANTE'
+        : to == 'ENVIADA_A_RRHH'
+          ? 'FIRMADA_POR_SUPERIOR'
+          : from;
+    }
+
+    function transitionEvidence(declarationId, from, to) {
+      return transitionEventMatches(declarationId, finalEventFrom(from, to), to)
+        && (
+          to != 'PENDIENTE_FIRMA_SUPERIOR'
+          || (
+            signatureExistsAfter(declarationId, resource.data.currentVersionId, 'declarant')
+            && signingEventMatches(declarationId, 'declarant',
+                 'PENDIENTE_FIRMA_DECLARANTE', 'FIRMADA_POR_DECLARANTE')
+          )
+        )
+        && (
+          to != 'ENVIADA_A_RRHH'
+          || (
+            signatureExistsAfter(declarationId, resource.data.currentVersionId, 'superior')
+            && signingEventMatches(declarationId, 'superior',
+                 'PENDIENTE_FIRMA_SUPERIOR', 'FIRMADA_POR_SUPERIOR')
+          )
+        )
+               && (
+          to != 'DEVUELTA'
+          || (
+            request.resource.data.pendingObservation is string
+            && request.resource.data.pendingObservation.size() > 0
+            // Same limit as the return dialog in the app.
+            && request.resource.data.pendingObservation.size() <= 1000
+          )
+        )
+        // HR approves by signing: a procedure is closed only with the HR
+        // signature of the current version, written in the same batch.
+        && (
+          to != 'FINALIZADA'
+          || signatureExistsAfter(declarationId, resource.data.currentVersionId, 'hr')
+        )
+        // The first HR person who receives it takes it.
+        && (
+          to != 'RECIBIDA_RRHH'
+          || request.resource.data.get('currentResponsibleUid', null)
+            == request.auth.uid
+        );
+    }
+
+    // Fields that never change after the declaration is created.
+    function immutableFieldsKept() {
+      return request.resource.data.declarantUid == resource.data.declarantUid
+        && request.resource.data.periodId == resource.data.periodId
+        && request.resource.data.superiorUid == resource.data.superiorUid
+        && request.resource.data.get('campusId', null)
+          == resource.data.get('campusId', null)
+        && request.resource.data.createdAt == resource.data.createdAt;
+    }
+
+    // DEVUELTA -> BORRADOR must create version N+1 in the same batch and
+    // point the declaration to it (HU-20).
+    function newVersionRules(declarationId) {
+      return request.resource.data.currentVersionNumber
+          == resource.data.currentVersionNumber + 1
+        && request.resource.data.currentVersionId
+          != resource.data.currentVersionId
+        && existsAfter(
+          versionPath(declarationId, request.resource.data.currentVersionId)
+        );
+    }
+
+    // Fields a status change may touch, by transition. Everything else
+    // stays exactly as it was: a signing batch cannot point currentVersionId
+    // to another (unlocked) version, and no field can be rewritten or
+    // invented on the way. Mirrors what FirestoreWorkflowService writes.
+    //
+    // Whole lists on purpose: the rules language cannot concatenate lists.
+    // HR resolves a declaration: it approves (FINALIZADA) or returns it.
+    // Only then hrResult (the result) and hrResultAt (server time) are
+    // written, so the HR history lists exactly what passed through HR.
+    function isHrOutcome(from, to) {
+      return from in ['ENVIADA_A_RRHH', 'RECIBIDA_RRHH']
+        && to in ['FINALIZADA', 'DEVUELTA'];
+    }
+
+    function hrResultRecorded(from, to) {
+      return !isHrOutcome(from, to)
+        || (
+          request.resource.data.hrResult == to
+          && request.resource.data.hrResultAt == request.time
+        );
+    }
+
+    function transitionFields(from, to) {
+      return baseTransitionFields(from, to).concat(
+        isHrOutcome(from, to) ? ['hrResult', 'hrResultAt'] : []
+      );
+    }
+
+    function baseTransitionFields(from, to) {
+      return (from == 'DEVUELTA' && to == 'BORRADOR')
+        // New version N+1 (HU-20): the declaration points to it and the
+        // superior's observation is cleared.
+        ? ['status', 'lastEventId', 'updatedAt',
+            'currentResponsibleUid', 'currentResponsibleRole',
+            'currentVersionId', 'currentVersionNumber', 'pendingObservation']
+        : to == 'DEVUELTA'
+          // The superior returns it with an observation (HU-19).
+          ? ['status', 'lastEventId', 'updatedAt',
+              'currentResponsibleUid', 'currentResponsibleRole',
+              'pendingObservation']
+          // Any other transition.
+          : ['status', 'lastEventId', 'updatedAt',
+              'currentResponsibleUid', 'currentResponsibleRole'];
+    }
+
+    // The write changes (adds, modifies or removes) only these fields.
+    function onlyFieldsChanged(allowed) {
+      return request.resource.data.diff(resource.data).affectedKeys()
+        .hasOnly(allowed);
+    }
+
+    // When updatedAt is written it must be the server time
+    // (FieldValue.serverTimestamp()), so the inboxes, which are sorted by
+    // it, cannot be reordered with a made-up date.
+    function updatedAtIsServerTime() {
+      return !request.resource.data.diff(resource.data).affectedKeys()
+          .hasAny(['updatedAt'])
+        || request.resource.data.updatedAt == request.time;
+    }
+
+    // =========================================================
+    // USERS
+    //
+    // Free sign-up (duda 14, decided by Integrante A): a person may only
+    // create their own profile, always as a plain declarant. Roles,
+    // superior and unit are assigned by an administrator; campus and career
+    // are chosen once by the person after signing in.
+    //
+    // Formats (same as FormValidators, change both together): cédula of 9
+    // digits with the zeros, passport of 6 to 20 capital letters or digits,
+    // Costa Rican phone of 8 digits, email of an accepted provider.
+    // An identification can belong to one person only: the profile is
+    // accepted only together with its reservation in identifications/.
+    // =========================================================
+
+    function validIdentification(data) {
+      return (
+          data.identificationType == 'CEDULA'
+          && data.identification is string
+          && data.identification.matches('[1-9][0-9]{8}')
+        ) || (
+          data.identificationType == 'PASAPORTE'
+          && data.identification is string
+          && data.identification.matches('[A-Z0-9]{6,20}')
+        );
+    }
+
+    function validPhone(phone) {
+      return phone is string && phone.matches('[245678][0-9]{7}');
+    }
+
+    function allowedEmail(email) {
+      return email is string
+        && email.lower().matches(
+          '[^@ ]+@(ucr[.]ac[.]cr|gmail[.]com|outlook[.]com|hotmail[.]com|live[.]com|zoho[.]com|zohomail[.]com)'
+        );
+    }
+
+    function identificationId(data) {
+      return data.identificationType + '_' + data.identification;
+    }
+
+    // The reservation of the identification in data belongs to uid once
+    // this write is done.
+    function identificationReservedFor(uid, data) {
+      return getAfter(/databases/$(database)/documents/identifications/$(identificationId(data))).data.uid == uid;
+    }
+
+    // What an administrator assigns (UserAssignmentRules in the app):
+    // 1 or 2 roles, never superior and declarant together; a superior only for a declarant, never themselves, with
+    // the superior role and from the same campus; a career from the
+    // person's campus, only while a declarant or career coordinator role
+    // stays (taking both away removes it in the same update). Each check runs only when its fields change, so
+    // older profiles can still be activated or deactivated. The campus is
+    // the person's own choice: an administrator never moves anybody to
+    // another campus (it would leave their campus).
+    function validAdminUserUpdate(uid) {
+      let after = request.resource.data;
+      let changed = after.diff(resource.data).affectedKeys();
+      return !changed.hasAny(['campusId'])
+        && (
+          !changed.hasAny(['roles'])
+          || (after.roles is list
+            && after.roles.size() >= 1
+            && after.roles.size() <= 2
+            && !after.roles.hasAll(['superior', 'declarant']))
+        )
+        && (
+          !changed.hasAny(['roles', 'superiorUid'])
+          || !('superiorUid' in after)
+          || 'declarant' in after.roles
+        )
+        && (
+          !changed.hasAny(['superiorUid', 'campusId'])
+          || !('superiorUid' in after)
+          || validSuperiorFor(uid, after)
+        )
+        && (
+          !changed.hasAny(['unitId', 'campusId'])
+          || !('unitId' in after)
+          || unitInCampus(after.unitId, after.get('campusId', null))
+        )
+        && (
+          !changed.hasAny(['roles'])
+          || !('unitId' in after)
+          || after.roles.hasAny(['declarant', 'careerCoordinator'])
+        )
+        && (
+          !changed.hasAny(['salaryRegime'])
+          || !('salaryRegime' in after)
+          || validSalaryRegime(after.salaryRegime)
+        );
+    }
+
+    // R16: the salary regime is registered by HR or an administrator, never
+    // by the person (see the users update rule).
+    function validSalaryRegime(value) {
+      return value in ['COMPUESTO', 'GLOBAL'];
+    }
+
+    // HR registers the salary regime of the people of its campus, never its
+    // own (like a zonaje request, nobody decides on themselves).
+    function validHrSalaryRegimeUpdate(uid) {
+      return isHr()
+        && request.auth.uid != uid
+        && myCampus() != null
+        && resource.data.get('campusId', null) == myCampus()
+        && request.resource.data.diff(resource.data).affectedKeys()
+          .hasOnly(['salaryRegime'])
+        && validSalaryRegime(request.resource.data.salaryRegime);
+    }
+
+    function validSuperiorFor(uid, after) {
+      return after.superiorUid is string
+        && after.superiorUid != uid
+        && after.get('campusId', null) != null
+        && exists(userPath(after.superiorUid))
+        && 'superior' in get(userPath(after.superiorUid)).data.roles
+        && get(userPath(after.superiorUid)).data.get('campusId', null)
+          == after.campusId;
+    }
+
+    function unitInCampus(unitId, campusId) {
+      return unitId is string
+        && campusId != null
+        && exists(unitPath(unitId))
+        && get(unitPath(unitId)).data.get('campusId', null) == campusId;
+    }
+
+    function activeCampus(campusId) {
+      return campusId is string
+        && exists(campusPath(campusId))
+        && get(campusPath(campusId)).data.get('active', true) == true;
+    }
+
+    // "Completa tu perfil": the person writes their own campus and career
+    // only while they are empty (afterwards only an administrator changes
+    // them). The career is for declarants, must be active and from their
+    // campus; career coordinators get theirs from an administrator.
+    function validOwnCampusChoice(uid) {
+      let after = request.resource.data;
+      let changed = after.diff(resource.data).affectedKeys();
+      return signedIn()
+        && request.auth.uid == uid
+        && resource.data.active == true
+        && changed.size() > 0
+        && changed.hasOnly(['campusId', 'unitId'])
+        && (
+          !changed.hasAny(['campusId'])
+          || (
+            resource.data.get('campusId', '') == ''
+            && activeCampus(after.campusId)
+          )
+        )
+        && (
+          !changed.hasAny(['unitId'])
+          || (
+            resource.data.get('unitId', '') == ''
+            && 'declarant' in resource.data.roles
+            && !('careerCoordinator' in resource.data.roles)
+            && unitInCampus(after.unitId, after.get('campusId', null))
+            && get(unitPath(after.unitId)).data.get('active', true) == true
+          )
+        );
+    }
+
+    // =========================================================
+    // PROFILES CREATED BY AN ADMINISTRATOR ("Crear perfil")
+    //
+    // pendingProfiles/{email in lower case}: what an administrator assigns
+    // to a person before they sign up, with the same checks as
+    // validAdminUserUpdate. The account with that verified email takes it
+    // (validPendingActivation) and deletes it in the same batch.
+    // =========================================================
+
+    function pendingPath(email) {
+      return /databases/$(database)/documents/pendingProfiles/$(email);
+    }
+
+    // The signed-in account has [email] (in lower case) and verified it.
+    function ownsVerifiedEmail(email) {
+      return signedIn()
+        && request.auth.token.email_verified == true
+        && request.auth.token.email.lower() == email;
+    }
+
+    // A pending profile of the administrator's own campus. The superior is
+    // checked with validSuperiorFor, passing the email where it expects a
+    // uid: the person has none yet, so it can never be their own superior.
+    function validPendingProfile(email, data) {
+      return data.keys().hasAll(['email', 'roles', 'campusId', 'createdBy', 'createdAt', 'updatedAt'])
+        && data.keys().hasOnly(['email', 'roles', 'campusId', 'unitId', 'superiorUid', 'createdBy', 'createdAt', 'updatedAt'])
+        && data.email == email
+        && email == email.lower()
+        && allowedEmail(email)
+        && data.roles is list
+        && data.roles.size() >= 1
+        && data.roles.size() <= 2
+        && data.roles.hasOnly(['declarant', 'careerCoordinator', 'superior', 'hr', 'admin'])
+        && !data.roles.hasAll(['superior', 'declarant'])
+        && data.campusId == myCampus()
+        && (
+          data.roles.hasAny(['declarant', 'careerCoordinator'])
+            ? (
+              unitInCampus(data.get('unitId', null), data.campusId)
+              && get(unitPath(data.unitId)).data.get('active', true) == true
+            )
+            : !('unitId' in data)
+        )
+        && (
+          !('superiorUid' in data)
+          || ('declarant' in data.roles && validSuperiorFor(email, data))
+        )
+        && data.updatedAt == request.time;
+    }
+
+    // The person takes the profile created for their verified email: only
+    // roles, campus, career and superior, exactly as created, while their
+    // campus is empty or the same (nobody changes campus), with the
+    // superior still valid today, and deleting the pending profile in the
+    // same batch.
+    function validPendingActivation(uid) {
+      let email = request.auth.token.email.lower();
+      let after = request.resource.data;
+      let pending = get(pendingPath(email)).data;
+      return request.auth.uid == uid
+        && ownsVerifiedEmail(email)
+        && resource.data.active == true
+        && exists(pendingPath(email))
+        && !existsAfter(pendingPath(email))
+        && after.diff(resource.data).affectedKeys()
+          .hasOnly(['roles', 'campusId', 'unitId', 'superiorUid'])
+        && resource.data.get('campusId', '') in ['', pending.campusId]
+        && hasPendingValues(after, pending)
+        && (!('superiorUid' in after) || validSuperiorFor(uid, after));
+    }
+
+    // [user] has exactly the roles, campus, career and superior of
+    // [pending].
+    function hasPendingValues(user, pending) {
+      return user.roles == pending.roles
+        && user.get('campusId', null) == pending.campusId
+        && user.get('unitId', null) == pending.get('unitId', null)
+        && user.get('superiorUid', null) == pending.get('superiorUid', null);
+    }
+
+    match /pendingProfiles/{email} {
+      // An administrator may also look up an email that has no profile
+      // yet (resource == null), so "Crear perfil" can tell it is free; a
+      // profile of another campus stays unreadable.
+      allow read: if (isAdmin() && (resource == null || isAdminOf(resource.data)))
+        || ownsVerifiedEmail(email);
+
+      allow create: if isAdmin()
+        && validPendingProfile(email, request.resource.data)
+        && request.resource.data.createdBy == request.auth.uid
+        && request.resource.data.createdAt == request.time;
+
+      allow update: if isAdminOf(resource.data)
+        && validPendingProfile(email, request.resource.data)
+        && request.resource.data.diff(resource.data).affectedKeys()
+          .hasOnly(['roles', 'unitId', 'superiorUid', 'updatedAt']);
+
+      // The administrator of its campus, or the person while taking it:
+      // their profile must end the batch with exactly these values, so the
+      // profile cannot be dropped with another write (such as choosing a
+      // campus in "Completa tu perfil").
+      allow delete: if isAdminOf(resource.data)
+        || (
+          ownsVerifiedEmail(email)
+          && hasPendingValues(getAfter(userPath(request.auth.uid)).data, resource.data)
+        );
+    }
+
+    match /users/{uid} {
+      // Personal data (identification, phone, email): a superior only reads
+      // the profiles of the people assigned to them; admins and HR read the
+      // people of their own campus (their queries filter by campusId).
+      allow read: if signedIn()
+        && (
+          request.auth.uid == uid
+          || isStaffOf(resource.data)
+          || (
+            hasRole('superior')
+            && resource.data.get('superiorUid', null) == request.auth.uid
+          )
+        );
+
+      allow create: if signedIn()
+        && request.auth.uid == uid
+        && request.resource.data.keys().hasAll([
+          'fullName',
+          'identification',
+          'identificationType',
+          'phone',
+          'email',
+          'roles',
+          'active'
+        ])
+        && request.resource.data.keys().hasOnly([
+          'fullName',
+          'identification',
+          'identificationType',
+          'phone',
+          'email',
+          'roles',
+          'active'
+        ])
+        && request.resource.data.roles == ['declarant']
+        && request.resource.data.active == true
+        && request.resource.data.fullName is string
+        && validIdentification(request.resource.data)
+        && validPhone(request.resource.data.phone)
+        && allowedEmail(request.resource.data.email)
+        && identificationReservedFor(uid, request.resource.data);
+
+      // Admins manage roles, status, campus, career, superior and salary
+      // regime; HR registers the salary regime of its campus; a person with
+      // an active account, whatever their roles, may only edit their own
+      // contact data and choose their campus and career once.
+      //
+      // TODO(improvement-C): with the staff roster, identification and the
+      // name become read-only for the person (only the phone stays
+      // editable). See docs/DECISIONES_PENDIENTES.md.
+      allow update: if (isAdminOf(resource.data) && validAdminUserUpdate(uid))
+        || validHrSalaryRegimeUpdate(uid)
+        || validOwnCampusChoice(uid)
+        || validPendingActivation(uid)
+        || (
+          signedIn()
+          && request.auth.uid == uid
+          && resource.data.active == true
+          && request.resource.data.diff(resource.data)
+            .affectedKeys()
+            .hasOnly([
+              'fullName',
+              'identification',
+              'identificationType',
+              'phone',
+              'email'
+            ])
+          && validIdentification(request.resource.data)
+          && validPhone(request.resource.data.phone)
+          && (
+            !request.resource.data.diff(resource.data).affectedKeys()
+              .hasAny(['identification', 'identificationType'])
+            || identificationReservedFor(uid, request.resource.data)
+          )
+        );
+
+      // Profiles are never deleted: declarations, signatures and the
+      // identification reservation point to them. "Cuenta activa" disables
+      // a person instead.
+      allow delete: if false;
+    }
+
+    // identifications/{TYPE}_{number}: { uid }. Created together with the
+    // profile (or a change of identification) and never edited. Anyone
+    // signed in may check a single id, nobody may list them.
+    match /identifications/{reservationId} {
+      allow get: if signedIn();
+      allow list: if false;
+
+      allow create: if signedIn()
+        && request.resource.data.keys().hasOnly(['uid'])
+        && request.resource.data.uid == request.auth.uid
+        && reservationId == identificationId(
+          getAfter(/databases/$(database)/documents/users/$(request.auth.uid)).data
+        );
+
+      allow update: if false;
+
+      // Released when the person moves to another identification, or by an
+      // administrator of their campus (any administrator, if the profile
+      // is gone).
+      allow delete: if (
+          isAdmin()
+          && (
+            !exists(userPath(resource.data.uid))
+            || isAdminOf(get(userPath(resource.data.uid)).data)
+          )
+        )
+        || (
+          signedIn()
+          && resource.data.uid == request.auth.uid
+          && reservationId != identificationId(
+            getAfter(/databases/$(database)/documents/users/$(request.auth.uid)).data
+          )
+        );
+    }
+
+    // =========================================================
+    // CAMPUSES, UNITS (CAREERS) AND PERIODS
+    //
+    // Readable by any signed-in user (needed to choose a campus and career
+    // and to create declarations); only administrators manage them (HU-03).
+    // Any administrator adds a campus to the catalog (the first one from
+    // "Completa tu perfil"), but changes or deletes only their own; careers
+    // belong to the campus of the administrator. Rules cannot see who uses
+    // a campus or career, so the app checks it before deleting one.
+    // =========================================================
+
+    function validName(name) {
+      return name is string && name.size() > 0 && name.size() <= 120;
+    }
+
+    // A point on the map: exactly {lat, lng}, in degrees.
+    function validGeo(value) {
+      return value is map
+        && value.keys().hasOnly(['lat', 'lng'])
+        && value.keys().hasAll(['lat', 'lng'])
+        && value.lat is number && value.lat >= -90 && value.lat <= 90
+        && value.lng is number && value.lng >= -180 && value.lng <= 180;
+    }
+
+    // The location of the campus (point 2) is marked on the map by its
+    // administration; without it nobody of the campus can ask for zonaje.
+    match /campuses/{campusId} {
+      allow read: if signedIn();
+      allow create, update: if isAdmin()
+        && (request.method == 'create' || campusId == myCampus())
+        && request.resource.data.keys().hasOnly(['name', 'active', 'location'])
+        && validName(request.resource.data.name)
+        && request.resource.data.active is bool
+        && (
+          !('location' in request.resource.data)
+          || validGeo(request.resource.data.location)
+        );
+      allow delete: if isAdmin() && campusId == myCampus();
+    }
+
+    // Each career belongs to an existing campus, the administrator's own.
+    // Careers created before campuses existed keep working until an
+    // administrator takes them into their campus.
+    match /units/{unitId} {
+      allow read: if signedIn();
+      allow create, update: if isAdmin()
+        && request.resource.data.keys().hasOnly(['name', 'active', 'campusId'])
+        && validName(request.resource.data.name)
+        && request.resource.data.get('active', true) is bool
+        && isAdminOf(request.resource.data)
+        && (
+          request.method == 'create'
+          || isAdminOf(resource.data)
+          || resource.data.get('campusId', null) == null
+        )
+        && exists(campusPath(request.resource.data.campusId));
+      allow delete: if isAdminOf(resource.data);
+    }
+
+    // =========================================================
+    // COURSE CATALOG
+    //
+    // courses/{courseId}: the courses of each career, managed by an
+    // administrator (CourseCatalogRules in the app, same limits). The sigla
+    // is unique within the campus: courseCodes/{campusId}_{code} holds the
+    // courseId and is written in the same batch as the course, so two
+    // courses can never share it. The career and campus of a course never
+    // change. Rules cannot look for references: the app deletes a course
+    // only when no assignment lists it (workloadAssignments.courseIds).
+    // =========================================================
+
+    function courseCodePath(campusId, code) {
+      return /databases/$(database)/documents/courseCodes/$(campusId + '_' + code);
+    }
+
+    function coursePath(courseId) {
+      return /databases/$(database)/documents/courses/$(courseId);
+    }
+
+    // Sigla of upper case letters and digits, a name, 0 to 30 credits and
+    // weekly hours above 0, up to 40, in half hours.
+    function validCourse(data) {
+      return data.code is string
+        && data.code.matches('^[A-Z0-9]{2,10}$')
+        && validName(data.name)
+        && data.credits is int
+        && data.credits >= 0
+        && data.credits <= 30
+        && data.weeklyHours is number
+        && data.weeklyHours > 0
+        && data.weeklyHours <= 40
+        && data.weeklyHours * 2 == math.floor(data.weeklyHours * 2)
+        && data.active is bool;
+    }
+
+    // The reservation of the course's sigla points to it after this batch.
+    function holdsCode(courseId, data) {
+      return getAfter(courseCodePath(data.campusId, data.code)).data.courseId
+        == courseId;
+    }
+
+    match /courses/{courseId} {
+      // The coordinator lists only the courses of their own career, so the
+      // query must filter by unitId.
+      allow read: if isAdminOf(resource.data)
+        || (isCareerCoordinator() && resource.data.unitId == myUser().unitId);
+
+      allow create: if isAdminOf(request.resource.data)
+        && request.resource.data.keys().hasOnly([
+          'code', 'name', 'credits', 'weeklyHours', 'unitId', 'campusId',
+          'active', 'createdAt', 'updatedAt'
+        ])
+        && request.resource.data.keys().hasAll([
+          'code', 'name', 'credits', 'weeklyHours', 'unitId', 'campusId',
+          'active', 'createdAt', 'updatedAt'
+        ])
+        && validCourse(request.resource.data)
+        && request.resource.data.unitId is string
+        && exists(unitPath(request.resource.data.unitId))
+        && get(unitPath(request.resource.data.unitId)).data.get('campusId', null)
+          == request.resource.data.campusId
+        && request.resource.data.createdAt == request.time
+        && request.resource.data.updatedAt == request.time
+        && holdsCode(courseId, request.resource.data);
+
+      // A new sigla must come with its reservation in the same batch.
+      allow update: if isAdminOf(resource.data)
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly([
+          'code', 'name', 'credits', 'weeklyHours', 'active', 'updatedAt'
+        ])
+        && validCourse(request.resource.data)
+        && request.resource.data.updatedAt == request.time
+        && (
+          request.resource.data.code == resource.data.code
+          || holdsCode(courseId, request.resource.data)
+        );
+
+      // Its reservation goes in the same batch.
+      allow delete: if isAdminOf(resource.data)
+        && !existsAfter(courseCodePath(resource.data.campusId, resource.data.code));
+    }
+
+    // courseCodes/{campusId}_{code}: { courseId }. Created only for the
+    // course that takes that sigla in this batch; a taken sigla is never
+    // overwritten (writing an existing id is an update). Removed only when
+    // its course is deleted or moves to another sigla in the same batch.
+    // Each administrator only touches the siglas of their own campus.
+    match /courseCodes/{reservationId} {
+      allow get: if isAdmin()
+        && myCampus() != null
+        && reservationId.matches(myCampus() + '_.+');
+      allow list: if false;
+
+      allow create: if isAdmin()
+        && myCampus() != null
+        && reservationId.matches(myCampus() + '_.+')
+        && request.resource.data.keys().hasOnly(['courseId'])
+        && request.resource.data.courseId is string
+        && existsAfter(coursePath(request.resource.data.courseId))
+        && reservationId
+          == getAfter(coursePath(request.resource.data.courseId)).data.campusId
+          + '_' + getAfter(coursePath(request.resource.data.courseId)).data.code;
+      allow update: if false;
+      allow delete: if isAdmin()
+        && myCampus() != null
+        && reservationId.matches(myCampus() + '_.+')
+        && (
+          !existsAfter(coursePath(resource.data.courseId))
+          || reservationId
+            != getAfter(coursePath(resource.data.courseId)).data.campusId
+            + '_' + getAfter(coursePath(resource.data.courseId)).data.code
+        );
+    }
+
+    // Template of the sworn declaration (config/oath). Everybody reads it to
+    // sign; only an administrator changes it. What each declarant accepted
+    // is stored, already filled, in their signature (oathText).
+    match /config/{docId} {
+      allow read: if signedIn();
+      allow create, update: if isAdmin()
+        && docId == 'oath'
+        && request.resource.data.keys().hasOnly(['template', 'updatedAt', 'updatedBy'])
+        && request.resource.data.template is string
+        && request.resource.data.template.size() > 0
+        && request.resource.data.template.size() <= 5000
+        && request.resource.data.updatedBy == request.auth.uid
+        && request.resource.data.updatedAt == request.time;
+      allow delete: if false;
+    }
+
+    // A period is one lecture cycle of an academic year, global for the
+    // whole university (PeriodRules in the app). It is created at the
+    // fixed id {year}_{cycle}, so a cycle cannot exist twice: writing an
+    // existing id is an update, which only opens or closes the period.
+    // "Today" allows one day of margin because request.time is UTC and
+    // Costa Rica is UTC-6. Rules cannot add calendar months: the app
+    // requires one month, here at least 28 days. Periods are never deleted
+    // (declarations point to them); periods created before keep their free
+    // name and can still be opened or closed.
+    function validNewPeriod(periodId) {
+      let data = request.resource.data;
+      let today = request.time - duration.value(1, 'd');
+      return data.keys().hasOnly([
+          'name', 'startDate', 'endDate', 'enabled', 'createdBy', 'cycle', 'year'
+        ])
+        && data.keys().hasAll([
+          'name', 'startDate', 'endDate', 'enabled', 'createdBy', 'cycle', 'year'
+        ])
+        && data.cycle in ['I', 'II', 'III']
+        && data.year is int
+        && data.year >= today.year()
+        && data.year <= today.year() + 10
+        && periodId == string(data.year) + '_' + data.cycle
+        && data.name == data.cycle + ' Ciclo - ' + string(data.year)
+        && data.startDate is timestamp
+        && data.endDate is timestamp
+        && data.startDate >= today
+        && data.endDate >= data.startDate + duration.value(28, 'd')
+        && data.enabled is bool
+        && data.createdBy == request.auth.uid;
+    }
+
+    match /periods/{periodId} {
+      allow read: if signedIn();
+      allow create: if isAdmin() && validNewPeriod(periodId);
+      allow update: if isAdmin()
+        && request.resource.data.diff(resource.data).affectedKeys()
+          .hasOnly(['enabled'])
+        && request.resource.data.enabled is bool;
+      allow delete: if false;
+    }
+
+    // =========================================================
+    // TEACHER DIRECTORY AND WORKLOAD ASSIGNMENTS
+    //
+    // The directory is a name-and-career copy of each teacher, so the career
+    // coordinator can list the teachers of their own career without reading
+    // their profile. Each teacher writes only their own entry, and name and
+    // career must be the ones in their profile.
+    //
+    // Lesson hours are authorized per teacher and period. Only the career
+    // coordinator (or an admin) writes them; the teacher reads only their
+    // own (the document id ends with their uid). Attention and planning
+    // hours are derived by the app, never stored.
+    // =========================================================
+
+    // Career (unit) of a teacher, as copied into the directory.
+    function teacherUnit(uid) {
+      return get(/databases/$(database)/documents/teacherDirectory/$(uid)).data.unitId;
+    }
+
+    // A career coordinator manages only teachers of their own career.
+    // The coordinator acts only on teachers of their own career who are
+    // declarants today (read from the profile, not from the directory,
+    // which may be stale), and never on themselves.
+    function coordinatesTeacher(uid) {
+      return isCareerCoordinator()
+        && uid != request.auth.uid
+        && exists(/databases/$(database)/documents/teacherDirectory/$(uid))
+        && teacherUnit(uid) == myUser().unitId
+        && 'declarant' in get(userPath(uid)).data.roles;
+    }
+
+    function isActiveDeclarant(person) {
+      return person.active == true && 'declarant' in person.roles;
+    }
+
+    // The name, career and identification of [uid] as their profile is
+    // after this write. The identification lets the career coordination
+    // search by cédula; entries written before it existed have none.
+    function validDirectoryEntry(uid) {
+      let person = getAfter(userPath(uid)).data;
+      let entry = request.resource.data;
+      return isActiveDeclarant(person)
+        && entry.keys().hasOnly(['fullName', 'unitId', 'identification', 'updatedAt'])
+        && entry.keys().hasAll(['fullName', 'updatedAt'])
+        && entry.fullName == person.fullName
+        && entry.get('unitId', null) == person.get('unitId', null)
+        && (
+          !('identification' in entry)
+          || entry.identification == person.identification
+        )
+        && entry.updatedAt == request.time;
+    }
+
+    match /teacherDirectory/{uid} {
+      // A coordinator reads only the entries of their own career, so list
+      // queries must filter by unitId; HR and administrators read single
+      // entries of the people of their campus.
+      allow read: if signedIn()
+        && (
+          request.auth.uid == uid
+          || isStaffOf(get(userPath(uid)).data)
+          || (isCareerCoordinator() && resource.data.unitId == myUser().unitId)
+        );
+
+      // Written by the person or by an administrator of their campus, also
+      // in the same batch that changes the profile (a new career, roles or
+      // status, or taking a created profile): the entry must match the
+      // profile as it is after the batch, of an active declarant.
+      allow create, update: if signedIn()
+        && (request.auth.uid == uid || isAdminOf(getAfter(userPath(uid)).data))
+        && validDirectoryEntry(uid);
+
+      // An administrator of the person's campus removes the entry when the
+      // declarant role or the account is taken away; the person removes
+      // their own entry once they are no longer an active declarant (also
+      // in the batch that takes a created profile).
+      allow delete: if isAdminOf(get(userPath(uid)).data)
+        || (
+          signedIn()
+          && request.auth.uid == uid
+          && !isActiveDeclarant(getAfter(userPath(uid)).data)
+        );
+    }
+
+    match /workloadAssignments/{assignmentId} {
+      // The reviewer reads only the assignments of the people assigned to
+      // them (from their profile), to see the workday of the declaration.
+      // HR and administrators read those of their campus: queries filter by
+      // campusId; older assignments without it are read one by one, by the
+      // campus of the teacher.
+      allow read: if signedIn()
+        && (
+          assignmentId.matches('.+_' + request.auth.uid)
+          // A coordinator reads only the assignments of their own career,
+          // so their queries filter by unitId (older assignments without
+          // it are not listed).
+          || (
+            isCareerCoordinator()
+            && resource.data.unitId == myUser().unitId
+          )
+          || isStaffOf(resource.data)
+          || isStaffOf(get(userPath(resource.data.declarantUid)).data)
+          || (
+            hasRole('superior')
+            && get(userPath(resource.data.declarantUid)).data
+              .get('superiorUid', null) == request.auth.uid
+          )
+        );
+
+      // The coordinator assigns courses (and their lesson slots) only to
+      // teachers of their own career. The totals lessonMinutes and
+      // workloadMinutes, and each course, are validated by the app
+      // (CourseRules): rules cannot sum lists. Here: lessons fit in the load,
+      // and the load is at most full time (40 h).
+      // Nobody assigns courses to themselves, not even an administrator:
+      // with both roles, another coordinator of the career (or an
+      // administrator) does it.
+      // courseIds lists the catalog course of every course, never twice
+      // (the same course cannot be assigned twice to a teacher in a
+      // period), so the catalog can ask whether a course is in use.
+      // campusId is the teacher's campus, so the administration of that
+      // campus can query them.
+      allow create, update: if (
+          isAdminOf(get(userPath(request.resource.data.declarantUid)).data)
+          || coordinatesTeacher(request.resource.data.declarantUid)
+        )
+        && request.resource.data.declarantUid != request.auth.uid
+        && request.resource.data.keys().hasOnly([
+          'declarantUid', 'periodId', 'lessonMinutes', 'workloadMinutes',
+          'assignedBy', 'courses', 'courseIds', 'campusId', 'unitId', 'slots',
+          'updatedAt'
+        ])
+        && request.resource.data.keys().hasAll([
+          'declarantUid', 'periodId', 'lessonMinutes', 'workloadMinutes',
+          'assignedBy', 'courses', 'courseIds', 'campusId', 'unitId', 'slots',
+          'updatedAt'
+        ])
+        && request.resource.data.campusId is string
+        && request.resource.data.campusId
+          == get(userPath(request.resource.data.declarantUid)).data
+            .get('campusId', null)
+        // unitId is the teacher's career, so the coordinator of that career
+        // can query the assignment.
+        && request.resource.data.unitId is string
+        && request.resource.data.unitId
+          == get(userPath(request.resource.data.declarantUid)).data
+            .get('unitId', null)
+        && assignmentId == request.resource.data.periodId
+          + '_' + request.resource.data.declarantUid
+        // Like the app: a period the administration disabled is read only.
+        && exists(
+          /databases/$(database)/documents/periods/$(request.resource.data.periodId)
+        )
+        && get(
+          /databases/$(database)/documents/periods/$(request.resource.data.periodId)
+        ).data.get('enabled', false) == true
+        && request.resource.data.lessonMinutes is int
+        && request.resource.data.lessonMinutes > 0
+        && request.resource.data.workloadMinutes is int
+        && request.resource.data.workloadMinutes
+          >= request.resource.data.lessonMinutes
+        && request.resource.data.workloadMinutes <= 2400
+        && request.resource.data.courses is list
+        && request.resource.data.courses.size() >= 1
+        && request.resource.data.courses.size() <= 12
+        && request.resource.data.courseIds is list
+        && request.resource.data.courseIds.size()
+          == request.resource.data.courses.size()
+        && request.resource.data.courseIds.toSet().size()
+          == request.resource.data.courseIds.size()
+        && request.resource.data.slots is list
+        && request.resource.data.slots.size() >= 1
+        && request.resource.data.slots.size() <= 120
+        && request.resource.data.assignedBy == request.auth.uid
+        && request.resource.data.updatedAt == request.time;
+
+      // A closed period is history: its assignments are not removed either.
+      allow delete: if (
+          isAdminOf(get(userPath(resource.data.declarantUid)).data)
+          || coordinatesTeacher(resource.data.declarantUid)
+        )
+        && resource.data.declarantUid != request.auth.uid
+        && resource.data.periodId is string
+        && exists(
+          /databases/$(database)/documents/periods/$(resource.data.periodId)
+        )
+        && get(
+          /databases/$(database)/documents/periods/$(resource.data.periodId)
+        ).data.get('enabled', false) == true;
+    }
+
+    // =========================================================
+    // ZONAJE (M8)
+    //
+    // One request per teacher and period: zonajeRequests/{periodId}_{uid}.
+    // The teacher sends it, and may send it again only after a rejection
+    // or an annulment (an annulled request frees the period). Only HR or
+    // an admin of the campus reviews it (RF-8.5); only HR of the campus
+    // annuls an approved one, with a reason. Requests are never deleted.
+    // R18 is checked on the coordinator's assignment, not on app data.
+    // The numbers are the same as ZonajeLimits: change both together.
+    // =========================================================
+
+    function zonajeKeys() {
+      return ['declarantUid', 'declarantName', 'campusId', 'year', 'periodId',
+        'declarationId',
+        'salaryRegime', 'weeklyMinutes', 'previousAddress', 'currentAddress',
+        'declaredDistanceKm', 'tseCertificatePath', 'status', 'createdAt'];
+    }
+
+    function validAddress(value) {
+      return value is string && value.size() > 0 && value.size() <= 300;
+    }
+
+    // Lesson hours the coordinator assigned to the signed-in teacher for a
+    // period. More than 6 lesson hours give a workday of at least half time
+    // (WorkloadDerivation table), which is R18.
+    function myAssignmentPath(periodId) {
+      return /databases/$(database)/documents/workloadAssignments/$(periodId + '_' + request.auth.uid);
+    }
+
+    // R18 on an assignment: a load of at least half time (20 h). Older
+    // assignments have no workloadMinutes: more than 6 lesson hours give
+    // half time in the WorkloadDerivation table.
+    function atLeastHalfTime(assignment) {
+      return assignment.get('workloadMinutes', 0) >= 1200
+        || (
+          !('workloadMinutes' in assignment)
+          && assignment.lessonMinutes > 360
+        );
+    }
+
+    // What the teacher sends: their own request for one period, with the
+    // id {periodId}_{uid} (so one per period), for their declaration of that
+    // period, meeting R16 (salario compuesto), R17 (more than 60 km) and
+    // R18 (at least half time).
+    // The home is marked on the map (point 12), rounded by the app to about
+    // 1 km; the distance is from it to the campus, which must have its
+    // location. distanceMethod says whether it is by road or, when the
+    // routing service failed, in a straight line (HR confirms it).
+    //
+    // Same conditions as before, reordered to fit the budget of 1000
+    // evaluated expressions per request: the checks on the sent data come
+    // first, so an invalid request fails before any document is read, and
+    // the profile, campus and declaration are read once each (see
+    // zonajeProfileValid and zonajeDeclarationValid).
+    function validZonajeRequest(requestId, data) {
+      let keys = zonajeKeys().concat(['homeLocation', 'distanceMethod']);
+      return data.keys().hasOnly(keys)
+        && data.keys().hasAll(keys)
+        && validGeo(data.homeLocation)
+        && data.distanceMethod in ['CARRETERA', 'LINEA_RECTA']
+        && data.declarantUid == request.auth.uid
+        && data.year == request.time.year()
+        && data.periodId is string
+        && requestId == data.periodId + '_' + request.auth.uid
+        // Like a declaration: only in a period open for new requests.
+        && exists(/databases/$(database)/documents/periods/$(data.periodId))
+        && get(/databases/$(database)/documents/periods/$(data.periodId))
+          .data.get('enabled', false) == true
+        && data.declarationId is string
+        // R16: the regime HR registered in the profile, not the teacher's
+        // (the profile half is in zonajeProfileValid).
+        && data.salaryRegime == 'COMPUESTO'
+        && data.weeklyMinutes is int
+        && data.weeklyMinutes >= 1200
+        && data.weeklyMinutes <= 2400
+        && validAddress(data.previousAddress)
+        && validAddress(data.currentAddress)
+        && data.declaredDistanceKm is number
+        && data.declaredDistanceKm > 60
+        && data.declaredDistanceKm <= 1000
+        && data.tseCertificatePath
+          == 'zonaje/' + request.auth.uid + '/' + data.periodId + '/tse.pdf'
+        && data.status == 'SOLICITADA'
+        && data.createdAt == request.time
+        // hasRole() proves the profile exists before it is passed on.
+        && hasRole('declarant')
+        && zonajeProfileValid(data, myUser())
+        && exists(declarationPath(data.declarationId))
+        && zonajeDeclarationValid(data, declData(data.declarationId));
+    }
+
+    // The teacher's name, campus (with its location) and salary regime come
+    // from their profile ([user], read once by the caller).
+    function zonajeProfileValid(data, user) {
+      return data.declarantName == user.fullName
+        // HR of the teacher's campus reviews it.
+        && user.get('campusId', null) != null
+        && data.campusId == user.campusId
+        && get(campusPath(user.campusId)).data.get('location', null) != null
+        && user.get('salaryRegime', null) == 'COMPUESTO';
+    }
+
+    // The request is backed by the teacher's own declaration of that period
+    // ([decl], read once by the caller), and the coordinator assigned at
+    // least half time in it (R18).
+    function zonajeDeclarationValid(data, decl) {
+      return decl.declarantUid == request.auth.uid
+        && decl.periodId == data.periodId
+        && decl.get('status', '') != 'ANULADA'
+        && exists(myAssignmentPath(decl.periodId))
+        && atLeastHalfTime(get(myAssignmentPath(decl.periodId)).data);
+    }
+
+    // HR decision: only on a pending request, only the review fields, and
+    // with a confirmed distance over 60 km to approve or a reason to reject.
+    function validZonajeReview() {
+      let data = request.resource.data;
+      // The stored status first: it is the cheapest check and rules out
+      // every other kind of update before the role lookup.
+      return resource.data.status == 'SOLICITADA'
+        // Nobody reviews their own request, even with the HR role.
+        && resource.data.declarantUid != request.auth.uid
+        && isStaffOf(resource.data)
+        && data.diff(resource.data).affectedKeys().hasOnly([
+          'status', 'confirmedDistanceKm', 'hrObservation', 'reviewedBy', 'reviewedAt'
+        ])
+        && data.keys().hasAll([
+          'confirmedDistanceKm', 'hrObservation', 'reviewedBy', 'reviewedAt'
+        ])
+        && data.reviewedBy == request.auth.uid
+        && data.reviewedAt == request.time
+        && data.confirmedDistanceKm is number
+        && data.confirmedDistanceKm > 0
+        && data.confirmedDistanceKm <= 1000
+        && data.hrObservation is string
+        && data.hrObservation.size() <= 1000
+        && (
+          (data.status == 'APROBADA' && data.confirmedDistanceKm > 60)
+          || (data.status == 'RECHAZADA' && data.hrObservation.size() > 0)
+        );
+    }
+
+    // HR of the campus annuls an approved request (point 13): only the
+    // annulment fields, with the author, the server time and a reason of
+    // 1 to 1000 characters that the teacher sees. Nobody annuls their own
+    // request.
+    function validZonajeAnnulment() {
+      let data = request.resource.data;
+      // Stored status first, as in validZonajeReview.
+      return resource.data.status == 'APROBADA'
+        && resource.data.declarantUid != request.auth.uid
+        && isHrOf(resource.data)
+        && data.diff(resource.data).affectedKeys().hasOnly([
+          'status', 'annulledBy', 'annulledAt', 'annulReason'
+        ])
+        && data.status == 'ANULADA'
+        && data.annulledBy == request.auth.uid
+        && data.annulledAt == request.time
+        && data.annulReason is string
+        && data.annulReason.trim().size() > 0
+        && data.annulReason.size() <= 1000;
+    }
+
+    match /zonajeRequests/{requestId} {
+      // The id ends with the teacher's uid ({periodId}_{uid}, or {year}_{uid}
+      // for requests sent before periods), so they can read their own
+      // request even before it exists (watch answers null). Period ids
+      // have "_" themselves ({year}_{cycle}); uids never do.
+      // HR and administrators read only their campus, so their queries
+      // filter by campusId.
+      // The teacher also lists her own requests (history), with a query
+      // filtered by declarantUid.
+      allow read: if signedIn()
+        && (
+          requestId.matches('[A-Za-z0-9_-]+_' + request.auth.uid)
+          || (resource != null && resource.data.declarantUid == request.auth.uid)
+          || isStaffOf(resource.data)
+        );
+
+      allow create: if validZonajeRequest(requestId, request.resource.data);
+
+      allow update: if (
+          resource.data.status in ['RECHAZADA', 'ANULADA']
+          && validZonajeRequest(requestId, request.resource.data)
+        )
+        || validZonajeReview()
+        || validZonajeAnnulment();
+
+      allow delete: if false;
+    }
+
+    // =========================================================
+    // ONE DECLARATION PER PERIOD
+    //
+    // declarationSlots/{periodId}_{uid}: { declarationId }. Rules cannot
+    // count documents, so each declarant reserves the period in the same
+    // batch that creates the declaration, only when the period is free.
+    // It is never changed or deleted: declarations are never annulled, and
+    // a returned one gets a new version of the same declaration.
+    // =========================================================
+
+    function slotPath(periodId, uid) {
+      return /databases/$(database)/documents/declarationSlots/$(periodId + '_' + uid);
+    }
+
+    // The reservation points to a declaration of this declarant, created in
+    // this same batch, for the period in the reservation id.
+    function validSlot(slotId) {
+      let data = request.resource.data;
+      return hasRole('declarant')
+        && data.keys().hasOnly(['declarationId'])
+        && data.declarationId is string
+        && !exists(declarationPath(data.declarationId))
+        && existsAfter(declarationPath(data.declarationId))
+        && getAfter(declarationPath(data.declarationId)).data.declarantUid
+          == request.auth.uid
+        && slotId == getAfter(declarationPath(data.declarationId)).data.periodId
+          + '_' + request.auth.uid;
+    }
+
+    match /declarationSlots/{slotId} {
+      allow get: if signedIn()
+        && (slotId.matches('.+_' + request.auth.uid) || isAdmin());
+      allow list: if false;
+
+      allow create: if validSlot(slotId);
+      allow update, delete: if false;
+    }
+
+    // =========================================================
+    // DECLARATIONS
+    //
+    // Created only in BORRADOR, version 1, for an enabled period, with
+    // version 1 and its creation event in the same batch (HU-03, HU-05).
+    // After that, the document changes ONLY through status transitions
+    // with their evidence. Declarations are never deleted.
+    // =========================================================
+
+    match /declarations/{declarationId} {
+      // A single-document read of a declaration that does not exist is
+      // allowed so getById can answer "not found" (null) instead of a
+      // permission error. Existing declarations stay visible only to
+      // their participants; ids are random, so this reveals nothing useful.
+      allow get: if signedIn()
+        && (resource == null || isParticipant(resource.data));
+
+      // Queries stay limited to participants.
+      allow list: if isParticipant(resource.data);
+
+      allow create: if isOwner(request.resource.data)
+        && request.resource.data.declarantUid == request.auth.uid
+        // The superior is the one an administrator assigned in the
+        // declarant's profile: a declarant cannot pick their own approver.
+        && myUser().get('superiorUid', null) != null
+        && request.resource.data.superiorUid == myUser().superiorUid
+        // The campus is copied from the profile, like the superior: HR of
+        // that campus handles it.
+        && myCampus() != null
+        && request.resource.data.campusId == myCampus()
+        && request.resource.data.status == 'BORRADOR'
+        // One per period (OnePerPeriod in the app): after the batch, the
+        // reservation of this period points to this declaration. The
+        // reservation only accepts it when the period is free.
+        && getAfter(
+          slotPath(request.resource.data.periodId, request.auth.uid)
+        ).data.declarationId == declarationId
+        // The career coordination assigned the courses of this period.
+        && exists(myAssignmentPath(request.resource.data.periodId))
+        && request.resource.data.currentVersionNumber == 1
+        && request.resource.data.currentVersionId is string
+        && exists(
+          /databases/$(database)/documents/periods/$(request.resource.data.periodId)
+        )
+        && get(
+          /databases/$(database)/documents/periods/$(request.resource.data.periodId)
+        ).data.enabled == true
+        && existsAfter(
+          versionPath(declarationId, request.resource.data.currentVersionId)
+        )
+                // Only the fields createDraft writes: nothing can be preset
+        // (finalPdfPath, pendingObservation) or invented.
+        && request.resource.data.keys().hasOnly([
+          'declarantUid', 'declarantName', 'periodId', 'superiorUid', 'campusId',
+          'status', 'currentVersionId', 'currentVersionNumber',
+          'lastEventId', 'createdAt', 'updatedAt',
+          'currentResponsibleUid', 'currentResponsibleRole'
+        ])
+        // The name the superior and HR see comes from the profile.
+        && request.resource.data.declarantName == myUser().fullName
+        // Server dates (FieldValue.serverTimestamp()).
+        && request.resource.data.createdAt == request.time
+        && request.resource.data.updatedAt == request.time
+        // Optional; when present, the declarant is the one responsible.
+        && request.resource.data.get('currentResponsibleUid', request.auth.uid)
+          == request.auth.uid
+        && request.resource.data.get('currentResponsibleRole', 'declarant')
+          == 'declarant'
+        && eventMatches(declarationId, 'BORRADOR');
+
+      // A status change, with only the fields of that transition. [from]
+      // and [to] are the stored and the new status, read once. The cheap,
+      // selective checks (a real change, allowed by the table) guard the
+      // rest with a ternary, so a write that is not a valid transition, such
+      // as recording the final PDF, never evaluates the field, role and
+      // evidence checks. Each request has a budget of 1000 evaluated
+      // expressions, and the emulator's explanation of a denied write does
+      // not short-circuit && or ||; a ternary skips the untaken branch.
+      function validTransition(from, to) {
+        return from != to && transitionAllowed(from, to)
+          ? transitionChecks(from, to)
+          : false;
+      }
+
+      function transitionChecks(from, to) {
+        return immutableFieldsKept()
+          && onlyFieldsChanged(transitionFields(from, to))
+          && updatedAtIsServerTime()
+          && hrResultRecorded(from, to)
+          && actorAllowed(resource.data, from, to)
+          && transitionEvidence(declarationId, from, to)
+          && (
+            !(from == 'DEVUELTA' && to == 'BORRADOR')
+            || newVersionRules(declarationId)
+          );
+      }
+
+      allow update: if validTransition(
+        resource.data.status,
+        request.resource.data.status
+      );
+
+      // Records where the final PDF is (HU-24). No status change: once, by
+      // HR or an administrator, on a fully signed declaration, and only with
+      // the exact path of its current version, the same one storage.rules
+      // accepts. These rules cannot see Storage, so the app writes it after
+      // the upload succeeded.
+      //
+      // Cheapest and most selective check first: any status change fails
+      // it at once, so the transition batches never pay for the role lookup
+      // (each request has a budget of 1000 evaluated expressions).
+      allow update: if onlyFieldsChanged(['finalPdfPath', 'updatedAt'])
+        && resource.data.get('finalPdfPath', null) == null
+        && resource.data.status
+          in ['ENVIADA_A_RRHH', 'RECIBIDA_RRHH', 'FINALIZADA']
+        && request.resource.data.finalPdfPath
+          == 'pdf/' + declarationId + '/'
+            + resource.data.currentVersionId + '.pdf'
+        && updatedAtIsServerTime()
+        && isStaffOf(resource.data);
+
+      allow delete: if false;
+      
+           // =======================================================
+      // VERSIONS
+      //
+      // A version is the content of one round of the declaration. Once the
+      // declarant signs it, it is locked and never changes again (section
+      // 7.5): corrections create version N+1.
+      // =======================================================
+
+      match /versions/{versionId} {
+        allow read: if isParticipant(declData(declarationId));
+
+        // Created with the declaration (version 1) or when a returned
+        // declaration gets version N+1 (HU-20); in both cases the
+        // declaration ends the batch in BORRADOR pointing to it, with the
+        // matching number. declAfter() is required: while creating, the
+        // declaration does not exist yet.
+        allow create: if isOwner(declAfter(declarationId))
+          && request.resource.data.isLocked == false
+          && declAfter(declarationId).currentVersionId == versionId
+          && declAfter(declarationId).status == 'BORRADOR'
+          && request.resource.data.number
+            == declAfter(declarationId).currentVersionNumber;
+
+        allow update: if isOwner(declData(declarationId))
+          && resource.data.isLocked == false
+          && declData(declarationId).currentVersionId == versionId
+          && (
+            // Editing in BORRADOR: only the content fields. The validation
+            // result changes only together with BORRADOR -> VALIDADA
+            // (markValidated), so a version cannot be marked as validated
+            // without validating it.
+            (
+              request.resource.data.isLocked == false
+              && declData(declarationId).status == 'BORRADOR'
+              && request.resource.data.diff(resource.data).affectedKeys()
+                .hasOnly([
+                  'declarantSnapshot',
+                  'observations',
+                  'hoursSummary',
+                  'validationPassed'
+                ])
+              && (
+                !request.resource.data.diff(resource.data).affectedKeys()
+                  .hasAny(['hoursSummary', 'validationPassed'])
+                || declAfter(declarationId).status == 'VALIDADA'
+              )
+            )
+            // Locking when the declarant signs: once, in the same batch as
+            // the signature, with the server time and the content hash.
+            || (
+              request.resource.data.isLocked == true
+              && request.resource.data.diff(resource.data).affectedKeys()
+                .hasOnly(['isLocked', 'lockedAt', 'contentHash'])
+              && request.resource.data.lockedAt == request.time
+              && request.resource.data.contentHash is string
+              && declData(declarationId).status == 'PENDIENTE_FIRMA_DECLARANTE'
+              && signatureExistsAfter(declarationId, versionId, 'declarant')
+            )
+          );
+
+        allow delete: if false;
+
+        // Content is editable only by the declarant, in BORRADOR, in the
+        // CURRENT unlocked version. getAfter() also lets createNewVersion
+        // copy the content in the same batch that creates version N+1.
+        function contentEditable() {
+          return isOwner(declAfter(declarationId))
+            && declAfter(declarationId).status == 'BORRADOR'
+            && declAfter(declarationId).currentVersionId == versionId
+            && getAfter(versionPath(declarationId, versionId)).data.isLocked == false;
+        }
+
+        // =====================================================
+        // APPOINTMENTS (HU-06, HU-07) AND EXTERNAL JOBS (HU-08)
+        // =====================================================
+
+        // The validity of an appointment is the period's: the app fills it
+        // in and the person cannot change it.
+        function datesOfPeriod() {
+          let period = get(/databases/$(database)/documents/periods/$(declAfter(declarationId).periodId)).data;
+          return request.resource.data.startDate == period.startDate
+            && request.resource.data.endDate == period.endDate;
+        }
+
+        // Another institution counts by workday, up to 1/2 TC (20 h), the
+        // same table as WorkloadCatalog.externalOptions. The total of all
+        // the jobs (at most 20 h) is checked by the app: rules cannot add
+        // up documents.
+        function validExternalWorkload() {
+          let data = request.resource.data;
+          return (data.get('weeklyMinutes', 0) == 300 && data.workload == '1/8 TC')
+            || (data.get('weeklyMinutes', 0) == 600 && data.workload == '1/4 TC')
+            || (data.get('weeklyMinutes', 0) == 900 && data.workload == '3/8 TC')
+            || (data.get('weeklyMinutes', 0) == 1200 && data.workload == '1/2 TC');
+        }
+
+        match /appointments/{appointmentId} {
+          allow read: if isParticipant(declData(declarationId));
+          allow create, update: if contentEditable() && datesOfPeriod();
+          allow delete: if contentEditable();
+        }
+
+        match /externalJobs/{externalJobId} {
+          allow read: if isParticipant(declData(declarationId));
+          allow create, update: if contentEditable() && validExternalWorkload();
+          allow delete: if contentEditable();
+        }
+
+               // =====================================================
+        // SIGNATURES (section 8, HU-15, HU-16, HU-18)
+        //
+        // Internal electronic signature, NOT a certified digital signature
+        // (section 18). Fixed ids 'declarant' / 'superior'; written once,
+        // in the same batch as the status change, never modified or
+        // deleted. Name, version and hash must be the real ones, so the
+        // signature always describes exactly what was signed.
+        // =====================================================
+
+        match /signatures/{signatureId} {
+          allow read: if isParticipant(declData(declarationId));
+
+          allow create: if signedIn()
+            && request.resource.data.keys().hasOnly([
+              'type',
+              'uid',
+              'fullName',
+              'signedAt',
+              'versionId',
+              'versionNumber',
+              'oathAccepted',
+              'contentHash',
+              'oathText'
+            ])
+            && request.resource.data.uid == request.auth.uid
+            && request.resource.data.fullName == myUser().fullName
+            && request.resource.data.versionId == versionId
+            && request.resource.data.versionNumber
+              == declData(declarationId).currentVersionNumber
+            && request.resource.data.oathAccepted == true
+            && request.resource.data.signedAt == request.time
+            && request.resource.data.get('contentHash', null)
+              == getAfter(versionPath(declarationId, versionId))
+                .data.get('contentHash', null)
+            && declData(declarationId).currentVersionId == versionId
+            && (
+              (
+                signatureId == 'declarant'
+                && request.resource.data.type == 'declarant'
+                && isOwner(declData(declarationId))
+                && declData(declarationId).status == 'PENDIENTE_FIRMA_DECLARANTE'
+                // The exact oath text the person accepted; signatures are
+                // never edited, so it cannot change afterwards.
+                && request.resource.data.oathText is string
+                && request.resource.data.oathText.size() > 0
+                && request.resource.data.oathText.size() <= 5000
+              )
+              || (
+                signatureId == 'superior'
+                && request.resource.data.type == 'superior'
+                && isSuperiorOf(declData(declarationId))
+                && declData(declarationId).status == 'PENDIENTE_FIRMA_SUPERIOR'
+              )
+              || (
+                signatureId == 'hr'
+                && request.resource.data.type == 'hr'
+                && isHrOf(declData(declarationId))
+                && !isOwner(declData(declarationId))
+                && (
+                  declData(declarationId).status == 'ENVIADA_A_RRHH'
+                  || (
+                    declData(declarationId).status == 'RECIBIDA_RRHH'
+                    && declData(declarationId).get('currentResponsibleUid', null)
+                      == request.auth.uid
+                  )
+                )
+                // Approving closes the procedure in the same batch.
+                && declAfter(declarationId).status == 'FINALIZADA'
+              )
+            );
+
+          allow update, delete: if false;
+        }
+      }
+
+      // =======================================================
+      // EVENTS (audit log, section 10)
+      //
+      // Append-only: written by their author with the server time and the
+      // current version number, never modified or deleted. Four kinds,
+      // each one tied to the batch it belongs to.
+      // =======================================================
+
+      match /events/{eventId} {
+        allow read: if isParticipant(declData(declarationId));
+
+        // The declaration before and after the batch are read once by
+        // validEvent() and passed down: each request has a budget of 1000
+        // evaluated expressions, and the four kinds below used to read them
+        // again and again. The conditions of each kind are unchanged.
+        function eventShapeValid(after) {
+          return request.resource.data.userId == request.auth.uid
+            && request.resource.data.timestamp == request.time
+            && request.resource.data.version == after.currentVersionNumber
+            && request.resource.data.keys().hasAll([
+              'type',
+              'userId',
+              'timestamp',
+              'version'
+            ])
+            && request.resource.data.keys().hasOnly([
+              'type',
+              'userId',
+              'timestamp',
+              'version',
+              'previousStatus',
+              'newStatus',
+              'observation'
+            ])
+            // Same limit as pendingObservation (the return dialog).
+            && request.resource.data.get('observation', '').size() <= 1000;
+        }
+
+        // 1. Creation event of a new declaration (createDraft). Only when
+        // the declaration does not exist before the batch (see validEvent).
+        function isCreationEvent(after) {
+          return after.lastEventId == eventId
+            && after.status == 'BORRADOR'
+            && after.declarantUid == request.auth.uid
+            && request.resource.data.newStatus == 'BORRADOR';
+        }
+
+        // 2. Final event of a status change. Its previous status is checked
+        // by the declaration rules (transitionEvidence).
+        function isFinalTransitionEvent(after) {
+          return after.lastEventId == eventId
+            && request.resource.data.newStatus == after.status;
+        }
+
+        // 3. Intermediate FIRMADA_POR_* event of a signing batch, under its
+        // fixed id for the signed version (duda 3, option A). The statuses
+        // are compared before the id is built.
+        function isSigningEvent(before, after) {
+          return (
+              before.status == 'PENDIENTE_FIRMA_DECLARANTE'
+              && after.status == 'PENDIENTE_FIRMA_SUPERIOR'
+              && request.resource.data.previousStatus == 'PENDIENTE_FIRMA_DECLARANTE'
+              && request.resource.data.newStatus == 'FIRMADA_POR_DECLARANTE'
+              && eventId == signedEventId('declarant', before.currentVersionNumber)
+            )
+            || (
+              before.status == 'PENDIENTE_FIRMA_SUPERIOR'
+              && after.status == 'ENVIADA_A_RRHH'
+              && request.resource.data.previousStatus == 'PENDIENTE_FIRMA_SUPERIOR'
+              && request.resource.data.newStatus == 'FIRMADA_POR_SUPERIOR'
+              && eventId == signedEventId('superior', before.currentVersionNumber)
+            );
+        }
+
+        // 4. Event without a status change (EventRepository.append): only
+        // the declarant, while editing in BORRADOR, and only these types.
+        // The role lookup goes last.
+        function isEventWithoutStatusChange(before, after) {
+          return before.status == 'BORRADOR'
+            && after.status == 'BORRADOR'
+            && !request.resource.data.keys().hasAny(['previousStatus', 'newStatus'])
+            && request.resource.data.type in ['HORARIO_MODIFICADO', 'VALIDACION_EJECUTADA']
+            && isOwner(before);
+        }
+
+        // An existing declaration: kinds 2 and 3 need a status change made
+        // by a participant; kind 4 needs none, so they never overlap.
+        function existingDeclarationEvent(before, after) {
+          return before.status != after.status
+            ? isParticipant(after)
+              && (isFinalTransitionEvent(after) || isSigningEvent(before, after))
+            : isEventWithoutStatusChange(before, after);
+        }
+
+        function validEvent(after) {
+          return eventShapeValid(after)
+            && (
+              !exists(declarationPath(declarationId))
+                ? isCreationEvent(after)
+                : existingDeclarationEvent(declData(declarationId), after)
+            );
+        }
+
+        allow create: if validEvent(declAfter(declarationId));
+
+        allow update, delete: if false;
+      }
+    }
+  }
+}

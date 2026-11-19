@@ -1,0 +1,2 @@
+Copiados de DeclaraHorario (Proyecto 1), commit 5f68958c6f654e5862f3bd06607be30298aa66f4 2026-10-27
+Archivos: firestore.rules, storage.rules, firestore.indexes.json

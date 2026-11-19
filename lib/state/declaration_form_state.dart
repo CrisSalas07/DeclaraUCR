@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:declara_ucr/data/declaration_repository.dart';
+import 'package:declara_ucr/data/network_status.dart';
 import 'package:declara_ucr/data/profile_repository.dart';
 import 'package:declara_ucr/domain/course_rules.dart';
 import 'package:declara_ucr/domain/declaration_validator.dart';
@@ -22,6 +25,8 @@ class DeclarationFormState extends ChangeNotifier {
   DeclarationFormState({
     required this._repository,
     this._validator = const DeclarationValidator(),
+    this._network = const AlwaysOnline(),
+    this._saveTimeout = const Duration(seconds: 15),
     Declaration? initial,
     UserProfile? profile,
   }) : declaration = initial?.copy() ?? Declaration() {
@@ -31,10 +36,71 @@ class DeclarationFormState extends ChangeNotifier {
         ..declarantName = profile.name
         ..identification = profile.identification;
     }
+    _placeAssignedLessons();
+  }
+
+  /// Message when a fixed lesson would be moved, in Spanish.
+  static const String lessonsAreFixed =
+      'Las clases las asigna la Coordinación de su carrera: no se mueven.';
+
+  /// The lessons are the coordination's slots (Proyecto 1): the person only
+  /// places attention, planning, projects and other institutions.
+  bool get lessonsFixed => declaration.lessonSlots.isNotEmpty;
+
+  /// Half hours taken by the assigned lessons.
+  Set<GridCell> get fixedCells => {
+    for (final slot in declaration.lessonSlots)
+      for (
+        var m = slot.startMinutes;
+        m < slot.endMinutes;
+        m += ScheduleGrid.stepMinutes
+      )
+        GridCell(slot.day, m),
+  };
+
+  /// Puts the lessons exactly where the coordination assigned them. A
+  /// declaration whose lessons differ (the assignment changed, or they were
+  /// moved) is corrected, which counts as an edit.
+  void _placeAssignedLessons() {
+    if (!lessonsFixed || !editable) return;
+    String keyOf(ScheduleInterval i) =>
+        '${i.day.number}|${i.startMinutes}|${i.endMinutes}|${i.task.name}';
+    final assigned = [
+      for (final (index, slot) in declaration.lessonSlots.indexed)
+        ScheduleInterval(
+          id: 'slot-$index',
+          day: slot.day,
+          startMinutes: slot.startMinutes,
+          endMinutes: slot.endMinutes,
+          task: ScheduleTask(TaskKind.lesson, slot.course),
+        ),
+    ];
+    final current = declaration.intervals
+        .where((i) => i.task.kind == TaskKind.lesson)
+        .map(keyOf)
+        .toSet();
+    if (current.length == assigned.length &&
+        current.containsAll(assigned.map(keyOf))) {
+      return;
+    }
+    edit(
+      (d) => d.intervals
+        ..removeWhere((i) => i.task.kind == TaskKind.lesson)
+        ..addAll(assigned),
+    );
   }
 
   final DeclarationRepository _repository;
   final DeclarationValidator _validator;
+  final NetworkStatus _network;
+
+  /// How long a save may wait for the server before telling the person.
+  final Duration _saveTimeout;
+
+  /// Shown when the server does not confirm a save in time.
+  static const String timeoutMessage =
+      'El servidor no confirmó el guardado a tiempo. Sus cambios siguen en '
+      'pantalla: revise la conexión y vuelva a guardar.';
   final Declaration declaration;
 
   bool saving = false;
@@ -50,65 +116,28 @@ class DeclarationFormState extends ChangeNotifier {
   List<ValidationIssue> get issues => _validator.issues(declaration);
   bool get canValidate => _validator.isValid(declaration);
 
+  /// Until it is signed (BORRADOR, VALIDADA, or PENDIENTE_FIRMA_DECLARANTE
+  /// when signing was started and not finished), editing sends it back to
+  /// BORRADOR, as in the web. Once signed it is read only: review and HR
+  /// happen in the web system.
+  bool get editable =>
+      declaration.status == DeclarationStatus.draft ||
+      declaration.status == DeclarationStatus.validated ||
+      declaration.status == DeclarationStatus.pendingDeclarantSignature;
+
   /// Applies a change. As in DeclaraHorario, editing a VALIDADA declaration
   /// sends it back to BORRADOR until it is validated again.
   void edit(void Function(Declaration d) change) {
+    if (!editable) return;
     change(declaration);
-    if (declaration.status == DeclarationStatus.validated) {
+    if (declaration.status != DeclarationStatus.draft) {
       declaration.status = DeclarationStatus.draft;
     }
     notifyListeners();
   }
 
-  // ---- Courses, projects and other institutions ---------------------------
-
-  /// Adds [course], or replaces the one at [index]. Its blocks follow a new
-  /// name; a smaller workday leaves the extra hours to remove (the
-  /// validation says how many). Returns why it was not saved, in Spanish.
-  String? saveCourse(CourseLoad course, {int? index}) {
-    final d = declaration;
-    final courses = [...d.courses];
-    if (index == null) {
-      if (courses.length >= FieldRules.maxCourses) {
-        return 'Puede agregar como máximo ${FieldRules.maxCourses} cursos.';
-      }
-      courses.add(course);
-    } else {
-      courses[index] = course;
-    }
-    final problem = CourseRules.validateAll(
-      courses,
-      d.projects,
-      d.externalJobs,
-    );
-    if (problem != null) return problem;
-    edit((d) {
-      if (index != null) {
-        final old = d.courses[index].name;
-        for (final kind in [
-          TaskKind.lesson,
-          TaskKind.attention,
-          TaskKind.planning,
-        ]) {
-          _renameTask(
-            d,
-            ScheduleTask(kind, old),
-            ScheduleTask(kind, course.name),
-          );
-        }
-      }
-      d.courses
-        ..clear()
-        ..addAll(courses);
-    });
-    return null;
-  }
-
-  /// Removes the course at [index] and its blocks.
-  void removeCourse(int index) => edit((d) {
-    final name = d.courses.removeAt(index).name;
-    d.intervals.removeWhere((i) => i.task.kind.isCourse && i.task.name == name);
-  });
+  // ---- Projects and other institutions ------------------------------------
+  // (Courses come from the career coordination's assignment.)
 
   String? saveProject(ProjectHours project, {int? index}) {
     final d = declaration;
@@ -199,10 +228,18 @@ class DeclarationFormState extends ChangeNotifier {
   /// Places [task] on [cells], or frees them when it is `null`. Lunch cells
   /// are skipped. Returns why nothing changed (in Spanish), or `null`.
   String? paint(Iterable<GridCell> cells, ScheduleTask? task) {
+    final fixed = lessonsFixed ? fixedCells : const <GridCell>{};
+    final touched = cells.where((c) => !ScheduleGrid.isLunch(c.startMinutes));
+    if (lessonsFixed &&
+        (task?.kind == TaskKind.lesson ||
+            (touched.isNotEmpty && touched.every(fixed.contains)))) {
+      return lessonsAreFixed;
+    }
     final current = ScheduleGrid.cellsOf(declaration.intervals);
     final next = Map<GridCell, String>.of(current);
-    for (final cell in cells) {
-      if (ScheduleGrid.isLunch(cell.startMinutes)) continue;
+    for (final cell in touched) {
+      // The assigned lessons stay; the rest of the range is painted.
+      if (fixed.contains(cell)) continue;
       if (task == null) {
         next.remove(cell);
       } else {
@@ -215,12 +252,21 @@ class DeclarationFormState extends ChangeNotifier {
   /// Replaces the schedule of every day in [to] with the one of [from].
   String? copyDay(Weekday from, Iterable<Weekday> to) {
     final targets = to.toSet()..remove(from);
+    final fixed = lessonsFixed ? fixedCells : const <GridCell>{};
+    bool isLesson(String key) =>
+        lessonsFixed && ScheduleTask.fromKey(key).kind == TaskKind.lesson;
     final current = ScheduleGrid.cellsOf(declaration.intervals);
+    // The target days keep their own assigned lessons; the source day's
+    // lessons are not copied.
     final next = Map<GridCell, String>.of(current)
-      ..removeWhere((cell, _) => targets.contains(cell.day));
+      ..removeWhere(
+        (cell, _) => targets.contains(cell.day) && !fixed.contains(cell),
+      );
     for (final entry in current.entries.where((e) => e.key.day == from)) {
+      if (isLesson(entry.value)) continue;
       for (final day in targets) {
-        next[GridCell(day, entry.key.startMinutes)] = entry.value;
+        final cell = GridCell(day, entry.key.startMinutes);
+        if (!fixed.contains(cell)) next[cell] = entry.value;
       }
     }
     return _commit(current, next);
@@ -286,9 +332,23 @@ class DeclarationFormState extends ChangeNotifier {
     notifyListeners();
     final previous = declaration.status;
     try {
+      // Without a network nothing is attempted: the changes stay here.
+      if (!await _network.isOnline()) throw const OfflineException();
       declaration.status = status;
-      await _repository.save(declaration);
+      await _repository.save(declaration).timeout(_saveTimeout);
       return true;
+    } on OfflineException {
+      declaration.status = previous;
+      error = OfflineException.message;
+      return false;
+    } on TimeoutException {
+      declaration.status = previous;
+      error = timeoutMessage;
+      return false;
+    } on DeclarationSaveException catch (e) {
+      declaration.status = previous;
+      error = e.message;
+      return false;
     } catch (e) {
       declaration.status = previous;
       // Technical details go to the log, never to the user.

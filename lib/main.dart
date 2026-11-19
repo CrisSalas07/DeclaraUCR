@@ -2,16 +2,24 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:declara_ucr/config/firebase_config.dart';
 import 'package:declara_ucr/data/auth_repository.dart';
 import 'package:declara_ucr/data/declaration_repository.dart';
+import 'package:declara_ucr/data/network_status.dart';
 import 'package:declara_ucr/data/profile_repository.dart';
+import 'package:declara_ucr/data/proyecto1/declaration_document_reader.dart';
+import 'package:declara_ucr/data/proyecto1/declaration_signer.dart';
+import 'package:declara_ucr/data/proyecto1/period_repository.dart';
+import 'package:declara_ucr/data/proyecto1/proyecto1_declaration_repository.dart';
 import 'package:declara_ucr/data/zonaje_repository.dart';
 import 'package:declara_ucr/models/app_user.dart';
 import 'package:declara_ucr/models/declaration.dart';
 import 'package:declara_ucr/models/zonaje_request.dart';
+import 'package:declara_ucr/screens/auth/account_notice_screen.dart';
 import 'package:declara_ucr/screens/auth/complete_profile_screen.dart';
 import 'package:declara_ucr/screens/auth/login_screen.dart';
+import 'package:declara_ucr/screens/auth/workplace_screen.dart';
 import 'package:declara_ucr/screens/shell_screen.dart';
 import 'package:declara_ucr/state/loadable.dart';
 import 'package:declara_ucr/theme/ucr_theme.dart';
+import 'package:declara_ucr/widgets/offline_banner.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -34,9 +42,17 @@ Future<void> main() async {
       DeclaraUcrApp(
         auth: FirebaseAuthRepository(auth, profiles),
         profiles: profiles,
-        repositoryFor: (uid) =>
-            FirestoreDeclarationRepository(firestore, ownerUid: uid),
-        zonajeFor: (uid) => FirestoreZonajeRepository(firestore, ownerUid: uid),
+        periodsFor: (uid) => FirestorePeriodRepository(firestore, uid: uid),
+        repositoryFor: (uid, periods) => Proyecto1DeclarationRepository(
+          firestore,
+          uid: uid,
+          periods: periods,
+        ),
+        zonajeFor: (uid) => FirestoreZonajeRepository(firestore, uid: uid),
+        documentsFor: (uid) =>
+            FirestoreDeclarationDocumentReader(firestore, uid: uid),
+        signerFor: (uid) => FirestoreDeclarationSigner(firestore, uid: uid),
+        network: PluginNetworkStatus(),
       ),
     );
   } catch (e) {
@@ -81,14 +97,31 @@ class DeclaraUcrApp extends StatefulWidget {
     super.key,
     required this.auth,
     required this.profiles,
+    required this.periodsFor,
     required this.repositoryFor,
     required this.zonajeFor,
+    required this.documentsFor,
+    required this.signerFor,
+    this.network = const AlwaysOnline(),
   });
 
   final AuthRepository auth;
   final ProfileRepository profiles;
-  final DeclarationRepository Function(String uid) repositoryFor;
+  final PeriodRepository Function(String uid) periodsFor;
+  final DeclarationRepository Function(String uid, PeriodRepository periods)
+  repositoryFor;
   final ZonajeRepository Function(String uid) zonajeFor;
+
+  /// Reads a declaration as stored, to print its PDF.
+  final DeclarationDocumentReader Function(String uid) documentsFor;
+
+  /// The declarant's signature, which sends the declaration to the
+  /// reviewer.
+  final DeclarationSigner Function(String uid) signerFor;
+
+  /// Whether the phone has a network: an offline strip on every screen,
+  /// and saves are not attempted without one.
+  final NetworkStatus network;
 
   @override
   State<DeclaraUcrApp> createState() => _DeclaraUcrAppState();
@@ -104,11 +137,17 @@ class _DeclaraUcrAppState extends State<DeclaraUcrApp> {
   }
 
   List<SingleChildWidget> _sessionProviders(AppUser user) {
-    final declarations = widget.repositoryFor(user.uid);
+    final periods = widget.periodsFor(user.uid);
+    final declarations = widget.repositoryFor(user.uid, periods);
     final zonaje = widget.zonajeFor(user.uid);
     return [
+      Provider<PeriodRepository>.value(value: periods),
       Provider<DeclarationRepository>.value(value: declarations),
       Provider<ZonajeRepository>.value(value: zonaje),
+      Provider<DeclarationDocumentReader>.value(
+        value: widget.documentsFor(user.uid),
+      ),
+      Provider<DeclarationSigner>.value(value: widget.signerFor(user.uid)),
       StreamProvider<Loadable<UserProfile?>>(
         create: (_) => widget.profiles
             .watch(user.uid)
@@ -141,6 +180,13 @@ class _DeclaraUcrAppState extends State<DeclaraUcrApp> {
       return MultiProvider(
         key: ValueKey(user?.uid),
         providers: [
+          Provider<NetworkStatus>.value(value: widget.network),
+          StreamProvider<Connection>(
+            create: (_) => widget.network.watchOnline().map(
+              (online) => Connection(online: online),
+            ),
+            initialData: const Connection(online: true),
+          ),
           Provider<AuthRepository>.value(value: widget.auth),
           Provider<ProfileRepository>.value(value: widget.profiles),
           Provider<AppUser?>.value(value: user),
@@ -153,6 +199,7 @@ class _DeclaraUcrAppState extends State<DeclaraUcrApp> {
           locale: const Locale('es', 'CR'),
           supportedLocales: const [Locale('es', 'CR'), Locale('es')],
           localizationsDelegates: GlobalMaterialLocalizations.delegates,
+          builder: (context, child) => OfflineFrame(child: child!),
           home: user == null ? const LoginScreen() : const _ProfileGate(),
         ),
       );
@@ -160,7 +207,9 @@ class _DeclaraUcrAppState extends State<DeclaraUcrApp> {
   );
 }
 
-/// Waits for the profile: without a cédula, asks for it once.
+/// Waits for the profile and asks, once, for what is missing: the profile
+/// itself (an unfinished sign-up), then the campus and career. Accounts that
+/// cannot declare see why.
 class _ProfileGate extends StatelessWidget {
   const _ProfileGate();
 
@@ -184,7 +233,12 @@ class _ProfileGate extends StatelessWidget {
         ),
       );
     }
-    if (profile.value == null) return const CompleteProfileScreen();
+    final value = profile.value;
+    if (value == null) return const CompleteProfileScreen();
+    if (!value.active || !value.isDeclarant) {
+      return const AccountNoticeScreen();
+    }
+    if (value.needsCampus || value.needsCareer) return const WorkplaceScreen();
     return const ShellScreen();
   }
 }

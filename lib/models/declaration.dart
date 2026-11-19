@@ -1,4 +1,5 @@
 import 'package:declara_ucr/models/declaration_status.dart';
+import 'package:declara_ucr/models/period.dart';
 import 'package:declara_ucr/models/schedule_task.dart';
 import 'package:declara_ucr/models/weekday.dart';
 import 'package:declara_ucr/models/workload_items.dart';
@@ -56,7 +57,6 @@ class Declaration {
     this.declarantName = '',
     this.identification = '',
     this.position = '',
-    this.appointmentType,
     this.validFrom,
     this.validTo,
     List<CourseLoad>? courses,
@@ -66,7 +66,14 @@ class Declaration {
     List<ScheduleInterval>? intervals,
     this.status = DeclarationStatus.draft,
     this.updatedAt,
-  }) : courses = courses ?? <CourseLoad>[],
+    this.periodId,
+    this.periodName,
+    this.versionId,
+    this.versionNumber,
+    this.pendingObservation,
+    List<LessonSlot>? lessonSlots,
+  }) : lessonSlots = lessonSlots ?? const <LessonSlot>[],
+       courses = courses ?? <CourseLoad>[],
        projects = projects ?? <ProjectHours>[],
        externalJobs = externalJobs ?? <ExternalJob>[],
        intervals = intervals ?? <ScheduleInterval>[];
@@ -75,7 +82,6 @@ class Declaration {
   String declarantName;
   String identification;
   String position;
-  String? appointmentType;
   DateTime? validFrom;
   DateTime? validTo;
   final List<CourseLoad> courses;
@@ -88,6 +94,25 @@ class Declaration {
   final List<ScheduleInterval> intervals;
   DeclarationStatus status;
   DateTime? updatedAt;
+
+  /// Proyecto 1 period (`periods/{id}`, e.g. `2026_II`): one declaration
+  /// per person and period. `null` in the old mobile schema.
+  String? periodId;
+
+  /// Name of the period, e.g. "II Ciclo - 2026".
+  String? periodName;
+
+  /// Current version (`declarations/{id}/versions/{versionId}`).
+  String? versionId;
+  int? versionNumber;
+
+  /// Why the reviewer or HR returned it (status DEVUELTA).
+  String? pendingObservation;
+
+  /// The lesson slots the career coordination assigned for the period. When
+  /// there are any, the lessons on the schedule are exactly these and the
+  /// person does not move them (as in DeclaraHorario).
+  final List<LessonSlot> lessonSlots;
 
   String get institution => Workplace.full;
 
@@ -128,7 +153,6 @@ class Declaration {
     declarantName: declarantName,
     identification: identification,
     position: position,
-    appointmentType: appointmentType,
     validFrom: validFrom,
     validTo: validTo,
     courses: [...courses],
@@ -138,5 +162,11 @@ class Declaration {
     intervals: intervals.map((i) => i.copy()).toList(),
     status: status,
     updatedAt: updatedAt,
+    periodId: periodId,
+    periodName: periodName,
+    versionId: versionId,
+    versionNumber: versionNumber,
+    pendingObservation: pendingObservation,
+    lessonSlots: lessonSlots,
   );
 }

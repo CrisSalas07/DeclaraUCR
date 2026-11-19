@@ -25,11 +25,12 @@ abstract class AuthRepository {
 
   Future<void> signIn({required String email, required String password});
 
-  /// Creates the account and stores the name and cédula; the person is
-  /// signed in.
+  /// Creates the account and its declarant profile (name, cédula, phone and
+  /// e-mail); the person is signed in.
   Future<void> register({
     required String name,
     required String identification,
+    required String phone,
     required String email,
     required String password,
   });
@@ -88,28 +89,39 @@ class FirebaseAuthRepository implements AuthRepository {
   Future<void> register({
     required String name,
     required String identification,
+    required String phone,
     required String email,
     required String password,
   }) => _guard(() async {
+    final normalized = AuthRules.normalizeEmail(email);
     final credential = await _auth.createUserWithEmailAndPassword(
-      email: AuthRules.normalizeEmail(email),
+      email: normalized,
       password: password,
     );
     final user = credential.user!;
+    // Before the profile: the profile stream may open the app right away.
+    await user.updateDisplayName(name.trim());
     try {
-      await _profiles.save(
+      await _profiles.create(
         user.uid,
-        UserProfile(name: name, identification: identification),
+        UserProfile(
+          fullName: name,
+          identification: identification,
+          phone: phone,
+          email: normalized,
+        ),
       );
     } on IdentificationTakenException {
       // The session already opened, so the app shows "Complete su perfil";
       // it tells why and asks for the cédula again.
       _signUpNotice = IdentificationTakenException.message;
     } catch (e) {
-      // The account exists: the app asks for the cédula again on entry.
+      // The account exists: the app asks for the data again on entry.
       debugPrint('Saving profile failed: $e');
+      _signUpNotice =
+          'Su cuenta se creó, pero no se pudo guardar su perfil. '
+          'Revise los datos e intente de nuevo.';
     }
-    await user.updateDisplayName(name.trim());
   });
 
   @override

@@ -14,17 +14,20 @@ enum SalaryRegime {
   );
 }
 
-/// Status of a zonaje request, with the names of the original system. This
-/// app only sends requests: HR review is out of scope, like signatures.
+/// Status of a zonaje request, with the names of the Proyecto 1.
 enum ZonajeStatus {
-  requested('SOLICITADA'),
-  approved('APROBADA'),
-  rejected('RECHAZADA'),
-  annulled('ANULADA');
+  requested('SOLICITADA', 'En revisión de RRHH'),
+  approved('APROBADA', 'Aprobada'),
+  rejected('RECHAZADA', 'Rechazada'),
+  annulled('ANULADA', 'Anulada');
 
-  const ZonajeStatus(this.value);
+  const ZonajeStatus(this.value, this.label);
 
+  /// Stored value.
   final String value;
+
+  /// What it means for the person, in Spanish.
+  final String label;
 
   static ZonajeStatus fromValue(String value) => ZonajeStatus.values.firstWhere(
     (s) => s.value == value,
@@ -32,37 +35,52 @@ enum ZonajeStatus {
   );
 }
 
-/// A zonaje request (Reglamento General de Zonaje y Bonificación, UCR).
+/// A zonaje request of the Proyecto 1 (`zonajeRequests/{periodId}_{uid}`),
+/// read only: it is made in the web system, which asks for the home on a
+/// map and the TSE certificate. HR reviews it there.
 class ZonajeRequest {
   const ZonajeRequest({
-    this.id,
+    required this.id,
     required this.previousAddress,
     required this.currentAddress,
-    required this.distanceKm,
+    required this.declaredDistanceKm,
     required this.regime,
-    required this.hasBonus,
     required this.weeklyMinutes,
-    required this.declarationId,
-    this.status = ZonajeStatus.requested,
+    required this.status,
+    this.periodId,
     this.createdAt,
+    this.confirmedDistanceKm,
+    this.hrObservation,
+    this.reviewedAt,
+    this.annulReason,
   });
 
-  final String? id;
+  final String id;
+
+  /// Period of the declaration it is based on (older requests have none).
+  final String? periodId;
   final String previousAddress;
   final String currentAddress;
 
-  /// Distance between the previous and the current home, as declared.
-  final double distanceKm;
+  /// Distance the person declared.
+  final double declaredDistanceKm;
+
+  /// Distance HR confirmed when it approved the request.
+  final double? confirmedDistanceKm;
   final SalaryRegime regime;
 
-  /// Whether the person already receives bonificación.
-  final bool hasBonus;
-
-  /// Workday of the courses of [declarationId] when it was sent.
+  /// Workday assigned in the period when it was sent.
   final int weeklyMinutes;
-
-  /// The VALIDADA declaration whose courses give the workday.
-  final String declarationId;
   final ZonajeStatus status;
   final DateTime? createdAt;
+
+  /// Why HR rejected it.
+  final String? hrObservation;
+  final DateTime? reviewedAt;
+
+  /// Why HR annulled an approved request.
+  final String? annulReason;
+
+  /// The confirmed distance once there is one, else the declared one.
+  double get distanceKm => confirmedDistanceKm ?? declaredDistanceKm;
 }

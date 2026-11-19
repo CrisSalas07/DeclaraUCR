@@ -1,3 +1,4 @@
+import 'package:declara_ucr/config/build_info.dart';
 import 'package:declara_ucr/data/auth_repository.dart';
 import 'package:declara_ucr/domain/auth_rules.dart';
 import 'package:declara_ucr/screens/auth/auth_layout.dart';
@@ -72,9 +73,6 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) => AuthLayout(
     title: 'Bienvenido',
-    subtitle:
-        'Declaraciones juradas de horario y jornada de trabajo de la '
-        'Universidad de Costa Rica.',
     child: AutofillGroup(
       child: Form(
         key: _formKey,
@@ -87,7 +85,7 @@ class _LoginScreenState extends State<LoginScreen> {
               autofillHints: const [AutofillHints.email],
               textInputAction: TextInputAction.next,
               decoration: const InputDecoration(
-                labelText: 'Correo institucional',
+                labelText: 'Correo electrónico',
                 hintText: 'nombre.apellido@ucr.ac.cr',
                 prefixIcon: Icon(Icons.alternate_email),
               ),
@@ -151,6 +149,15 @@ class _LoginScreenState extends State<LoginScreen> {
               icon: const Icon(Icons.person_add_alt_1_outlined),
               label: const Text('Crear cuenta'),
             ),
+            const SizedBox(height: 16),
+            // Which build this is, for test sessions and bug reports.
+            Text(
+              BuildInfo.label,
+              textAlign: TextAlign.center,
+              style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
+              ),
+            ),
           ],
         ),
       ),
@@ -191,13 +198,13 @@ class _ResetPasswordDialogState extends State<_ResetPasswordDialog> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          const Text('Le enviaremos un enlace a su correo institucional.'),
+          const Text('Le enviaremos un enlace a su correo.'),
           const SizedBox(height: 16),
           TextFormField(
             controller: _email,
             keyboardType: TextInputType.emailAddress,
             decoration: const InputDecoration(
-              labelText: 'Correo institucional',
+              labelText: 'Correo electrónico',
               prefixIcon: Icon(Icons.alternate_email),
             ),
             validator: AuthRules.emailError,

@@ -1,6 +1,8 @@
 import 'package:declara_ucr/data/declaration_repository.dart';
 import 'package:declara_ucr/domain/schedule_grid.dart';
 import 'package:declara_ucr/models/declaration.dart';
+import 'package:declara_ucr/models/declaration_status.dart';
+import 'package:declara_ucr/models/period.dart';
 import 'package:declara_ucr/models/schedule_task.dart';
 import 'package:declara_ucr/models/workload_items.dart';
 import 'package:declara_ucr/models/weekday.dart';
@@ -70,13 +72,21 @@ void main() {
     late DeclarationFormState state;
     const hc = ScheduleTask(TaskKind.lesson, 'Redes');
     const pye = ScheduleTask(TaskKind.planning, 'Redes');
-    setUp(() {
-      state = DeclarationFormState(repository: _NoRepository());
-      // 1 TC: 16 h lessons, 8 h attention, 16 h planning.
-      state.saveCourse(
-        const CourseLoad(name: 'Redes', code: 'IF0009', workloadMinutes: 2400),
-      );
-    });
+    DeclarationFormState withCourse(int workloadMinutes) =>
+        DeclarationFormState(
+          repository: _NoRepository(),
+          initial: Declaration(
+            courses: [
+              CourseLoad(
+                name: 'Redes',
+                code: 'IF0009',
+                workloadMinutes: workloadMinutes,
+              ),
+            ],
+          ),
+        );
+    // 1 TC: 16 h lessons, 8 h attention, 16 h planning.
+    setUp(() => state = withCourse(2400));
 
     test('paints, erases and never places the lunch hour', () {
       expect(state.paint(_range(Weekday.monday, 11 * 60, 14 * 60), hc), isNull);
@@ -104,10 +114,7 @@ void main() {
     });
 
     test('never places more hours than the task has', () {
-      state.saveCourse(
-        const CourseLoad(name: 'Redes', code: 'IF0009', workloadMinutes: 300),
-        index: 0,
-      );
+      state = withCourse(300);
       expect(state.paint(_range(Weekday.monday, 8 * 60, 10 * 60), hc), isNull);
 
       final error = state.paint([const GridCell(Weekday.monday, 10 * 60)], hc);
@@ -130,31 +137,132 @@ void main() {
       expect(byDay[Weekday.wednesday], 'HC|Redes 480-600');
       expect(state.declaration.totalMinutes, 3 * 2 * 60);
     });
+  });
 
-    test('renaming a course renames its blocks; removing it frees them', () {
-      state.paint(_range(Weekday.monday, 8 * 60, 9 * 60), hc);
+  group('lessons assigned by the coordination', () {
+    // 1/8 TC: 2 h lessons (Monday 8:00-10:00), 1 h attention, 2 h planning.
+    const slot = LessonSlot(
+      day: Weekday.monday,
+      startMinutes: 8 * 60,
+      endMinutes: 10 * 60,
+      course: 'Redes',
+    );
+    const ae = ScheduleTask(TaskKind.attention, 'Redes');
+    const hc = ScheduleTask(TaskKind.lesson, 'Redes');
 
-      state.saveCourse(
-        const CourseLoad(
-          name: 'Redes I',
-          code: 'IF0009',
-          workloadMinutes: 2400,
-        ),
-        index: 0,
-      );
-      expect(state.declaration.intervals.single.task.name, 'Redes I');
+    DeclarationFormState open([Declaration? d]) => DeclarationFormState(
+      repository: _NoRepository(),
+      initial:
+          d ??
+          Declaration(
+            courses: const [
+              CourseLoad(name: 'Redes', code: 'IF0009', workloadMinutes: 300),
+            ],
+            lessonSlots: const [slot],
+          ),
+    );
 
-      state.removeCourse(0);
-      expect(state.declaration.intervals, isEmpty);
+    String lessons(DeclarationFormState state) => state.declaration.intervals
+        .where((i) => i.task.kind == TaskKind.lesson)
+        .map((i) => '${i.day.number} ${i.startMinutes}-${i.endMinutes}')
+        .join(', ');
+
+    test('a new declaration starts with its lessons placed', () {
+      final state = open();
+      expect(state.lessonsFixed, isTrue);
+      expect(lessons(state), '1 480-600');
+      expect(state.declaration.status, DeclarationStatus.draft);
     });
 
-    test('a second course over the full time is refused', () {
-      final error = state.saveCourse(
-        const CourseLoad(name: 'Otro', code: '', workloadMinutes: 300),
+    test('lessons are neither painted, erased nor painted over', () {
+      final state = open();
+      expect(
+        state.paint(_range(Weekday.tuesday, 8 * 60, 9 * 60), hc),
+        DeclarationFormState.lessonsAreFixed,
       );
+      expect(
+        state.paint(_range(Weekday.monday, 8 * 60, 9 * 60), null),
+        DeclarationFormState.lessonsAreFixed,
+      );
+      // A range over a lesson paints only the free half hours around it.
+      expect(state.paint(_range(Weekday.monday, 9 * 60, 11 * 60), ae), isNull);
+      expect(lessons(state), '1 480-600');
+      expect(state.declaration.placedMinutesOf(TaskKind.attention), 60);
 
-      expect(error, contains('superan el tiempo completo'));
-      expect(state.declaration.courses, hasLength(1));
+      // Clearing the day keeps the lessons.
+      state.paint(_range(Weekday.monday, 7 * 60, 22 * 60), null);
+      expect(lessons(state), '1 480-600');
+      expect(state.declaration.totalMinutes, 120);
+    });
+
+    test('copying a day neither copies nor removes lessons', () {
+      // 1/4 TC: 2 h of attention, so one copied hour still fits.
+      final state = open(
+        Declaration(
+          courses: const [
+            CourseLoad(name: 'Redes', code: 'IF0009', workloadMinutes: 600),
+          ],
+          lessonSlots: const [
+            slot,
+            LessonSlot(
+              day: Weekday.wednesday,
+              startMinutes: 14 * 60,
+              endMinutes: 15 * 60,
+              course: 'Redes',
+            ),
+          ],
+        ),
+      );
+      state.paint(_range(Weekday.monday, 10 * 60, 11 * 60), ae);
+
+      expect(state.copyDay(Weekday.monday, [Weekday.wednesday]), isNull);
+
+      expect(lessons(state), contains('1 480-600'));
+      expect(lessons(state), contains('3 840-900'));
+      expect(
+        state.declaration.intervals
+            .where((i) => i.day == Weekday.wednesday)
+            .map((i) => i.task.key),
+        containsAll(['HC|Redes', 'AE|Redes']),
+      );
+      expect(state.declaration.placedMinutesOf(TaskKind.lesson), 180);
+    });
+
+    test('moved lessons of a validated declaration are put back', () {
+      final state = open(
+        Declaration(
+          id: 'd1',
+          status: DeclarationStatus.validated,
+          courses: const [
+            CourseLoad(name: 'Redes', code: 'IF0009', workloadMinutes: 300),
+          ],
+          lessonSlots: const [slot],
+          intervals: [
+            ScheduleInterval(
+              id: 'moved',
+              day: Weekday.friday,
+              startMinutes: 8 * 60,
+              endMinutes: 10 * 60,
+              task: hc,
+            ),
+          ],
+        ),
+      );
+      expect(lessons(state), '1 480-600');
+      // Correcting them is an edit: it must be validated again.
+      expect(state.declaration.status, DeclarationStatus.draft);
+    });
+
+    test('without assigned slots the lessons are placed by hand', () {
+      final state = open(
+        Declaration(
+          courses: const [
+            CourseLoad(name: 'Redes', code: 'IF0009', workloadMinutes: 300),
+          ],
+        ),
+      );
+      expect(state.lessonsFixed, isFalse);
+      expect(state.paint(_range(Weekday.monday, 8 * 60, 9 * 60), hc), isNull);
     });
   });
 }

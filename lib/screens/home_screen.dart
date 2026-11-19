@@ -1,3 +1,4 @@
+import 'package:declara_ucr/config/build_info.dart';
 import 'package:declara_ucr/data/auth_repository.dart';
 import 'package:declara_ucr/data/profile_repository.dart';
 import 'package:declara_ucr/domain/time_rules.dart';
@@ -7,21 +8,19 @@ import 'package:declara_ucr/models/declaration.dart';
 import 'package:declara_ucr/models/declaration_status.dart';
 import 'package:declara_ucr/models/schedule_task.dart';
 import 'package:declara_ucr/screens/declarations_screen.dart';
-import 'package:declara_ucr/screens/shell_screen.dart';
+import 'package:declara_ucr/screens/sign_declaration_screen.dart';
 import 'package:declara_ucr/state/loadable.dart';
 import 'package:declara_ucr/theme/ucr_theme.dart';
 import 'package:declara_ucr/widgets/common.dart';
+import 'package:declara_ucr/widgets/declaration_progress.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 /// Inicio: identifies the system (R1), greets the person, shows their
-/// profile, the latest declaration with its hours, and shortcuts to the
-/// other sections.
+/// profile and the latest declaration with its tracking and hours. The
+/// other sections are in the bottom navigation bar.
 class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key, required this.onNavigate});
-
-  /// Switches to another section ([Sections]).
-  final ValueChanged<int> onNavigate;
+  const HomeScreen({super.key});
 
   void _showProfile(BuildContext context, AppUser user, UserProfile? p) =>
       showModalBottomSheet<void>(
@@ -46,7 +45,6 @@ class HomeScreen extends StatelessWidget {
     final latest = declarations.isEmpty ? null : declarations.first;
     int count(DeclarationStatus s) =>
         declarations.where((d) => d.status == s).length;
-    final theme = Theme.of(context);
 
     return ListView(
       padding: EdgeInsets.zero,
@@ -61,6 +59,19 @@ class HomeScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
+              // The rules reject a new declaration without a reviewer, and
+              // only administration assigns one (from the web).
+              if (profile != null && !profile.hasSuperior) ...[
+                const InfoBanner(
+                  icon: Icons.supervisor_account_outlined,
+                  title: 'Aún no tiene revisor asignado.',
+                  lines: [
+                    'Administración debe asignarlo en el sistema web antes '
+                        'de que pueda crear su declaración.',
+                  ],
+                ),
+                const SizedBox(height: 16),
+              ],
               Row(
                 children: [
                   _Counter(
@@ -91,32 +102,6 @@ class HomeScreen extends StatelessWidget {
                 )
               else
                 _LatestCard(declaration: latest),
-              Text('Accesos rápidos', style: theme.textTheme.titleMedium),
-              const SizedBox(height: 12),
-              _Shortcut(
-                icon: Icons.add_circle_outline,
-                title: 'Nueva declaración',
-                subtitle: 'Cursos, proyectos y horario semanal',
-                onTap: () => openDeclaration(context, null),
-              ),
-              _Shortcut(
-                icon: Icons.description_outlined,
-                title: 'Mis declaraciones',
-                subtitle: 'Borradores y validadas',
-                onTap: () => onNavigate(Sections.declarations),
-              ),
-              _Shortcut(
-                icon: Icons.directions_car_outlined,
-                title: 'Zonaje',
-                subtitle: 'Solicitud por traslado de domicilio',
-                onTap: () => onNavigate(Sections.zonaje),
-              ),
-              _Shortcut(
-                icon: Icons.history,
-                title: 'Historial',
-                subtitle: 'Declaraciones y solicitudes por año',
-                onTap: () => onNavigate(Sections.history),
-              ),
               const SizedBox(height: 24),
               const Center(child: UcrSignature()),
             ],
@@ -276,7 +261,8 @@ class _Counter extends StatelessWidget {
   }
 }
 
-/// The most recent declaration: status, workday and hours by category.
+/// The most recent declaration: where it is in the process (as the web's
+/// tracking), workday and hours by category.
 class _LatestCard extends StatelessWidget {
   const _LatestCard({required this.declaration});
 
@@ -294,8 +280,9 @@ class _LatestCard extends StatelessWidget {
       subtitle:
           '${formatDate(d.validFrom)} – ${formatDate(d.validTo)}'
           '${workday == null ? '' : ' · $workday'}',
-      trailing: StatusChip(d.status),
       children: [
+        DeclarationProgress(status: d.status),
+        const SizedBox(height: 16),
         Wrap(
           spacing: 8,
           runSpacing: 8,
@@ -310,46 +297,32 @@ class _LatestCard extends StatelessWidget {
           ],
         ),
         const SizedBox(height: 12),
-        Align(
-          alignment: Alignment.centerLeft,
-          child: OutlinedButton.icon(
-            onPressed: () => openDeclaration(context, d.id),
-            icon: const Icon(Icons.edit_outlined),
-            label: Text(
-              d.status == DeclarationStatus.draft ? 'Continuar' : 'Abrir',
+        Wrap(
+          spacing: 8,
+          runSpacing: 8,
+          children: [
+            // The next step of a validated declaration: sign and send it.
+            if (d.id != null &&
+                (d.status == DeclarationStatus.validated ||
+                    d.status == DeclarationStatus.pendingDeclarantSignature))
+              FilledButton.icon(
+                onPressed: () => openSigning(context, d.id!),
+                icon: const Icon(Icons.draw_outlined),
+                label: const Text('Firmar y enviar'),
+              ),
+            OutlinedButton.icon(
+              onPressed: () => openDeclaration(context, d.id),
+              icon: const Icon(Icons.edit_outlined),
+              label: Text(
+                d.status == DeclarationStatus.draft ? 'Continuar' : 'Abrir',
+              ),
             ),
-          ),
+          ],
         ),
         const SizedBox(height: 8),
       ],
     );
   }
-}
-
-class _Shortcut extends StatelessWidget {
-  const _Shortcut({
-    required this.icon,
-    required this.title,
-    required this.subtitle,
-    required this.onTap,
-  });
-
-  final IconData icon;
-  final String title;
-  final String subtitle;
-  final VoidCallback onTap;
-
-  @override
-  Widget build(BuildContext context) => Card(
-    margin: const EdgeInsets.only(bottom: 10),
-    child: ListTile(
-      leading: Icon(icon, color: UcrColors.blue),
-      title: Text(title),
-      subtitle: Text(subtitle),
-      trailing: const Icon(Icons.chevron_right),
-      onTap: onTap,
-    ),
-  );
 }
 
 class _ProfileSheet extends StatelessWidget {
@@ -406,6 +379,14 @@ class _ProfileSheet extends StatelessWidget {
                 onPressed: onSignOut,
                 icon: const Icon(Icons.logout),
                 label: const Text('Cerrar sesión'),
+              ),
+            ),
+            const SizedBox(height: 12),
+            Text(
+              BuildInfo.label,
+              textAlign: TextAlign.center,
+              style: text.labelSmall?.copyWith(
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
               ),
             ),
           ],

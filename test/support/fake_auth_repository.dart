@@ -42,13 +42,19 @@ class FakeAuthRepository implements AuthRepository {
   Future<void> register({
     required String name,
     required String identification,
+    required String phone,
     required String email,
     required String password,
   }) async {
     try {
-      await profiles?.save(
+      await profiles?.create(
         'new',
-        UserProfile(name: name, identification: identification),
+        UserProfile(
+          fullName: name,
+          identification: identification,
+          phone: phone,
+          email: email,
+        ),
       );
     } on IdentificationTakenException {
       _notice = IdentificationTakenException.message;

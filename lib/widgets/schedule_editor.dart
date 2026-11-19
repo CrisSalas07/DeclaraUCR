@@ -55,7 +55,15 @@ class _ScheduleEditorState extends State<ScheduleEditor> {
 
   /// What can be placed: every task the declaration needs, plus any task
   /// still on the schedule that is no longer declared (so it can be freed).
-  static List<ScheduleTask> _brushes(Declaration d) => {
+  /// Lessons assigned by the coordination are not placed by the person.
+  static List<ScheduleTask> _brushes(Declaration d, {required bool fixed}) => {
+    ...ScheduleRequirements.requiredMinutes(d).keys,
+    ...d.intervals.map((i) => i.task),
+  }.where((t) => !fixed || t.kind != TaskKind.lesson).toList();
+
+  /// The color of a course is shared by its three kinds of hours, so the
+  /// lessons count when giving colors even if they are not placed here.
+  static List<ScheduleTask> _owners(Declaration d) => {
     ...ScheduleRequirements.requiredMinutes(d).keys,
     ...d.intervals.map((i) => i.task),
   }.toList();
@@ -144,7 +152,9 @@ class _ScheduleEditorState extends State<ScheduleEditor> {
     final state = context.watch<DeclarationFormState>();
     final d = state.declaration;
     final theme = Theme.of(context);
-    final brushes = _brushes(d);
+    final fixed = state.lessonsFixed;
+    final brushes = _brushes(d, fixed: fixed);
+    final owners = _owners(d);
     if (brushes.isEmpty) {
       return Padding(
         padding: const EdgeInsets.only(bottom: 8),
@@ -187,13 +197,35 @@ class _ScheduleEditorState extends State<ScheduleEditor> {
                 label: _name(task, d),
                 placed: ScheduleRequirements.placedMinutes(d, task),
                 required: required[task],
-                color: _colorOf(task, brushes),
+                color: _colorOf(task, owners),
                 selected: task == brush,
                 onTap: () => setState(() => _brush = task),
               ),
           ],
         ),
         const SizedBox(height: 12),
+        if (fixed) ...[
+          Row(
+            children: [
+              Icon(
+                Icons.lock_outline,
+                size: 16,
+                color: theme.colorScheme.onSurfaceVariant,
+              ),
+              const SizedBox(width: 6),
+              Expanded(
+                child: Text(
+                  'Las clases ya están en su horario: las asignó la '
+                  'Coordinación de su carrera y no se mueven.',
+                  style: theme.textTheme.bodySmall?.copyWith(
+                    color: theme.colorScheme.onSurfaceVariant,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 8),
+        ],
         Text(
           'Toque una media hora para marcarla. Mantenga presionado y deslice '
           'para marcar varias seguidas.',
@@ -202,7 +234,7 @@ class _ScheduleEditorState extends State<ScheduleEditor> {
           ),
         ),
         const SizedBox(height: 12),
-        _dayGrid(d, cells, brush, brushes, theme),
+        _dayGrid(d, cells, brush, owners, theme, fixed: fixed),
         const SizedBox(height: 12),
         Row(
           children: [
@@ -230,8 +262,9 @@ class _ScheduleEditorState extends State<ScheduleEditor> {
     Map<GridCell, String> cells,
     ScheduleTask brush,
     List<ScheduleTask> brushes,
-    ThemeData theme,
-  ) {
+    ThemeData theme, {
+    required bool fixed,
+  }) {
     final scheme = theme.colorScheme;
     final runs = _runsOf(cells);
     final a = _anchorRow, b = _currentRow;
@@ -309,6 +342,7 @@ class _ScheduleEditorState extends State<ScheduleEditor> {
                             _name(run.task, d),
                             _colorOf(run.task, brushes),
                             theme,
+                            locked: fixed && run.task.kind == TaskKind.lesson,
                           ),
                         ),
                       ),
@@ -379,11 +413,19 @@ class _ScheduleEditorState extends State<ScheduleEditor> {
     );
   }
 
-  Widget _block(_Run run, String name, Color color, ThemeData theme) {
+  Widget _block(
+    _Run run,
+    String name,
+    Color color,
+    ThemeData theme, {
+    bool locked = false,
+  }) {
     final range =
         '${TimeRules.shortClock(run.start)} – ${TimeRules.shortClock(run.end)}';
     return Semantics(
-      label: '$name, $range',
+      label: locked
+          ? '$name, $range, asignada por la Coordinación'
+          : '$name, $range',
       child: Container(
         padding: const EdgeInsets.fromLTRB(10, 4, 8, 4),
         decoration: BoxDecoration(
@@ -396,6 +438,10 @@ class _ScheduleEditorState extends State<ScheduleEditor> {
         ),
         child: Row(
           children: [
+            if (locked) ...[
+              const Icon(Icons.lock_outline, size: 14, color: UcrColors.ink),
+              const SizedBox(width: 4),
+            ],
             Expanded(
               child: Text(
                 name,

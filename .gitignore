@@ -52,3 +52,12 @@ app.*.map.json
 
 # Firebase deploy cache
 .firebase/
+
+# Local data of the Proyecto 1 emulators (backend/proyecto1/seed.mjs)
+backend/proyecto1/emulator-data/
+
+# APKs built by tool/build_apk.dart (published, not committed)
+/dist/
+
+# Windows runner, only to run integration_test/ against the emulators
+/windows/

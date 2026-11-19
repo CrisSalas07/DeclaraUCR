@@ -24,7 +24,7 @@ class _ShellScreenState extends State<ShellScreen> {
     body: IndexedStack(
       index: _index,
       children: [
-        HomeScreen(onNavigate: _go),
+        const HomeScreen(),
         const DeclarationsScreen(),
         const ZonajeScreen(),
         const HistoryScreen(),
@@ -53,12 +53,4 @@ class _ShellScreenState extends State<ShellScreen> {
       ],
     ),
   );
-}
-
-/// Section indexes, for buttons that jump between sections.
-abstract final class Sections {
-  static const int home = 0;
-  static const int declarations = 1;
-  static const int zonaje = 2;
-  static const int history = 3;
 }

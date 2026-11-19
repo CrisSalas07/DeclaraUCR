@@ -1,0 +1,172 @@
+rules_version = '2';
+
+// Cloud Storage security rules. Integrante A, reviewed by Integrante C.
+//
+// Two kinds of files exist: the final PDF of a declaration (HU-24), and the
+// TSE certificate of a zonaje request (RF-8.4, see below). The final PDF is
+// stored at pdf/{declarationId}/{versionId}.pdf (StoragePaths.finalPdf).
+//
+// These rules read Firestore through firestore.get() and firestore.exists().
+// When they are deployed, Firebase may ask to authorize that cross-service
+// access.
+//
+// Tested with the emulators (test/rules/storage.rules.test.js):
+//   firebase emulators:exec --only firestore,storage --project demo-declarahorario "npm test"
+
+service firebase.storage {
+  match /b/{bucket}/o {
+
+    // ---------------------------------------------------------
+    // Identity
+    // ---------------------------------------------------------
+
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function userPath() {
+      return /databases/(default)/documents/users/$(request.auth.uid);
+    }
+
+    // True when the signed-in person has an active profile with that role.
+    function hasRole(role) {
+      return signedIn()
+        && firestore.exists(userPath())
+        && firestore.get(userPath()).data.active == true
+        && role in firestore.get(userPath()).data.roles;
+    }
+
+    // Campus of the signed-in person, or null.
+    function myCampus() {
+      return firestore.get(userPath()).data.get('campusId', null);
+    }
+
+    // HR of the campus recorded in [data] (same as isHrOf in
+    // firestore.rules): HR only handles its own campus.
+    function isHrOf(data) {
+      return hasRole('hr')
+        && myCampus() != null
+        && data.get('campusId', null) == myCampus();
+    }
+
+    // An administrator of the campus recorded in [data] (same as isAdminOf
+    // in firestore.rules).
+    function isAdminOf(data) {
+      return hasRole('admin')
+        && myCampus() != null
+        && data.get('campusId', null) == myCampus();
+    }
+
+    // ---------------------------------------------------------
+    // Declarations
+    // ---------------------------------------------------------
+
+    function declPath(declarationId) {
+      return /databases/(default)/documents/declarations/$(declarationId);
+    }
+
+    function declData(declarationId) {
+      return firestore.get(declPath(declarationId)).data;
+    }
+
+    // The declarant, the assigned superior, or HR or an administrator of its
+    // campus. A declaration that does not exist has no participants.
+    function isParticipant(declarationId) {
+      return signedIn()
+        && firestore.exists(declPath(declarationId))
+        && (
+          declData(declarationId).declarantUid == request.auth.uid
+          || declData(declarationId).superiorUid == request.auth.uid
+          || isHrOf(declData(declarationId))
+          || isAdminOf(declData(declarationId))
+        );
+    }
+
+    // Statuses in which both signatures exist (same set as PdfState).
+    // Before them the PDF would be incomplete, and it can never be replaced.
+    function isFullySigned(declarationId) {
+      return declData(declarationId).status
+        in ['ENVIADA_A_RRHH', 'RECIBIDA_RRHH', 'FINALIZADA'];
+    }
+
+    // ---------------------------------------------------------
+    // Final PDF: pdf/{declarationId}/{versionId}.pdf
+    // ---------------------------------------------------------
+
+    match /pdf/{declarationId}/{fileName} {
+      allow read: if isParticipant(declarationId);
+
+      // Uploaded once, by HR or an administrator (who generates it is still
+      // open, duda 17), only for a fully signed declaration and only as the
+      // PDF of its current version.
+      //
+      // resource == null: there must be no file yet. Storage may evaluate an
+      // upload over an existing object as a create, so "update: false" alone
+      // does not stop an overwrite.
+      allow create: if resource == null
+        && firestore.exists(declPath(declarationId))
+        && (isHrOf(declData(declarationId)) || isAdminOf(declData(declarationId)))
+        && isFullySigned(declarationId)
+        && fileName == declData(declarationId).currentVersionId + '.pdf'
+        && request.resource.contentType == 'application/pdf'
+        && request.resource.size < 10 * 1024 * 1024;
+
+      // The official PDF is immutable.
+      allow update, delete: if false;
+    }
+
+        // ---------------------------------------------------------
+    // Zonaje TSE certificate: zonaje/{uid}/{periodId}/tse.pdf (RF-8.4),
+    // one per zonaje request, which is one per period.
+    // ---------------------------------------------------------
+
+    function zonajePath(uid, periodId) {
+      return /databases/(default)/documents/zonajeRequests/$(periodId + '_' + uid);
+    }
+
+    function periodExists(periodId) {
+      return firestore.exists(/databases/(default)/documents/periods/$(periodId));
+    }
+
+    // The certificate can be placed only before the request is sent, or
+    // after HR rejects or annuls it (the request can then be sent again),
+    // so a certificate HR reviewed never changes.
+    function certificateEditable(uid, periodId) {
+      return !firestore.exists(zonajePath(uid, periodId))
+        || firestore.get(zonajePath(uid, periodId)).data.status
+          in ['RECHAZADA', 'ANULADA'];
+    }
+
+    match /zonaje/{uid}/{periodId}/{fileName} {
+      // HR and administrators read the certificates of their campus, once
+      // the request exists.
+      allow read: if signedIn()
+        && (
+          request.auth.uid == uid
+          || (
+            firestore.exists(zonajePath(uid, periodId))
+            && (
+              isHrOf(firestore.get(zonajePath(uid, periodId)).data)
+              || isAdminOf(firestore.get(zonajePath(uid, periodId)).data)
+            )
+          )
+        );
+
+      allow create, update: if signedIn()
+        && request.auth.uid == uid
+        && hasRole('declarant')
+        && periodExists(periodId)
+        && fileName == 'tse.pdf'
+        && certificateEditable(uid, periodId)
+        && request.resource.contentType == 'application/pdf'
+        && request.resource.size < 5 * 1024 * 1024;
+
+      allow delete: if false;
+    }
+
+    // Anything else is closed.
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}
