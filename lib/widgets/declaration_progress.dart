@@ -186,13 +186,17 @@ class _Step extends StatelessWidget {
           ],
         ),
         const SizedBox(height: 4),
-        Text(
-          label,
-          textAlign: TextAlign.center,
-          maxLines: 2,
-          style: Theme.of(context).textTheme.labelSmall?.copyWith(
-            color: active ? color : scheme.onSurfaceVariant,
-            fontWeight: active ? FontWeight.w700 : FontWeight.w400,
+        // One word per line, never split inside a word: a word that does
+        // not fit (large text, narrow phone) shrinks the label instead.
+        FittedBox(
+          fit: BoxFit.scaleDown,
+          child: Text(
+            label.replaceAll(' ', '\n'),
+            textAlign: TextAlign.center,
+            style: Theme.of(context).textTheme.labelSmall?.copyWith(
+              color: active ? color : scheme.onSurfaceVariant,
+              fontWeight: active ? FontWeight.w700 : FontWeight.w400,
+            ),
           ),
         ),
       ],

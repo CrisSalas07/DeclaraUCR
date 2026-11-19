@@ -126,7 +126,8 @@ async function main() {
   await call('DELETE', `${auth}/emulator/v1/projects/${project}/accounts`);
   await call('DELETE', `${firestore}/emulator/v1/projects/${project}/databases/(default)/documents`);
 
-  // 2. Accounts, with the email already verified.
+  // 2. Accounts, with the email already verified and the name the app sets
+  // when someone signs up (Inicio greets with it).
   const uid = {};
   for (const [key, person] of Object.entries(PEOPLE)) {
     const account = await call(
@@ -137,6 +138,7 @@ async function main() {
     await call('POST', `${auth}/identitytoolkit.googleapis.com/v1/projects/${project}/accounts:update`, {
       localId: account.localId,
       emailVerified: true,
+      displayName: person.fullName,
     });
     uid[key] = account.localId;
   }
