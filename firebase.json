@@ -1,6 +1,7 @@
 {
   "firestore": {
-    "rules": "firestore.rules"
+    "rules": "backend/proyecto1/firestore.rules",
+    "indexes": "backend/proyecto1/firestore.indexes.json"
   },
   "hosting": {
     "target": "declaraucr",

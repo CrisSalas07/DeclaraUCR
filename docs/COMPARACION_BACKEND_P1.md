@@ -105,7 +105,7 @@ Son incompatibles: el zonaje del P1 necesita mapa, Storage y el régimen del per
 | Formulario | Período en lugar de fechas; cursos de la asignación (solo lectura) | Medio |
 | Lista e historial | Mostrar todos los estados del P1; agrupar por período | Pequeño |
 | Zonaje | Hecho: solo consulta (decisión B) | Pequeño |
-| `firestore.rules` de este repo | Ya no se despliegan: mandan las del P1. Pruebas con el emulador cargando las reglas del P1 | Pequeño |
+| `firestore.rules` de este repo | Eliminadas: mandan las del P1. El `firebase.json` de la raíz y los emuladores cargan la copia de `backend/proyecto1/`; este repo nunca despliega reglas | Hecho |
 
 ## 5. Decisiones pendientes del equipo
 

@@ -22,12 +22,16 @@ Beyond the lab, from the main project: career courses with their lesson,
 attention and planning hours (`course_rules.dart`, `workload_catalog.dart`),
 projects, jobs at other institutions, observations written from the
 schedule (`schedule_observations.dart`), the status of the zonaje
-requests (read only, `zonaje_screen.dart`) and the history by year
-(`declarant_history.dart`).
+requests (read only, `zonaje_screen.dart`), the history by year
+(`declarant_history.dart`), the tracking of a declaration through its steps
+(`declaration_progress.dart`), its PDF on the official HR form
+(`lib/pdf/declaration_pdf.dart`) and the declarant's signature, which sends
+it to the reviewer (`sign_declaration_screen.dart`,
+`lib/data/proyecto1/declaration_signer.dart`).
 
-Out of scope (per the lab): digital signature, hierarchical approval and HR
-reception. The app never shows a declaration as signed, and `firestore.rules`
-rejects any status other than `BORRADOR` and `VALIDADA`.
+Not in the phone: the reviewer's and HR's approval and correcting a returned
+declaration, which stay in the DeclaraHorario web system. The signature is the
+system's internal electronic signature, not a certified digital one.
 
 ## Architecture
 
@@ -121,9 +125,11 @@ Adaptation decision: the appointment type (Interino/Propiedad) was removed.
 The Proyecto 1 does not store it, and the lab's "tipo de jornada o
 nombramiento" is covered by the workday (e.g. `1/4 TC`) of the appointment.
 
-The root `firestore.rules` still describes the old mobile schema; the
-target rules are the Proyecto 1 copy in `backend/proyecto1/`, and
-`backend/proyecto1/verify.mjs` checks the profile writes against them.
+The rules are the Proyecto 1's: the copy in `backend/proyecto1/` is what the
+root `firebase.json` and the emulators load, `backend/proyecto1/verify.mjs`
+checks the profile writes against them and
+`integration_test/sign_rules_test.dart` the signature. This repository never
+deploys rules: the real ones are published from DeclaraHorario.
 
 Two backends, chosen at build time (`lib/config/firebase_config.dart`):
 
@@ -132,12 +138,12 @@ Two backends, chosen at build time (`lib/config/firebase_config.dart`):
 - **`--dart-define=FIREBASE_ENV=production`:**
   - **Android:** the Proyecto 1 backend `declarahorario-b186f` (app
     "DeclaraUCR (Android)"), shared with the DeclaraHorario web system. Its
-    own `firestore.rules` apply, not the ones in this repository. The data
-    layer is being adapted to its schema (see
-    `docs/COMPARACION_BACKEND_P1.md`); until then, writes are rejected by
-    those rules and nothing is stored.
-  - **Web:** the version hosted at https://declaraucr.web.app on
-    `cristopher-desarrollo-iv`.
+    own `firestore.rules` apply. The data layer writes its schema exactly
+    as the web does (see `docs/COMPARACION_BACKEND_P1.md`).
+  - **Web:** the earlier lab version hosted at https://declaraucr.web.app,
+    on the project `cristopher-desarrollo-iv`. That project does not have
+    the Proyecto 1 schema, so a web build of the current code does not
+    work against it; the phone app is the deliverable.
 
 - *Guardar borrador* saves with status `BORRADOR` even if fields are missing.
 - *Validar* (summary) saves as `VALIDADA` only when there are no missing fields
@@ -209,11 +215,13 @@ tool/build_apk.dart`. Installing, updating, going back to an earlier
 version, the release key and the test data of the real backend are in
 `docs/INSTALACION.md`.
 
-Web, for testing on a phone browser:
+Web hosting of the earlier lab version (hosting only: this repository never
+deploys Firestore rules, and the root `firebase.json` points to the Proyecto 1
+copy only for the emulators):
 
 ```bash
 flutter build web --release --dart-define=FIREBASE_ENV=production
-firebase deploy --only hosting:declaraucr,firestore:rules -P prod
+firebase deploy --only hosting:declaraucr -P prod
 ```
 
 Institutional assets are bundled: the official UCR signature
