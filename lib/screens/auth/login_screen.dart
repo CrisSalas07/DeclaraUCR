@@ -73,9 +73,6 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) => AuthLayout(
     title: 'Bienvenido',
-    subtitle:
-        'Declaraciones juradas de horario y jornada de trabajo de la '
-        'Universidad de Costa Rica.',
     child: AutofillGroup(
       child: Form(
         key: _formKey,

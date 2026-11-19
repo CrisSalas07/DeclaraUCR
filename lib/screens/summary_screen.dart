@@ -3,6 +3,7 @@ import 'package:declara_ucr/domain/schedule_requirements.dart';
 import 'package:declara_ucr/domain/time_rules.dart';
 import 'package:declara_ucr/domain/workload_catalog.dart';
 import 'package:declara_ucr/models/declaration.dart';
+import 'package:declara_ucr/models/declaration_status.dart';
 import 'package:declara_ucr/models/schedule_task.dart';
 import 'package:declara_ucr/screens/declaration_pdf_screen.dart';
 import 'package:declara_ucr/state/declaration_form_state.dart';
@@ -41,6 +42,7 @@ class SummaryScreen extends StatelessWidget {
       for (final issue in state.issues) issue.message,
     ];
     final sorted = d.sortedIntervals;
+    final validated = d.status == DeclarationStatus.validated;
 
     return Scaffold(
       appBar: AppBar(
@@ -153,8 +155,10 @@ class SummaryScreen extends StatelessWidget {
       bottomNavigationBar: BottomActions(
         secondaryLabel: 'Corregir',
         onSecondary: () => Navigator.of(context).pop(),
-        primaryLabel: 'Validar',
-        onPrimary: state.canValidate && !state.saving
+        // Once validated it stays off until something changes: any edit
+        // sends the declaration back to BORRADOR.
+        primaryLabel: validated ? 'Validada' : 'Validar',
+        onPrimary: state.canValidate && !state.saving && !validated
             ? () => _validate(context)
             : null,
       ),

@@ -17,13 +17,15 @@ class AuthLayout extends StatefulWidget {
   const AuthLayout({
     super.key,
     required this.title,
-    required this.subtitle,
+    this.subtitle,
     required this.child,
     this.showBack = false,
   });
 
   final String title;
-  final String subtitle;
+
+  /// A line under the title; none when the title says enough.
+  final String? subtitle;
   final Widget child;
   final bool showBack;
 
@@ -93,13 +95,15 @@ class _AuthLayoutState extends State<AuthLayout>
           fontWeight: FontWeight.w800,
         ),
       ),
-      const SizedBox(height: 4),
-      Text(
-        widget.subtitle,
-        style: text.bodyMedium?.copyWith(
-          color: theme.colorScheme.onSurfaceVariant,
+      if (widget.subtitle case final subtitle?) ...[
+        const SizedBox(height: 4),
+        Text(
+          subtitle,
+          style: text.bodyMedium?.copyWith(
+            color: theme.colorScheme.onSurfaceVariant,
+          ),
         ),
-      ),
+      ],
       const SizedBox(height: 24),
       Theme(
         data: theme.copyWith(
