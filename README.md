@@ -244,19 +244,24 @@ All test data is fictitious.
 
 ## Evidence
 
-Screenshots from the Android app (Pixel 4 emulator, Android 11, local
-Firebase emulators, fictitious data), in `docs/capturas/`:
+Screenshots of version 2.0.0+4 (Samsung Galaxy A34, Android 16, text size
+110 %), against the Firebase emulators with the Proyecto 1 rules and the
+fictitious data of `backend/proyecto1/seed.mjs` (never the real backend: its
+test accounts are the team's), in `docs/capturas/`:
 
 | Screen | File |
 |--------|------|
-| Inicio (R1) | `docs/capturas/01-inicio.png` |
+| Sign-in | `docs/capturas/00-inicio-sesion.png` |
+| Inicio with the tracking of the latest declaration (R1) | `docs/capturas/01-inicio.png` |
 | Declaraciones with statuses (R1) | `docs/capturas/02-declaraciones.png` |
-| Courses and their hours (R2/R3) | `docs/capturas/03-cursos.png` |
-| Weekly schedule grid (R3) | `docs/capturas/04-horario.png` |
-| Overlap / missing hours flagged (R4, test 02) | `docs/capturas/05-validacion.png` |
-| Summary (R6) | `docs/capturas/06-resumen.png` |
-| Zonaje | `docs/capturas/07-zonaje.png` |
-| Historial by year, with a sent zonaje request | `docs/capturas/08-historial.png` |
+| Courses assigned by the coordination and their hours (R2/R3) | `docs/capturas/03-cursos.png` |
+| Weekly schedule grid with the fixed lessons (R3) | `docs/capturas/04-horario.png` |
+| Missing hours flagged, Validar disabled (R4, test 02) | `docs/capturas/05-validacion.png` |
+| Summary of a validated declaration, with the PDF action (R6) | `docs/capturas/06-resumen.png` |
+| Zonaje, read only, with HR's answer | `docs/capturas/07-zonaje.png` |
+| Historial by year, with a zonaje request | `docs/capturas/08-historial.png` |
+| Signing: the sworn declaration accepted, ready to send to the reviewer | `docs/capturas/09-firma.png` |
+| PDF of the signed declaration ("COPIA PARA REVISIÓN") | `docs/capturas/10-pdf.png` |
 
 Video (up to 2 minutes): <!-- link to the video -->
 
