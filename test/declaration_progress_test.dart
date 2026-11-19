@@ -29,9 +29,7 @@ void main() {
       expect(find.text(step), findsOneWidget);
     }
     expect(
-      find.text(
-        'Validada: falta firmarla y enviarla al revisor en el sistema web.',
-      ),
+      find.text('Validada: falta firmarla y enviarla a su revisor.'),
       findsOneWidget,
     );
   });

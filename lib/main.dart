@@ -5,6 +5,7 @@ import 'package:declara_ucr/data/declaration_repository.dart';
 import 'package:declara_ucr/data/network_status.dart';
 import 'package:declara_ucr/data/profile_repository.dart';
 import 'package:declara_ucr/data/proyecto1/declaration_document_reader.dart';
+import 'package:declara_ucr/data/proyecto1/declaration_signer.dart';
 import 'package:declara_ucr/data/proyecto1/period_repository.dart';
 import 'package:declara_ucr/data/proyecto1/proyecto1_declaration_repository.dart';
 import 'package:declara_ucr/data/zonaje_repository.dart';
@@ -50,6 +51,7 @@ Future<void> main() async {
         zonajeFor: (uid) => FirestoreZonajeRepository(firestore, uid: uid),
         documentsFor: (uid) =>
             FirestoreDeclarationDocumentReader(firestore, uid: uid),
+        signerFor: (uid) => FirestoreDeclarationSigner(firestore, uid: uid),
         network: PluginNetworkStatus(),
       ),
     );
@@ -99,6 +101,7 @@ class DeclaraUcrApp extends StatefulWidget {
     required this.repositoryFor,
     required this.zonajeFor,
     required this.documentsFor,
+    required this.signerFor,
     this.network = const AlwaysOnline(),
   });
 
@@ -111,6 +114,10 @@ class DeclaraUcrApp extends StatefulWidget {
 
   /// Reads a declaration as stored, to print its PDF.
   final DeclarationDocumentReader Function(String uid) documentsFor;
+
+  /// The declarant's signature, which sends the declaration to the
+  /// reviewer.
+  final DeclarationSigner Function(String uid) signerFor;
 
   /// Whether the phone has a network: an offline strip on every screen,
   /// and saves are not attempted without one.
@@ -140,6 +147,7 @@ class _DeclaraUcrAppState extends State<DeclaraUcrApp> {
       Provider<DeclarationDocumentReader>.value(
         value: widget.documentsFor(user.uid),
       ),
+      Provider<DeclarationSigner>.value(value: widget.signerFor(user.uid)),
       StreamProvider<Loadable<UserProfile?>>(
         create: (_) => widget.profiles
             .watch(user.uid)

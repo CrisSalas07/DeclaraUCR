@@ -58,3 +58,6 @@ backend/proyecto1/emulator-data/
 
 # APKs built by tool/build_apk.dart (published, not committed)
 /dist/
+
+# Windows runner, only to run integration_test/ against the emulators
+/windows/

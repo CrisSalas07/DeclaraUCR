@@ -6,6 +6,7 @@ import 'package:declara_ucr/models/declaration.dart';
 import 'package:declara_ucr/models/declaration_status.dart';
 import 'package:declara_ucr/models/schedule_task.dart';
 import 'package:declara_ucr/screens/declaration_pdf_screen.dart';
+import 'package:declara_ucr/screens/sign_declaration_screen.dart';
 import 'package:declara_ucr/state/declaration_form_state.dart';
 import 'package:declara_ucr/theme/ucr_theme.dart';
 import 'package:declara_ucr/widgets/common.dart';
@@ -42,7 +43,11 @@ class SummaryScreen extends StatelessWidget {
       for (final issue in state.issues) issue.message,
     ];
     final sorted = d.sortedIntervals;
-    final validated = d.status == DeclarationStatus.validated;
+    // Validated and not signed yet (PENDIENTE_FIRMA_DECLARANTE is a
+    // validated declaration whose signing was started).
+    final validated =
+        d.status == DeclarationStatus.validated ||
+        d.status == DeclarationStatus.pendingDeclarantSignature;
 
     return Scaffold(
       appBar: AppBar(
@@ -141,13 +146,34 @@ class SummaryScreen extends StatelessWidget {
               ),
             ],
           ),
-          // Lab scope limit: no signature is simulated.
+          if (validated && d.id != null)
+            SectionCard(
+              icon: Icons.draw_outlined,
+              title: 'Siguiente paso: firmar',
+              subtitle:
+                  'Acepte la declaración jurada y fírmela para enviarla a su '
+                  'revisor.',
+              children: [
+                FilledButton.icon(
+                  onPressed: () async {
+                    final navigator = Navigator.of(context);
+                    if (await openSigning(context, d.id!)) {
+                      // Signed: back to the start, which shows its tracking.
+                      navigator.popUntil((route) => route.isFirst);
+                    }
+                  },
+                  icon: const Icon(Icons.draw_outlined),
+                  label: const Text('Firmar y enviar a mi revisor'),
+                ),
+                const SizedBox(height: 8),
+              ],
+            ),
           const InfoBanner(
             icon: Icons.info_outline,
             title: 'Alcance de esta aplicación',
             lines: [
-              'La firma digital, la aprobación del superior y la recepción en '
-                  'Recursos Humanos no forman parte de esta aplicación.',
+              'Aquí se elabora, valida y firma la declaración. La revisión y la '
+                  'aprobación de Recursos Humanos se hacen en el sistema web.',
             ],
           ),
         ],

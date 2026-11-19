@@ -112,8 +112,12 @@ Para recorrer los procesos en el teléfono, desde la **web del Proyecto 1** con 
 
 ## 7. Limitaciones conocidas
 
-- **Firmas, revisión y RRHH** se hacen en la web; en el teléfono la declaración queda de solo lectura desde
-  ese punto, y una devuelta se corrige en la web (versión nueva).
+- **Firma de la persona declarante:** en el teléfono o en la web, con el mismo juramento y la misma huella del
+  contenido. Firmada, queda de solo lectura en el teléfono.
+- **Revisión, RRHH y correcciones** se hacen en la web: la aprobación del revisor y de Recursos Humanos, y una
+  declaración devuelta se corrige en la web (versión nueva).
+- **PDF:** la vista previa ("BORRADOR"), la copia en revisión y el documento final se ven en el teléfono, con el
+  mismo formulario que la web.
 - **Zonaje** es de consulta: la solicitud (mapa y certificación del TSE) se hace en la web.
 - **Un nombramiento por declaración:** si en la web se agregó más de uno, el teléfono muestra y edita el primero
   y deja los demás como están.

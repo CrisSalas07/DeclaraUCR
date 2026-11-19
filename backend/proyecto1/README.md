@@ -43,6 +43,14 @@ iniciales, repita el paso 1.
 firebase emulators:exec --config backend/proyecto1/firebase.json --project demo-declaraucr --only auth,firestore "node backend/proyecto1/seed.mjs && node backend/proyecto1/verify.mjs"
 ```
 
+**Probar la firma de la persona declarante contra las reglas** (opcional, con los emuladores cerrados). Corre el
+código de la app en Windows: crea, valida y firma como `docente@ucr.ac.cr`, y el revisor lee lo firmado. La
+primera vez, `flutter create --platforms=windows .` (no se sube al repositorio):
+
+```
+firebase emulators:exec --config backend/proyecto1/firebase.json --project demo-declaraucr --only auth,firestore "node backend/proyecto1/seed.mjs && flutter test integration_test/sign_rules_test.dart -d windows --dart-define=EMULATOR_HOST=127.0.0.1"
+```
+
 **Actualizar las reglas** cuando cambien en DeclaraHorario:
 
 ```

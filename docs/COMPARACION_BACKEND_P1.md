@@ -75,7 +75,8 @@ zonajeRequests/{id}                             identifications/{CEDULA_número}
 | Guardar borrador | `set` del documento completo | Escrituras en la versión (`observations`, `declarantSnapshot`) y en `appointments` / `externalJobs`. Solo en `BORRADOR` |
 | Validar | `set` con `VALIDADA` | Transacción `BORRADOR → VALIDADA` con evento `VALIDACION_EJECUTADA` y `hoursSummary` + `validationPassed` en la versión |
 | Editar una validada | `set` con `BORRADOR` | Transición `VALIDADA → BORRADOR` con evento `HORARIO_MODIFICADO` |
-| Firmar, revisar, RRHH | Fuera del alcance | Siguen en la web. El móvil los **muestra** (solo lectura) |
+| Firma de la persona declarante | Fuera del alcance | Como `beginDeclarantSigning` + `signAsDeclarant`: `VALIDADA → PENDIENTE_FIRMA_DECLARANTE` (`FIRMA_INICIADA`) y, en una transacción, el evento fijo `signed-declarant-v{n}` (`FIRMADA_POR_DECLARANTE`), `FIRMA_REGISTRADA` a `PENDIENTE_FIRMA_SUPERIOR`, la firma `declarant` (nombre del perfil, hora del servidor, juramento aceptado, huella) y la versión bloqueada con la misma huella. La huella es la de `ContentHashService` (`lib/domain/content_hash.dart`, comprobada contra el P1) |
+| Revisar, RRHH | Fuera del alcance | Siguen en la web. El móvil los **muestra** (solo lectura) |
 | `DEVUELTA` | No existe | El móvil puede mostrarla con la observación; crear la versión N+1 se puede dejar en la web |
 
 ### Zonaje

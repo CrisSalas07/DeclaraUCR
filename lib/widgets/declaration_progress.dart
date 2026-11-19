@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 /// Where a declaration is in its journey, like a parcel tracker:
 /// Elaboración → Firmada → Revisor → Recursos Humanos → Aprobada. The same
 /// steps as the web of the Proyecto 1 (`DeclarationProgress` and
-/// `StepProgress` of DeclaraHorario), with captions that say what is done in
-/// the web, since signing, review and HR are not part of the phone.
+/// `StepProgress` of DeclaraHorario). The declarant signs in the phone or the
+/// web; a returned declaration is corrected in the web (a new version).
 ///
 /// Done steps have a check, the current one is highlighted, a returned
 /// declaration shows its step in red and an annulled one has no progress.
@@ -43,7 +43,7 @@ class DeclarationProgress extends StatelessWidget {
     DeclarationStatus.draft => 'En elaboración: complete y valide su horario.',
     DeclarationStatus.validated ||
     DeclarationStatus.pendingDeclarantSignature =>
-      'Validada: falta firmarla y enviarla al revisor en el sistema web.',
+      'Validada: falta firmarla y enviarla a su revisor.',
     DeclarationStatus.signedByDeclarant ||
     DeclarationStatus.pendingSupervisorSignature =>
       'Firmada y enviada: su revisor la está revisando.',

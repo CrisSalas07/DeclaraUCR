@@ -1,4 +1,5 @@
 import 'package:declara_ucr/data/proyecto1/declaration_document_reader.dart';
+import 'package:declara_ucr/data/proyecto1/declaration_signer.dart';
 import 'package:declara_ucr/data/proyecto1/proyecto1_declaration_repository.dart';
 import 'package:declara_ucr/data/profile_repository.dart';
 import 'package:declara_ucr/data/network_status.dart';
@@ -58,6 +59,7 @@ Future<Widget> _app({
     zonajeFor: (uid) => FirestoreZonajeRepository(firestore, uid: uid),
     documentsFor: (uid) =>
         FirestoreDeclarationDocumentReader(firestore, uid: uid),
+    signerFor: (uid) => FirestoreDeclarationSigner(firestore, uid: uid),
     network: network,
   );
 }

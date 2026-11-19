@@ -116,19 +116,21 @@ class DeclarationFormState extends ChangeNotifier {
   List<ValidationIssue> get issues => _validator.issues(declaration);
   bool get canValidate => _validator.isValid(declaration);
 
-  /// Only BORRADOR and VALIDADA are edited here (a VALIDADA one goes back
-  /// to BORRADOR). From the signatures on, the declaration is read only in
-  /// the phone: signing, review and HR happen in the web system.
+  /// Until it is signed (BORRADOR, VALIDADA, or PENDIENTE_FIRMA_DECLARANTE
+  /// when signing was started and not finished), editing sends it back to
+  /// BORRADOR, as in the web. Once signed it is read only: review and HR
+  /// happen in the web system.
   bool get editable =>
       declaration.status == DeclarationStatus.draft ||
-      declaration.status == DeclarationStatus.validated;
+      declaration.status == DeclarationStatus.validated ||
+      declaration.status == DeclarationStatus.pendingDeclarantSignature;
 
   /// Applies a change. As in DeclaraHorario, editing a VALIDADA declaration
   /// sends it back to BORRADOR until it is validated again.
   void edit(void Function(Declaration d) change) {
     if (!editable) return;
     change(declaration);
-    if (declaration.status == DeclarationStatus.validated) {
+    if (declaration.status != DeclarationStatus.draft) {
       declaration.status = DeclarationStatus.draft;
     }
     notifyListeners();

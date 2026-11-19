@@ -8,6 +8,7 @@ import 'package:declara_ucr/models/declaration.dart';
 import 'package:declara_ucr/models/declaration_status.dart';
 import 'package:declara_ucr/models/schedule_task.dart';
 import 'package:declara_ucr/screens/declarations_screen.dart';
+import 'package:declara_ucr/screens/sign_declaration_screen.dart';
 import 'package:declara_ucr/state/loadable.dart';
 import 'package:declara_ucr/theme/ucr_theme.dart';
 import 'package:declara_ucr/widgets/common.dart';
@@ -296,15 +297,27 @@ class _LatestCard extends StatelessWidget {
           ],
         ),
         const SizedBox(height: 12),
-        Align(
-          alignment: Alignment.centerLeft,
-          child: OutlinedButton.icon(
-            onPressed: () => openDeclaration(context, d.id),
-            icon: const Icon(Icons.edit_outlined),
-            label: Text(
-              d.status == DeclarationStatus.draft ? 'Continuar' : 'Abrir',
+        Wrap(
+          spacing: 8,
+          runSpacing: 8,
+          children: [
+            // The next step of a validated declaration: sign and send it.
+            if (d.id != null &&
+                (d.status == DeclarationStatus.validated ||
+                    d.status == DeclarationStatus.pendingDeclarantSignature))
+              FilledButton.icon(
+                onPressed: () => openSigning(context, d.id!),
+                icon: const Icon(Icons.draw_outlined),
+                label: const Text('Firmar y enviar'),
+              ),
+            OutlinedButton.icon(
+              onPressed: () => openDeclaration(context, d.id),
+              icon: const Icon(Icons.edit_outlined),
+              label: Text(
+                d.status == DeclarationStatus.draft ? 'Continuar' : 'Abrir',
+              ),
             ),
-          ),
+          ],
         ),
         const SizedBox(height: 8),
       ],
