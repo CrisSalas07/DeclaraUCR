@@ -13,6 +13,13 @@ y evidencia.
 | **Datos** | Ficticios (sede, carrera, período y cursos de [INSTALACION.md](INSTALACION.md) §6) |
 | **Evidencia** | Capturas en `docs/pruebas/`, con el número del caso (por ejemplo `CP-01-1.png`) |
 
+**Ejecución.** CP-01, CP-02, CP-04, CP-05 y CP-07 se ejecutaron el 2026-11-19 en un Samsung Galaxy A34
+(Android 16, letra al 110 %) con un build de desarrollo del **mismo commit `fc21a84`** de la 2.0.0+5, contra los
+emuladores con las reglas del Proyecto 1 y los datos ficticios de `backend/proyecto1/seed.mjs` (cuentas
+`docente`, `docente2` y `revisor`). Así las capturas no muestran datos de las cuentas reales del equipo y los
+casos se pueden repetir desde cero. CP-03, CP-06 y CP-08 se ejecutan con el APK publicado y el backend real.
+En las capturas se taparon los íconos de notificaciones de la barra de estado del teléfono.
+
 Cómo llenar cada caso: **Resultado obtenido** describe lo que pasó; **Estado** es *Aprobado*, *Fallido* o
 *Pendiente*. Un caso fallido se registra como defecto (sección final), se corrige y se vuelve a ejecutar.
 
@@ -20,13 +27,13 @@ Cómo llenar cada caso: **Resultado obtenido** describe lo que pasó; **Estado**
 
 | Caso | Cubre | Estado |
 |---|---|---|
-| [CP-01](#cp-01) | Proceso 1: crear, editar y recuperar un borrador | Pendiente |
-| [CP-02](#cp-02) | Proceso 2: horario, cálculo de horas y traslapes | Pendiente |
+| [CP-01](#cp-01) | Proceso 1: crear, editar y recuperar un borrador | Aprobado |
+| [CP-02](#cp-02) | Proceso 2: horario, cálculo de horas y traslapes | Aprobado |
 | [CP-03](#cp-03) | Proceso 3: resumen, validación y estado (hasta la firma) | Pendiente |
-| [CP-04](#cp-04) | Datos incompletos o inválidos | Pendiente |
-| [CP-05](#cp-05) | Restricciones de acceso por rol | Pendiente |
+| [CP-04](#cp-04) | Datos incompletos o inválidos | Aprobado |
+| [CP-05](#cp-05) | Restricciones de acceso por rol | Aprobado |
 | [CP-06](#cp-06) | Persistencia y recuperación | Pendiente |
-| [CP-07](#cp-07) | Pérdida de conectividad | Pendiente |
+| [CP-07](#cp-07) | Pérdida de conectividad | Aprobado |
 | [CP-08](#cp-08) | Instalación y ejecución de la versión distribuida | Pendiente |
 
 ---
@@ -40,10 +47,10 @@ Cómo llenar cada caso: **Resultado obtenido** describe lo que pasó; **Estado**
 | **Precondiciones** | Sesión iniciada con la declarante **con cursos**. Período II Ciclo - 2026 habilitado y sin declaración suya en él. Con conexión |
 | **Pasos** | 1. En **Declaraciones**, tocar **Nueva declaración**.<br>2. Elegir el **Puesto** y tocar **Guardar borrador**.<br>3. Cerrar la app por completo (quitarla de las apps recientes) y volver a abrirla.<br>4. En **Inicio**, tocar **Continuar** en la declaración más reciente.<br>5. Agregar un proyecto (por ejemplo, 2 h) y **Guardar borrador**.<br>6. Volver a la lista y abrirla otra vez |
 | **Resultado esperado** | 2: aviso "Borrador guardado." y la declaración aparece en la lista como **BORRADOR**, con el período, los cursos de la Coordinación y las clases ya ubicadas.<br>3–4: al reabrir la app, el borrador sigue ahí con el puesto elegido.<br>6: conserva el proyecto agregado. Solo hay una declaración por período |
-| **Resultado obtenido** | |
-| **Versión** | 2.0.0+5 |
+| **Resultado obtenido** | 2: "Borrador guardado."; en la lista, **BORRADOR** con II Ciclo - 2026, IF0009 e IF4001 y 8 h (las clases de la Coordinación ya ubicadas).<br>3–4: después de cerrar la app por completo (sin proceso), al reabrirla Inicio muestra la declaración en Elaboración con **Continuar**; abre "Editar declaración" con el puesto Interino Licenciado.<br>6: al reabrirla desde la lista conserva "Proyecto de investigacion · 2 h por semana" |
+| **Versión** | 2.0.0+5 (`fc21a84`), build de desarrollo contra los emuladores con datos ficticios |
 | **Evidencia** | `CP-01-1.png` (lista con el borrador), `CP-01-2.png` (borrador recuperado con el proyecto) |
-| **Estado** | Pendiente |
+| **Estado** | Aprobado |
 
 ## CP-02
 
@@ -54,10 +61,10 @@ Cómo llenar cada caso: **Resultado obtenido** describe lo que pasó; **Estado**
 | **Precondiciones** | El borrador de CP-01. Con conexión |
 | **Pasos** | 1. En **Horario semanal**, elegir **IF0009 · Atención** y tocar dos medias horas libres del lunes después de la clase.<br>2. Con **IF0009 · Atención** elegido, tocar una media hora de la clase del lunes (8:00–10:00).<br>3. Ubicar el resto de la atención y la planificación de los dos cursos (mantener presionado y deslizar marca varias medias horas seguidas).<br>4. Tocar **Ver resumen** |
 | **Resultado esperado** | 1: el bloque aparece en la cuadrícula y sube "Ubicado: X h de 20 h".<br>2: la clase no cambia y aparece "Las clases las asigna la Coordinación de su carrera: no se mueven." Cada media hora tiene una sola tarea, así que en el teléfono no se puede crear un traslape.<br>4: **Total de horas** y **Horas por categoría** (Clases, Atención, Planificación) suman lo ubicado; cada categoría muestra "x h de y h" según la jornada de cada curso |
-| **Resultado obtenido** | |
-| **Versión** | 2.0.0+5 |
-| **Evidencia** | `CP-02-1.png` (mensaje de clase fija), `CP-02-2.png` (horas por categoría en el resumen) |
-| **Estado** | Pendiente |
+| **Resultado obtenido** | 1: la atención queda de 10:00 a 11:00 (1 h) y el día pasa a 3 h.<br>2: la clase no cambia y aparece "Las clases las asigna la Coordinación de su carrera: no se mueven."<br>3: con todas las tareas ubicadas, "Ubicado: 22 h de 22 h" (20 h de los cursos y 2 h del proyecto de CP-01).<br>4: "Sin problemas: la declaración puede validarse.", Total de horas 22 h; Clases 8 h de 8 h, Atención 4 h de 4 h, Planificación 8 h de 8 h, Proyectos 2 h de 2 h; **Validar** habilitado |
+| **Versión** | 2.0.0+5 (`fc21a84`), build de desarrollo contra los emuladores con datos ficticios |
+| **Evidencia** | `CP-02-1.png` (atención ubicada y mensaje de clase fija), `CP-02-2.png` (horas por categoría en el resumen) |
+| **Estado** | Aprobado |
 
 La **detección de traslapes** (por ejemplo, de una declaración editada en la web con dos tareas a la misma
 hora, o entre instituciones) la prueba de forma automatizada `test/data/proyecto1_write_test.dart`
@@ -90,10 +97,10 @@ traslape bloquea la validación con el mensaje "Traslape el lunes entre … y �
 | **Precondiciones** | Sesión de una declarante con cursos y **sin** declaración en el período (otra cuenta, o después de que el revisor devuelva la de CP-03). Con conexión |
 | **Pasos** | 1. **Nueva declaración** y, sin elegir el puesto, tocar **Guardar borrador**.<br>2. Tocar **Ver resumen** sin ubicar atención ni planificación.<br>3. Volver, elegir el puesto y abrir de nuevo el resumen |
 | **Resultado esperado** | 1: se guarda igual (es un borrador) con el aviso "Borrador guardado. Falta 1 dato obligatorio."; el campo marca "Este campo es obligatorio." y arriba dice "5 de 6 datos obligatorios".<br>2: "Hay N puntos por corregir", con "Falta: Puesto." y cada hora faltante ("Faltan 2 h de atención a estudiantes de IF0009 en el horario.", …); **Validar** deshabilitado.<br>3: desaparece "Falta: Puesto."; siguen las horas faltantes y **Validar** sigue deshabilitado |
-| **Resultado obtenido** | |
-| **Versión** | 2.0.0+5 |
+| **Resultado obtenido** | 1: "Borrador guardado. Falta 1 dato obligatorio.", el campo **Puesto** en rojo con "Este campo es obligatorio." y "5 de 6 datos obligatorios".<br>2: "Hay 5 puntos por corregir": "Falta: Puesto." y las cuatro horas faltantes ("Faltan 2 h de atención a estudiantes de IF0009 en el horario.", …); **Validar** deshabilitado.<br>3: "Hay 4 puntos por corregir" (desaparece "Falta: Puesto."); **Validar** sigue deshabilitado |
+| **Versión** | 2.0.0+5 (`fc21a84`), build de desarrollo contra los emuladores con datos ficticios |
 | **Evidencia** | `CP-04-1.png` (campo obligatorio), `CP-04-2.png` (puntos por corregir) |
-| **Estado** | Pendiente |
+| **Estado** | Aprobado |
 
 ## CP-05
 
@@ -104,10 +111,10 @@ traslape bloquea la validación con el mensaje "Traslape el lunes entre … y �
 | **Precondiciones** | Cuentas de prueba: **revisor o Coordinación** (sin rol de declarante) y **declarante sin cursos**. Con conexión |
 | **Pasos** | 1. Iniciar sesión con la cuenta de revisor o Coordinación.<br>2. Cerrar sesión e iniciar con la declarante sin cursos.<br>3. Tocar **Nueva declaración** |
 | **Resultado esperado** | 1: pantalla "No puede continuar" con "Esta aplicación es para personas declarantes." y el rol de la cuenta; solo deja **Cerrar sesión**.<br>3: "La Coordinación de su carrera aún no le asignó cursos en II Ciclo - 2026." y no se crea nada |
-| **Resultado obtenido** | |
-| **Versión** | 2.0.0+5 |
+| **Resultado obtenido** | 1: con la cuenta de revisor, "No puede continuar", "Esta aplicación es para personas declarantes." y "Su cuenta tiene el rol de Revisor. Use el sistema web de declaraciones para sus funciones."; solo **Cerrar sesión**.<br>3: con la declarante sin cursos, "La Coordinación de su carrera aún no le asignó cursos en II Ciclo - 2026." y la lista sigue vacía |
+| **Versión** | 2.0.0+5 (`fc21a84`), build de desarrollo contra los emuladores con datos ficticios |
 | **Evidencia** | `CP-05-1.png` (cuenta sin rol de declarante), `CP-05-2.png` (sin cursos) |
-| **Estado** | Pendiente |
+| **Estado** | Aprobado |
 
 Los mismos controles están en las **reglas del backend**, no solo en la app: `backend/proyecto1/verify.mjs`
 comprueba contra las reglas del Proyecto 1 que una persona no lee la declaración, la asignación ni el zonaje
@@ -137,10 +144,10 @@ que el revisor lee exactamente lo firmado y que no se firma dos veces.
 | **Precondiciones** | Sesión iniciada con un borrador abierto en el formulario. Con conexión al empezar |
 | **Pasos** | 1. Activar el **modo avión**.<br>2. Cambiar algo del borrador (por ejemplo, el puesto) y tocar **Guardar borrador**.<br>3. Abrir el PDF de una declaración validada o firmada.<br>4. Desactivar el modo avión y volver a tocar **Guardar borrador** |
 | **Resultado esperado** | 1: en todas las pantallas aparece la franja "Sin conexión: ve lo último guardado en el teléfono. Para guardar cambios necesita conexión."<br>2: no se guarda y aparece "Sin conexión. Sus cambios siguen en pantalla: guárdelos cuando vuelva la señal."; el cambio sigue en pantalla.<br>3: "Sin conexión: el PDF se genera con los datos del servidor. …" con **Intentar de nuevo**; la app no se cierra.<br>4: "Borrador guardado." y el cambio queda guardado (al reabrirlo sigue ahí) |
-| **Resultado obtenido** | |
-| **Versión** | 2.0.0+5 |
-| **Evidencia** | `CP-07-1.png` (franja y aviso al guardar), `CP-07-2.png` (guardado al volver la señal) |
-| **Estado** | Pendiente |
+| **Resultado obtenido** | 1: con el modo avión y el Wi-Fi apagados, aparece arriba la franja "Sin conexión: ve lo último guardado en el teléfono. Para guardar cambios necesita conexión."<br>2: al guardar, "Sin conexión. Sus cambios siguen en pantalla: guárdelos cuando vuelva la señal."; el puesto elegido sigue en pantalla.<br>4: al volver la conexión, "Borrador guardado."; al reabrir la declaración desde la lista conserva el puesto.<br>3 (ejecutado después del 4, porque abrir el PDF obliga a salir del formulario): sin conexión, "Sin conexión: el PDF se genera con los datos del servidor. Revise la conexión e intente de nuevo." con **Intentar de nuevo**; la app no se cerró (mismo proceso) |
+| **Versión** | 2.0.0+5 (`fc21a84`), build de desarrollo contra los emuladores con datos ficticios |
+| **Evidencia** | `CP-07-1.png` (franja y aviso al guardar), `CP-07-2.png` (guardado al volver la señal), `CP-07-3.png` (PDF sin conexión) |
+| **Estado** | Aprobado |
 
 ## CP-08
 
@@ -193,4 +200,5 @@ Defectos encontrados al ejecutar los casos de este documento:
 
 | Caso | Defecto | Corrección | Nueva comprobación |
 |---|---|---|---|
+| CP-01, 02, 04, 05, 07 | Ninguno (2026-11-19) | — | — |
 | | | | |
