@@ -20,7 +20,9 @@ String clockLabel(int minutes) {
   return '$h12:$m ${h < 12 ? 'a. m.' : 'p. m.'}';
 }
 
-/// Status with the exact name of the original system (R1).
+/// Status of a declaration (R1), with the web's label: "Pendiente de firma
+/// del revisor", not PENDIENTE_FIRMA_SUPERIOR. A label that does not fit
+/// goes to a second line instead of being cut.
 class StatusChip extends StatelessWidget {
   const StatusChip(this.status, {super.key, this.onDark = false});
 
@@ -54,12 +56,12 @@ class StatusChip extends StatelessWidget {
           const SizedBox(width: 6),
           Flexible(
             child: Text(
-              status.value,
-              overflow: TextOverflow.ellipsis,
+              status.label,
+              maxLines: 2,
               style: theme.textTheme.labelSmall?.copyWith(
                 color: UcrColors.ink,
                 fontWeight: FontWeight.w700,
-                letterSpacing: 0.4,
+                letterSpacing: 0.2,
               ),
             ),
           ),

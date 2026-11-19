@@ -120,8 +120,14 @@ class _FormBodyState extends State<_FormBody> {
               icon: Icons.badge_outlined,
               title: 'Persona declarante',
               subtitle: 'Datos de su cuenta',
-              trailing: StatusChip(d.status),
               children: [
+                // Below the title, not beside it: the title keeps the whole
+                // width whatever the status (as in the list of declarations).
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: StatusChip(d.status),
+                ),
+                const SizedBox(height: 12),
                 ReadOnlyLine(label: 'Nombre completo', value: d.declarantName),
                 ReadOnlyLine(label: 'Cédula', value: d.identification),
               ],
@@ -519,14 +525,16 @@ class _ReadOnlyNotice extends StatelessWidget {
       tone: returned ? BannerTone.error : BannerTone.info,
       title: returned
           ? 'Su declaración fue devuelta.'
-          : 'Esta declaración ya no se edita desde el teléfono.',
+          : declaration.status == DeclarationStatus.annulled
+          ? 'Esta declaración fue anulada y no se edita.'
+          : 'Esta declaración ya fue firmada y no se edita.',
       lines: [
         if (returned && (declaration.pendingObservation ?? '').isNotEmpty)
           'Observación: ${declaration.pendingObservation}',
         returned
             ? 'Corríjala en el sistema web: allí se crea la versión nueva.'
-            : 'Las firmas, la revisión y Recursos Humanos se atienden en el '
-                  'sistema web.',
+            : 'La revisión y la aprobación de Recursos Humanos se atienden en '
+                  'el sistema web.',
       ],
     );
   }

@@ -318,7 +318,7 @@ class Proyecto1DeclarationRepository implements DeclarationRepository {
       );
     } else if (status != DeclarationStatus.draft) {
       throw DeclarationSaveException(
-        'La declaración está en ${status.value}: ya no se puede editar desde '
+        'La declaración está «${status.label}»: ya no se puede editar desde '
         'el teléfono.',
       );
     }

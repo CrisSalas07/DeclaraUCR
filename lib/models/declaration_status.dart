@@ -40,8 +40,25 @@ enum DeclarationStatus {
 
   const DeclarationStatus(this.value);
 
-  /// Value stored in Firestore and shown to the user.
+  /// Value stored in Firestore: the exact name of the original system.
   final String value;
+
+  /// What the person reads: the same Spanish labels as the web of the
+  /// Proyecto 1 (`StatusChip.labelOf` of DeclaraHorario), instead of the
+  /// stored name (PENDIENTE_FIRMA_SUPERIOR did not fit beside a title).
+  String get label => switch (this) {
+    draft => 'Borrador',
+    validated => 'Validada',
+    pendingDeclarantSignature => 'Pendiente de firma del declarante',
+    signedByDeclarant => 'Firmada por el declarante',
+    pendingSupervisorSignature => 'Pendiente de firma del revisor',
+    returned => 'Devuelta',
+    signedBySupervisor => 'Firmada por el revisor',
+    sentToHr => 'Enviada a RRHH',
+    receivedByHr => 'Recibida en RRHH',
+    closed => 'Finalizada',
+    annulled => 'Anulada',
+  };
 
   /// Returns the status whose [value] matches; throws an [ArgumentError] for
   /// an unknown value.
