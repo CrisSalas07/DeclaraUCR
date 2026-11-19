@@ -520,7 +520,7 @@ void main() {
     // Back to the list: the draft shows up with its status and count.
     await tester.tap(find.byType(BackButton));
     await tester.pumpAndSettle();
-    expect(find.text('BORRADOR'), findsOneWidget);
+    expect(find.text('Borrador'), findsOneWidget);
     expect(find.bySemanticsLabel('Borradores: 1'), findsOneWidget);
 
     // One declaration per period.

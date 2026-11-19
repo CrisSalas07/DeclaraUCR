@@ -368,8 +368,8 @@ class DeclarationCard extends StatelessWidget {
                       ],
                     ),
                     const SizedBox(height: 12),
-                    // Status goes below: the long PENDIENTE_FIRMA_DECLARANTE
-                    // does not fit beside the title.
+                    // Status goes below: a long one ("Pendiente de firma del
+                    // declarante") does not fit beside the title.
                     StatusChip(d.status),
                   ],
                 ),
