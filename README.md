@@ -235,6 +235,10 @@ flutter analyze
 flutter test
 ```
 
+The technical test cases of the Proyecto 2 (§7 of the assignment: the three
+processes, invalid data, roles, persistence, connectivity and installation),
+with their steps, expected results and evidence, are in `docs/PRUEBAS.md`.
+
 | Lab test | Automated test |
 |----------|----------------|
 | 01 Valid declaration | `data/proyecto1_write_test.dart` — saves a draft and recovers it unchanged |
