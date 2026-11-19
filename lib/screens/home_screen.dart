@@ -8,21 +8,18 @@ import 'package:declara_ucr/models/declaration.dart';
 import 'package:declara_ucr/models/declaration_status.dart';
 import 'package:declara_ucr/models/schedule_task.dart';
 import 'package:declara_ucr/screens/declarations_screen.dart';
-import 'package:declara_ucr/screens/shell_screen.dart';
 import 'package:declara_ucr/state/loadable.dart';
 import 'package:declara_ucr/theme/ucr_theme.dart';
 import 'package:declara_ucr/widgets/common.dart';
+import 'package:declara_ucr/widgets/declaration_progress.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 /// Inicio: identifies the system (R1), greets the person, shows their
-/// profile, the latest declaration with its hours, and shortcuts to the
-/// other sections.
+/// profile and the latest declaration with its tracking and hours. The
+/// other sections are in the bottom navigation bar.
 class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key, required this.onNavigate});
-
-  /// Switches to another section ([Sections]).
-  final ValueChanged<int> onNavigate;
+  const HomeScreen({super.key});
 
   void _showProfile(BuildContext context, AppUser user, UserProfile? p) =>
       showModalBottomSheet<void>(
@@ -47,7 +44,6 @@ class HomeScreen extends StatelessWidget {
     final latest = declarations.isEmpty ? null : declarations.first;
     int count(DeclarationStatus s) =>
         declarations.where((d) => d.status == s).length;
-    final theme = Theme.of(context);
 
     return ListView(
       padding: EdgeInsets.zero,
@@ -105,32 +101,6 @@ class HomeScreen extends StatelessWidget {
                 )
               else
                 _LatestCard(declaration: latest),
-              Text('Accesos rápidos', style: theme.textTheme.titleMedium),
-              const SizedBox(height: 12),
-              _Shortcut(
-                icon: Icons.add_circle_outline,
-                title: 'Nueva declaración',
-                subtitle: 'Cursos, proyectos y horario semanal',
-                onTap: () => openDeclaration(context, null),
-              ),
-              _Shortcut(
-                icon: Icons.description_outlined,
-                title: 'Mis declaraciones',
-                subtitle: 'Borradores y validadas',
-                onTap: () => onNavigate(Sections.declarations),
-              ),
-              _Shortcut(
-                icon: Icons.directions_car_outlined,
-                title: 'Zonaje',
-                subtitle: 'Solicitud por traslado de domicilio',
-                onTap: () => onNavigate(Sections.zonaje),
-              ),
-              _Shortcut(
-                icon: Icons.history,
-                title: 'Historial',
-                subtitle: 'Declaraciones y solicitudes por año',
-                onTap: () => onNavigate(Sections.history),
-              ),
               const SizedBox(height: 24),
               const Center(child: UcrSignature()),
             ],
@@ -290,7 +260,8 @@ class _Counter extends StatelessWidget {
   }
 }
 
-/// The most recent declaration: status, workday and hours by category.
+/// The most recent declaration: where it is in the process (as the web's
+/// tracking), workday and hours by category.
 class _LatestCard extends StatelessWidget {
   const _LatestCard({required this.declaration});
 
@@ -308,8 +279,9 @@ class _LatestCard extends StatelessWidget {
       subtitle:
           '${formatDate(d.validFrom)} – ${formatDate(d.validTo)}'
           '${workday == null ? '' : ' · $workday'}',
-      trailing: StatusChip(d.status),
       children: [
+        DeclarationProgress(status: d.status),
+        const SizedBox(height: 16),
         Wrap(
           spacing: 8,
           runSpacing: 8,
@@ -338,32 +310,6 @@ class _LatestCard extends StatelessWidget {
       ],
     );
   }
-}
-
-class _Shortcut extends StatelessWidget {
-  const _Shortcut({
-    required this.icon,
-    required this.title,
-    required this.subtitle,
-    required this.onTap,
-  });
-
-  final IconData icon;
-  final String title;
-  final String subtitle;
-  final VoidCallback onTap;
-
-  @override
-  Widget build(BuildContext context) => Card(
-    margin: const EdgeInsets.only(bottom: 10),
-    child: ListTile(
-      leading: Icon(icon, color: UcrColors.blue),
-      title: Text(title),
-      subtitle: Text(subtitle),
-      trailing: const Icon(Icons.chevron_right),
-      onTap: onTap,
-    ),
-  );
 }
 
 class _ProfileSheet extends StatelessWidget {
