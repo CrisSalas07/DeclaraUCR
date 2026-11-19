@@ -1,7 +1,8 @@
 /// Input limits for the declaration fields. Single source for the form
 /// (maxLength, input filters), the validator and `firestore.rules`.
 ///
-/// Keep these numbers in sync with `firestore.rules`.
+/// Keep these numbers in sync with the Proyecto 1 `firestore.rules` (copy in
+/// `backend/proyecto1/`).
 abstract final class FieldRules {
   static const int nameMaxLength = 120;
   static const int positionMaxLength = 120;
