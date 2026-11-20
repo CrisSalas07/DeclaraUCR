@@ -92,109 +92,143 @@ class _FormBodyState extends State<_FormBody> {
     final state = context.watch<DeclarationFormState>();
     final d = state.declaration;
     final editable = state.editable;
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          d.id == null
-              ? 'Nueva declaración'
-              : editable
-              ? 'Editar declaración'
-              : 'Declaración',
+    return PopScope(
+      canPop: !state.unsaved,
+      onPopInvokedWithResult: (didPop, _) async {
+        if (didPop || !await _confirmLeave()) return;
+        if (context.mounted) Navigator.of(context).pop();
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(
+            d.id == null
+                ? 'Nueva declaración'
+                : editable
+                ? 'Editar declaración'
+                : 'Declaración',
+          ),
+          actions: [DeclarationPdfAction(id: d.id, status: d.status)],
+          bottom: _ProgressHeader(
+            total: state.requiredFieldCount,
+            missing: state.missingFields.length,
+          ),
         ),
-        actions: [DeclarationPdfAction(id: d.id, status: d.status)],
-        bottom: _ProgressHeader(
-          total: state.requiredFieldCount,
-          missing: state.missingFields.length,
-        ),
-      ),
-      body: Form(
-        key: _formKey,
-        child: ListView(
-          padding: const EdgeInsets.fromLTRB(16, 16, 16, 24),
-          children: [
-            if (!editable) ...[
-              _ReadOnlyNotice(declaration: d),
-              const SizedBox(height: 16),
-            ],
-            SectionCard(
-              icon: Icons.badge_outlined,
-              title: 'Persona declarante',
-              subtitle: 'Datos de su cuenta',
-              children: [
-                // Below the title, not beside it: the title keeps the whole
-                // width whatever the status (as in the list of declarations).
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: StatusChip(d.status),
-                ),
-                const SizedBox(height: 12),
-                ReadOnlyLine(label: 'Nombre completo', value: d.declarantName),
-                ReadOnlyLine(label: 'Cédula', value: d.identification),
-              ],
-            ),
-            SectionCard(
-              icon: Icons.work_outline,
-              title: 'Nombramiento',
-              children: [
-                const ReadOnlyLine(
-                  label: 'Institución y sede',
-                  value: Workplace.full,
-                ),
-                DropdownButtonFormField<String>(
-                  initialValue: Positions.university.contains(d.position)
-                      ? d.position
-                      : null,
-                  isExpanded: true,
-                  decoration: const InputDecoration(labelText: 'Puesto *'),
-                  items: [
-                    for (final p in Positions.university)
-                      DropdownMenuItem(value: p, child: Text(p)),
-                  ],
-                  validator: (v) =>
-                      v == null ? 'Este campo es obligatorio.' : null,
-                  onChanged: editable
-                      ? (v) => state.edit((d) => d.position = v ?? '')
-                      : null,
-                ),
+        body: Form(
+          key: _formKey,
+          child: ListView(
+            padding: const EdgeInsets.fromLTRB(16, 16, 16, 24),
+            children: [
+              if (!editable) ...[
+                _ReadOnlyNotice(declaration: d),
                 const SizedBox(height: 16),
-                // The validity is the period's: the rules require it.
-                if (d.periodName != null)
-                  ReadOnlyLine(label: 'Período', value: d.periodName!),
-                ReadOnlyLine(
-                  label: 'Vigencia',
-                  value:
-                      '${formatDate(d.validFrom)} – ${formatDate(d.validTo)}',
-                ),
               ],
-            ),
-            _CoursesSection(state: state),
-            _ProjectsSection(state: state),
-            _ExternalJobsSection(state: state),
-            SectionCard(
-              icon: Icons.calendar_view_week_outlined,
-              title: 'Horario semanal',
-              subtitle:
-                  'Ubicado: ${TimeRules.hoursOf(d.totalMinutes, d.universityMinutes + d.externalMinutes)}',
-              children: [
-                IgnorePointer(
-                  ignoring: !editable,
-                  child: const ScheduleEditor(),
-                ),
-                const SizedBox(height: 8),
-              ],
-            ),
-            _ObservationsSection(state: state),
-          ],
+              SectionCard(
+                icon: Icons.badge_outlined,
+                title: 'Persona declarante',
+                subtitle: 'Datos de su cuenta',
+                children: [
+                  // Below the title, not beside it: the title keeps the whole
+                  // width whatever the status (as in the list of declarations).
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: StatusChip(d.status),
+                  ),
+                  const SizedBox(height: 12),
+                  ReadOnlyLine(
+                    label: 'Nombre completo',
+                    value: d.declarantName,
+                  ),
+                  ReadOnlyLine(label: 'Cédula', value: d.identification),
+                ],
+              ),
+              SectionCard(
+                icon: Icons.work_outline,
+                title: 'Nombramiento',
+                children: [
+                  const ReadOnlyLine(
+                    label: 'Institución y sede',
+                    value: Workplace.full,
+                  ),
+                  DropdownButtonFormField<String>(
+                    initialValue: Positions.university.contains(d.position)
+                        ? d.position
+                        : null,
+                    isExpanded: true,
+                    decoration: const InputDecoration(labelText: 'Puesto *'),
+                    items: [
+                      for (final p in Positions.university)
+                        DropdownMenuItem(value: p, child: Text(p)),
+                    ],
+                    validator: (v) =>
+                        v == null ? 'Este campo es obligatorio.' : null,
+                    onChanged: editable
+                        ? (v) => state.edit((d) => d.position = v ?? '')
+                        : null,
+                  ),
+                  const SizedBox(height: 16),
+                  // The validity is the period's: the rules require it.
+                  if (d.periodName != null)
+                    ReadOnlyLine(label: 'Período', value: d.periodName!),
+                  ReadOnlyLine(
+                    label: 'Vigencia',
+                    value:
+                        '${formatDate(d.validFrom)} – ${formatDate(d.validTo)}',
+                  ),
+                ],
+              ),
+              _CoursesSection(state: state),
+              _ProjectsSection(state: state),
+              _ExternalJobsSection(state: state),
+              SectionCard(
+                icon: Icons.calendar_view_week_outlined,
+                title: 'Horario semanal',
+                subtitle:
+                    'Ubicado: ${TimeRules.hoursOf(d.totalMinutes, d.universityMinutes + d.externalMinutes)}',
+                children: [
+                  IgnorePointer(
+                    ignoring: !editable,
+                    child: const ScheduleEditor(),
+                  ),
+                  const SizedBox(height: 8),
+                ],
+              ),
+              _ObservationsSection(state: state),
+            ],
+          ),
         ),
-      ),
-      bottomNavigationBar: BottomActions(
-        secondaryLabel: 'Guardar borrador',
-        onSecondary: state.saving || !editable ? null : _saveDraft,
-        primaryLabel: 'Ver resumen',
-        onPrimary: state.saving ? null : _openSummary,
+        bottomNavigationBar: BottomActions(
+          secondaryLabel: 'Guardar borrador',
+          onSecondary: state.saving || !editable ? null : _saveDraft,
+          primaryLabel: 'Ver resumen',
+          onPrimary: state.saving ? null : _openSummary,
+        ),
       ),
     );
   }
+
+  /// Asked when leaving with changes that are not stored yet.
+  Future<bool> _confirmLeave() async =>
+      await showDialog<bool>(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text('¿Salir sin guardar?'),
+          content: const Text(
+            'Hay cambios en esta declaración que todavía no se guardaron. '
+            'Si sale ahora, se pierden.',
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(true),
+              child: const Text('Salir sin guardar'),
+            ),
+            FilledButton(
+              onPressed: () => Navigator.of(context).pop(false),
+              child: const Text('Seguir editando'),
+            ),
+          ],
+        ),
+      ) ??
+      false;
 }
 
 /// A list of items with edit and delete, and an add button below.

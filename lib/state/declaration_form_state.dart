@@ -37,6 +37,9 @@ class DeclarationFormState extends ChangeNotifier {
         ..identification = profile.identification;
     }
     _placeAssignedLessons();
+    // Placing the coordination's lessons is redone on every open: not a
+    // change of the person's.
+    unsaved = false;
   }
 
   /// Message when a fixed lesson would be moved, in Spanish.
@@ -105,6 +108,10 @@ class DeclarationFormState extends ChangeNotifier {
 
   bool saving = false;
 
+  /// Changes on screen that are not stored yet; leaving asks first, so
+  /// nothing is lost without the person knowing (§5 of the Proyecto 2).
+  bool unsaved = false;
+
   /// User-facing message of the last failed save, in Spanish.
   String? error;
   int _nextId = 0;
@@ -130,6 +137,7 @@ class DeclarationFormState extends ChangeNotifier {
   void edit(void Function(Declaration d) change) {
     if (!editable) return;
     change(declaration);
+    unsaved = true;
     if (declaration.status != DeclarationStatus.draft) {
       declaration.status = DeclarationStatus.draft;
     }
@@ -336,6 +344,7 @@ class DeclarationFormState extends ChangeNotifier {
       if (!await _network.isOnline()) throw const OfflineException();
       declaration.status = status;
       await _repository.save(declaration).timeout(_saveTimeout);
+      unsaved = false;
       return true;
     } on OfflineException {
       declaration.status = previous;

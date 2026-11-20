@@ -538,6 +538,44 @@ void main() {
     );
   });
 
+  testWidgets('leaving with unsaved changes asks first (D-01)', (tester) async {
+    await tester.pumpWidget(await _app(mode: AppUserMode.signedIn));
+    await tester.pumpAndSettle();
+    await _openNewDeclaration(tester);
+
+    // Nothing changed yet: back leaves without asking.
+    await tester.tap(find.byType(BackButton));
+    await tester.pumpAndSettle();
+    expect(find.text('¿Salir sin guardar?'), findsNothing);
+
+    await tester.tap(
+      find.widgetWithText(FloatingActionButton, 'Nueva declaración'),
+    );
+    await tester.pumpAndSettle();
+    await tester.tap(
+      find.widgetWithText(DropdownButtonFormField<String>, 'Puesto *'),
+    );
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Interino Licenciado').last);
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.byType(BackButton));
+    await tester.pumpAndSettle();
+    expect(find.text('¿Salir sin guardar?'), findsOneWidget);
+    await tester.tap(find.text('Seguir editando'));
+    await tester.pumpAndSettle();
+    // Still in the form, with the change.
+    expect(find.text('Interino Licenciado'), findsOneWidget);
+
+    // Once saved, back leaves without asking.
+    await tester.tap(find.text('Guardar borrador'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byType(BackButton));
+    await tester.pumpAndSettle();
+    expect(find.text('¿Salir sin guardar?'), findsNothing);
+    expect(find.text('Borrador'), findsOneWidget);
+  });
+
   testWidgets('without courses assigned, a new declaration is not started', (
     tester,
   ) async {
@@ -561,6 +599,48 @@ void main() {
     // The form did not open.
     expect(find.text('Guardar borrador'), findsNothing);
   });
+
+  testWidgets(
+    'with TalkBack, each half hour says what it has and places (D-02)',
+    (tester) async {
+      final semantics = tester.ensureSemantics();
+      await tester.pumpWidget(await _app(mode: AppUserMode.signedIn));
+      await tester.pumpAndSettle();
+      await _openNewDeclaration(tester);
+      await tester.scrollUntilVisible(
+        find.byKey(const ValueKey('cell-1-600')),
+        300,
+        scrollable: find.byType(Scrollable).first,
+      );
+      await tester.pumpAndSettle();
+
+      expect(
+        find.semantics.byLabel('Lunes, 8:00 a 8:30: IF0009 · Clases'),
+        findsOne,
+      );
+      // The semantic tap (TalkBack's double tap) places the chosen task.
+      tester.semantics.tap(
+        find.semantics.byLabel('Lunes, 10:00 a 10:30: libre'),
+      );
+      await tester.pumpAndSettle();
+      expect(
+        find.semantics.byLabel('Lunes, 10:00 a 10:30: IF0009 · Atención'),
+        findsOne,
+      );
+      expect(find.bySemanticsLabel('Lunes: 2,5 h'), findsOneWidget);
+      await tester.scrollUntilVisible(
+        find.byKey(const ValueKey('cell-1-720')),
+        200,
+        scrollable: find.byType(Scrollable).first,
+      );
+      await tester.pumpAndSettle();
+      expect(
+        find.semantics.byLabel('Lunes, 12:00 a 12:30: almuerzo, cerrado'),
+        findsOne,
+      );
+      semantics.dispose();
+    },
+  );
 
   testWidgets('a course gives its hours, placed on the grid, to the summary', (
     tester,
