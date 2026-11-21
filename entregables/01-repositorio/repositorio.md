@@ -8,7 +8,7 @@
 | Repositorio del Proyecto 1 (web y reglas) | <https://github.com/dayanachavarriasteller-maker/DeclaraHorario> |
 | Rama principal | `main` (cada cambio entra por pull request) |
 | Versión final | `[COMPLETAR: etiqueta final, p. ej. v2.0.0+7 o la que salga después de la socialización]` |
-| Versión base del Proyecto 1 | `[COMPLETAR: p1-entrega en DeclaraHorario]` (ver matriz de mejoras §1) |
+| Versión base del Proyecto 1 | [`p1-entrega`](https://github.com/dayanachavarriasteller-maker/DeclaraHorario/releases/tag/p1-entrega) en DeclaraHorario (`2661da2`) (ver matriz de mejoras §1) |
 
 ## Qué hay en el repositorio
 
@@ -58,8 +58,8 @@ El historial está en los commits y en los releases de GitHub. Hitos del Proyect
   Firebase en `lib/config/firebase_config.dart` son identificadores públicos; la seguridad la dan Auth y las
   reglas.
 - Las cuentas de prueba usan correos del equipo, por eso no están en el repositorio.
-- `[COMPLETAR antes de etiquetar: `Plan_Entregables_Proyecto2_Lucia_Cristopher.docx` está en la raíz sin
-  commit; decidir si se sube a `entregables/` o se deja fuera]`
+- El plan interno de entregables (`Plan_Entregables_Proyecto2_Lucia_Cristopher.docx`) se queda fuera del
+  repositorio: es un documento de trabajo del equipo, no un entregable.
 
 ## Cómo etiquetar la versión final
 

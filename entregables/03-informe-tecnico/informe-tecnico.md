@@ -13,8 +13,7 @@ Sistema web del Proyecto 1: DeclaraHorario (<https://declarahorario-b186f.web.ap
 Cada ciclo, el personal docente de la Sede del Sur tiene que declarar bajo juramento su horario y su jornada:
 las clases que le asignó la Coordinación, las horas de atención a estudiantes y de planificación que se derivan
 de cada curso, los proyectos y cualquier trabajo en otra institución. El resultado es el formulario oficial de
-Recursos Humanos. `[COMPLETAR: 1 o 2 líneas sobre cómo se hacía el trámite antes del Proyecto 1, tomadas del
-informe del P1]`. Los dos errores que el sistema busca evitar son las horas que no cuadran con la jornada y los
+Recursos Humanos. Los dos errores que el sistema busca evitar son las horas que no cuadran con la jornada y los
 horarios que se traslapan.
 
 El Proyecto 1 (DeclaraHorario) llevó el trámite completo a un sistema web: la Coordinación asigna cursos, la
@@ -144,7 +143,7 @@ el formato de observaciones y la huella SHA-256. Lo que se reescribió fueron la
 |---|---|
 | Backend | Firebase del Proyecto 1, accesible desde cualquier teléfono con internet; no depende de la computadora de desarrollo |
 | APK | `dart run tool/build_apk.dart`: se niega a compilar con cambios sin commit o sin la llave del equipo, y deja `dist/DeclaraUCR-v{versión}-{commit}.apk` con un `.txt` que trae versión, commit, backend, firma y SHA-256 |
-| Distribución | GitHub Releases, una por versión (`v2.0.0+2` a `v2.0.0+6` publicadas; `v2.0.0+7` `[COMPLETAR]`) |
+| Distribución | GitHub Releases, una por versión (`v2.0.0+2` a `v2.0.0+6` publicadas; `v2.0.0+7` publicada el 20/11/2026) |
 | Firma | Llave de release del equipo, fuera del repositorio. Todas las versiones con la misma llave, así que actualizar encima funciona |
 | Actualizar | Instalar el APK nuevo encima; se conserva la sesión |
 | Volver atrás | Desinstalar e instalar el APK anterior del release; no se pierde nada porque los datos están en Firebase |
