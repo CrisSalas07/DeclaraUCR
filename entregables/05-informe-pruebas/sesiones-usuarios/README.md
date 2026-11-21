@@ -21,10 +21,15 @@ Este kit tiene lo necesario para hacerlas y para que queden como evidencia:
 
 - [x] **APK 2.0.0+7** publicado: <https://github.com/CrisSalas07/DeclaraUCR/releases/tag/v2.0.0%2B7> (`DeclaraUCR-v2.0.0+7-0caae96.apk`). Todas las sesiones con esta versión; si sale otra antes
       de terminar, se anota y se explica.
-- [ ] **Una cuenta de declarante por participante** en el backend real (P1, P2, P3), cada una con revisor
-      asignado y **los mismos cursos y clases fijas** asignados por la Coordinación en el período habilitado
-      (`docs/INSTALACION.md` §6). Así las tres personas empiezan igual y nadie ve la declaración de otra.
-      Correos y contraseñas por canal privado; nunca en el repo ni en las hojas.
+- [ ] **Cada participante crea su propia cuenta** en la sesión (tarea T0): con su correo `@ucr.ac.cr` y una
+      contraseña que solo esa persona conoce. El equipo no anota ni guarda contraseñas.
+- [ ] **Tres tarjetas con datos ficticios** (§8 pide datos ficticios): una cédula y un teléfono inventados
+      por participante, más la sede y la carrera que tienen cursos de prueba. Probar antes que esas cédulas
+      no estén ya registradas.
+- [ ] Que alguien del equipo pueda entrar a la web del P1 con **Administración** (asignar revisor) y con la
+      **Coordinación** de esa carrera (asignar cursos) desde una computadora o teléfono durante la sesión.
+- [ ] El **período** de prueba habilitado y el **horario de cursos** listo para copiar igual a las tres
+      cuentas, para que todas empiecen con lo mismo.
 - [ ] Anotar aquí **qué curso y cuántas horas de atención** tienen esas cuentas, porque la tarea T2 los nombra:
       curso `[COMPLETAR, p. ej. IF0009]`, atención `[COMPLETAR, p. ej. 2 h]`, día sugerido `[COMPLETAR, p. ej.
       lunes después de clase]`.
@@ -37,9 +42,9 @@ Este kit tiene lo necesario para hacerlas y para que queden como evidencia:
 
 ## 2. Antes de cada sesión
 
-- [ ] La app instalada en el teléfono que se va a usar y con la **sesión ya iniciada** en la cuenta de ese
-      participante (la persona no escribe contraseñas: no es parte de las tareas y evita usar datos reales).
-- [ ] La cuenta **sin declaración** en el período (si no, T1 no se puede hacer).
+- [ ] La app 2.0.0+7 instalada en el teléfono que se va a usar y **sin sesión iniciada** (la persona crea su
+      cuenta en T0). Si el teléfono es de la persona, se instala con ella siguiendo la guía de uso.
+- [ ] La tarjeta de datos ficticios de ese participante a mano.
 - [ ] Revisar al pie del inicio de sesión o en el perfil: "Versión 2.0.0+7 · …". Anotarlo en la hoja.
 - [ ] Letra del teléfono como la usa la persona normalmente (si la persona trae su propio teléfono).
 
@@ -57,12 +62,16 @@ El orden es: **presentar → grabar con consentimiento → tres tareas anotadas 
    detiene, se borra y alcanza con las notas.
 2. En el audio decir solo "Participante P1" (o P2, P3) y la fecha. **Nunca el nombre**; si la persona lo dice,
    se anota el minuto para recortarlo.
-3. Dar una tarea a la vez, leyendo la frase de la hoja en voz alta (queda en el audio). No explicar la
+3. **T0, crear la cuenta.** Cuando la persona ve Inicio, se le pide esperar unos minutos: alguien del equipo
+   le asigna en la web el **revisor** (Administración › Usuarios) y los **cursos** (Coordinación) en el
+   período. Se anota cuánto tardó la pausa; no cuenta en los tiempos. La app lo toma sola, sin cerrar
+   sesión.
+4. Dar una tarea a la vez, leyendo la frase de la hoja en voz alta (queda en el audio). No explicar la
    pantalla.
-4. Anotar el minuto del audio en que empieza y termina cada tarea, lo que la persona intenta, dónde duda y cada ayuda (qué se le dijo y por qué).
+5. Anotar el minuto del audio en que empieza y termina cada tarea, lo que la persona intenta, dónde duda y cada ayuda (qué se le dijo y por qué).
    Solo se ayuda si la persona lo pide o lleva más de un minuto trabada.
-5. Al final de cada tarea, **captura de pantalla** de cómo quedó (ver nombres abajo).
-6. Al terminar las tres, detener la grabación y **pasarle el formulario** en el teléfono (enlace o QR). Se le
+6. Al final de cada tarea, **captura de pantalla** de cómo quedó (ver nombres abajo).
+7. Al terminar las cuatro, detener la grabación y **pasarle el formulario** en el teléfono (enlace o QR). Se le
    dice su número de participante (P1, P2 o P3) para que lo marque; así sus respuestas se unen con la
    bitácora sin pedir el nombre. Quien observa no mira mientras responde.
 
@@ -73,6 +82,7 @@ En `entregables/05-informe-pruebas/evidencias/sesiones-usuarios/`:
 | Archivo | Qué es |
 |---|---|
 | `P1-hoja.pdf` (o `.jpg`) | La hoja de sesión llena (foto o escaneo). Sin nombre ni cédula de la persona. |
+| `P1-T0-inicio.png` | Captura al terminar T0: Inicio con la sesión iniciada. |
 | `P1-T1-borrador.png` | Captura al terminar T1: la lista con la declaración en **Borrador**. |
 | `P1-T2-resumen.png` | Captura al terminar T2: el resumen con las horas de atención ubicadas. |
 | `P1-T3-estado.png` | Captura al terminar T3: el resumen con el estado y lo que falta. |
@@ -91,5 +101,7 @@ ejemplo, `R-P1-T2-resumen.png`.
 2. Juntar los problemas en §6.6 (U-01, U-02…): qué se vio, quién y en qué tarea, impacto y prioridad.
 3. Corregir los de mayor impacto, subir versión (2.0.0+8), compilar y publicar.
 4. **Volver a probar** esos problemas con al menos una de las personas (§6.7) y guardar la evidencia con `R-`.
-5. Pasar los hallazgos a la matriz de mejoras si vienen de usuarios, y anotar en el registro de participación
+5. **Desactivar las cuentas** de P1, P2 y P3 desde la web (Administración › Usuarios) cuando ya no se
+   necesiten para la nueva comprobación, y avisarles.
+6. Pasar los hallazgos a la matriz de mejoras si vienen de usuarios, y anotar en el registro de participación
    quién guió y quién anotó cada sesión.

@@ -16,8 +16,9 @@ Después, leer tal cual:
 
 > "Gracias por ayudarnos. Vamos a probar la app, no a usted: si algo no sale, es un problema de la app. Le voy a
 > pedir tres cosas. Piense en voz alta: diga lo que busca y lo que espera que pase. Yo solo voy a mirar y tomar
-> notas. Los datos de la app son inventados; no vamos a anotar su nombre ni su cédula. Puede parar cuando
-> quiera."
+> notas. Va a crear una cuenta con su correo de la UCR y una contraseña que solo usted sabe; la cédula y el
+> teléfono se los damos en esta tarjeta, inventados. No vamos a anotar su nombre. Al terminar el estudio
+> desactivamos la cuenta. Puede parar cuando quiera."
 
 - ☐ Acepta participar de forma voluntaria.
 - ☐ Acepta que se grabe el audio (**preguntado también al inicio de la grabación**) · ☐ No acepta (no se
@@ -35,6 +36,30 @@ Después, leer tal cual:
 
 Leer una tarea a la vez. No explicar la pantalla. Ayudar solo si la persona lo pide o lleva más de un minuto
 trabada, y anotar cada ayuda.
+
+### T0 — Crear la cuenta y entrar
+
+> "Usted es docente y es la primera vez que usa DeclaraUCR. Cree su cuenta con su correo de la UCR y una
+> contraseña suya, use la cédula y el teléfono de esta tarjeta, y complete su perfil con la sede y la carrera
+> que le indicamos."
+
+**Completada cuando:** la persona entra a la app y ve Inicio.
+
+| Inicio (min del audio) | Fin (min del audio) | Minutos | Resultado |
+|---|---|---|---|
+| | | | ☐ Sí · ☐ Con ayuda · ☐ No |
+
+**Qué hizo, dónde dudó, errores:**
+
+<br><br><br>
+
+**Ayudas:**
+
+<br><br>
+
+**Captura:** ☐ `P__-T0-inicio.png`
+
+**Pausa del equipo** (no cuenta en los tiempos): ☐ revisor asignado · ☐ cursos asignados · duró ____ min
 
 ### T1 — Crear y guardar la declaración
 
