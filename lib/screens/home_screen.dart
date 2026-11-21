@@ -292,8 +292,8 @@ class _LatestCard extends StatelessWidget {
               TaskKind.attention,
               TaskKind.planning,
             ])
-              Chip(label: Text('${kind.code}: ${hours(kind)}')),
-            Chip(label: Text('Total: ${TimeRules.hoursLabel(d.totalMinutes)}')),
+              _HoursChip('${kind.code}: ${hours(kind)}'),
+            _HoursChip('Total: ${TimeRules.hoursLabel(d.totalMinutes)}'),
           ],
         ),
         const SizedBox(height: 12),
@@ -394,4 +394,19 @@ class _ProfileSheet extends StatelessWidget {
       ),
     );
   }
+}
+
+/// Hours of a kind, as text: a plain [Chip] is read as an unchecked
+/// checkbox by screen readers.
+class _HoursChip extends StatelessWidget {
+  const _HoursChip(this.text);
+
+  final String text;
+
+  @override
+  Widget build(BuildContext context) => Semantics(
+    label: text,
+    excludeSemantics: true,
+    child: Chip(label: Text(text)),
+  );
 }

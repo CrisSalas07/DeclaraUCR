@@ -168,7 +168,7 @@ que el revisor lee exactamente lo firmado y que no se firma dos veces.
 
 ## Pruebas automatizadas
 
-Reglas de negocio de mayor riesgo (§7), con `flutter test` (107 pruebas, todas pasan en `fc21a84`):
+Reglas de negocio de mayor riesgo (§7), con `flutter test` (107 pruebas, todas pasan en `fc21a84`; 109 en la 2.0.0+7, el 2026-11-20):
 
 | Qué cubren | Dónde |
 |---|---|
@@ -202,4 +202,12 @@ Defectos encontrados al ejecutar los casos de este documento:
 | Caso | Defecto | Corrección | Nueva comprobación |
 |---|---|---|---|
 | CP-01 a CP-07 | Ninguno (2026-11-19) | — | — |
-| | | | |
+
+Defectos encontrados en el recorrido exploratorio del 2026-11-20 (detalle y capturas en
+`entregables/05-informe-pruebas/`):
+
+| Id | Defecto | Corrección (2.0.0+7) | Nueva comprobación |
+|---|---|---|---|
+| D-01 | Salir del formulario con **Atrás** descartaba sin avisar los cambios sin guardar | El formulario pregunta "¿Salir sin guardar?" mientras haya cambios sin guardar | Prueba automatizada "leaving with unsaved changes asks first (D-01)"; diálogo comprobado en la app |
+| D-02 | Las medias horas libres de la cuadrícula no se podían ubicar con TalkBack | Cada media hora es un botón con su día, hora y contenido | Prueba automatizada "with TalkBack, each half hour says what it has and places (D-02)" |
+| D-03 | Los chips de horas de Inicio se anunciaban como casillas | Se leen como texto | Árbol de accesibilidad revisado |

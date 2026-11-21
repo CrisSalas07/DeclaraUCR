@@ -326,8 +326,23 @@ class _ScheduleEditorState extends State<ScheduleEditor> {
                   children: [
                     Column(
                       children: [
-                        for (final start in _rows)
-                          _row(GridCell(_day, start), scheme, theme),
+                        // Each half hour is its own button for TalkBack: the
+                        // gestures above only work by sight.
+                        for (final (i, start) in _rows.indexed)
+                          Semantics(
+                            container: true,
+                            button: !ScheduleGrid.isLunch(start),
+                            label: _cellLabel(start, cells, d),
+                            excludeSemantics: true,
+                            hint: ScheduleGrid.isLunch(start)
+                                ? null
+                                : 'Toque para marcar o liberar con '
+                                      '${_name(brush, d)}',
+                            onTap: ScheduleGrid.isLunch(start)
+                                ? null
+                                : () => _tap(i, brush),
+                            child: _row(GridCell(_day, start), scheme, theme),
+                          ),
                       ],
                     ),
                     for (final run in runs)
@@ -382,6 +397,18 @@ class _ScheduleEditorState extends State<ScheduleEditor> {
         ),
       ),
     );
+  }
+
+  /// "Lunes, 10:00 a 10:30: libre" or the task placed there.
+  String _cellLabel(int start, Map<GridCell, String> cells, Declaration d) {
+    final range =
+        '${_day.title}, ${TimeRules.shortClock(start)} a '
+        '${TimeRules.shortClock(start + ScheduleGrid.stepMinutes)}';
+    if (ScheduleGrid.isLunch(start)) return '$range: almuerzo, cerrado';
+    final key = cells[GridCell(_day, start)];
+    return key == null
+        ? '$range: libre'
+        : '$range: ${_name(ScheduleTask.fromKey(key), d)}';
   }
 
   Widget _row(GridCell cell, ColorScheme scheme, ThemeData theme) {

@@ -1,0 +1,71 @@
+# Repositorio de código — DeclaraUCR
+
+**Proyecto 2 · IF0009 · Entregable 1**
+
+| | |
+|---|---|
+| Repositorio de la app móvil | <https://github.com/CrisSalas07/DeclaraUCR> |
+| Repositorio del Proyecto 1 (web y reglas) | <https://github.com/dayanachavarriasteller-maker/DeclaraHorario> |
+| Rama principal | `main` (cada cambio entra por pull request) |
+| Versión final | `[COMPLETAR: etiqueta final, p. ej. v2.0.0+7 o la que salga después de la socialización]` |
+| Versión base del Proyecto 1 | `[COMPLETAR: p1-entrega en DeclaraHorario]` (ver matriz de mejoras §1) |
+
+## Qué hay en el repositorio
+
+| Ruta | Contenido |
+|---|---|
+| `lib/` | Código de la app (presentación, estado, dominio, datos, modelos) |
+| `test/` | 109 pruebas automatizadas |
+| `integration_test/` | Firma contra las reglas reales del P1 en los emuladores |
+| `backend/proyecto1/` | Copia de las reglas del P1, datos ficticios y verificación, solo para emuladores |
+| `tool/build_apk.dart` | Compila el APK identificado por versión y commit |
+| `docs/INSTALACION.md` | Instalar, actualizar, volver atrás, compilar y preparar el backend |
+| `docs/PRUEBAS.md` | Casos técnicos CP-01 a CP-08 con evidencia |
+| `docs/COMPARACION_BACKEND_P1.md` | Comparación de esquemas web y móvil |
+| `entregables/` | Los ocho entregables del Proyecto 2 |
+
+## Requisitos, ejecución y construcción
+
+Están en el `README.md` de la raíz (secciones *Running* y *Tests*) y en `docs/INSTALACION.md` §5:
+
+```bash
+flutter pub get
+flutter analyze
+flutter test
+dart run tool/build_apk.dart      # APK firmado, identificado por versión y commit
+```
+
+Requisitos: Flutter 3.x estable (se usó 3.47.0), JDK 17 o superior para Android, Node.js 18+ y
+`firebase-tools` para los emuladores.
+
+## Historial de cambios
+
+El historial está en los commits y en los releases de GitHub. Hitos del Proyecto 2:
+
+| Fecha | Versión | Qué entró |
+|---|---|---|
+| 12/11/2026 | — | Módulo del laboratorio: declaraciones, cursos, proyectos, zonaje, historial, identidad visual UCR |
+| 18/11/2026 | 2.0.0+2 | Conexión al backend del Proyecto 1, perfil y registro, lectura y escritura de declaraciones, clases fijas, zonaje, conectividad, firma del APK |
+| 19/11/2026 | 2.0.0+3 | Períodos del servidor, PDF, seguimiento en Inicio, botón Validar |
+| 19/11/2026 | 2.0.0+4 | Firma de la declarante desde el teléfono |
+| 19/11/2026 | 2.0.0+5 | Etiquetas con letra grande, capturas, casos técnicos |
+| 19/11/2026 | 2.0.0+6 | Estados legibles, CP-03 y CP-06 ejecutados |
+| 20/11/2026 | 2.0.0+7 | Aviso al salir sin guardar (D-01), cuadrícula accesible con TalkBack (D-02), chips de horas (D-03) |
+
+## Revisión de seguridad del repositorio
+
+- No hay secretos: `android/.gitignore` ignora `key.properties`, `*.jks` y `*.keystore`. Las claves de API de
+  Firebase en `lib/config/firebase_config.dart` son identificadores públicos; la seguridad la dan Auth y las
+  reglas.
+- Las cuentas de prueba usan correos del equipo, por eso no están en el repositorio.
+- `[COMPLETAR antes de etiquetar: `Plan_Entregables_Proyecto2_Lucia_Cristopher.docx` está en la raíz sin
+  commit; decidir si se sube a `entregables/` o se deja fuera]`
+
+## Cómo etiquetar la versión final
+
+```bash
+git tag v2.0.0+7          # o la versión final
+git push origin v2.0.0+7
+```
+
+Luego se publica el release en GitHub con el APK y el `.txt` (pasos en `docs/INSTALACION.md` §5).
