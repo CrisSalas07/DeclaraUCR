@@ -1,5 +1,4 @@
-"""Markdown -> .docx for the deliverables: `python tool/md2docx.py entregables entregables/drive`.
-tables, code, quotes, images, bold/code/links inline)."""
+"""Markdown -> .docx for the deliverables: `python tool/md2docx.py entregables entregables/drive`."""
 import re
 import sys
 from pathlib import Path
