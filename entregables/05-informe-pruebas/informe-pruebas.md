@@ -128,9 +128,14 @@ Detalle en `docs/PRUEBAS.md`.
 
 ### 6.1 Preparación
 
+El paso a paso (cuentas, qué revisar antes de cada sesión, nombres de las evidencias) y la hoja que se
+llena en cada sesión están en [`sesiones-usuarios/`](sesiones-usuarios/README.md). Las evidencias van en
+`evidencias/sesiones-usuarios/`.
+
+
 - **Versión:** 2.0.0+7, la misma para todas las sesiones.
-- **Datos:** ficticios (las cuentas de prueba del backend real con la sede, carrera y cursos ficticios de
-  `docs/INSTALACION.md` §6). Nunca la cuenta personal de la persona participante.
+- **Datos:** ficticios: una cuenta de declarante por participante en el backend real, todas con los mismos
+  cursos ficticios (`docs/INSTALACION.md` §6), para que cada persona empiece sin declaración. Nunca la cuenta personal de la persona participante.
 - **Consentimiento:** participación voluntaria; si se graba la pantalla o la voz, se pide permiso antes y se
   anota en la tabla.
 - **Quién observa:** una persona del equipo guía y anota; no ayuda salvo que la persona se trabe más de un
@@ -147,7 +152,7 @@ Antes de empezar se lee esto, tal cual:
 | Tarea | Lo que se le dice a la persona | Propósito | Se considera completada cuando… |
 |---|---|---|---|
 | T1 | "Es inicio de ciclo. Empiece su declaración jurada de este período, elija su puesto y déjela guardada para terminarla después." | Proceso 1: crear y guardar un borrador | La declaración aparece como **Borrador** en la lista con el puesto elegido |
-| T2 | "Ya tiene las clases que le asignó la Coordinación. Ubique las 2 horas de atención a estudiantes de IF0009 el lunes después de clase." | Proceso 2: registrar horario | El resumen muestra **Atención 2 h de 2 h** para IF0009 |
+| T2 | "Ya tiene las clases que le asignó la Coordinación. Ubique las `[2]` horas de atención a estudiantes de `[IF0009]` el `[lunes]` después de clase." (curso, horas y día según las cuentas de prueba) | Proceso 2: registrar horario | El resumen muestra **Atención 2 h de 2 h** para IF0009 |
 | T3 | "Revise si a su declaración le falta algo para poder validarla y diga en qué estado está." | Proceso 3: resumen, validaciones y estado | La persona dice el estado (**Borrador**) y menciona al menos una hora faltante que muestra el resumen |
 
 ### 6.3 Perfil de participantes
@@ -155,27 +160,27 @@ Antes de empezar se lee esto, tal cual:
 Sin nombres ni cédulas: solo la relación con el proceso. Al menos una persona debe ser del perfil previsto
 (docente, o alguien que haya llenado una declaración jurada de jornada).
 
-| Id | Relación con el contexto de uso | ¿Perfil previsto? | Teléfono que usó | Fecha |
-|---|---|---|---|---|
-| P1 | `[COMPLETAR: p. ej. "docente interina de la Sede del Sur, llena la declaración cada ciclo"]` | Sí | `[COMPLETAR]` | `[COMPLETAR]` |
-| P2 | `[COMPLETAR: p. ej. "estudiante de Informática Empresarial, no conoce el trámite"]` | No | `[COMPLETAR]` | `[COMPLETAR]` |
-| P3 | `[COMPLETAR]` | `[COMPLETAR]` | `[COMPLETAR]` | `[COMPLETAR]` |
+| Id | Relación con el contexto de uso | ¿Perfil previsto? | Teléfono que usó | Fecha | Hoja |
+|---|---|---|---|---|---|
+| P1 | `[COMPLETAR: p. ej. "docente interina de la Sede del Sur, llena la declaración cada ciclo"]` | Sí | `[COMPLETAR]` | `[COMPLETAR]` | `P1-hoja.pdf` |
+| P2 | `[COMPLETAR: p. ej. "estudiante de Informática Empresarial, no conoce el trámite"]` | No | `[COMPLETAR]` | `[COMPLETAR]` | `P2-hoja.pdf` |
+| P3 | `[COMPLETAR]` | `[COMPLETAR]` | `[COMPLETAR]` | `[COMPLETAR]` | `P3-hoja.pdf` |
 
 ### 6.4 Resultados por tarea
 
 Tiempo aproximado en minutos. Éxito: **Sí**, **Con ayuda** o **No**.
 
-| Participante | Tarea | Éxito | Tiempo | Errores observados | Ayudas dadas |
-|---|---|---|---|---|---|
-| P1 | T1 | | | | |
-| P1 | T2 | | | | |
-| P1 | T3 | | | | |
-| P2 | T1 | | | | |
-| P2 | T2 | | | | |
-| P2 | T3 | | | | |
-| P3 | T1 | | | | |
-| P3 | T2 | | | | |
-| P3 | T3 | | | | |
+| Participante | Tarea | Éxito | Tiempo | Errores observados | Ayudas dadas | Evidencia |
+|---|---|---|---|---|---|---|
+| P1 | T1 | | | | | `P1-T1-borrador.png` |
+| P1 | T2 | | | | | `P1-T2-resumen.png` |
+| P1 | T3 | | | | | `P1-T3-estado.png` |
+| P2 | T1 | | | | | `P2-T1-borrador.png` |
+| P2 | T2 | | | | | `P2-T2-resumen.png` |
+| P2 | T3 | | | | | `P2-T3-estado.png` |
+| P3 | T1 | | | | | `P3-T1-borrador.png` |
+| P3 | T2 | | | | | `P3-T2-resumen.png` |
+| P3 | T3 | | | | | `P3-T3-estado.png` |
 
 ### 6.5 Percepción
 
@@ -207,9 +212,9 @@ Qué vigilar en particular (son los puntos donde el recorrido sugiere que alguie
 
 El descriptor pide volver a probar los problemas de mayor impacto con al menos una de las personas.
 
-| Hallazgo | Cambio aplicado (commit) | Quién lo volvió a probar | Resultado |
-|---|---|---|---|
-| | | | |
+| Hallazgo | Cambio aplicado (commit) | Quién lo volvió a probar | Resultado | Evidencia |
+|---|---|---|---|---|
+| | | | | `R-P_-T_-….png` |
 
 ## 7. Conclusión
 
