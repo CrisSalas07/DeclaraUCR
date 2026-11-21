@@ -18,38 +18,24 @@ propuesta de atención**.
 | Repositorio | DeclaraHorario (sistema web del Proyecto 1) |
 | Versión base propuesta | `main` en `2661da2` (merge del PR #94, 10/11/2026) `[COMPLETAR: confirmar que es lo que se entregó en el P1]` |
 | Etiqueta | `[COMPLETAR: crear y subir la etiqueta]` → `git tag p1-entrega 2661da2 && git push origin p1-entrega` |
-| Retroalimentación recibida | `[COMPLETAR: adjuntar el documento o la captura de la revisión del docente en esta carpeta, como retroalimentacion-p1.pdf]` |
+| Retroalimentación recibida | La revisión del docente **no pidió cambios** al Proyecto 1. Se adjunta igual: `[COMPLETAR: captura o PDF de la nota y los comentarios de la evaluación del P1, en esta carpeta como retroalimentacion-p1.pdf]` |
 
 La app móvil usa el backend de esa versión: las reglas copiadas en `backend/proyecto1/` vienen del commit
 `5f68958` de DeclaraHorario (ver `backend/proyecto1/ORIGEN.txt`).
 
 ## 2. Observaciones de la revisión del Proyecto 1
 
-> **Cómo llenar esta sección.** Copie cada observación del docente **tal como la escribió** (una por fila,
-> aunque parezca menor: §4 dice que todas se registran). Luego decida la acción. Si la observación ya está
-> resuelta por algo que la app móvil hizo, use esa evidencia; abajo hay una lista de lo que ya existe para
-> facilitarlo.
+La evaluación del Proyecto 1 **no señaló observaciones que obligaran a cambiar el sistema** (ver la
+retroalimentación adjunta en §1). Por eso no hay filas del docente que atender.
 
-| # | Observación (textual) | Acción concreta | Prioridad | Evidencia | Estado | Justificación / propuesta (si no está verificada) |
+Para que la continuidad no quede vacía, el equipo revisó por su cuenta la versión base y registra aquí lo que
+encontró. Solo se anotan puntos reales y comprobables; no se inventan observaciones.
+
+| # | Origen | Observación | Acción concreta | Prioridad | Evidencia | Estado |
 |---|---|---|---|---|---|---|
-| P1-01 | `[COMPLETAR]` | | | | | |
-| P1-02 | `[COMPLETAR]` | | | | | |
-| P1-03 | `[COMPLETAR]` | | | | | |
-| P1-04 | `[COMPLETAR]` | | | | | |
-| P1-05 | `[COMPLETAR]` | | | | | |
-
-### Evidencia que ya existe y puede responder a observaciones típicas
-
-Úsela solo si corresponde a una observación real; no invente la observación para usar la evidencia.
-
-| Si el docente señaló… | Lo que ya hay | Evidencia |
-|---|---|---|
-| Que la validación (`VALIDADA`) la decide el cliente | Sigue igual en web y móvil; las reglas validan formato y permisos | Pendiente con justificación: requiere una Cloud Function (plan Blaze de Firebase). Propuesta: función `onVersionWrite` que recalcule horas y traslapes y rechace un `VALIDADA` inválido. Ver README, sección *Security* |
-| Accesos indebidos entre personas | Las reglas del P1 impiden leer o escribir lo de otra persona; la app no tiene rutas para otros roles | `backend/proyecto1/verify.mjs`; CP-05 (`docs/pruebas/CP-05-*.png`) |
-| Traslapes y cálculo de horas | Mismo validador del P1, con pruebas | `test/domain/overlap_detector_test.dart`, `declaration_validator_test.dart`; CP-02 |
-| Pérdida de datos si se cae la conexión | No se guarda sin red, se avisa y los cambios quedan en pantalla; tiempo máximo de 15 s | `test/connectivity_test.dart`; CP-07 |
-| Identidad visual UCR | Paleta, tipografía Trueno, firma oficial y tamaño mínimo según el manual | README, *Visual identity decisions*; `docs/capturas/` |
-| Firma y huella del contenido | La firma de la declarante desde el teléfono usa la misma huella SHA-256 que la web | `test/domain/content_hash_test.dart`; CP-03, CP-06 |
+| P1-01 | Revisión del equipo | El sistema solo se usaba desde la computadora; la persona declarante no podía llenar ni firmar desde el teléfono | Módulo móvil con los tres procesos y la firma de la declarante, sobre el mismo backend | Alta | Este proyecto: release v2.0.0+7; CP-01 a CP-07 (`docs/PRUEBAS.md`) | Verificada |
+| P1-02 | Revisión del equipo | El estado `VALIDADA` lo decide el cliente; las reglas validan formato y permisos, no recalculan horas | Pendiente con justificación: requiere una Cloud Function (plan Blaze de Firebase). Propuesta: función que recalcule horas y traslapes y rechace un `VALIDADA` inválido | Media | README, sección *Security*; `docs/INSTALACION.md` §7 | Pendiente con justificación |
+| P1-03 | Revisión del equipo | `[COMPLETAR o borrar la fila: otro punto que el equipo haya notado en la web del P1]` | | | | |
 
 ## 3. Observaciones de la socialización
 
@@ -82,6 +68,6 @@ trazabilidad quede completa.
 
 ## 5. Resumen
 
-`[COMPLETAR al cierre]` Total de observaciones: __ del P1 (__ verificadas, __ en proceso, __ pendientes con
+`[COMPLETAR al cierre]` Revisión del P1: sin observaciones del docente; __ de la revisión del equipo (__ verificadas, __ pendientes con
 justificación) y __ de la socialización (__ aceptadas, __ parcialmente, __ descartadas; __ mejoras
 implementadas).

@@ -11,7 +11,7 @@ evidencia.
 | 1 | Repositorio de código | `01-repositorio/repositorio.md` | Listo; falta la etiqueta final |
 | 2 | Aplicación distribuible | `02-aplicacion-distribuible/aplicacion-distribuible.md` | APK 2.0.0+7 publicado; faltan CP-08 y confirmar las cuentas |
 | 3 | Informe técnico | `03-informe-tecnico/informe-tecnico.md` | Listo; falta 1 párrafo de contexto del P1 |
-| 4 | Matriz de mejoras | `04-matriz-mejoras/matriz-mejoras.md` | Falta copiar la retroalimentación del P1 y, después, la de la socialización |
+| 4 | Matriz de mejoras | `04-matriz-mejoras/matriz-mejoras.md` | El P1 no tuvo observaciones de cambio: falta adjuntar esa evidencia y, después, la retroalimentación de la socialización |
 | 5 | Informe de pruebas | `05-informe-pruebas/informe-pruebas.md` | Casos técnicos y automatizadas listos; kit de sesiones con usuarios listo (`sesiones-usuarios/`); faltan CP-08 y aplicar las 3 sesiones |
 | 6 | Material de socialización | `06-socializacion/` | Guion, formulario y plantilla de síntesis listos; faltan las diapositivas y aplicarlo |
 | 7 | Guía de uso | `07-guia-uso/guia-de-uso.md` | Lista; revisar contra el APK final |
@@ -28,7 +28,7 @@ Del plan de entregables, con lo que ya se cumplió:
 - [ ] Cuentas de prueba y datos ficticios confirmados en el backend real
 - [ ] Instalación desde cero en otro teléfono (CP-08)
 - [x] Informe técnico actualizado (falta un párrafo)
-- [ ] Matriz con las observaciones del P1
+- [ ] Evidencia de la evaluación del P1 adjunta (no pidió cambios) y etiqueta `p1-entrega`
 - [x] 8 casos técnicos documentados (7 ejecutados y aprobados)
 - [x] Pruebas automatizadas de las reglas de mayor riesgo (109, todas pasan)
 - [ ] Cuentas de declarante P1, P2 y P3 en el backend real (kit §1)
@@ -46,7 +46,7 @@ Del plan de entregables, con lo que ya se cumplió:
 2. CP-08 en un teléfono que no sea el de desarrollo.
 3. Las tres sesiones con usuarios, todas con la 2.0.0+7: seguir `05-informe-pruebas/sesiones-usuarios/README.md`
    e imprimir `hoja-sesion.md` tres veces.
-4. Copiar la retroalimentación del P1 a la matriz.
+4. Adjuntar a la matriz la captura de la evaluación del P1 (sin cambios pedidos) y crear la etiqueta `p1-entrega`.
 5. Diapositivas a partir del guion, el formulario en Google Forms y la socialización.
 6. Dos mejoras de la socialización, nueva versión, nueva comprobación y etiqueta final.
 7. Exportar a PDF el informe técnico, el informe de pruebas y la guía.
