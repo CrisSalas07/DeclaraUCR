@@ -13,7 +13,7 @@ evidencia.
 | 3 | Informe técnico | `03-informe-tecnico/informe-tecnico.md` | Listo; falta 1 párrafo de contexto del P1 |
 | 4 | Matriz de mejoras | `04-matriz-mejoras/matriz-mejoras.md` | El P1 no tuvo observaciones de cambio: falta adjuntar esa evidencia y, después, la retroalimentación de la socialización |
 | 5 | Informe de pruebas | `05-informe-pruebas/informe-pruebas.md` | Casos técnicos y automatizadas listos; kit de sesiones con usuarios listo (`sesiones-usuarios/`); faltan CP-08 y aplicar las 3 sesiones |
-| 6 | Material de socialización | `06-socializacion/` | Guion, formulario y plantilla de síntesis listos; faltan las diapositivas y aplicarlo |
+| 6 | Material de socialización | `06-socializacion/` | Guion del video, formulario y plantilla de síntesis listos; faltan grabar el video y enviarlo |
 | 7 | Guía de uso | `07-guia-uso/guia-de-uso.md` | Lista; revisar contra el APK final |
 | 8 | Registro de participación | `08-registro-participacion/registro-participacion.md` | Falta confirmar identidades de git y anotar lo que no tiene commit |
 
@@ -34,7 +34,7 @@ Del plan de entregables, con lo que ya se cumplió:
 - [ ] Cuentas de declarante P1, P2 y P3 en el backend real (kit §1)
 - [ ] Sesiones con 3 personas externas al equipo (kit y hoja de sesión listos)
 - [ ] Hallazgos de usuarios y nueva comprobación
-- [ ] Presentación, formulario aplicado y síntesis
+- [ ] Video enviado al docente con el formulario, y síntesis
 - [ ] Al menos 2 mejoras después de la socialización
 - [x] Guía de uso (revisar contra el APK final)
 - [ ] Registro de participación confirmado
@@ -47,7 +47,7 @@ Del plan de entregables, con lo que ya se cumplió:
 3. Las tres sesiones con usuarios, todas con la 2.0.0+7: seguir `05-informe-pruebas/sesiones-usuarios/README.md`
    e imprimir `hoja-sesion.md` tres veces.
 4. Adjuntar a la matriz la captura de la evaluación del P1 (sin cambios pedidos) y crear la etiqueta `p1-entrega`.
-5. Diapositivas a partir del guion, el formulario en Google Forms y la socialización.
+5. Grabar el video con `06-socializacion/guion-video.md`, publicar el formulario y enviar los dos enlaces al docente.
 6. Dos mejoras de la socialización, nueva versión, nueva comprobación y etiqueta final.
 7. Exportar a PDF el informe técnico, el informe de pruebas y la guía.
 

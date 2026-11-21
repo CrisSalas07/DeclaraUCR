@@ -1,6 +1,6 @@
 # Hoja de sesión con usuario — DeclaraUCR
 
-**Participante:** P___ · **Fecha:** ___/___/2026 · **Hora de inicio:** ____ · **Lugar:** ______________
+**Participante:** P___ · **Fecha:** ___/___/2026 · **Hora de inicio:** ____ · **Audio:** `P___-audio.m4a` · **Lugar:** ______________
 
 **Guía:** ______________ · **Anota:** ______________ (integrantes del equipo)
 
@@ -17,7 +17,8 @@ Leer tal cual:
 > quiera."
 
 - ☐ Acepta participar de forma voluntaria.
-- ☐ Acepta que se grabe la pantalla · ☐ No acepta (no se graba) · ☐ No se va a grabar
+- ☐ Acepta que se grabe el audio (**preguntado también al inicio de la grabación**) · ☐ No acepta (no se
+  graba; solo notas)
 
 ## 2. Perfil (sin datos personales)
 
@@ -39,7 +40,7 @@ trabada, y anotar cada ayuda.
 
 **Completada cuando:** la declaración aparece como **Borrador** en la lista, con el puesto elegido.
 
-| Inicio | Fin | Minutos | Resultado |
+| Inicio (min del audio) | Fin (min del audio) | Minutos | Resultado |
 |---|---|---|---|
 | | | | ☐ Sí · ☐ Con ayuda · ☐ No |
 
@@ -62,7 +63,7 @@ trabada, y anotar cada ayuda.
 
 **Completada cuando:** el resumen muestra **Atención ___ h de ___ h** para ese curso.
 
-| Inicio | Fin | Minutos | Resultado |
+| Inicio (min del audio) | Fin (min del audio) | Minutos | Resultado |
 |---|---|---|---|
 | | | | ☐ Sí · ☐ Con ayuda · ☐ No |
 
@@ -86,7 +87,7 @@ Fijarse si: ☐ eligió la tarea antes de tocar la media hora · ☐ descubrió 
 **Completada cuando:** la persona dice el estado (**Borrador**) y menciona al menos una hora faltante que
 muestra el resumen.
 
-| Inicio | Fin | Minutos | Resultado |
+| Inicio (min del audio) | Fin (min del audio) | Minutos | Resultado |
 |---|---|---|---|
 | | | | ☐ Sí · ☐ Con ayuda · ☐ No |
 

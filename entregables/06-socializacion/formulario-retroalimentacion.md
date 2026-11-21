@@ -4,13 +4,13 @@ Instrumento breve (§9): valora **utilidad, claridad, funcionamiento y oportunid
 3 minutos. Para pasarlo a Google Forms, cada pregunta de abajo es una pregunta del formulario con el tipo
 indicado.
 
-`[COMPLETAR: enlace al Google Form y QR para la diapositiva 10]`
+Creado en Google Forms (Drive del equipo), **sin publicar todavía**. `[COMPLETAR: enlace para responder, que va en el bloque 10 del video y en el mensaje al docente]`
 
 ---
 
 **Encabezado del formulario**
 
-> Gracias por ver DeclaraUCR. Sus respuestas nos ayudan a decidir qué cambiar antes de la entrega final. Es
+> Gracias por ver el video de DeclaraUCR. Sus respuestas nos ayudan a decidir qué cambiar antes de la entrega final. Es
 > anónimo; solo le pedimos su rol para saber desde dónde opina.
 
 **1. ¿Desde qué rol responde?** *(opción única, obligatoria)*
@@ -39,7 +39,7 @@ validarla?* *(escala 1–5: 1 = nada claro, 5 = muy claro, obligatoria)*
 
 ## Registro de comentarios orales
 
-Durante los 10 minutos de preguntas, una persona del equipo anota aquí lo que se dice (no va en el formulario).
+Si el docente responde por otro medio (mensaje, correo, en clase), se copia aquí con sus palabras.
 
 | # | Quién | Comentario | Anotado por |
 |---|---|---|---|
