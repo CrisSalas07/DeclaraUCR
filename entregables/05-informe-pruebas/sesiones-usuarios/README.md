@@ -12,7 +12,8 @@ Este kit tiene lo necesario para hacerlas y para que queden como evidencia:
 
 | Archivo | Para qué |
 |---|---|
-| `hoja-sesion.md` | Una hoja por participante: consentimiento, perfil, las tres tareas, percepción. Imprimir tres (o llenarla en el teléfono o la compu mientras se observa). |
+| `hoja-sesion.md` | La bitácora de cada participante: consentimiento, perfil y las tres tareas. Imprimir tres (o llenarla en el teléfono o la compu mientras se observa). |
+| Formulario de Google Forms | Lo llena la persona al terminar: facilidad de uso (1 a 5), utilidad, claridad, funcionamiento y comentarios. Es el mismo que responden el docente y el otro equipo tras ver el video (§9). |
 | `../evidencias/sesiones-usuarios/` | Fotos, capturas y hojas escaneadas de cada sesión, con los nombres de abajo. |
 | `../informe-pruebas.md` §6 | Donde se pasan en limpio los resultados de las tres hojas. |
 
@@ -44,6 +45,13 @@ Este kit tiene lo necesario para hacerlas y para que queden como evidencia:
 
 ## 3. Durante la sesión
 
+El orden es: **presentar → grabar con consentimiento → tres tareas anotadas en la bitácora → formulario**.
+
+0. **Presentar en 2 minutos**: qué problema resuelve DeclaraUCR (la declaración jurada de horario que cada
+   docente llena cada ciclo), quién la usa y qué se le va a pedir (tres tareas cortas). **No mostrar la
+   demostración ni el video antes de las tareas**: la prueba mide si la app se entiende sola. El video se
+   puede mostrar al final, si la persona quiere verlo.
+
 1. Leer el párrafo de bienvenida de la hoja. **Empezar a grabar y preguntar en el audio**: "¿Está de acuerdo en
    participar y en que grabemos el audio?". Así la autorización queda en la misma grabación. Si no acepta, se
    detiene, se borra y alcanza con las notas.
@@ -54,8 +62,9 @@ Este kit tiene lo necesario para hacerlas y para que queden como evidencia:
 4. Anotar el minuto del audio en que empieza y termina cada tarea, lo que la persona intenta, dónde duda y cada ayuda (qué se le dijo y por qué).
    Solo se ayuda si la persona lo pide o lleva más de un minuto trabada.
 5. Al final de cada tarea, **captura de pantalla** de cómo quedó (ver nombres abajo).
-6. Al terminar las tres: la pregunta de facilidad (1 a 5) y "¿qué le cambiaría?" (quedan en el audio).
-   Detener la grabación.
+6. Al terminar las tres, detener la grabación y **pasarle el formulario** en el teléfono (enlace o QR). Se le
+   dice su número de participante (P1, P2 o P3) para que lo marque; así sus respuestas se unen con la
+   bitácora sin pedir el nombre. Quien observa no mira mientras responde.
 
 ## 4. Nombres de las evidencias
 
@@ -67,6 +76,7 @@ En `entregables/05-informe-pruebas/evidencias/sesiones-usuarios/`:
 | `P1-T1-borrador.png` | Captura al terminar T1: la lista con la declaración en **Borrador**. |
 | `P1-T2-resumen.png` | Captura al terminar T2: el resumen con las horas de atención ubicadas. |
 | `P1-T3-estado.png` | Captura al terminar T3: el resumen con el estado y lo que falta. |
+| `respuestas-formulario.pdf` | Al final de las tres sesiones: en Google Forms, *Respuestas* › imprimir o descargar como PDF (o captura del resumen). Prueba de que las personas usaron la app y opinaron. |
 | `P1-sesion.jpg` | (Opcional) Foto de la sesión **sin la cara** de la persona, o solo de las manos y el teléfono. |
 | `P1-audio.m4a` | Audio de la sesión completa, con la autorización al inicio. Va al Drive del equipo, **no al repositorio** (es público); en el informe se pone el enlace. |
 
@@ -75,7 +85,8 @@ ejemplo, `R-P1-T2-resumen.png`.
 
 ## 5. Después de las tres sesiones
 
-1. Pasar a `informe-pruebas.md` §6.3 a §6.5 lo de las tres hojas, con el audio para los tiempos y las frases
+1. Pasar a `informe-pruebas.md` §6.3 y §6.4 lo de las tres bitácoras, y a §6.5 las respuestas del formulario
+   de P1, P2 y P3, con el audio para los tiempos y las frases
    textuales.
 2. Juntar los problemas en §6.6 (U-01, U-02…): qué se vio, quién y en qué tarea, impacto y prioridad.
 3. Corregir los de mayor impacto, subir versión (2.0.0+8), compilar y publicar.

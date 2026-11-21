@@ -1,4 +1,4 @@
-# Hoja de sesión con usuario — DeclaraUCR
+# Bitácora de sesión con usuario — DeclaraUCR
 
 **Participante:** P___ · **Fecha:** ___/___/2026 · **Hora de inicio:** ____ · **Audio:** `P___-audio.m4a` · **Lugar:** ______________
 
@@ -7,9 +7,12 @@
 **Versión en la app (al pie del inicio de sesión):** 2.0.0+___ · ________ · **Teléfono:** ______________
 (modelo y si es el de la persona o del equipo)
 
-## 1. Bienvenida y consentimiento
+## 1. Presentación, bienvenida y consentimiento
 
-Leer tal cual:
+Presentar en 2 minutos qué problema resuelve la app y qué se le va a pedir. **No mostrar la demostración
+ni el video antes de las tareas.**
+
+Después, leer tal cual:
 
 > "Gracias por ayudarnos. Vamos a probar la app, no a usted: si algo no sale, es un problema de la app. Le voy a
 > pedir tres cosas. Piense en voz alta: diga lo que busca y lo que espera que pase. Yo solo voy a mirar y tomar
@@ -105,15 +108,17 @@ Lo que dijo del estado y de lo que falta (con sus palabras):
 
 **Captura:** ☐ `P__-T3-estado.png`
 
-## 4. Percepción
+## 4. Formulario
 
-> "Del 1 al 5, ¿qué tan fácil le resultó? 1 es muy difícil y 5 muy fácil."
+Detener la grabación y pasarle el formulario en el teléfono. Decirle: "Usted es el participante
+P___; márquelo en la primera pregunta". No mirar mientras responde.
 
-☐ 1 · ☐ 2 · ☐ 3 · ☐ 4 · ☐ 5
+- ☐ Respondió el formulario · Hora: ____
+- ☐ Pidió ver el video de la app después (opcional)
 
-> "¿Qué le cambiaría?" / "¿Algo le gustó o le molestó?"
+Comentarios que dijo en voz alta al terminar, si los hubo:
 
-<br><br><br>
+<br><br>
 
 ## 5. Notas del equipo (después de que la persona se va)
 

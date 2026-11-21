@@ -186,8 +186,9 @@ Tiempo aproximado en minutos. Éxito: **Sí**, **Con ayuda** o **No**.
 
 ### 6.5 Percepción
 
-Al terminar se pregunta: "Del 1 al 5, ¿qué tan fácil le resultó? (1 muy difícil, 5 muy fácil)" y "¿Qué le
-cambiaría?".
+Al terminar, cada persona llena el formulario de retroalimentación marcando su número (P1, P2 o P3): facilidad
+de uso de 1 a 5 y comentarios abiertos (§8), además de utilidad, claridad y funcionamiento. Evidencia:
+`evidencias/sesiones-usuarios/respuestas-formulario.pdf`.
 
 | Participante | Facilidad (1–5) | Comentario (con sus palabras) |
 |---|---|---|
