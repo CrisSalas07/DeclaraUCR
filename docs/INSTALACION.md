@@ -108,8 +108,8 @@ Para recorrer los procesos en el teléfono, desde la **web del Proyecto 1** con 
 4. A las declarantes, asignarles **revisor** (Administración › Usuarios).
 5. Con la cuenta de Coordinación, **asignar cursos** y franjas de clase en el período a **una** de las
    declarantes (la otra queda sin cursos, para el caso de prueba).
-   Para las sesiones con usuarios, tres declarantes más (una por participante) con los mismos cursos y
-   franjas, cada una sin declaración en el período (ver `entregables/05-informe-pruebas/sesiones-usuarios/`).
+   En las sesiones con usuarios, cada participante crea su propia cuenta y el equipo le asigna en la web el
+   revisor y los mismos cursos y franjas (ver `entregables/05-informe-pruebas/sesiones-usuarios/`).
 6. Entregar al equipo los correos y contraseñas de las cuentas por un canal privado, no en el repositorio.
 
 ## 7. Limitaciones conocidas

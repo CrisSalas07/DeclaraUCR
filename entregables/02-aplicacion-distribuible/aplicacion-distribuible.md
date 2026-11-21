@@ -32,7 +32,7 @@ Los correos y las contraseñas **no van en este documento ni en el repositorio**
 | Declarante con revisor y cursos | Recorrer los tres procesos y la firma | Sede del Sur, Informática Empresarial, II Ciclo 2026, cursos asignados por la Coordinación (ficticios) |
 | Declarante sin cursos | Ver el mensaje que explica por qué no puede crear la declaración (CP-05) | Misma sede y carrera, sin asignación |
 | Revisor | Ver que la app es solo para declarantes; revisar en la web lo firmado desde el teléfono | Revisor de las dos declarantes |
-| Declarantes P1, P2, P3 | Sesiones con usuarios (§8): una por participante, para que cada persona empiece sin declaración | Los mismos cursos y clases fijas que la declarante con cursos |
+| Declarantes P1, P2, P3 | Sesiones con usuarios (§8): las crea cada participante en la sesión, con su correo y su contraseña (el equipo no las conoce) | Cédula y teléfono ficticios; revisor y los mismos cursos de prueba asignados por el equipo en la web; se desactivan al terminar |
 
 `[COMPLETAR: confirmar que las tres cuentas existen en el backend real y que la declarante con cursos tiene
 una declaración abierta o puede crear una en el período habilitado. Si la de CP-03 ya está firmada, pedir al

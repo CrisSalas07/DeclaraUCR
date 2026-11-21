@@ -134,8 +134,10 @@ llena en cada sesión están en [`sesiones-usuarios/`](sesiones-usuarios/README.
 
 
 - **Versión:** 2.0.0+7, la misma para todas las sesiones.
-- **Datos:** ficticios: una cuenta de declarante por participante en el backend real, todas con los mismos
-  cursos ficticios (`docs/INSTALACION.md` §6), para que cada persona empiece sin declaración. Nunca la cuenta personal de la persona participante.
+- **Cuentas:** cada participante crea la suya en la sesión (T0) con su correo `@ucr.ac.cr` y su propia
+  contraseña; el equipo no las conoce. Cédula y teléfono **ficticios**, de una tarjeta que da el equipo.
+  Después del registro, el equipo asigna en la web el revisor y los mismos cursos de prueba a todas.
+  Al terminar el estudio, las cuentas se desactivan. Nunca la cuenta personal de la persona participante.
 - **Grabación:** cada sesión se graba en audio, con la autorización preguntada al inicio de la misma
   grabación (`PN-audio.m4a`, en el Drive del equipo, no en el repositorio). Sin nombres en el audio.
 - **Consentimiento:** participación voluntaria; si se graba la pantalla o la voz, se pide permiso antes y se
@@ -143,7 +145,7 @@ llena en cada sesión están en [`sesiones-usuarios/`](sesiones-usuarios/README.
 - **Quién observa:** una persona del equipo guía y anota; no ayuda salvo que la persona se trabe más de un
   minuto o lo pida. Cada ayuda se anota.
 
-### 6.2 Guion (tres tareas representativas)
+### 6.2 Guion (registro y tres tareas representativas)
 
 Antes de empezar se lee esto, tal cual:
 
@@ -153,6 +155,7 @@ Antes de empezar se lee esto, tal cual:
 
 | Tarea | Lo que se le dice a la persona | Propósito | Se considera completada cuando… |
 |---|---|---|---|
+| T0 | "Usted es docente y es la primera vez que usa DeclaraUCR. Cree su cuenta con su correo de la UCR y una contraseña suya, use la cédula y el teléfono de esta tarjeta, y complete su perfil con la sede y la carrera que le indicamos." | Registro e inicio de sesión | La persona entra a la app y ve Inicio con su nombre, sin ayuda para escribir datos |
 | T1 | "Es inicio de ciclo. Empiece su declaración jurada de este período, elija su puesto y déjela guardada para terminarla después." | Proceso 1: crear y guardar un borrador | La declaración aparece como **Borrador** en la lista con el puesto elegido |
 | T2 | "Ya tiene las clases que le asignó la Coordinación. Ubique las `[2]` horas de atención a estudiantes de `[IF0009]` el `[lunes]` después de clase." (curso, horas y día según las cuentas de prueba) | Proceso 2: registrar horario | El resumen muestra **Atención 2 h de 2 h** para IF0009 |
 | T3 | "Revise si a su declaración le falta algo para poder validarla y diga en qué estado está." | Proceso 3: resumen, validaciones y estado | La persona dice el estado (**Borrador**) y menciona al menos una hora faltante que muestra el resumen |
@@ -174,6 +177,9 @@ Tiempo aproximado en minutos. Éxito: **Sí**, **Con ayuda** o **No**.
 
 | Participante | Tarea | Éxito | Tiempo | Errores observados | Ayudas dadas | Evidencia |
 |---|---|---|---|---|---|---|
+| P1 | T0 | | | | | `P1-T0-inicio.png` |
+| P2 | T0 | | | | | `P2-T0-inicio.png` |
+| P3 | T0 | | | | | `P3-T0-inicio.png` |
 | P1 | T1 | | | | | `P1-T1-borrador.png` |
 | P1 | T2 | | | | | `P1-T2-resumen.png` |
 | P1 | T3 | | | | | `P1-T3-estado.png` |
