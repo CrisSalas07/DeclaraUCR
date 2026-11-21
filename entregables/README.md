@@ -9,10 +9,10 @@ evidencia.
 | # | Entregable | Archivo | Estado |
 |---|---|---|---|
 | 1 | Repositorio de código | `01-repositorio/repositorio.md` | Listo; falta la etiqueta final |
-| 2 | Aplicación distribuible | `02-aplicacion-distribuible/aplicacion-distribuible.md` | Falta compilar y publicar la 2.0.0+7, CP-08 y confirmar las cuentas |
+| 2 | Aplicación distribuible | `02-aplicacion-distribuible/aplicacion-distribuible.md` | APK 2.0.0+7 publicado; faltan CP-08 y confirmar las cuentas |
 | 3 | Informe técnico | `03-informe-tecnico/informe-tecnico.md` | Listo; falta 1 párrafo de contexto del P1 |
 | 4 | Matriz de mejoras | `04-matriz-mejoras/matriz-mejoras.md` | Falta copiar la retroalimentación del P1 y, después, la de la socialización |
-| 5 | Informe de pruebas | `05-informe-pruebas/informe-pruebas.md` | Casos técnicos y automatizadas listos; faltan CP-08 y las 3 sesiones con usuarios |
+| 5 | Informe de pruebas | `05-informe-pruebas/informe-pruebas.md` | Casos técnicos y automatizadas listos; kit de sesiones con usuarios listo (`sesiones-usuarios/`); faltan CP-08 y aplicar las 3 sesiones |
 | 6 | Material de socialización | `06-socializacion/` | Guion, formulario y plantilla de síntesis listos; faltan las diapositivas y aplicarlo |
 | 7 | Guía de uso | `07-guia-uso/guia-de-uso.md` | Lista; revisar contra el APK final |
 | 8 | Registro de participación | `08-registro-participacion/registro-participacion.md` | Falta confirmar identidades de git y anotar lo que no tiene commit |
@@ -23,7 +23,7 @@ Del plan de entregables, con lo que ya se cumplió:
 
 - [x] Instrucciones de ejecución y construcción (README, `docs/INSTALACION.md`)
 - [ ] Tag final en el repositorio
-- [ ] APK 2.0.0+7 con versión y commit (compilar con `dart run tool/build_apk.dart` **después** del commit)
+- [x] APK 2.0.0+7 con versión y commit (release v2.0.0+7, `0caae96`)
 - [x] Backend accesible fuera de la computadora de desarrollo (Firebase del P1)
 - [ ] Cuentas de prueba y datos ficticios confirmados en el backend real
 - [ ] Instalación desde cero en otro teléfono (CP-08)
@@ -31,7 +31,8 @@ Del plan de entregables, con lo que ya se cumplió:
 - [ ] Matriz con las observaciones del P1
 - [x] 8 casos técnicos documentados (7 ejecutados y aprobados)
 - [x] Pruebas automatizadas de las reglas de mayor riesgo (109, todas pasan)
-- [ ] Sesiones con 3 personas externas al equipo (guion y tablas listos)
+- [ ] Cuentas de declarante P1, P2 y P3 en el backend real (kit §1)
+- [ ] Sesiones con 3 personas externas al equipo (kit y hoja de sesión listos)
 - [ ] Hallazgos de usuarios y nueva comprobación
 - [ ] Presentación, formulario aplicado y síntesis
 - [ ] Al menos 2 mejoras después de la socialización
@@ -41,10 +42,10 @@ Del plan de entregables, con lo que ya se cumplió:
 
 ## Orden sugerido para lo que falta
 
-1. Hacer commit de las correcciones del 20/11 (D-01 a D-03 y versión 2.0.0+7), compilar el APK y publicar el
-   release.
+1. ~~Commit de D-01 a D-03, APK y release 2.0.0+7~~ (hecho: <https://github.com/CrisSalas07/DeclaraUCR/releases/tag/v2.0.0%2B7>).
 2. CP-08 en un teléfono que no sea el de desarrollo.
-3. Las tres sesiones con usuarios, todas con la 2.0.0+7 (guion en el informe de pruebas §6).
+3. Las tres sesiones con usuarios, todas con la 2.0.0+7: seguir `05-informe-pruebas/sesiones-usuarios/README.md`
+   e imprimir `hoja-sesion.md` tres veces.
 4. Copiar la retroalimentación del P1 a la matriz.
 5. Diapositivas a partir del guion, el formulario en Google Forms y la socialización.
 6. Dos mejoras de la socialización, nueva versión, nueva comprobación y etiqueta final.
@@ -55,3 +56,4 @@ Del plan de entregables, con lo que ya se cumplió:
 - Casos técnicos: `docs/pruebas/CP-*.png`
 - Capturas de la app (Android, 2.0.0+4): `docs/capturas/`
 - Recorrido exploratorio y defectos del 20/11/2026: `05-informe-pruebas/evidencias/recorrido-2026-11-20/`
+- Sesiones con usuarios (hojas, capturas): `05-informe-pruebas/evidencias/sesiones-usuarios/`

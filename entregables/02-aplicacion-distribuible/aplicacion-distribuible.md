@@ -7,13 +7,13 @@
 | | |
 |---|---|
 | Versión a entregar | **2.0.0+7** `[COMPLETAR: confirmar si se entrega esta o una posterior a la socialización]` |
-| Commit | `[COMPLETAR]` (lo escribe `tool/build_apk.dart` en el nombre del APK) |
-| Archivo | `DeclaraUCR-v2.0.0+7-{commit}.apk` |
-| SHA-256 | `[COMPLETAR]` (está en el `.txt` que genera el script) |
-| Descarga | `[COMPLETAR: enlace al release v2.0.0+7]` · versiones anteriores: <https://github.com/CrisSalas07/DeclaraUCR/releases> |
-| Cómo se ve en la app | Al pie del inicio de sesión y en el perfil: "Versión 2.0.0+7 · {commit}" |
+| Commit | `0caae96` (etiqueta `v2.0.0+7`) |
+| Archivo | `DeclaraUCR-v2.0.0+7-0caae96.apk` |
+| SHA-256 | `15a92747d020e5203e1186f0e94709f6071e98c2706b419264fbda704727b019` |
+| Descarga | <https://github.com/CrisSalas07/DeclaraUCR/releases/tag/v2.0.0%2B7> · versiones anteriores: <https://github.com/CrisSalas07/DeclaraUCR/releases> |
+| Cómo se ve en la app | Al pie del inicio de sesión y en el perfil: "Versión 2.0.0+7 · 0caae96" |
 
-Versiones ya publicadas: v2.0.0+2, +3 (prelanzamientos), v2.0.0+4, +5 y +6 (19/11/2026).
+Versiones ya publicadas: v2.0.0+2, +3 (prelanzamientos), v2.0.0+4, +5 y +6 (19/11/2026), v2.0.0+7 (20/11/2026).
 
 ## 2. Entorno de prueba accesible
 
@@ -32,6 +32,7 @@ Los correos y las contraseñas **no van en este documento ni en el repositorio**
 | Declarante con revisor y cursos | Recorrer los tres procesos y la firma | Sede del Sur, Informática Empresarial, II Ciclo 2026, cursos asignados por la Coordinación (ficticios) |
 | Declarante sin cursos | Ver el mensaje que explica por qué no puede crear la declaración (CP-05) | Misma sede y carrera, sin asignación |
 | Revisor | Ver que la app es solo para declarantes; revisar en la web lo firmado desde el teléfono | Revisor de las dos declarantes |
+| Declarantes P1, P2, P3 | Sesiones con usuarios (§8): una por participante, para que cada persona empiece sin declaración | Los mismos cursos y clases fijas que la declarante con cursos |
 
 `[COMPLETAR: confirmar que las tres cuentas existen en el backend real y que la declarante con cursos tiene
 una declaración abierta o puede crear una en el período habilitado. Si la de CP-03 ya está firmada, pedir al
