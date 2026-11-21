@@ -5,6 +5,9 @@ versión** y **el mismo guion de tres tareas**, observando y anotando cada ayuda
 del perfil previsto (docente o alguien que conozca la declaración jurada de jornada). Datos ficticios,
 participación voluntaria y permiso antes de grabar.
 
+**Las sesiones se graban en audio**, con un teléfono del equipo (no el que usa la persona). El audio prueba que la persona
+usó la app y guarda lo que dijo; no reemplaza las notas ni las capturas, porque no muestra la pantalla.
+
 Este kit tiene lo necesario para hacerlas y para que queden como evidencia:
 
 | Archivo | Para qué |
@@ -27,7 +30,9 @@ Este kit tiene lo necesario para hacerlas y para que queden como evidencia:
 - [ ] Hacer las tres tareas uno mismo con una de las cuentas y **borrar desde la web** lo creado (o usar una
       cuarta cuenta) para confirmar que el guion funciona con esos datos.
 - [ ] Imprimir o copiar tres veces `hoja-sesion.md`.
-- [ ] Reloj o cronómetro del teléfono para los tiempos.
+- [ ] Un segundo teléfono para grabar el audio, con espacio y batería. Probar antes que se oye bien a medio
+      metro.
+- [ ] Los tiempos se toman del audio: anotar el minuto en que empieza y termina cada tarea.
 
 ## 2. Antes de cada sesión
 
@@ -39,13 +44,18 @@ Este kit tiene lo necesario para hacerlas y para que queden como evidencia:
 
 ## 3. Durante la sesión
 
-1. Leer el párrafo de bienvenida de la hoja tal cual y pedir el consentimiento (y el de grabación, si se
-   graba). Si no acepta grabar, no se graba: alcanza con las notas.
-2. Dar una tarea a la vez, leyendo la frase de la hoja. No explicar la pantalla.
-3. Anotar hora de inicio y de fin, lo que la persona intenta, dónde duda y cada ayuda (qué se le dijo y por qué).
+1. Leer el párrafo de bienvenida de la hoja. **Empezar a grabar y preguntar en el audio**: "¿Está de acuerdo en
+   participar y en que grabemos el audio?". Así la autorización queda en la misma grabación. Si no acepta, se
+   detiene, se borra y alcanza con las notas.
+2. En el audio decir solo "Participante P1" (o P2, P3) y la fecha. **Nunca el nombre**; si la persona lo dice,
+   se anota el minuto para recortarlo.
+3. Dar una tarea a la vez, leyendo la frase de la hoja en voz alta (queda en el audio). No explicar la
+   pantalla.
+4. Anotar el minuto del audio en que empieza y termina cada tarea, lo que la persona intenta, dónde duda y cada ayuda (qué se le dijo y por qué).
    Solo se ayuda si la persona lo pide o lleva más de un minuto trabada.
-4. Al final de cada tarea, **captura de pantalla** de cómo quedó (ver nombres abajo).
-5. Al terminar las tres: la pregunta de facilidad (1 a 5) y "¿qué le cambiaría?", con sus palabras.
+5. Al final de cada tarea, **captura de pantalla** de cómo quedó (ver nombres abajo).
+6. Al terminar las tres: la pregunta de facilidad (1 a 5) y "¿qué le cambiaría?" (quedan en el audio).
+   Detener la grabación.
 
 ## 4. Nombres de las evidencias
 
@@ -58,14 +68,15 @@ En `entregables/05-informe-pruebas/evidencias/sesiones-usuarios/`:
 | `P1-T2-resumen.png` | Captura al terminar T2: el resumen con las horas de atención ubicadas. |
 | `P1-T3-estado.png` | Captura al terminar T3: el resumen con el estado y lo que falta. |
 | `P1-sesion.jpg` | (Opcional) Foto de la sesión **sin la cara** de la persona, o solo de las manos y el teléfono. |
-| `P1-grabacion.mp4` | (Opcional, solo con permiso) Grabación de pantalla. Si pesa mucho, va al Drive y aquí solo el enlace. |
+| `P1-audio.m4a` | Audio de la sesión completa, con la autorización al inicio. Va al Drive del equipo, **no al repositorio** (es público); en el informe se pone el enlace. |
 
 Igual para P2 y P3. La nueva comprobación (§6.7 del informe) usa el prefijo `R-` y el participante: por
 ejemplo, `R-P1-T2-resumen.png`.
 
 ## 5. Después de las tres sesiones
 
-1. Pasar a `informe-pruebas.md` §6.3 a §6.5 lo de las tres hojas.
+1. Pasar a `informe-pruebas.md` §6.3 a §6.5 lo de las tres hojas, con el audio para los tiempos y las frases
+   textuales.
 2. Juntar los problemas en §6.6 (U-01, U-02…): qué se vio, quién y en qué tarea, impacto y prioridad.
 3. Corregir los de mayor impacto, subir versión (2.0.0+8), compilar y publicar.
 4. **Volver a probar** esos problemas con al menos una de las personas (§6.7) y guardar la evidencia con `R-`.

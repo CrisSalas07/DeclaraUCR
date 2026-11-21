@@ -51,7 +51,7 @@ Para ver el detalle: `git log --format='%h %ad %an %s' --date=short`.
 | `[ ]` | `[ ]` | Sesión con usuario P2 | | Informe de pruebas §6 |
 | `[ ]` | `[ ]` | Sesión con usuario P3 | | Informe de pruebas §6 |
 | `[ ]` | `[ ]` | Formulario de retroalimentación | Creación y envío | Enlace al formulario |
-| `[ ]` | `[ ]` | Socialización | Presentación del bloque ___ | Diapositivas |
+| `[ ]` | `[ ]` | Video de socialización | Grabó, narró o editó el bloque ___ | Enlace al video |
 | `[ ]` | `[ ]` | Mejoras posteriores a la socialización | | `[commit]` |
 | `[ ]` | `[ ]` | Revisión cruzada de documentos | Revisó ___ | Comentarios en el documento |
 

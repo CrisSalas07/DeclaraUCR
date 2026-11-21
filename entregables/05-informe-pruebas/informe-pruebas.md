@@ -136,6 +136,8 @@ llena en cada sesión están en [`sesiones-usuarios/`](sesiones-usuarios/README.
 - **Versión:** 2.0.0+7, la misma para todas las sesiones.
 - **Datos:** ficticios: una cuenta de declarante por participante en el backend real, todas con los mismos
   cursos ficticios (`docs/INSTALACION.md` §6), para que cada persona empiece sin declaración. Nunca la cuenta personal de la persona participante.
+- **Grabación:** cada sesión se graba en audio, con la autorización preguntada al inicio de la misma
+  grabación (`PN-audio.m4a`, en el Drive del equipo, no en el repositorio). Sin nombres en el audio.
 - **Consentimiento:** participación voluntaria; si se graba la pantalla o la voz, se pide permiso antes y se
   anota en la tabla.
 - **Quién observa:** una persona del equipo guía y anota; no ayuda salvo que la persona se trabe más de un
@@ -160,11 +162,11 @@ Antes de empezar se lee esto, tal cual:
 Sin nombres ni cédulas: solo la relación con el proceso. Al menos una persona debe ser del perfil previsto
 (docente, o alguien que haya llenado una declaración jurada de jornada).
 
-| Id | Relación con el contexto de uso | ¿Perfil previsto? | Teléfono que usó | Fecha | Hoja |
-|---|---|---|---|---|---|
-| P1 | `[COMPLETAR: p. ej. "docente interina de la Sede del Sur, llena la declaración cada ciclo"]` | Sí | `[COMPLETAR]` | `[COMPLETAR]` | `P1-hoja.pdf` |
-| P2 | `[COMPLETAR: p. ej. "estudiante de Informática Empresarial, no conoce el trámite"]` | No | `[COMPLETAR]` | `[COMPLETAR]` | `P2-hoja.pdf` |
-| P3 | `[COMPLETAR]` | `[COMPLETAR]` | `[COMPLETAR]` | `[COMPLETAR]` | `P3-hoja.pdf` |
+| Id | Relación con el contexto de uso | ¿Perfil previsto? | Teléfono que usó | Fecha | Hoja | Audio |
+|---|---|---|---|---|---|---|
+| P1 | `[COMPLETAR: p. ej. "docente interina de la Sede del Sur, llena la declaración cada ciclo"]` | Sí | `[COMPLETAR]` | `[COMPLETAR]` | `P1-hoja.pdf` | `[enlace a P1-audio.m4a]` |
+| P2 | `[COMPLETAR: p. ej. "estudiante de Informática Empresarial, no conoce el trámite"]` | No | `[COMPLETAR]` | `[COMPLETAR]` | `P2-hoja.pdf` | `[enlace a P2-audio.m4a]` |
+| P3 | `[COMPLETAR]` | `[COMPLETAR]` | `[COMPLETAR]` | `[COMPLETAR]` | `P3-hoja.pdf` | `[enlace a P3-audio.m4a]` |
 
 ### 6.4 Resultados por tarea
 
