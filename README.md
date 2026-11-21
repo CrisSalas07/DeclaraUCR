@@ -170,6 +170,8 @@ forever (§5 and §7 of the Proyecto 2):
   need the server anyway.
 - **Time limit:** a save waits at most 15 s for the server, then tells the
   person to check the connection and save again.
+- **Leaving unsaved:** Back on the form with unsaved changes asks
+  "¿Salir sin guardar?" before discarding them (`DeclarationFormState.unsaved`).
 
 Tests: `test/connectivity_test.dart` and the offline case of
 `test/widget_test.dart`.
@@ -250,7 +252,7 @@ with their steps, expected results and evidence, are in `docs/PRUEBAS.md`.
 Also covered: a course and its hours placed on the grid up to the summary,
 hours that cannot exceed what a task has, missing and extra hours, a
 validity shorter than a month, the cédula at sign-up and for older accounts,
-zonaje eligibility and requests, the history by year, malformed stored
+zonaje eligibility and requests, the history by year, leaving with unsaved changes, the grid read by TalkBack (each half hour a button with day, time and content), malformed stored
 documents, and a save failure that must not leak the exception.
 All test data is fictitious.
 
@@ -276,6 +278,13 @@ test accounts are the team's), in `docs/capturas/`:
 | PDF of the signed declaration ("COPIA PARA REVISIÓN") | `docs/capturas/10-pdf.png` |
 
 Video (up to 2 minutes): <!-- link to the video -->
+
+## Proyecto 2 deliverables
+
+The eight deliverables of §11 (technical report, improvement matrix, test
+report, user guide, socialization material, participation log…) are in
+`entregables/`, with Word copies in `entregables/drive/` and the status of each
+one in `entregables/README.md`.
 
 ## Visual identity decisions
 

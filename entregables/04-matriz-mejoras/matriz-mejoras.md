@@ -76,9 +76,9 @@ trazabilidad quede completa.
 | T-02 | Prueba en teléfono (2.0.0+3) | La sección de cursos aparecía dos veces | Mostrarla una sola vez | Media | Commit `ef42e47` | Verificada |
 | T-03 | Prueba en teléfono (2.0.0+3) | La vista previa del PDF no permitía acercar | Zoom con pellizco y doble toque | Media | Commit `4d3184f` | Verificada |
 | T-04 | Prueba en teléfono (2.0.0+5) | Con la letra del sistema al 110 % se cortaban palabras en el seguimiento | Etiquetas que nunca parten una palabra | Media | Commit `f633fb8`; `docs/capturas/01-inicio.png` | Verificada |
-| T-05 | Recorrido 20/11/2026 (D-01) | Salir con Atrás perdía los cambios sin avisar | Diálogo "¿Salir sin guardar?" | Alta | Prueba "leaving with unsaved changes asks first (D-01)"; `05-informe-pruebas/evidencias/recorrido-2026-11-20/D-01-*.png`; commit `[COMPLETAR]` | Verificada |
-| T-06 | Recorrido 20/11/2026 (D-02) | La cuadrícula no se podía usar con TalkBack | Cada media hora es un botón con día, hora y contenido | Alta | Prueba "with TalkBack, each half hour says what it has and places (D-02)"; commit `[COMPLETAR]` | Verificada (falta repetirla en el teléfono) |
-| T-07 | Recorrido 20/11/2026 (D-03) | Chips de horas leídos como casillas | Leerlos como texto | Baja | `lib/screens/home_screen.dart` (`_HoursChip`); commit `[COMPLETAR]` | Verificada |
+| T-05 | Recorrido 20/11/2026 (D-01) | Salir con Atrás perdía los cambios sin avisar | Diálogo "¿Salir sin guardar?" | Alta | Prueba "leaving with unsaved changes asks first (D-01)"; `05-informe-pruebas/evidencias/recorrido-2026-11-20/D-01-*.png`; commit `afeb1ee` (PR #8) | Verificada |
+| T-06 | Recorrido 20/11/2026 (D-02) | La cuadrícula no se podía usar con TalkBack | Cada media hora es un botón con día, hora y contenido | Alta | Prueba "with TalkBack, each half hour says what it has and places (D-02)"; commit `afeb1ee` (PR #8) | Verificada (falta repetirla en el teléfono) |
+| T-07 | Recorrido 20/11/2026 (D-03) | Chips de horas leídos como casillas | Leerlos como texto | Baja | `lib/screens/home_screen.dart` (`_HoursChip`); commit `afeb1ee` (PR #8) | Verificada |
 
 ## 5. Resumen
 
