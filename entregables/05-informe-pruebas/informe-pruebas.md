@@ -19,7 +19,7 @@ corrigió.
 |---|---|---|
 | 2.0.0+5 | `fc21a84` | Casos técnicos CP-01 a CP-07 (19/11/2026) |
 | 2.0.0+6 | `fc4caba` | CP-06 (persistencia tras reinstalar y actualizar) |
-| 2.0.0+7 | `[COMPLETAR: commit al hacer commit de las correcciones D-01 a D-03]` | Recorrido exploratorio y correcciones del 20/11/2026; versión para las sesiones con usuarios |
+| 2.0.0+7 | `afeb1ee` (fusionado en `af4b3f2`, PR #8) | Recorrido exploratorio y correcciones del 20/11/2026; versión para las sesiones con usuarios |
 
 Las sesiones con usuarios deben hacerse **todas con la misma versión** (§8). La recomendada es la 2.0.0+7,
 porque ya trae la corrección de D-01, que afecta justo la tarea 1 del guion.

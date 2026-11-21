@@ -39,8 +39,8 @@ Para ver el detalle: `git log --format='%h %ad %an %s' --date=short`.
 | 19/11/2026 | `[Keity]` | Accesibilidad con letra grande | Etiquetas que no parten palabras | `f633fb8` |
 | 19/11/2026 | `[Keity]` | Pruebas técnicas | Casos CP-01 a CP-08; ejecución de CP-01 a CP-07 con capturas | `aa461cf`, `a3b8640`, `9e07aab`, `e3e8790` |
 | 19/11/2026 | `[dayana…]` | Revisión e integración | Revisión y merge de los PR #1 a #7 | PR #1–#7 en GitHub |
-| 20/11/2026 | `[COMPLETAR]` | Recorrido exploratorio y correcciones | D-01 (aviso al salir sin guardar), D-02 (cuadrícula con TalkBack), D-03; 2 pruebas nuevas; versión 2.0.0+7 | `[commit]`; `entregables/05-informe-pruebas/` |
-| 20/11/2026 | `[COMPLETAR]` | Documentación de entregables | Informe técnico, matriz, informe de pruebas, guía, material de socialización | `[commit]`; `entregables/` |
+| 20/11/2026 | `[COMPLETAR]` | Recorrido exploratorio y correcciones | D-01 (aviso al salir sin guardar), D-02 (cuadrícula con TalkBack), D-03; 2 pruebas nuevas; versión 2.0.0+7 | `afeb1ee` (PR #8); `entregables/05-informe-pruebas/` |
+| 20/11/2026 | `[COMPLETAR]` | Documentación de entregables | Informe técnico, matriz, informe de pruebas, guía, material de socialización | `94cb429` (PR #8); `entregables/` |
 
 ### Actividades sin commit
 
