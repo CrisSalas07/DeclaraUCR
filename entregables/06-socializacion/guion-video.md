@@ -1,6 +1,6 @@
 # Socialización — guion del video
 
-**Un video de unos 15 minutos para el docente, en lugar de la exposición en vivo (§9).** Las preguntas y la
+**Un video de unos 15 minutos para el docente, en lugar de la exposición en vivo (§9), con la autorización del docente.** Las preguntas y la
 retroalimentación llegan por el formulario, que se envía junto con el enlace al video.
 Participan todas las personas del equipo: `[COMPLETAR: quién narra o aparece en cada bloque]`.
 
