@@ -62,7 +62,12 @@ El orden es: **presentar → grabar con consentimiento → tres tareas anotadas 
    detiene, se borra y alcanza con las notas.
 2. En el audio decir solo "Participante P1" (o P2, P3) y la fecha. **Nunca el nombre**; si la persona lo dice,
    se anota el minuto para recortarlo.
-3. **T0, crear la cuenta.** Cuando la persona ve Inicio, se le pide esperar unos minutos: alguien del equipo
+3. **T0, crear la cuenta.** Antes de leer la tarea, preguntar: "¿Alguna vez entró a DeclaraHorario con su
+   correo de la UCR?". Si dice que sí, la app va a responder «Ya existe una cuenta con ese correo.»: que se
+   registre con un correo personal (Gmail, Outlook, Hotmail, Live o Zoho, que el backend también acepta).
+   Si no lo sabe y aparece el aviso, se le explica lo mismo y se anota como ayuda.
+   **Sin revisor la app no deja crear la declaración** («Aún no tiene revisor asignado…»), así que la
+   pausa siguiente es obligatoria antes de T1. Cuando la persona ve Inicio, se le pide esperar unos minutos: alguien del equipo
    le asigna en la web el **revisor** (Administración › Usuarios) y los **cursos** (Coordinación) en el
    período. Se anota cuánto tardó la pausa; no cuenta en los tiempos. La app lo toma sola, sin cerrar
    sesión.

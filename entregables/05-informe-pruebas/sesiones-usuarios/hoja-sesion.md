@@ -43,6 +43,9 @@ trabada, y anotar cada ayuda.
 > contraseña suya, use el nombre, la cédula y el teléfono de esta tarjeta, y complete su perfil con la sede y la carrera
 > que le indicamos."
 
+Antes de leerla: ¿ya entró a DeclaraHorario con su correo de la UCR? ☐ No · ☐ Sí → se registra con un
+correo personal (Gmail, Outlook…)
+
 **Completada cuando:** la persona entra a la app y ve Inicio.
 
 | Inicio (min del audio) | Fin (min del audio) | Minutos | Resultado |
