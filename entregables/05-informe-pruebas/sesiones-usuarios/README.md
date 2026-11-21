@@ -23,16 +23,16 @@ Este kit tiene lo necesario para hacerlas y para que queden como evidencia:
       de terminar, se anota y se explica.
 - [ ] **Cada participante crea su propia cuenta** en la sesión (tarea T0): con su correo `@ucr.ac.cr` y una
       contraseña que solo esa persona conoce. El equipo no anota ni guarda contraseñas.
-- [ ] **Tres tarjetas con datos ficticios** (§8 pide datos ficticios): una cédula y un teléfono inventados
-      por participante, más la sede y la carrera que tienen cursos de prueba. Probar antes que esas cédulas
-      no estén ya registradas.
+- [ ] **Tres tarjetas con datos ficticios** en [`tarjetas.md`](tarjetas.md) (nombre, cédula y teléfono
+      inventados). Escribirles la carrera de los cursos de prueba y probar antes que esas cédulas no estén ya
+      registradas.
 - [ ] Que alguien del equipo pueda entrar a la web del P1 con **Administración** (asignar revisor) y con la
       **Coordinación** de esa carrera (asignar cursos) desde una computadora o teléfono durante la sesión.
 - [ ] El **período** de prueba habilitado y el **horario de cursos** listo para copiar igual a las tres
       cuentas, para que todas empiecen con lo mismo.
-- [ ] Anotar aquí **qué curso y cuántas horas de atención** tienen esas cuentas, porque la tarea T2 los nombra:
-      curso `[COMPLETAR, p. ej. IF0009]`, atención `[COMPLETAR, p. ej. 2 h]`, día sugerido `[COMPLETAR, p. ej.
-      lunes después de clase]`.
+- [ ] Asignar a las tres cuentas **los mismos cursos de CP-01 a CP-04**, porque la tarea T2 los nombra:
+      **IF0009** con clase el **lunes de 8:00 a 10:00** (atención **2 h**), más el segundo curso de prueba. Si
+      se asigna otro curso u otro horario, cambiar la frase de T2 en `hoja-sesion.md` antes de imprimir.
 - [ ] Hacer las tres tareas uno mismo con una de las cuentas y **borrar desde la web** lo creado (o usar una
       cuarta cuenta) para confirmar que el guion funciona con esos datos.
 - [ ] Imprimir o copiar tres veces `hoja-sesion.md`.
@@ -62,7 +62,12 @@ El orden es: **presentar → grabar con consentimiento → tres tareas anotadas 
    detiene, se borra y alcanza con las notas.
 2. En el audio decir solo "Participante P1" (o P2, P3) y la fecha. **Nunca el nombre**; si la persona lo dice,
    se anota el minuto para recortarlo.
-3. **T0, crear la cuenta.** Cuando la persona ve Inicio, se le pide esperar unos minutos: alguien del equipo
+3. **T0, crear la cuenta.** Antes de leer la tarea, preguntar: "¿Alguna vez entró a DeclaraHorario con su
+   correo de la UCR?". Si dice que sí, la app va a responder «Ya existe una cuenta con ese correo.»: que se
+   registre con un correo personal (Gmail, Outlook, Hotmail, Live o Zoho, que el backend también acepta).
+   Si no lo sabe y aparece el aviso, se le explica lo mismo y se anota como ayuda.
+   **Sin revisor la app no deja crear la declaración** («Aún no tiene revisor asignado…»), así que la
+   pausa siguiente es obligatoria antes de T1. Cuando la persona ve Inicio, se le pide esperar unos minutos: alguien del equipo
    le asigna en la web el **revisor** (Administración › Usuarios) y los **cursos** (Coordinación) en el
    período. Se anota cuánto tardó la pausa; no cuenta en los tiempos. La app lo toma sola, sin cerrar
    sesión.

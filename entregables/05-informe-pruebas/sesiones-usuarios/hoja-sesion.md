@@ -16,8 +16,8 @@ Después, leer tal cual:
 
 > "Gracias por ayudarnos. Vamos a probar la app, no a usted: si algo no sale, es un problema de la app. Le voy a
 > pedir tres cosas. Piense en voz alta: diga lo que busca y lo que espera que pase. Yo solo voy a mirar y tomar
-> notas. Va a crear una cuenta con su correo de la UCR y una contraseña que solo usted sabe; la cédula y el
-> teléfono se los damos en esta tarjeta, inventados. No vamos a anotar su nombre. Al terminar el estudio
+> notas. Va a crear una cuenta con su correo de la UCR y una contraseña que solo usted sabe; el nombre, la cédula y
+> el teléfono se los damos en esta tarjeta, inventados. No vamos a anotar su nombre. Al terminar el estudio
 > desactivamos la cuenta. Puede parar cuando quiera."
 
 - ☐ Acepta participar de forma voluntaria.
@@ -40,8 +40,11 @@ trabada, y anotar cada ayuda.
 ### T0 — Crear la cuenta y entrar
 
 > "Usted es docente y es la primera vez que usa DeclaraUCR. Cree su cuenta con su correo de la UCR y una
-> contraseña suya, use la cédula y el teléfono de esta tarjeta, y complete su perfil con la sede y la carrera
+> contraseña suya, use el nombre, la cédula y el teléfono de esta tarjeta, y complete su perfil con la sede y la carrera
 > que le indicamos."
+
+Antes de leerla: ¿ya entró a DeclaraHorario con su correo de la UCR? ☐ No · ☐ Sí → se registra con un
+correo personal (Gmail, Outlook…)
 
 **Completada cuando:** la persona entra a la app y ve Inicio.
 
@@ -84,12 +87,13 @@ trabada, y anotar cada ayuda.
 
 ### T2 — Ubicar las horas en el horario
 
-> "Ya tiene las clases que le asignó la Coordinación. Ubique las ___ horas de atención a estudiantes de
-> ______ el ______ después de clase."
+> "Ya tiene las clases que le asignó la Coordinación. Ubique las 2 horas de atención a estudiantes de
+> IF0009 el lunes, después de su clase."
 
-(Completar con el curso, las horas y el día anotados en el kit, §1.)
+(Si en la web se asignó otro curso u horario, cambiar esta frase antes de imprimir; ver el kit, §1.)
 
-**Completada cuando:** el resumen muestra **Atención ___ h de ___ h** para ese curso.
+**Completada cuando:** el resumen muestra las 2 h de atención de IF0009 ubicadas (las de IF0009 ya no
+aparecen entre las horas faltantes).
 
 | Inicio (min del audio) | Fin (min del audio) | Minutos | Resultado |
 |---|---|---|---|

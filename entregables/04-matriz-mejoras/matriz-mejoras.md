@@ -16,9 +16,9 @@ propuesta de atención**.
 | | |
 |---|---|
 | Repositorio | DeclaraHorario (sistema web del Proyecto 1) |
-| Versión base propuesta | `main` en `2661da2` (merge del PR #94, 10/11/2026) `[COMPLETAR: confirmar que es lo que se entregó en el P1]` |
-| Etiqueta | `[COMPLETAR: crear y subir la etiqueta]` → `git tag p1-entrega 2661da2 && git push origin p1-entrega` |
-| Retroalimentación recibida | La revisión del docente **no pidió cambios** al Proyecto 1. Se adjunta igual: `[COMPLETAR: captura o PDF de la nota y los comentarios de la evaluación del P1, en esta carpeta como retroalimentacion-p1.pdf]` |
+| Versión base | `main` en `2661da2` (merge del PR #94, 10/11/2026), lo entregado en el Proyecto 1 |
+| Etiqueta | [`p1-entrega`](https://github.com/dayanachavarriasteller-maker/DeclaraHorario/releases/tag/p1-entrega) en DeclaraHorario, sobre `2661da2` |
+| Retroalimentación recibida | Nota **95** (peso 15 %), captura en [`retroalimentacion-p1.png`](retroalimentacion-p1.png). Comentario del docente, de palabra: el sistema estaba muy bien y solo quedaban detalles pequeños; **no pidió cambios concretos** |
 
 La app móvil usa el backend de esa versión: las reglas copiadas en `backend/proyecto1/` vienen del commit
 `5f68958` de DeclaraHorario (ver `backend/proyecto1/ORIGEN.txt`).
@@ -35,7 +35,6 @@ encontró. Solo se anotan puntos reales y comprobables; no se inventan observaci
 |---|---|---|---|---|---|---|
 | P1-01 | Revisión del equipo | El sistema solo se usaba desde la computadora; la persona declarante no podía llenar ni firmar desde el teléfono | Módulo móvil con los tres procesos y la firma de la declarante, sobre el mismo backend | Alta | Este proyecto: release v2.0.0+7; CP-01 a CP-07 (`docs/PRUEBAS.md`) | Verificada |
 | P1-02 | Revisión del equipo | El estado `VALIDADA` lo decide el cliente; las reglas validan formato y permisos, no recalculan horas | Pendiente con justificación: requiere una Cloud Function (plan Blaze de Firebase). Propuesta: función que recalcule horas y traslapes y rechace un `VALIDADA` inválido | Media | README, sección *Security*; `docs/INSTALACION.md` §7 | Pendiente con justificación |
-| P1-03 | Revisión del equipo | `[COMPLETAR o borrar la fila: otro punto que el equipo haya notado en la web del P1]` | | | | |
 
 ## 3. Observaciones de la socialización
 
