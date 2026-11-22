@@ -1,6 +1,6 @@
 # Tarjetas de datos ficticios
 
-Al empezar T0 se pega en el chat de la llamada solo el bloque de ese participante. Los datos son inventados (§8 del descriptor pide datos
+Al empezar T0 se le muestra o envía a cada participante solo su tarjeta (no se imprimen). Los datos son inventados (§8 del descriptor pide datos
 ficticios): el nombre no es de nadie, la cédula empieza con 9 y el teléfono con 8000, para que nunca coincidan
 con los de una persona real. Así la declaración y su PDF no llevan datos de la persona. Solo el correo y la
 contraseña son suyos.
