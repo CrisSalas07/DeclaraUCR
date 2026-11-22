@@ -1,37 +1,64 @@
-# DeclaraUCR — Sworn Declarations mobile module
+# DeclaraUCR — Sworn Declarations mobile app
 
-Flutter module of the *Sistema de Declaraciones Juradas de Horario y Jornada de
-Trabajo* (IF0009 Desarrollo de Software IV, UCR Sede del Sur). It captures and
-validates work information, records the weekly schedule, keeps drafts and shows
-a summary of the declaration.
+Android app (Flutter) for the declarant side of the *Sistema de Declaraciones
+Juradas de Horario y Jornada de Trabajo* (IF0009 Desarrollo de Software IV,
+UCR Sede del Sur). It is the **Proyecto 2**: it takes the web system of the
+Proyecto 1 ([DeclaraHorario](https://github.com/dayanachavarriasteller-maker/DeclaraHorario),
+<https://declarahorario-b186f.web.app>) to the phone and works against **the
+same Firebase backend, schema and rules**.
 
-Code and technical docs are in English; everything the user sees is in Spanish.
+On the phone a declarant signs up, creates a declaration for the open period,
+places the coordination's courses and their attention and planning hours on a
+half-hour grid, validates it, signs it and sends it to the reviewer; they can
+also see the PDF, the history and the zonaje requests. Reviewer, HR,
+coordination and administration stay in the web.
 
-## Requirements covered
+Code and technical docs are in English; everything the user sees, and the
+Proyecto 2 deliverables, are in Spanish.
 
-| Req. | Where |
-|------|-------|
-| R1 Home screen (list + statuses, new / open draft) | `lib/screens/shell_screen.dart` (sections Inicio, Declaraciones, Zonaje, Historial), `home_screen.dart`, `declarations_screen.dart` |
-| R2 Declaration form with required-field validation | `lib/screens/declaration_form_screen.dart`: name and cédula from the profile, fixed institution, position from a list, period and validity from the Proyecto 1 period, courses from the career coordination's assignment |
-| R3 Weekly schedule (Mon–Sat), interval duration and total hours | `lib/widgets/schedule_editor.dart` (half-hour grid, one day at a time), `lib/domain/schedule_grid.dart`, `schedule_requirements.dart` |
-| R4 End after start, no overlaps on the same day (any institution) | `lib/domain/declaration_validator.dart`, `overlap_detector.dart` |
-| R5 Draft persistence and recovery through the existing repository | `lib/data/proyecto1/` (Proyecto 1 backend) |
-| R6 Summary with data, schedule, total, validation result and status | `lib/screens/summary_screen.dart` |
+## Current status (22/11/2026)
 
-Beyond the lab, from the main project: career courses with their lesson,
-attention and planning hours (`course_rules.dart`, `workload_catalog.dart`),
-projects, jobs at other institutions, observations written from the
-schedule (`schedule_observations.dart`), the status of the zonaje
-requests (read only, `zonaje_screen.dart`), the history by year
-(`declarant_history.dart`), the tracking of a declaration through its steps
-(`declaration_progress.dart`), its PDF on the official HR form
-(`lib/pdf/declaration_pdf.dart`) and the declarant's signature, which sends
-it to the reviewer (`sign_declaration_screen.dart`,
-`lib/data/proyecto1/declaration_signer.dart`).
+- **Version 2.0.0+7**, released on GitHub (`v2.0.0+7`), signed with the team
+  key, against the real Proyecto 1 backend.
+- 109 automated tests pass; technical cases CP-01 to CP-07 passed, CP-08
+  (clean install on another phone) pending.
+- Next: the three user sessions, the socialization video, at least two
+  improvements from the feedback (2.0.0+8) and the final tag. The detailed
+  to-do list is in `entregables/README.md` §4.
 
-Not in the phone: the reviewer's and HR's approval and correcting a returned
-declaration, which stay in the DeclaraHorario web system. The signature is the
-system's internal electronic signature, not a certified digital one.
+## Where to find what
+
+Each README covers only its folder; this one is the entry point.
+
+| Document | What it is for |
+|---|---|
+| `entregables/README.md` | The eight Proyecto 2 deliverables: map of the folder, what to use for the user sessions and the video, what is left and the risks |
+| `entregables/05-informe-pruebas/sesiones-usuarios/README.md` | Kit to run the user sessions, step by step |
+| `entregables/05-informe-pruebas/evidencias/sesiones-usuarios/LEAME.md` | What goes in the session evidence folder |
+| `entregables/03-informe-tecnico/informe-tecnico.md` | Scope, architecture, mobile decisions, integration, deployment and known limitations (for the professor) |
+| `docs/INSTALACION.md` | Install, update and roll back the APK; build and release a version; prepare the real backend |
+| `docs/PRUEBAS.md` | Technical test cases CP-01 to CP-08 with evidence (`docs/pruebas/`) |
+| `docs/COMPARACION_BACKEND_P1.md` | Field-by-field comparison of the mobile and the Proyecto 1 data |
+| `backend/proyecto1/README.md` | Firebase emulators with the Proyecto 1 rules and fictitious data |
+| `docs/capturas/README.txt` | The app screenshots and what each one shows |
+| `assets/fonts/README.txt`, `assets/images/README.txt` | Origin and license of the Trueno typeface and the UCR signature |
+
+## Code map
+
+| Feature | Where |
+|---|---|
+| Sections Inicio · Declaraciones · Zonaje · Historial | `lib/screens/shell_screen.dart`, `home_screen.dart`, `declarations_screen.dart`, `zonaje_screen.dart`, `history_screen.dart` |
+| Sign-in, sign-up (cédula, phone), campus and career, account notice | `lib/screens/auth/` |
+| Declaration form: position, courses, projects, other jobs | `lib/screens/declaration_form_screen.dart`, `lib/widgets/workload_dialogs.dart` |
+| Weekly half-hour grid (one day at a time, TalkBack) | `lib/widgets/schedule_editor.dart`, `lib/domain/schedule_grid.dart`, `schedule_requirements.dart` |
+| Validation: hours per task, overlaps, required fields | `lib/domain/declaration_validator.dart`, `overlap_detector.dart`, `field_rules.dart` |
+| Course hours and workdays | `lib/domain/course_rules.dart`, `workload_catalog.dart` |
+| Summary, Validar and the 5-step tracking | `lib/screens/summary_screen.dart`, `lib/widgets/declaration_progress.dart` |
+| Signature and PDF | `lib/screens/sign_declaration_screen.dart`, `lib/data/proyecto1/declaration_signer.dart`, `lib/pdf/declaration_pdf.dart` |
+| Reads and writes in the Proyecto 1 schema | `lib/data/proyecto1/` |
+| Offline strip and save rules | `lib/data/network_status.dart`, `lib/widgets/offline_banner.dart`, `lib/state/declaration_form_state.dart` |
+| Backend selection (emulators or production) | `lib/config/firebase_config.dart` |
+| Theme and UCR colors | `lib/theme/ucr_theme.dart` |
 
 ## Architecture
 
@@ -39,164 +66,50 @@ Layered, dependencies point inward only:
 
 ```
 screens/ widgets/ theme/   presentation (Flutter widgets, Spanish texts)
-  shell_screen             sections: Inicio · Declaraciones · Zonaje · Historial
-  auth/                    login, sign-up (cédula, phone), complete profile
-                           (campus, career), account notice
         │
 state/                     DeclarationFormState (ChangeNotifier), Loadable<T>
         │
-domain/                    pure Dart rules: validator, overlap detector,
-                           schedule grid and requirements, course rules,
-                           workload catalog, period, observations, zonaje,
-                           history, field and auth rules
-data/                      interfaces + Firestore implementations:
-                           Auth, Profile (with cédula reservation),
-                           Declaration (+ mapper), Zonaje
+domain/                    pure Dart rules (validator, grid, course rules…)
+data/                      small interfaces + Firestore implementations
         │
-models/                    Declaration, ScheduleInterval, ScheduleTask,
-                           CourseLoad, ProjectHours, ExternalJob,
-                           ZonajeRequest, status, weekday (pure Dart)
+models/                    pure Dart entities
 ```
 
-Everything per person (repositories, profile, declarations and requests)
-is provided above the `MaterialApp` and keyed by user (`lib/main.dart`), so
-signing out drops every screen and stream of the previous session.
+Everything per person (repositories, profile, declarations, requests) is
+provided above the `MaterialApp` and keyed by user (`lib/main.dart`), so
+signing out drops every screen and stream of the previous session. Widgets
+get repositories from `Provider`, never from Firestore directly; tests swap
+in a fake Firestore, auth or network (`test/support/`).
 
-SOLID in practice:
+Why each layer and what was reused from the Proyecto 1: informe técnico §3.
+How the data maps to the Proyecto 1 schema: `docs/COMPARACION_BACKEND_P1.md`.
 
-- **S** — the mapper only converts documents, the validator only validates,
-  the repository only persists, the state only coordinates.
-- **O** — new rules are added as new `ValidationIssueCode`s / validator
-  methods without touching the screens.
-- **L / I** — `AuthRepository`, `ProfileRepository`, `DeclarationRepository`
-  and `ZonajeRepository` are small interfaces; tests swap in a fake
-  Firestore, a fake auth or a failing repository.
-- **D** — `DeclarationFormState` receives the repository and validator in its
-  constructor; widgets get the repository from `Provider`, never from
-  Firestore directly.
+### Rules to keep when changing code
 
-## Reused components (from the web system / DeclaraHorario)
+- Validate at every boundary: form limits → `FieldRules` and the validator
+  (authoritative in the app) → the Proyecto 1 `firestore.rules`.
+- Stored documents are untrusted: mappers type-check every field and throw
+  `FormatException`; a malformed document is skipped and logged.
+- Exceptions go to `debugPrint`; the user only sees a Spanish message.
+- Every save reads from the server first and waits at most 15 s, so without a
+  connection it fails at once instead of queueing writes.
+- This repository **never deploys Firestore rules**: the real ones are
+  published from DeclaraHorario; `backend/proyecto1/` is a copy for the
+  emulators only.
+- No secrets in code: `android/key.properties` and the release key stay
+  local.
 
-- `OverlapDetector`, `ScheduleSlot`, `TimeRules` — same overlap and time rules
-  as the original project.
-- `ValidationIssue`, `ValidationIssueCode`, `ValidationSeverity` — same
-  validation contract, so messages say the day, the intervals and the exact
-  conflict time.
-- `DeclarationStatus` — same status names (`BORRADOR`, `VALIDADA`,
-  `PENDIENTE_FIRMA_DECLARANTE`, …).
-- `Weekday` — same Monday–Saturday enumeration stored as 1..6.
-- Repository pattern — UI and state depend on an interface, not on Firebase.
-- `WorkloadCatalog` and `CourseRules` — workdays 1/8 to 1 TC; a course's
-  workday fixes its hours: lessons 2 of every 5 h, attention 30 min per
-  lesson hour, planning the rest (VD-12928-2024, VD-13015-2024). Here the
-  declarant adds the courses instead of the career coordinator.
-- `TeachingSchedule` / `ExternalSchedule` → `ScheduleRequirements`: every
-  course (HC, AE, PyE), project and other institution ends with exactly its
-  hours; the grid never takes more.
-- `ScheduleObservations` — the observations in the official format
-  (`IF0009 HC: L 8 am a 10 am. AE: …`), plus notes after
-  `Otras observaciones:`.
-- `PeriodRules.addOneMonth` — the validity lasts at least one calendar month.
-- `DeclarantHistory`.
-- `PositionField` lists and `IdentificationType.nationalId` format (9 digits).
+## Backends
 
-## Persistence
-
-Cloud Firestore through repositories: `users/{uid}`
-(`FirestoreProfileRepository`), `declarations`
-(`FirestoreDeclarationRepository`) and `zonajeRequests`
-(`FirestoreZonajeRepository`).
-
-**Migration to the Proyecto 1 schema** (`docs/COMPARACION_BACKEND_P1.md`):
-
-| Part | Status |
-|------|--------|
-| Profile and sign-up | Done: `users/{uid}` with `fullName`, `identification`, `identificationType`, `phone`, `email`, `roles`, `active`, `campusId`, `unitId`, `superiorUid`; reservation `identifications/CEDULA_{number}`; campus and career chosen once, with the entry in `teacherDirectory`. Only active declarants get into the app; without a reviewer, Inicio says so |
-| Declarations | Done, in use: `Proyecto1DeclarationRepository` reads each `Declaration` from the declaration, its current version, appointment and external jobs, the period and the coordination's assignment, and writes as DeclaraHorario does: `createDraft` (declaration, version 1, event, period reservation and content in one batch), content saves, `BORRADOR → VALIDADA` with `VALIDACION_EJECUTADA` and the hours summary, and `VALIDADA → BORRADOR` with `HORARIO_MODIFICADO` when edited. A new declaration picks an open period (one per period) and takes the assigned courses and lesson slots. From the signatures on (and DEVUELTA) it is read only in the phone |
-| Fixed lessons | Done: as in DeclaraHorario, the lessons are the coordination's slots (`Declaration.lessonSlots`). `DeclarationFormState` places them when the form opens (correcting moved ones, which sends a VALIDADA declaration back to BORRADOR) and `paint`, clearing a day and `copyDay` never move them; the grid does not offer lessons to place and shows them with a lock. The person places attention, planning, projects and other institutions |
-| Zonaje | Done, read only: `FirestoreZonajeRepository` lists the person's `zonajeRequests` (filtered by `declarantUid`, as the rules require) with their status, distances, workday and HR's observation or annulment reason. Requests are made in the web |
-
-Adaptation decision: no map in the phone, so zonaje is read only here. The
-Proyecto 1 request needs the home location (marked on a map), the TSE
-certificate and the road distance; the web keeps doing that, and the
-phone shows the status and HR's answer.
-
-Adaptation decision: the appointment type (Interino/Propiedad) was removed.
-The Proyecto 1 does not store it, and the lab's "tipo de jornada o
-nombramiento" is covered by the workday (e.g. `1/4 TC`) of the appointment.
-
-The rules are the Proyecto 1's: the copy in `backend/proyecto1/` is what the
-root `firebase.json` and the emulators load, `backend/proyecto1/verify.mjs`
-checks the profile writes against them and
-`integration_test/sign_rules_test.dart` the signature. This repository never
-deploys rules: the real ones are published from DeclaraHorario.
-
-Two backends, chosen at build time (`lib/config/firebase_config.dart`):
+Chosen at build time (`lib/config/firebase_config.dart`):
 
 - **Default — emulators:** project `demo-declaraucr`, which only talks to the
-  local Firebase Emulator Suite (no real keys or data). Used on Android.
-- **`--dart-define=FIREBASE_ENV=production`:**
-  - **Android:** the Proyecto 1 backend `declarahorario-b186f` (app
-    "DeclaraUCR (Android)"), shared with the DeclaraHorario web system. Its
-    own `firestore.rules` apply. The data layer writes its schema exactly
-    as the web does (see `docs/COMPARACION_BACKEND_P1.md`).
-  - **Web:** the earlier lab version hosted at https://declaraucr.web.app,
-    on the project `cristopher-desarrollo-iv`. That project does not have
-    the Proyecto 1 schema, so a web build of the current code does not
-    work against it; the phone app is the deliverable.
-
-- *Guardar borrador* saves with status `BORRADOR` even if fields are missing.
-- *Validar* (summary) saves as `VALIDADA` only when there are no missing fields
-  and no problems. Editing a `VALIDADA` declaration sends it back to
-  `BORRADOR`.
-- Opening an item from the list reloads it from Firestore (`getById`), so what
-  you see is what was stored.
-
-## Connectivity
-
-The phone may lose the signal; nothing is lost silently and nothing waits
-forever (§5 and §7 of the Proyecto 2):
-
-- **Offline strip:** `PluginNetworkStatus` (`connectivity_plus`) feeds
-  `OfflineFrame`, a strip on every screen: "Sin conexión: ve lo último
-  guardado en el teléfono…". Lists keep showing the copy Firestore keeps in
-  the phone.
-- **No save without a network:** `DeclarationFormState` (and "Complete su
-  perfil") does not try; it says so and the changes stay on the screen.
-- **Server first:** every save starts by reading from the server
-  (`Source.server`), never from the phone's copy, so without a connection it
-  fails at once instead of leaving writes queued that the rules might
-  reject later, unnoticed. Validating and reopening are transactions, which
-  need the server anyway.
-- **Time limit:** a save waits at most 15 s for the server, then tells the
-  person to check the connection and save again.
-- **Leaving unsaved:** Back on the form with unsaved changes asks
-  "¿Salir sin guardar?" before discarding them (`DeclarationFormState.unsaved`).
-
-Tests: `test/connectivity_test.dart` and the offline case of
-`test/widget_test.dart`.
-
-## Security
-
-- **Input validation at every boundary:** form limits (`maxLength`, input
-  filters) → domain validator (`FieldRules`, authoritative) → `firestore.rules`
-  (schema, types, sizes, allowed statuses, no deletes).
-- **Untrusted storage:** `DeclarationMapper.fromMap` type-checks every field and
-  throws `FormatException`; a malformed document is skipped and logged instead
-  of breaking the list.
-- **No information leaks:** exceptions go to `debugPrint`; the user only sees a
-  generic Spanish message.
-- **No secrets in code:** demo project options only.
-- **Ownership:** only `@ucr.ac.cr` accounts; each person reads and writes
-  only their own profile, declarations and requests. The cédula cannot change
-  once registered, and a declaration must carry the cédula of the profile.
-- **Known gaps:** `VALIDADA` is still computed by the client (as in the
-  Proyecto 1); a Cloud Function should recompute it.
-- **Unique cédula:** `identifications/{cédula}` = {uid} is written in the same
-  transaction as the profile (as DeclaraHorario); the rules accept the
-  profile only with its reservation and never update or delete one, so a
-  taken cédula cannot be registered again. A person can only read a free
-  cédula or their own, which says it is taken without saying whose it is.
+  local Firebase Emulator Suite (no real keys or data).
+- **`--dart-define=FIREBASE_ENV=production`:** on Android, the Proyecto 1
+  backend `declarahorario-b186f` (app "DeclaraUCR (Android)"). On web, the
+  earlier lab version at https://declaraucr.web.app (project
+  `cristopher-desarrollo-iv`, without the Proyecto 1 schema, so a web build
+  of the current code does not work there; the phone app is the deliverable).
 
 ## Running
 
@@ -208,27 +121,11 @@ flutter run --dart-define=EMULATOR_HOST=<PC_IP>  # physical phone, same Wi-Fi
 flutter run --dart-define=FIREBASE_ENV=production # Android against the Proyecto 1 backend
 ```
 
-Emulators with the **Proyecto 1 rules and test data** (the target schema of
-the data layer migration): see `backend/proyecto1/README.md`.
+With the Proyecto 1 rules and test data: `backend/proyecto1/README.md`.
 
-APK to hand out (signed with the team's release key, against the
-Proyecto 1 backend, named by version and commit): `dart run
-tool/build_apk.dart`. Installing, updating, going back to an earlier
-version, the release key and the test data of the real backend are in
-`docs/INSTALACION.md`.
-
-Web hosting of the earlier lab version (hosting only: this repository never
-deploys Firestore rules, and the root `firebase.json` points to the Proyecto 1
-copy only for the emulators):
-
-```bash
-flutter build web --release --dart-define=FIREBASE_ENV=production
-firebase deploy --only hosting:declaraucr -P prod
-```
-
-Institutional assets are bundled: the official UCR signature
-(`assets/images/firma_ucr.png`) and the Trueno typeface (`assets/fonts/`,
-SIL OFL 1.1); their origin is in `assets/*/README.txt`.
+APK to hand out (team release key, Proyecto 1 backend, named by version and
+commit): `dart run tool/build_apk.dart`. Releasing, installing and rolling
+back: `docs/INSTALACION.md`.
 
 ## Tests
 
@@ -237,54 +134,11 @@ flutter analyze
 flutter test
 ```
 
-The technical test cases of the Proyecto 2 (§7 of the assignment: the three
-processes, invalid data, roles, persistence, connectivity and installation),
-with their steps, expected results and evidence, are in `docs/PRUEBAS.md`.
-
-| Lab test | Automated test |
-|----------|----------------|
-| 01 Valid declaration | `data/proyecto1_write_test.dart` — saves a draft and recovers it unchanged |
-| 02 Overlapping schedules | `declaration_validator_test.dart` — mandatory case Mon 8:00–12:00 vs 11:00–14:00; `data/proyecto1_write_test.dart` — does not become VALIDADA until fixed |
-| 03 Incomplete data | `widget_test.dart` — saving without data flags the required fields |
-| 04 Persistence | `data/proyecto1_write_test.dart` — reopened draft equals the saved one |
-| 05 Mobile view | `widget_test.dart` — 360×690 dp screen, any overflow fails the test |
-
-Also covered: a course and its hours placed on the grid up to the summary,
-hours that cannot exceed what a task has, missing and extra hours, a
-validity shorter than a month, the cédula at sign-up and for older accounts,
-zonaje eligibility and requests, the history by year, leaving with unsaved changes, the grid read by TalkBack (each half hour a button with day, time and content), malformed stored
-documents, and a save failure that must not leak the exception.
+Unit and widget tests in `test/` (domain, data against a fake Firestore,
+connectivity, a 360×690 dp screen that fails on any overflow);
+`integration_test/sign_rules_test.dart` signs against the real Proyecto 1
+rules in the emulators. The manual technical cases are in `docs/PRUEBAS.md`.
 All test data is fictitious.
-
-## Evidence
-
-Screenshots of version 2.0.0+4 (Samsung Galaxy A34, Android 16, text size
-110 %), against the Firebase emulators with the Proyecto 1 rules and the
-fictitious data of `backend/proyecto1/seed.mjs` (never the real backend: its
-test accounts are the team's), in `docs/capturas/`:
-
-| Screen | File |
-|--------|------|
-| Sign-in | `docs/capturas/00-inicio-sesion.png` |
-| Inicio with the tracking of the latest declaration (R1) | `docs/capturas/01-inicio.png` |
-| Declaraciones with statuses (R1) | `docs/capturas/02-declaraciones.png` |
-| Courses assigned by the coordination and their hours (R2/R3) | `docs/capturas/03-cursos.png` |
-| Weekly schedule grid with the fixed lessons (R3) | `docs/capturas/04-horario.png` |
-| Missing hours flagged, Validar disabled (R4, test 02) | `docs/capturas/05-validacion.png` |
-| Summary of a validated declaration, with the PDF action (R6) | `docs/capturas/06-resumen.png` |
-| Zonaje, read only, with HR's answer | `docs/capturas/07-zonaje.png` |
-| Historial by year, with a zonaje request | `docs/capturas/08-historial.png` |
-| Signing: the sworn declaration accepted, ready to send to the reviewer | `docs/capturas/09-firma.png` |
-| PDF of the signed declaration ("COPIA PARA REVISIÓN") | `docs/capturas/10-pdf.png` |
-
-Video (up to 2 minutes): <!-- link to the video -->
-
-## Proyecto 2 deliverables
-
-The eight deliverables of §11 (technical report, improvement matrix, test
-report, user guide, socialization material, participation log…) are in
-`entregables/`, with Word copies in `entregables/drive/` and the status of each
-one in `entregables/README.md`.
 
 ## Visual identity decisions
 
@@ -310,46 +164,3 @@ horizon (p. 122, pp. 34 and 57). The promotional signature is only in the
 login; it cannot be redrawn (p. 35), so the app keeps the platform's plain
 loading screen.
 
-## Difficulties
-
-- Fitting the long status `PENDIENTE_FIRMA_DECLARANTE` in a list row: it was
-  moved below the title.
-- Entering times on a small screen: the half-hour grid of the web system,
-  shown one day at a time with full-width rows; tap marks a half hour,
-  long-press and slide marks a range, and a day can be copied to others.
-- Overlaps: one task per half hour on the grid, so they cannot be entered;
-  the validator still checks stored data.
-- Fewer typing errors: everything but names is picked from a list or placed
-  on the grid, and the observations are written from the schedule.
-
-## Technical reflection
-
-1. **What could be reused from the web system?** Most of the domain layer,
-   almost unchanged: overlap detector, time rules, validation contract,
-   statuses, weekdays, the half-hour grid, the workday catalog and course
-   rules (lesson, attention and planning hours), project and external-job
-   hours, the observations format, the one-month period rule, the zonaje
-   eligibility rules, the history by year, the position lists and the
-   cédula reservation. Also the repository pattern over Firestore. The
-   screens were rewritten for a phone.
-2. **Difficulties adapting it to a small screen?** The weekly grid (one day
-   at a time, long-press to mark ranges, copy a day to others), long status
-   names, and avoiding typing errors: on a phone everything but names is
-   picked from a list or placed on the grid, and the observations are
-   written from the schedule (see Difficulties).
-3. **How did the Visual Identity Manual help?** It fixed the palette,
-   typeface and signature rules up front, so every screen reads from one theme
-   and looks consistent with other UCR systems. Reading it closely also
-   changed the design: the hero gradients became flat Azul UCR (p. 122), the
-   signature got a minimum size (p. 37) and the app got its own icon in color
-   and one-tone versions (p. 122). The CI accessible palette added the dark
-   blue and gray used for text, checked against WCAG contrast.
-4. **What would full signature and approval integration need?**
-   Authentication and per-person data already exist. Missing: roles
-   (declarant, supervisor, HR) in the profile and in `firestore.rules`;
-   validation recomputed on the server (a Cloud Function) instead of
-   trusting the client's `VALIDADA`; versioning (a new version goes back to
-   `BORRADOR`); the remaining status transitions
-   (`PENDIENTE_FIRMA_DECLARANTE` → … → `FINALIZADA`); digital signature
-   integration; the PDF of the declaration; and notifications to the
-   supervisor and HR. The zonaje request would need the same HR review.
