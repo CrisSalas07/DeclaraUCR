@@ -128,7 +128,7 @@ Detalle en `docs/PRUEBAS.md`.
 
 ### 6.1 Preparación
 
-El paso a paso (cuentas, qué revisar antes de cada sesión, nombres de las evidencias) y la hoja que se
+El paso a paso (cuentas, qué revisar antes de cada sesión, nombres de las evidencias) y la bitácora que se
 llena en cada sesión están en [`sesiones-usuarios/`](sesiones-usuarios/README.md). Las evidencias van en
 `evidencias/sesiones-usuarios/`.
 
@@ -165,11 +165,11 @@ Antes de empezar se lee esto, tal cual:
 Sin nombres ni cédulas: solo la relación con el proceso. Al menos una persona debe ser del perfil previsto
 (docente, o alguien que haya llenado una declaración jurada de jornada).
 
-| Id | Relación con el contexto de uso | ¿Perfil previsto? | Teléfono que usó | Fecha | Hoja | Audio |
+| Id | Relación con el contexto de uso | ¿Perfil previsto? | Teléfono que usó | Fecha | Bitácora | Audio |
 |---|---|---|---|---|---|---|
-| P1 | `[COMPLETAR: p. ej. "docente interina de la Sede del Sur, llena la declaración cada ciclo"]` | Sí | `[COMPLETAR]` | `[COMPLETAR]` | `P1-hoja.pdf` | `[enlace a P1-audio.m4a]` |
-| P2 | `[COMPLETAR: p. ej. "estudiante de Informática Empresarial, no conoce el trámite"]` | No | `[COMPLETAR]` | `[COMPLETAR]` | `P2-hoja.pdf` | `[enlace a P2-audio.m4a]` |
-| P3 | `[COMPLETAR]` | `[COMPLETAR]` | `[COMPLETAR]` | `[COMPLETAR]` | `P3-hoja.pdf` | `[enlace a P3-audio.m4a]` |
+| P1 | `[COMPLETAR: p. ej. "docente interina de la Sede del Sur, llena la declaración cada ciclo"]` | Sí | `[COMPLETAR]` | `[COMPLETAR]` | `bitacora-sesiones.md` §3 | `[enlace a P1-audio.m4a]` |
+| P2 | `[COMPLETAR: p. ej. "estudiante de Informática Empresarial, no conoce el trámite"]` | No | `[COMPLETAR]` | `[COMPLETAR]` | `bitacora-sesiones.md` §4 | `[enlace a P2-audio.m4a]` |
+| P3 | `[COMPLETAR]` | `[COMPLETAR]` | `[COMPLETAR]` | `[COMPLETAR]` | `bitacora-sesiones.md` §5 | `[enlace a P3-audio.m4a]` |
 
 ### 6.4 Resultados por tarea
 

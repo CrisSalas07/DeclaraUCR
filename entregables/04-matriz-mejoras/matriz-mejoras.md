@@ -64,6 +64,7 @@ trazabilidad quede completa.
 | T-05 | Recorrido 20/11/2026 (D-01) | Salir con Atrás perdía los cambios sin avisar | Diálogo "¿Salir sin guardar?" | Alta | Prueba "leaving with unsaved changes asks first (D-01)"; `05-informe-pruebas/evidencias/recorrido-2026-11-20/D-01-*.png`; commit `afeb1ee` (PR #8) | Verificada |
 | T-06 | Recorrido 20/11/2026 (D-02) | La cuadrícula no se podía usar con TalkBack | Cada media hora es un botón con día, hora y contenido | Alta | Prueba "with TalkBack, each half hour says what it has and places (D-02)"; commit `afeb1ee` (PR #8) | Verificada (falta repetirla en el teléfono) |
 | T-07 | Recorrido 20/11/2026 (D-03) | Chips de horas leídos como casillas | Leerlos como texto | Baja | `lib/screens/home_screen.dart` (`_HoursChip`); commit `afeb1ee` (PR #8) | Verificada |
+| T-08 | Ensayo de las sesiones 21/11/2026 (2.0.0+7) | Después de guardar un borrador existente, la lista de declaraciones sigue mostrando las horas anteriores hasta reiniciar la app (lo guardado en el servidor sí es correcto) | Que la lista se actualice al guardar (`watchAll` en `proyecto1_declaration_repository.dart`) | Media | Ensayo de T1–T3, 21/11/2026 | Pendiente: va en la 2.0.0+8; las sesiones usan la 2.0.0+7 para que todas tengan la misma versión (§8) |
 
 ## 5. Resumen
 

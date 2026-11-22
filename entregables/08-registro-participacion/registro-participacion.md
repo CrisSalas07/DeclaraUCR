@@ -13,7 +13,7 @@ GitHub al hacer merge); el correo de los commits confirma que son la misma perso
 
 | Integrante | Identidad en git | Commits en DeclaraUCR (P2) | Commits en DeclaraHorario (P1) |
 |---|---|---|---|
-| Cristopher Mora Salas | `Salas07` (commits), `CrisSalas07` (merges de PR) | 13 + 8 merges (12, 18 y 20/11) | 139 + 52 |
+| Cristopher Mora Salas | `Salas07` (commits), `CrisSalas07` (merges de PR) | 22 + 12 merges (12 al 21/11) | 139 + 52 |
 | Keity Chavarría Steller | `Keity` (commits), `dayanachavarriasteller-maker` (merges de PR) | 28 + 7 merges (18 y 19/11) | 75 + 38 |
 | Lucía Palacios | `Lucia`, `luciaapalacio608-dot` | — | 25 + 2 |
 
@@ -40,6 +40,8 @@ Para ver el detalle: `git log --format='%h %ad %an %s' --date=short`.
 | 19/11/2026 | Keity | Revisión e integración | Revisión y merge de los PR #1 a #7 | PR #1–#7 en GitHub |
 | 20/11/2026 | Cristopher | Recorrido exploratorio y correcciones | D-01 (aviso al salir sin guardar), D-02 (cuadrícula con TalkBack), D-03; 2 pruebas nuevas; versión 2.0.0+7 | `afeb1ee` (PR #8); `entregables/05-informe-pruebas/` |
 | 20/11/2026 | Cristopher | Documentación de entregables | Informe técnico, matriz, informe de pruebas, guía, material de socialización | `94cb429` (PR #8); `entregables/` |
+| 20/11/2026 | Cristopher | Kit de sesiones con usuarios y socialización | Guion de tareas, hoja de sesión, guion del video, formulario, matriz sin observaciones del P1 | PR #9–#15 |
+| 21/11/2026 | Cristopher | Preparación de las sesiones | Nota del P1, tarjetas ficticias, datos del backend, formulario publicado con QR, ensayo de T1–T3 | PR #16, #17, #19 |
 
 ### Actividades sin commit
 
@@ -49,7 +51,8 @@ Para ver el detalle: `git log --format='%h %ad %an %s' --date=short`.
 | `[ ]` | `[ ]` | Sesión con usuario P1 | Guía y observación | Informe de pruebas §6 |
 | `[ ]` | `[ ]` | Sesión con usuario P2 | | Informe de pruebas §6 |
 | `[ ]` | `[ ]` | Sesión con usuario P3 | | Informe de pruebas §6 |
-| `[ ]` | `[ ]` | Formulario de retroalimentación | Creación y envío | Enlace al formulario |
+| 21/11/2026 | Cristopher | Formulario de retroalimentación | Creación y publicación en Google Forms | `06-socializacion/formulario-retroalimentacion.md` |
+| 21/11/2026 | Cristopher | Ensayo completo de la sesión | T1–T3 en el emulador con la 2.0.0+7; encontró T-08 | Matriz de mejoras T-08 |
 | `[ ]` | `[ ]` | Video de socialización | Grabó, narró o editó el bloque ___ | Enlace al video |
 | `[ ]` | `[ ]` | Mejoras posteriores a la socialización | | `[commit]` |
 | `[ ]` | `[ ]` | Revisión cruzada de documentos | Revisó ___ | Comentarios en el documento |
