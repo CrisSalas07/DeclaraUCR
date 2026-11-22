@@ -12,10 +12,10 @@ Este kit tiene lo necesario para hacerlas y para que queden como evidencia:
 
 | Archivo | Para qué |
 |---|---|
-| `hoja-sesion.md` | La bitácora de cada participante: consentimiento, perfil y las tres tareas. **No se imprime**: se hace una copia por persona (`P1-hoja.md`…) y se llena directo en la compu mientras se observa. |
+| `../evidencias/sesiones-usuarios/bitacora-sesiones.md` | La bitácora de las tres sesiones en un solo documento: guion, consentimiento, perfil y tareas de P1, P2 y P3. **No se imprime**: se llena directo en la compu mientras se observa. |
 | [Formulario de Google Forms](https://docs.google.com/forms/d/e/1FAIpQLSf-YczF2ZjBprrvS48MGGgbn2bVO53aOX-cwGH1FgpTmfonfg/viewform) (QR en `06-socializacion/qr-formulario.png`) | Lo llena la persona al terminar: facilidad de uso (1 a 5), utilidad, claridad, funcionamiento y comentarios. Es el mismo que responden el docente y el otro equipo tras ver el video (§9). |
 | `../evidencias/sesiones-usuarios/` | Bitácoras, capturas y fotos de cada sesión, con los nombres de abajo. |
-| `../informe-pruebas.md` §6 | Donde se pasan en limpio los resultados de las tres hojas. |
+| `../informe-pruebas.md` §6 | Donde se pasan en limpio los resultados de la bitácora. |
 
 ## 1. Antes de la primera sesión (una vez)
 
@@ -35,7 +35,7 @@ Este kit tiene lo necesario para hacerlas y para que queden como evidencia:
       10:00**, carga 10 h. La atención es la mitad de las horas de clase: con 4 h de clase salen las **2 h** que
       pide T2, y "después de su clase" el lunes es de 10:00 a 12:00. Con una sola franja de 2 h la atención
       sería 1 h y T2 no cuadraría. Si se asigna otro curso u otro horario, cambiar la frase de T2 en
-      `hoja-sesion.md` antes de copiarla.
+      la bitácora (§2 y las tres tablas) antes de la primera sesión.
 - [x] Revisor para las tres cuentas: la cuenta con rol **Superior** de Keity (la misma que revisa a la
       declarante de evaluación). Administración: la cuenta de Keity. Coordinación de Informática: la cuenta de
       prueba de Coordinación que hizo las asignaciones del 19/11. Los correos se pasan por el chat del equipo,
@@ -48,7 +48,7 @@ Este kit tiene lo necesario para hacerlas y para que queden como evidencia:
       **Al observar:** después de guardar cambios en un borrador, la lista de Declaraciones puede seguir
       mostrando las horas anteriores hasta reabrir la app (posible hallazgo U-, no se corrige antes de las
       sesiones). Si la persona lo comenta, se anota; no es un error suyo.
-- [ ] Tres copias de `hoja-sesion.md` (`P1-hoja.md`, `P2-hoja.md`, `P3-hoja.md`) en la compu de quien anota.
+- [x] La bitácora `../evidencias/sesiones-usuarios/bitacora-sesiones.md` abierta en la compu de quien anota.
 - [ ] Un segundo teléfono para grabar el audio, con espacio y batería. Probar antes que se oye bien a medio
       metro.
 - [ ] Los tiempos se toman del audio: anotar el minuto en que empieza y termina cada tarea.
@@ -58,7 +58,7 @@ Este kit tiene lo necesario para hacerlas y para que queden como evidencia:
 - [ ] La app 2.0.0+7 instalada en el teléfono que se va a usar y **sin sesión iniciada** (la persona crea su
       cuenta en T0). Si el teléfono es de la persona, se instala con ella siguiendo la guía de uso.
 - [ ] La tarjeta de datos ficticios de ese participante abierta en otra pantalla, o enviada a la persona por chat.
-- [ ] Revisar al pie del inicio de sesión o en el perfil: "Versión 2.0.0+7 · …". Anotarlo en la hoja.
+- [ ] Revisar al pie del inicio de sesión o en el perfil: "Versión 2.0.0+7 · …". Anotarlo en la bitácora.
 - [ ] Letra del teléfono como la usa la persona normalmente (si la persona trae su propio teléfono).
 
 ## 3. Durante la sesión
@@ -70,7 +70,7 @@ El orden es: **presentar → grabar con consentimiento → tres tareas anotadas 
    demostración ni el video antes de las tareas**: la prueba mide si la app se entiende sola. El video se
    puede mostrar al final, si la persona quiere verlo.
 
-1. Leer el párrafo de bienvenida de la hoja. **Empezar a grabar y preguntar en el audio**: "¿Está de acuerdo en
+1. Leer el párrafo de bienvenida de la bitácora (§2). **Empezar a grabar y preguntar en el audio**: "¿Está de acuerdo en
    participar y en que grabemos el audio?". Así la autorización queda en la misma grabación. Si no acepta, se
    detiene, se borra y alcanza con las notas.
 2. En el audio decir solo "Participante P1" (o P2, P3) y la fecha. **Nunca el nombre**; si la persona lo dice,
@@ -84,7 +84,7 @@ El orden es: **presentar → grabar con consentimiento → tres tareas anotadas 
    le asigna en la web el **revisor** (Administración › Usuarios) y los **cursos** (Coordinación) en el
    período. Se anota cuánto tardó la pausa; no cuenta en los tiempos. La app lo toma sola, sin cerrar
    sesión.
-4. Dar una tarea a la vez, leyendo la frase de la hoja en voz alta (queda en el audio). No explicar la
+4. Dar una tarea a la vez, leyendo la frase de la bitácora en voz alta (queda en el audio). No explicar la
    pantalla.
 5. Anotar el minuto del audio en que empieza y termina cada tarea, lo que la persona intenta, dónde duda y cada ayuda (qué se le dijo y por qué).
    Solo se ayuda si la persona lo pide o lleva más de un minuto trabada.
@@ -100,7 +100,7 @@ En `entregables/05-informe-pruebas/evidencias/sesiones-usuarios/`:
 
 | Archivo | Qué es |
 |---|---|
-| `P1-hoja.md` | La bitácora llena directo en la copia de `hoja-sesion.md`. Sin nombre ni cédula de la persona. |
+| `bitacora-sesiones.md` | La bitácora de las tres sesiones, llena directo en la compu. Sin nombre ni cédula de las personas. |
 | `P1-T0-inicio.png` | Captura al terminar T0: Inicio con la sesión iniciada. |
 | `P1-T1-borrador.png` | Captura al terminar T1: la lista con la declaración en **Borrador**. |
 | `P1-T2-resumen.png` | Captura al terminar T2: el resumen con las horas de atención ubicadas. |
