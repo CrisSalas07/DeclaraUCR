@@ -7,8 +7,8 @@ contraseña son suyos.
 
 La de **Ensayo** es para la prueba del equipo antes de la primera sesión.
 
-Antes de imprimir: escribir la carrera de los cursos de prueba y confirmar en la web (Administración ›
-Usuarios) que ninguna de estas cédulas está registrada. Si una ya existe, la app lo avisa en T0 y pide otra:
+Revisado en el backend el 21/11/2026: la carrera de los cursos de prueba es Informática (Sede Sur) y ninguna
+de estas cédulas está registrada. Si una ya existe, la app lo avisa en T0 y pide otra:
 usar la siguiente de la serie (900010004, 900010005…) y anotarla en la bitácora.
 
 ---
@@ -21,7 +21,7 @@ usar la siguiente de la serie (900010004, 900010005…) y anotarla en la bitáco
 | Cédula | 900010001 |
 | Teléfono | 80000101 |
 | Sede | Sede del Sur |
-| Carrera | ______________________ |
+| Carrera | Informática |
 | Correo y contraseña | Los suyos (@ucr.ac.cr). El equipo no los anota |
 
 ---
@@ -34,7 +34,7 @@ usar la siguiente de la serie (900010004, 900010005…) y anotarla en la bitáco
 | Cédula | 900010002 |
 | Teléfono | 80000102 |
 | Sede | Sede del Sur |
-| Carrera | ______________________ |
+| Carrera | Informática |
 | Correo y contraseña | Los suyos (@ucr.ac.cr). El equipo no los anota |
 
 ---
@@ -47,7 +47,7 @@ usar la siguiente de la serie (900010004, 900010005…) y anotarla en la bitáco
 | Cédula | 900010003 |
 | Teléfono | 80000103 |
 | Sede | Sede del Sur |
-| Carrera | ______________________ |
+| Carrera | Informática |
 | Correo y contraseña | Los suyos (@ucr.ac.cr). El equipo no los anota |
 
 ---
@@ -60,5 +60,5 @@ usar la siguiente de la serie (900010004, 900010005…) y anotarla en la bitáco
 | Cédula | 900010009 |
 | Teléfono | 80000109 |
 | Sede | Sede del Sur |
-| Carrera | ______________________ |
+| Carrera | Informática |
 | Correo y contraseña | De un integrante. La cuenta se desactiva después del ensayo |
