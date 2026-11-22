@@ -96,7 +96,7 @@ How the data maps to the Proyecto 1 schema: [`docs/COMPARACION_BACKEND_P1.md`](d
 - This repository **never deploys Firestore rules**: the real ones are
   published from DeclaraHorario; [`backend/proyecto1/`](backend/proyecto1) is a copy for the
   emulators only.
-- No secrets in code: [`android/key.properties`](android/key.properties) and the release key stay
+- No secrets in code: `android/key.properties` and the release key stay
   local.
 
 ## Backends
