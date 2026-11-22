@@ -34,7 +34,7 @@ encontró. Solo se anotan puntos reales y comprobables; no se inventan observaci
 | # | Origen | Observación | Acción concreta | Prioridad | Evidencia | Estado |
 |---|---|---|---|---|---|---|
 | P1-01 | Revisión del equipo | El sistema solo se usaba desde la computadora; la persona declarante no podía llenar ni firmar desde el teléfono | Módulo móvil con los tres procesos y la firma de la declarante, sobre el mismo backend | Alta | Este proyecto: release v2.0.0+7; CP-01 a CP-07 (`docs/PRUEBAS.md`) | Verificada |
-| P1-02 | Revisión del equipo | El estado `VALIDADA` lo decide el cliente; las reglas validan formato y permisos, no recalculan horas | Pendiente con justificación: requiere una Cloud Function (plan Blaze de Firebase). Propuesta: función que recalcule horas y traslapes y rechace un `VALIDADA` inválido | Media | README, sección *Security*; `docs/INSTALACION.md` §7 | Pendiente con justificación |
+| P1-02 | Revisión del equipo | El estado `VALIDADA` lo decide el cliente; las reglas validan formato y permisos, no recalculan horas | Pendiente con justificación: requiere una Cloud Function (plan Blaze de Firebase). Propuesta: función que recalcule horas y traslapes y rechace un `VALIDADA` inválido | Media | Informe técnico §8; `docs/INSTALACION.md` §7 | Pendiente con justificación |
 
 ## 3. Observaciones de la socialización
 
