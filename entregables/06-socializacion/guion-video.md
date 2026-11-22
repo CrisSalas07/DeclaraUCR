@@ -19,7 +19,7 @@ captura de `docs/capturas/` o del repositorio, o la persona hablando a cámara.
 | 7 | 11:00 | Pruebas técnicas | 8 casos, 109 pruebas automatizadas, D-01 antes y después | "El recorrido encontró que salir con Atrás perdía cambios sin avisar; ahora la app pregunta." | Resultados técnicos |
 | 8 | 12:00 | Pruebas con usuarios | Perfil de las 3 personas, éxito por tarea, facilidad promedio y **un fragmento corto de audio** de una sesión (con su permiso) | `[COMPLETAR con los resultados de las sesiones]` | Resultados con usuarios |
 | 9 | 13:30 | Lo que queda pendiente y por qué | `VALIDADA` en el cliente, zonaje solo consulta, sin conexión no se guarda | "Son decisiones, no olvidos: esto es lo que haríamos después y por qué no entró." | Dificultades y decisiones |
-| 10 | 14:30 | Cierre y formulario | Enlace y QR del formulario en pantalla | "Su opinión cambia la versión final: al menos dos mejoras van a salir de este formulario." | Instrumento |
+| 10 | 14:30 | Cierre y formulario | Enlace y QR del formulario en pantalla (`qr-formulario.svg`) | "Su opinión cambia la versión final: al menos dos mejoras van a salir de este formulario." | Instrumento |
 
 **Publicación:** subir el video al Drive del equipo (o a YouTube como *no listado*) y enviar al docente, en un
 mismo mensaje, el enlace al video y el del formulario. Anotar aquí: video `[COMPLETAR: enlace]`, enviado el

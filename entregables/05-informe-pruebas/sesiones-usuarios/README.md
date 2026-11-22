@@ -13,7 +13,7 @@ Este kit tiene lo necesario para hacerlas y para que queden como evidencia:
 | Archivo | Para qué |
 |---|---|
 | `hoja-sesion.md` | La bitácora de cada participante: consentimiento, perfil y las tres tareas. Imprimir tres (o llenarla en el teléfono o la compu mientras se observa). |
-| Formulario de Google Forms | Lo llena la persona al terminar: facilidad de uso (1 a 5), utilidad, claridad, funcionamiento y comentarios. Es el mismo que responden el docente y el otro equipo tras ver el video (§9). |
+| [Formulario de Google Forms](https://docs.google.com/forms/d/e/1FAIpQLSf-YczF2ZjBprrvS48MGGgbn2bVO53aOX-cwGH1FgpTmfonfg/viewform) (QR en `06-socializacion/qr-formulario.png`) | Lo llena la persona al terminar: facilidad de uso (1 a 5), utilidad, claridad, funcionamiento y comentarios. Es el mismo que responden el docente y el otro equipo tras ver el video (§9). |
 | `../evidencias/sesiones-usuarios/` | Fotos, capturas y hojas escaneadas de cada sesión, con los nombres de abajo. |
 | `../informe-pruebas.md` §6 | Donde se pasan en limpio los resultados de las tres hojas. |
 
@@ -83,7 +83,8 @@ El orden es: **presentar → grabar con consentimiento → tres tareas anotadas 
 5. Anotar el minuto del audio en que empieza y termina cada tarea, lo que la persona intenta, dónde duda y cada ayuda (qué se le dijo y por qué).
    Solo se ayuda si la persona lo pide o lleva más de un minuto trabada.
 6. Al final de cada tarea, **captura de pantalla** de cómo quedó (ver nombres abajo).
-7. Al terminar las cuatro, detener la grabación y **pasarle el formulario** en el teléfono (enlace o QR). Se le
+7. Al terminar las cuatro, detener la grabación y **pasarle el formulario** en el teléfono: [enlace](https://docs.google.com/forms/d/e/1FAIpQLSf-YczF2ZjBprrvS48MGGgbn2bVO53aOX-cwGH1FgpTmfonfg/viewform) o el QR
+   `../../06-socializacion/qr-formulario.png` (impreso o en otra pantalla). Se le
    dice su número de participante (P1, P2 o P3) para que lo marque; así sus respuestas se unen con la
    bitácora sin pedir el nombre. Quien observa no mira mientras responde.
 

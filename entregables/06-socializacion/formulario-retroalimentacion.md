@@ -10,7 +10,9 @@ Un solo instrumento para dos momentos:
 Toma unos 3 minutos. Para pasarlo a Google Forms, cada pregunta de abajo es una pregunta del formulario con el tipo
 indicado.
 
-Creado en Google Forms como «DeclaraUCR — Retroalimentación» (Drive del equipo), **sin publicar todavía**. `[COMPLETAR: enlace para responder, que va en el bloque 10 del video, en el mensaje al docente y en un QR para las sesiones con usuarios]`
+Creado en Google Forms como «DeclaraUCR — Retroalimentación» (Drive del equipo) y **publicado el 21/11/2026**.
+Enlace para responder (bloque 10 del video, mensaje al docente y sesiones con usuarios): <https://docs.google.com/forms/d/e/1FAIpQLSf-YczF2ZjBprrvS48MGGgbn2bVO53aOX-cwGH1FgpTmfonfg/viewform>.
+QR del mismo enlace: [`qr-formulario.png`](qr-formulario.png) (y `.svg` para el video, sin pérdida al escalar).
 
 ---
 
