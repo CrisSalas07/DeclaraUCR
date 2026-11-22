@@ -90,7 +90,7 @@ correo personal (Gmail, Outlook…)
 > "Ya tiene las clases que le asignó la Coordinación. Ubique las 2 horas de atención a estudiantes de
 > IF0009 el lunes, después de su clase."
 
-(Si en la web se asignó otro curso u horario, cambiar esta frase antes de imprimir; ver el kit, §1.)
+(Si en la web se asignó otro curso u horario, cambiar esta frase antes de copiar la hoja; ver el kit, §1.)
 
 **Completada cuando:** el resumen muestra las 2 h de atención de IF0009 ubicadas (las de IF0009 ya no
 aparecen entre las horas faltantes).
