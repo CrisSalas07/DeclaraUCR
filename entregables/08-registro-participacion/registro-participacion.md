@@ -14,7 +14,7 @@ GitHub al hacer merge); el correo de los commits confirma que son la misma perso
 | Integrante | Identidad en git | Commits en DeclaraUCR (P2) | Commits en DeclaraHorario (P1) |
 |---|---|---|---|
 | Cristopher Mora Salas | `Salas07` (commits), `CrisSalas07` (merges de PR) | 13 + 8 merges (12, 18 y 20/11) | 139 + 52 |
-| Keity `[COMPLETAR: apellidos]` | `Keity` (commits), `dayanachavarriasteller-maker` (merges de PR) | 28 + 7 merges (18 y 19/11) | 75 + 38 |
+| Keity Chavarría Steller | `Keity` (commits), `dayanachavarriasteller-maker` (merges de PR) | 28 + 7 merges (18 y 19/11) | 75 + 38 |
 | Lucía Palacios | `Lucia`, `luciaapalacio608-dot` | — | 25 + 2 |
 
 Para ver el detalle: `git log --format='%h %ad %an %s' --date=short`.

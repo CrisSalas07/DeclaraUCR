@@ -13,7 +13,7 @@ Este kit tiene lo necesario para hacerlas y para que queden como evidencia:
 | Archivo | Para qué |
 |---|---|
 | `hoja-sesion.md` | La bitácora de cada participante: consentimiento, perfil y las tres tareas. Imprimir tres (o llenarla en el teléfono o la compu mientras se observa). |
-| Formulario de Google Forms | Lo llena la persona al terminar: facilidad de uso (1 a 5), utilidad, claridad, funcionamiento y comentarios. Es el mismo que responden el docente y el otro equipo tras ver el video (§9). |
+| [Formulario de Google Forms](https://docs.google.com/forms/d/e/1FAIpQLSf-YczF2ZjBprrvS48MGGgbn2bVO53aOX-cwGH1FgpTmfonfg/viewform) (QR en `06-socializacion/qr-formulario.png`) | Lo llena la persona al terminar: facilidad de uso (1 a 5), utilidad, claridad, funcionamiento y comentarios. Es el mismo que responden el docente y el otro equipo tras ver el video (§9). |
 | `../evidencias/sesiones-usuarios/` | Fotos, capturas y hojas escaneadas de cada sesión, con los nombres de abajo. |
 | `../informe-pruebas.md` §6 | Donde se pasan en limpio los resultados de las tres hojas. |
 
@@ -23,18 +23,31 @@ Este kit tiene lo necesario para hacerlas y para que queden como evidencia:
       de terminar, se anota y se explica.
 - [ ] **Cada participante crea su propia cuenta** en la sesión (tarea T0): con su correo `@ucr.ac.cr` y una
       contraseña que solo esa persona conoce. El equipo no anota ni guarda contraseñas.
-- [ ] **Tres tarjetas con datos ficticios** en [`tarjetas.md`](tarjetas.md) (nombre, cédula y teléfono
-      inventados). Escribirles la carrera de los cursos de prueba y probar antes que esas cédulas no estén ya
-      registradas.
+- [x] **Tres tarjetas con datos ficticios** en [`tarjetas.md`](tarjetas.md) (nombre, cédula y teléfono
+      inventados). Carrera Informática; cédulas 900010001 a 900010009 revisadas en el backend el 21/11: libres.
 - [ ] Que alguien del equipo pueda entrar a la web del P1 con **Administración** (asignar revisor) y con la
       **Coordinación** de esa carrera (asignar cursos) desde una computadora o teléfono durante la sesión.
-- [ ] El **período** de prueba habilitado y el **horario de cursos** listo para copiar igual a las tres
-      cuentas, para que todas empiecen con lo mismo.
-- [ ] Asignar a las tres cuentas **los mismos cursos de CP-01 a CP-04**, porque la tarea T2 los nombra:
-      **IF0009** con clase el **lunes de 8:00 a 10:00** (atención **2 h**), más el segundo curso de prueba. Si
-      se asigna otro curso u otro horario, cambiar la frase de T2 en `hoja-sesion.md` antes de imprimir.
-- [ ] Hacer las tres tareas uno mismo con una de las cuentas y **borrar desde la web** lo creado (o usar una
-      cuarta cuenta) para confirmar que el guion funciona con esos datos.
+- [x] El **período** de prueba habilitado: «II Ciclo - 2026» (id `2026_II`), habilitado, del 25/10 al
+      25/11/2026. La app solo mira que esté habilitado, no la fecha de cierre; si la web lo cierra antes de las
+      sesiones, volver a habilitarlo.
+- [ ] Asignar a las tres cuentas **el mismo curso**, porque la tarea T2 lo nombra: **IF0009 Base de datos II**
+      (ya está en el catálogo de Informática) con clase el **lunes de 8:00 a 10:00** y el **miércoles de 8:00 a
+      10:00**, carga 10 h. La atención es la mitad de las horas de clase: con 4 h de clase salen las **2 h** que
+      pide T2, y "después de su clase" el lunes es de 10:00 a 12:00. Con una sola franja de 2 h la atención
+      sería 1 h y T2 no cuadraría. Si se asigna otro curso u otro horario, cambiar la frase de T2 en
+      `hoja-sesion.md` antes de imprimir.
+- [x] Revisor para las tres cuentas: la cuenta con rol **Superior** de Keity (la misma que revisa a la
+      declarante de evaluación). Administración: la cuenta de Keity. Coordinación de Informática: la cuenta de
+      prueba de Coordinación que hizo las asignaciones del 19/11. Los correos se pasan por el chat del equipo,
+      no aquí.
+- [x] Hacer las tres tareas uno mismo con una de las cuentas y **borrar desde la web** lo creado (o usar una
+      cuarta cuenta) para confirmar que el guion funciona con esos datos. Hecho el 21/11 en el emulador con
+      2.0.0+7: el aviso de revisor desaparece solo al asignarlo; T1 queda en Borrador; en T2 la app muestra
+      "IF0009 · 4 h clase, 2 h atención" y la atención entra el lunes de 10:00 a 12:00; en T3 el resumen dice
+      Borrador y "Faltan 4 h de planificación de IF0009". Lo creado se borró (declaración y reserva del período).
+      **Al observar:** después de guardar cambios en un borrador, la lista de Declaraciones puede seguir
+      mostrando las horas anteriores hasta reabrir la app (posible hallazgo U-, no se corrige antes de las
+      sesiones). Si la persona lo comenta, se anota; no es un error suyo.
 - [ ] Imprimir o copiar tres veces `hoja-sesion.md`.
 - [ ] Un segundo teléfono para grabar el audio, con espacio y batería. Probar antes que se oye bien a medio
       metro.
@@ -76,7 +89,8 @@ El orden es: **presentar → grabar con consentimiento → tres tareas anotadas 
 5. Anotar el minuto del audio en que empieza y termina cada tarea, lo que la persona intenta, dónde duda y cada ayuda (qué se le dijo y por qué).
    Solo se ayuda si la persona lo pide o lleva más de un minuto trabada.
 6. Al final de cada tarea, **captura de pantalla** de cómo quedó (ver nombres abajo).
-7. Al terminar las cuatro, detener la grabación y **pasarle el formulario** en el teléfono (enlace o QR). Se le
+7. Al terminar las cuatro, detener la grabación y **pasarle el formulario** en el teléfono: [enlace](https://docs.google.com/forms/d/e/1FAIpQLSf-YczF2ZjBprrvS48MGGgbn2bVO53aOX-cwGH1FgpTmfonfg/viewform) o el QR
+   `../../06-socializacion/qr-formulario.png` (impreso o en otra pantalla). Se le
    dice su número de participante (P1, P2 o P3) para que lo marque; así sus respuestas se unen con la
    bitácora sin pedir el nombre. Quien observa no mira mientras responde.
 
