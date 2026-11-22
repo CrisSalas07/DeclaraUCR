@@ -45,9 +45,9 @@ Del plan de entregables, con lo que ya se cumplió:
 1. ~~Commit de D-01 a D-03, APK y release 2.0.0+7~~ (hecho: <https://github.com/CrisSalas07/DeclaraUCR/releases/tag/v2.0.0%2B7>).
 2. CP-08 en un teléfono que no sea el de desarrollo.
 3. Las tres sesiones con usuarios, todas con la 2.0.0+7: seguir `05-informe-pruebas/sesiones-usuarios/README.md`
-   e imprimir `hoja-sesion.md` tres veces.
+   llenando una copia de `hoja-sesion.md` por persona directo en la compu (no se imprime nada).
 4. Adjuntar a la matriz la captura de la evaluación del P1 (sin cambios pedidos) y crear la etiqueta `p1-entrega`.
-5. Grabar el video con `06-socializacion/guion-video.md`, publicar el formulario y enviar los dos enlaces al docente.
+5. Grabar el video con `06-socializacion/guion-video.md` y enviar al docente su enlace y el del formulario (ya publicado).
 6. Dos mejoras de la socialización, nueva versión, nueva comprobación y etiqueta final.
 7. Exportar a PDF el informe técnico, el informe de pruebas y la guía.
 

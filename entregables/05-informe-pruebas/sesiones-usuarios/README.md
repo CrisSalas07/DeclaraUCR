@@ -12,9 +12,9 @@ Este kit tiene lo necesario para hacerlas y para que queden como evidencia:
 
 | Archivo | Para qué |
 |---|---|
-| `hoja-sesion.md` | La bitácora de cada participante: consentimiento, perfil y las tres tareas. Imprimir tres (o llenarla en el teléfono o la compu mientras se observa). |
+| `hoja-sesion.md` | La bitácora de cada participante: consentimiento, perfil y las tres tareas. **No se imprime**: se hace una copia por persona (`P1-hoja.md`…) y se llena directo en la compu mientras se observa. |
 | [Formulario de Google Forms](https://docs.google.com/forms/d/e/1FAIpQLSf-YczF2ZjBprrvS48MGGgbn2bVO53aOX-cwGH1FgpTmfonfg/viewform) (QR en `06-socializacion/qr-formulario.png`) | Lo llena la persona al terminar: facilidad de uso (1 a 5), utilidad, claridad, funcionamiento y comentarios. Es el mismo que responden el docente y el otro equipo tras ver el video (§9). |
-| `../evidencias/sesiones-usuarios/` | Fotos, capturas y hojas escaneadas de cada sesión, con los nombres de abajo. |
+| `../evidencias/sesiones-usuarios/` | Bitácoras, capturas y fotos de cada sesión, con los nombres de abajo. |
 | `../informe-pruebas.md` §6 | Donde se pasan en limpio los resultados de las tres hojas. |
 
 ## 1. Antes de la primera sesión (una vez)
@@ -35,7 +35,7 @@ Este kit tiene lo necesario para hacerlas y para que queden como evidencia:
       10:00**, carga 10 h. La atención es la mitad de las horas de clase: con 4 h de clase salen las **2 h** que
       pide T2, y "después de su clase" el lunes es de 10:00 a 12:00. Con una sola franja de 2 h la atención
       sería 1 h y T2 no cuadraría. Si se asigna otro curso u otro horario, cambiar la frase de T2 en
-      `hoja-sesion.md` antes de imprimir.
+      `hoja-sesion.md` antes de copiarla.
 - [x] Revisor para las tres cuentas: la cuenta con rol **Superior** de Keity (la misma que revisa a la
       declarante de evaluación). Administración: la cuenta de Keity. Coordinación de Informática: la cuenta de
       prueba de Coordinación que hizo las asignaciones del 19/11. Los correos se pasan por el chat del equipo,
@@ -48,7 +48,7 @@ Este kit tiene lo necesario para hacerlas y para que queden como evidencia:
       **Al observar:** después de guardar cambios en un borrador, la lista de Declaraciones puede seguir
       mostrando las horas anteriores hasta reabrir la app (posible hallazgo U-, no se corrige antes de las
       sesiones). Si la persona lo comenta, se anota; no es un error suyo.
-- [ ] Imprimir o copiar tres veces `hoja-sesion.md`.
+- [ ] Tres copias de `hoja-sesion.md` (`P1-hoja.md`, `P2-hoja.md`, `P3-hoja.md`) en la compu de quien anota.
 - [ ] Un segundo teléfono para grabar el audio, con espacio y batería. Probar antes que se oye bien a medio
       metro.
 - [ ] Los tiempos se toman del audio: anotar el minuto en que empieza y termina cada tarea.
@@ -57,7 +57,7 @@ Este kit tiene lo necesario para hacerlas y para que queden como evidencia:
 
 - [ ] La app 2.0.0+7 instalada en el teléfono que se va a usar y **sin sesión iniciada** (la persona crea su
       cuenta en T0). Si el teléfono es de la persona, se instala con ella siguiendo la guía de uso.
-- [ ] La tarjeta de datos ficticios de ese participante a mano.
+- [ ] La tarjeta de datos ficticios de ese participante abierta en otra pantalla, o enviada a la persona por chat.
 - [ ] Revisar al pie del inicio de sesión o en el perfil: "Versión 2.0.0+7 · …". Anotarlo en la hoja.
 - [ ] Letra del teléfono como la usa la persona normalmente (si la persona trae su propio teléfono).
 
@@ -90,7 +90,7 @@ El orden es: **presentar → grabar con consentimiento → tres tareas anotadas 
    Solo se ayuda si la persona lo pide o lleva más de un minuto trabada.
 6. Al final de cada tarea, **captura de pantalla** de cómo quedó (ver nombres abajo).
 7. Al terminar las cuatro, detener la grabación y **pasarle el formulario** en el teléfono: [enlace](https://docs.google.com/forms/d/e/1FAIpQLSf-YczF2ZjBprrvS48MGGgbn2bVO53aOX-cwGH1FgpTmfonfg/viewform) o el QR
-   `../../06-socializacion/qr-formulario.png` (impreso o en otra pantalla). Se le
+   `../../06-socializacion/qr-formulario.png` en la pantalla de la compu. Se le
    dice su número de participante (P1, P2 o P3) para que lo marque; así sus respuestas se unen con la
    bitácora sin pedir el nombre. Quien observa no mira mientras responde.
 
@@ -100,12 +100,12 @@ En `entregables/05-informe-pruebas/evidencias/sesiones-usuarios/`:
 
 | Archivo | Qué es |
 |---|---|
-| `P1-hoja.pdf` (o `.jpg`) | La hoja de sesión llena (foto o escaneo). Sin nombre ni cédula de la persona. |
+| `P1-hoja.md` | La bitácora llena directo en la copia de `hoja-sesion.md`. Sin nombre ni cédula de la persona. |
 | `P1-T0-inicio.png` | Captura al terminar T0: Inicio con la sesión iniciada. |
 | `P1-T1-borrador.png` | Captura al terminar T1: la lista con la declaración en **Borrador**. |
 | `P1-T2-resumen.png` | Captura al terminar T2: el resumen con las horas de atención ubicadas. |
 | `P1-T3-estado.png` | Captura al terminar T3: el resumen con el estado y lo que falta. |
-| `respuestas-formulario.pdf` | Al final de las tres sesiones: en Google Forms, *Respuestas* › imprimir o descargar como PDF (o captura del resumen). Prueba de que las personas usaron la app y opinaron. |
+| `respuestas-formulario.pdf` | Al final de las tres sesiones: en Google Forms, *Respuestas* › descargar como PDF (o captura del resumen). Prueba de que las personas usaron la app y opinaron. |
 | `P1-sesion.jpg` | (Opcional) Foto de la sesión **sin la cara** de la persona, o solo de las manos y el teléfono. |
 | `P1-audio.m4a` | Audio de la sesión completa, con la autorización al inicio. Va al Drive del equipo, **no al repositorio** (es público); en el informe se pone el enlace. |
 
