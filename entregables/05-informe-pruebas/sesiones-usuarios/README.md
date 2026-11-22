@@ -40,8 +40,14 @@ Este kit tiene lo necesario para hacerlas y para que queden como evidencia:
       declarante de evaluación). Administración: la cuenta de Keity. Coordinación de Informática: la cuenta de
       prueba de Coordinación que hizo las asignaciones del 19/11. Los correos se pasan por el chat del equipo,
       no aquí.
-- [ ] Hacer las tres tareas uno mismo con una de las cuentas y **borrar desde la web** lo creado (o usar una
-      cuarta cuenta) para confirmar que el guion funciona con esos datos.
+- [x] Hacer las tres tareas uno mismo con una de las cuentas y **borrar desde la web** lo creado (o usar una
+      cuarta cuenta) para confirmar que el guion funciona con esos datos. Hecho el 21/11 en el emulador con
+      2.0.0+7: el aviso de revisor desaparece solo al asignarlo; T1 queda en Borrador; en T2 la app muestra
+      "IF0009 · 4 h clase, 2 h atención" y la atención entra el lunes de 10:00 a 12:00; en T3 el resumen dice
+      Borrador y "Faltan 4 h de planificación de IF0009". Lo creado se borró (declaración y reserva del período).
+      **Al observar:** después de guardar cambios en un borrador, la lista de Declaraciones puede seguir
+      mostrando las horas anteriores hasta reabrir la app (posible hallazgo U-, no se corrige antes de las
+      sesiones). Si la persona lo comenta, se anota; no es un error suyo.
 - [ ] Imprimir o copiar tres veces `hoja-sesion.md`.
 - [ ] Un segundo teléfono para grabar el audio, con espacio y batería. Probar antes que se oye bien a medio
       metro.
