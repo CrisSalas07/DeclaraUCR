@@ -41,8 +41,7 @@ entregables/
 │   ├── capturas/                          ← TODAS las capturas de pruebas: CP-…, R-…, D-01-…, P1-T0-…
 │   └── sesiones-usuarios/
 │       ├── bitacora-sesiones.docx         ← la bitácora de P1, P2 y P3 (se llena en Word, con capturas)
-│       ├── README.md / kit-sesiones-usuarios.docx ← pasos antes, durante y después de cada sesión
-│       └── tarjetas.md / .docx            ← datos ficticios de P1, P2 y P3
+│       └── README.md / kit-sesiones-usuarios.docx ← pasos antes, durante y después de cada sesión
 ├── 06-socializacion/
 │   ├── guion-video.md / .docx             ← guion del video: 10 bloques y la demostración
 │   ├── guion-video-presentacion.pdf
@@ -65,7 +64,7 @@ El video va al **Drive del equipo**, nunca al repositorio (es público).
 | Momento | Qué usar |
 |---|---|
 | Preparar (una vez y antes de cada sesión) | [`05-informe-pruebas/sesiones-usuarios/README.md`](05-informe-pruebas/sesiones-usuarios/README.md) §1 y §2 |
-| Dar los datos ficticios a la persona | [`05-informe-pruebas/sesiones-usuarios/tarjetas.md`](05-informe-pruebas/sesiones-usuarios/tarjetas.md) (una tarjeta por participante) |
+| Dar los datos ficticios a la persona | La línea «Tarjeta» de su sección en la bitácora |
 | Leer el guion y anotar T0–T3 mientras observa | [`05-informe-pruebas/sesiones-usuarios/bitacora-sesiones.docx`](05-informe-pruebas/sesiones-usuarios/bitacora-sesiones.docx) §2 y la sección de P1, P2 o P3 |
 | Paso a paso durante la sesión | [`05-informe-pruebas/sesiones-usuarios/README.md`](05-informe-pruebas/sesiones-usuarios/README.md) §3 |
 | Tomar los tiempos | La hora del reloj al inicio y al fin de cada tarea, anotada en la bitácora (las sesiones no se graban) |

@@ -24,8 +24,8 @@ Este kit tiene lo necesario para hacerlas y para que queden como evidencia:
       de terminar, se anota y se explica.
 - [ ] **Cada participante crea su propia cuenta** en la sesión (tarea T0): con su correo `@ucr.ac.cr` y una
       contraseña que solo esa persona conoce. El equipo no anota ni guarda contraseñas.
-- [x] **Tres tarjetas con datos ficticios** en [`tarjetas.md`](tarjetas.md) (nombre, cédula y teléfono
-      inventados). Carrera Informática; cédulas 900010001 a 900010009 revisadas en el backend el 21/11: libres.
+- [x] **Datos ficticios de cada participante** (nombre, cédula y teléfono inventados) en la línea «Tarjeta» de
+      su sección de la bitácora. Carrera Informática; cédulas 900010001 a 900010009 revisadas en el backend el 21/11: libres.
 - [ ] Que alguien del equipo pueda entrar a la web del P1 con **Administración** (asignar revisor) y con la
       **Coordinación** de esa carrera (asignar cursos) desde una computadora o teléfono durante la sesión.
 - [x] El **período** de prueba habilitado: «II Ciclo - 2026» (id `2026_II`), habilitado, del 25/10 al
@@ -57,7 +57,8 @@ Este kit tiene lo necesario para hacerlas y para que queden como evidencia:
 
 - [ ] La app 2.0.0+7 instalada en el teléfono que se va a usar y **sin sesión iniciada** (la persona crea su
       cuenta en T0). Si el teléfono es de la persona, se instala con ella siguiendo la guía de uso.
-- [ ] La tarjeta de datos ficticios de ese participante abierta en otra pantalla, o enviada a la persona por chat.
+- [ ] Los datos ficticios de ese participante (línea «Tarjeta» de su sección en la bitácora) listos para mostrárselos
+      o escribírselos en un papel antes de T0. Pedirle que use esos, no los suyos (P1 puso los reales).
 - [ ] Revisar al pie del inicio de sesión o en el perfil: "Versión 2.0.0+7 · …". Anotarlo en la bitácora.
 - [ ] Letra del teléfono como la usa la persona normalmente (si la persona trae su propio teléfono).
 
