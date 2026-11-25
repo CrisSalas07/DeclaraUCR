@@ -64,7 +64,7 @@ class HomeScreen extends StatelessWidget {
               if (profile != null && !profile.hasSuperior) ...[
                 const InfoBanner(
                   icon: Icons.supervisor_account_outlined,
-                  title: 'Aún no tiene revisor asignado.',
+                  title: 'Aún no tiene superior asignado.',
                   lines: [
                     'Administración debe asignarlo en el sistema web antes '
                         'de que pueda crear su declaración.',

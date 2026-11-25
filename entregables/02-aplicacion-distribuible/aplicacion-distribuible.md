@@ -19,24 +19,24 @@ Versiones ya publicadas: v2.0.0+2, +3 (prelanzamientos), v2.0.0+4, +5 y +6 (19/1
 
 - **Backend:** Firebase del Proyecto 1 (`declarahorario-b186f`), el mismo de la web DeclaraHorario. El teléfono
   solo necesita internet: no depende de ninguna computadora del equipo.
-- **Web del Proyecto 1** (para revisor, RRHH y Coordinación): <https://declarahorario-b186f.web.app>
+- **Web del Proyecto 1** (para superior, RRHH y Coordinación): <https://declarahorario-b186f.web.app>
 - **Requisitos del teléfono:** Android 7.0 o superior, unos 60 MB libres, conexión a internet.
 
 ## 3. Cuentas de evaluación
 
 Los correos y las contraseñas **no van en este documento ni en el repositorio**: se entregan al docente por
-`[COMPLETAR: canal privado, p. ej. mensaje en Mediación Virtual]`.
+mensaje privado al docente en **Mediación Virtual**.
 
 | Rol | Para qué sirve | Datos con los que viene |
 |---|---|---|
-| Declarante con revisor y cursos | Recorrer los tres procesos y la firma | Sede del Sur, Informática Empresarial, II Ciclo 2026, cursos asignados por la Coordinación (ficticios) |
+| Declarante con superior y cursos | Recorrer los tres procesos y la firma | Sede del Sur, Informática Empresarial, II Ciclo 2026, cursos asignados por la Coordinación (ficticios) |
 | Declarante sin cursos | Ver el mensaje que explica por qué no puede crear la declaración (CP-05) | Misma sede y carrera, sin asignación |
-| Revisor | Ver que la app es solo para declarantes; revisar en la web lo firmado desde el teléfono | Revisor de las dos declarantes |
-| Declarantes P1, P2, P3 | Sesiones con usuarios (§8): las crea cada participante en la sesión, con su correo y su contraseña (el equipo no las conoce) | Cédula y teléfono ficticios; revisor y los mismos cursos de prueba asignados por el equipo en la web; se desactivan al terminar |
+| Superior | Ver que la app es solo para declarantes; revisar en la web lo firmado desde el teléfono | Superior de las dos declarantes |
+| Declarantes P1, P2, P3 | Sesiones con usuarios (§8): las crea cada participante en la sesión, con su correo y su contraseña (el equipo no las conoce) | Cédula y teléfono ficticios; superior y los mismos cursos de prueba asignados por el equipo en la web; se desactivan al terminar |
 
 Revisado en el backend el 21/11/2026: las tres cuentas existen y están activas. La declarante con cursos tiene
 IF0009 asignado en «II Ciclo - 2026» y su declaración de ese período está **firmada y pendiente de firma del
-revisor**. `[COMPLETAR: antes de enviar las cuentas, que el revisor la devuelva desde la web para que el
+superior**. `[COMPLETAR: Keity, como superior, la devuelve desde la web antes de enviar las cuentas, para que el
 docente pueda recorrer los tres procesos.]`
 
 ## 4. Datos ficticios

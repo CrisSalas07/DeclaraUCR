@@ -18,11 +18,11 @@ horarios que se traslapan.
 
 El Proyecto 1 (DeclaraHorario) llevó el trámite completo a un sistema web: la Coordinación asigna cursos, la
 persona declarante llena su horario en una cuadrícula que valida horas y traslapes, firma, y la declaración
-pasa al revisor y a RRHH.
+pasa al superior y a RRHH.
 
 El Proyecto 2 lleva **la parte de la persona declarante** al teléfono. La declaración se llena cuando la
 Coordinación ya asignó los cursos del ciclo; con la app, la persona puede empezarla, revisar qué le falta y
-firmarla desde donde esté, sin depender de una computadora. Lo que hacen el revisor,
+firmarla desde donde esté, sin depender de una computadora. Lo que hacen el superior,
 RRHH y Administración sigue en la web, donde tiene más sentido: son revisiones largas con el PDF y varias
 declaraciones abiertas a la vez.
 
@@ -36,12 +36,12 @@ declaraciones abiertas a la vez.
 | **Crear, editar y recuperar una declaración en borrador** (§5.1-1) | **Sí — proceso 1** | Un período abierto, una declaración por período; nombre, cédula, institución, período y vigencia vienen del perfil y del período; la persona solo elige el puesto |
 | **Registro de horarios, cálculo de horas y traslapes** (§5.1-2) | **Sí — proceso 2** | La cuadrícula de medias horas de la web, un día a la vez; clases fijas de la Coordinación; cada tarea muestra "x h de y h" y nunca toma más |
 | **Resumen, validaciones y estado** (§5.1-3) | **Sí — proceso 3** | Resumen con horas por categoría, lista de puntos por corregir y botón **Validar** que solo se activa sin problemas; seguimiento de 5 pasos en Inicio |
-| Firma de la persona declarante | **Sí** | Mismo juramento y misma huella SHA-256 del contenido; envía al revisor |
+| Firma de la persona declarante | **Sí** | Mismo juramento y misma huella SHA-256 del contenido; envía al superior |
 | PDF de la declaración | **Sí** (consulta) | Mismo formulario oficial: vista previa "BORRADOR", copia en revisión y documento final |
 | Historial por año | **Sí** | Declaraciones y solicitudes de zonaje de todos los períodos |
 | Zonaje | **Consulta** | Estado, distancias y respuesta de RRHH; la solicitud se hace en la web (necesita mapa y la certificación del TSE) |
 | Asignación de cursos (Coordinación) | No | Se hace en la web |
-| Revisión y firma del revisor, devolución | No | Se hace en la web |
+| Revisión y firma del superior, devolución | No | Se hace en la web |
 | Recepción, PDF final y cierre (RRHH) | No | Se hace en la web |
 | Administración de usuarios, sedes, carreras y períodos | No | Se hace en la web |
 
@@ -51,7 +51,7 @@ no se cuentan como procesos.
 
 ### 2.2 Roles
 
-La app es para **personas declarantes**. Una cuenta de revisor, Coordinación, RRHH o Administración que inicie
+La app es para **personas declarantes**. Una cuenta de superior, Coordinación, RRHH o Administración que inicie
 sesión ve "No puede continuar" con su rol y una indicación de usar la web (CP-05). El control no está solo en la
 app: las reglas de Firestore del Proyecto 1 impiden que una persona lea o escriba la declaración, la asignación o
 el zonaje de otra.
@@ -75,13 +75,13 @@ el zonaje de otra.
                                                                     │ mismo backend, mismas reglas
                                                      ┌──────────────┴─────────────┐
                                                      │ Web DeclaraHorario (P1):   │
-                                                     │ revisor, RRHH, Coordinación │
+                                                     │ superior, RRHH, Coordinación │
                                                      │ y Administración            │
                                                      └─────────────────────────────┘
 ```
 
 Web y móvil comparten cuentas, roles y declaraciones. Una declaración que la docente firma en el teléfono le
-aparece al revisor en la web con la misma versión, la misma bitácora y la misma huella (CP-06).
+aparece al superior en la web con la misma versión, la misma bitácora y la misma huella (CP-06).
 
 ### 3.2 Capas
 
@@ -114,7 +114,7 @@ el formato de observaciones y la huella SHA-256. Lo que se reescribió fueron la
 | Marcar horas una por una es lento | Tocar marca una media hora; **mantener presionado y deslizar** marca un rango; **Copiar a otros días** repite un día | Mantener presionado no compite con el desplazamiento de la página, como sí lo haría un arrastre simple |
 | Traslapes | En la cuadrícula cada media hora tiene una sola tarea, así que en el teléfono no se puede crear un traslape. El validador igual revisa lo guardado (por ejemplo, algo editado en la web) | Prevenir es mejor que avisar después |
 | Errores de digitación | Todo salvo los nombres se elige de una lista o se ubica en la cuadrícula; las observaciones se escriben solas a partir del horario | El teclado del teléfono es la mayor fuente de errores |
-| Estados largos (`PENDIENTE_FIRMA_DECLARANTE`) | Etiquetas legibles ("Pendiente de firma del revisor") debajo del título, nunca al lado | Con letra grande no se cortan |
+| Estados largos (`PENDIENTE_FIRMA_DECLARANTE`) | Etiquetas legibles ("Pendiente de firma del superior") debajo del título, nunca al lado | Con letra grande no se cortan |
 | Zonaje necesita mapa y un archivo del TSE | Solo consulta en el teléfono | Elegir un punto en un mapa y adjuntar un PDF en un teléfono es frágil; la web ya lo resuelve |
 | Salir sin guardar (D-01) | El formulario pregunta antes de descartar cambios | §5: nada se pierde sin que la persona lo sepa |
 | Lector de pantalla (D-02) | Cada media hora es un botón para TalkBack con día, hora y contenido | La cuadrícula era el único paso que no se podía hacer sin ver |
@@ -147,7 +147,7 @@ el formato de observaciones y la huella SHA-256. Lo que se reescribió fueron la
 | Firma | Llave de release del equipo, fuera del repositorio. Todas las versiones con la misma llave, así que actualizar encima funciona |
 | Actualizar | Instalar el APK nuevo encima; se conserva la sesión |
 | Volver atrás | Desinstalar e instalar el APK anterior del release; no se pierde nada porque los datos están en Firebase |
-| Cuentas de prueba | Declarante con cursos, declarante sin cursos y revisor, con datos ficticios en el backend real (`entregables/02-aplicacion-distribuible/instalacion.md` §6). Correos y contraseñas por canal privado |
+| Cuentas de prueba | Declarante con cursos, declarante sin cursos y superior, con datos ficticios en el backend real (`entregables/02-aplicacion-distribuible/instalacion.md` §6). Correos y contraseñas por canal privado |
 | Entorno local reproducible | Emuladores de Firebase con las reglas del P1 y datos ficticios (`backend/proyecto1/README.md`) |
 
 El procedimiento paso a paso está en `entregables/02-aplicacion-distribuible/instalacion.md`, y la guía para la persona usuaria en

@@ -34,7 +34,7 @@ Para ver el detalle: `git log --format='%h %ad %an %s' --date=short`.
 | 18/11/2026 | Keity | Conectividad | Sin pérdida silenciosa al perder la señal | `78dd6ee` |
 | 18/11/2026 | Keity | Distribución | Firma de release, versión 2.0.0+2 y script del APK | `0d5753f` |
 | 19/11/2026 | Keity | Correcciones tras probar en el teléfono | Períodos del servidor, cursos una vez, PDF, seguimiento, Validar | `0be0200`, `ef42e47`, `4d3184f`, `1ca1bba`, `9c75d17` |
-| 19/11/2026 | Keity | Firma de la declarante | Firmar y enviar al revisor desde el teléfono | `d397cf0` |
+| 19/11/2026 | Keity | Firma de la declarante | Firmar y enviar al superior desde el teléfono | `d397cf0` |
 | 19/11/2026 | Keity | Accesibilidad con letra grande | Etiquetas que no parten palabras | `f633fb8` |
 | 19/11/2026 | Keity | Pruebas técnicas | Casos CP-01 a CP-08; ejecución de CP-01 a CP-07 con capturas | `aa461cf`, `a3b8640`, `9e07aab`, `e3e8790` |
 | 19/11/2026 | Keity | Revisión e integración | Revisión y merge de los PR #1 a #7 | PR #1–#7 en GitHub |
@@ -42,6 +42,9 @@ Para ver el detalle: `git log --format='%h %ad %an %s' --date=short`.
 | 20/11/2026 | Cristopher | Documentación de entregables | Informe técnico, matriz, informe de pruebas, guía, material de socialización | `94cb429` (PR #8); `entregables/` |
 | 20/11/2026 | Cristopher | Kit de sesiones con usuarios y socialización | Guion de tareas, hoja de sesión, guion del video, formulario, matriz sin observaciones del P1 | PR #9–#15 |
 | 21/11/2026 | Cristopher | Preparación de las sesiones | Nota del P1, tarjetas ficticias, datos del backend, formulario publicado con QR, ensayo de T1–T3 | PR #16, #17, #19 |
+| 22/11/2026 | Cristopher | Orden de los entregables | Mapa de entregables y README raíz como entrada | PR #20, #21 |
+| 24/11/2026 | Keity | Sesiones sin grabación y CP-08 con la 2.0.0+7 | Kit sin audio; CP-08 con el APK publicado; registro de la sesión P1 | `2cfd459`, `912f737`, `cc7cc5b` (PR #22, #23) |
+| 24/11/2026 | Cristopher | Una sola carpeta de entregables | Bitácora en Word, capturas dentro de los PDF, revisión contra el descriptor | `77fae16` (PR #24) |
 
 ### Actividades sin commit
 

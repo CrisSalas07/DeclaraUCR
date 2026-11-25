@@ -217,7 +217,7 @@ class Proyecto1DeclarationRepository implements DeclarationRepository {
     final period = periodDoc.data();
     final problem = switch (()) {
       _ when !profile.hasSuperior =>
-        'Aún no tiene revisor asignado. Administración debe asignarlo en el '
+        'Aún no tiene superior asignado. Administración debe asignarlo en el '
             'sistema web.',
       _ when profile.campusId == null =>
         'Su perfil no tiene sede. Complete su perfil.',

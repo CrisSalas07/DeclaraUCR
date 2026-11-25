@@ -3,7 +3,7 @@
 enum UserRole {
   declarant('declarant', 'Declarante'),
   careerCoordinator('careerCoordinator', 'Coordinación de carrera'),
-  superior('superior', 'Revisor'),
+  superior('superior', 'Superior'),
   hr('hr', 'Recursos Humanos'),
   admin('admin', 'Administración');
 

@@ -30,7 +30,7 @@ void main() {
       expect(find.text(step.replaceAll(' ', '\n')), findsOneWidget);
     }
     expect(
-      find.text('Validada: falta firmarla y enviarla a su revisor.'),
+      find.text('Validada: falta firmarla y enviarla a su superior.'),
       findsOneWidget,
     );
   });

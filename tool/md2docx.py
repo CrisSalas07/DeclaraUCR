@@ -52,7 +52,8 @@ def shade(cell, hex_color):
 
 
 def flush_table(doc, rows, base=Path(".")):
-    rows = [r for r in rows if not re.fullmatch(r"\|?[\s:|-]+\|?", r.strip())]
+    # the separator line has dashes; a row of empty cells is kept so it can be filled in
+    rows = [r for r in rows if not (re.fullmatch(r"\|?[\s:|-]+\|?", r.strip()) and "-" in r)]
     cells = [[c.strip() for c in r.strip().strip("|").split("|")] for r in rows]
     width = max(len(r) for r in cells)
     table = doc.add_table(rows=len(cells), cols=width)

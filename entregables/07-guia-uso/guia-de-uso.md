@@ -39,7 +39,7 @@ Si ya usa la web de declaraciones, su cuenta es la misma: pase a **Iniciar sesi�
    después solo Administración puede cambiarlas.
 
 Si dice *"Ya existe una cuenta con ese correo."*, ya tiene cuenta: inicie sesión con ella. Para que pueda crear
-su declaración, la Coordinación le asigna los cursos y Administración su revisor.
+su declaración, la Coordinación le asigna los cursos y Administración su superior.
 
 ## 4. Iniciar sesión
 
@@ -50,7 +50,7 @@ tiene que reportar un problema.
 
 - *"Correo o contraseña incorrectos."* Revise los dos. Si olvidó la contraseña, toque **¿Olvidó su
   contraseña?** y le llega un enlace al correo.
-- *"No puede continuar"*: su cuenta no es de persona declarante (por ejemplo, es de revisor). Esas funciones
+- *"No puede continuar"*: su cuenta no es de persona declarante (por ejemplo, es de superior). Esas funciones
   están en la web.
 
 ## 5. Inicio
@@ -58,7 +58,7 @@ tiene que reportar un problema.
 ![Inicio](capturas/01-inicio.png)
 
 Inicio le muestra cuántos borradores y declaraciones validadas tiene, y en qué paso va la más reciente:
-**Elaboración → Firmada → Revisor → Recursos Humanos → Aprobada**. Debajo están sus horas por tipo (HC: clases,
+**Elaboración → Firmada → Superior → Recursos Humanos → Aprobada**. Debajo están sus horas por tipo (HC: clases,
 AE: atención a estudiantes, PyE: planificación y evaluación) y el botón para **Continuar**.
 
 Abajo están las cuatro secciones: **Inicio**, **Declaraciones**, **Zonaje** e **Historial**.
@@ -122,16 +122,16 @@ Cuando todo está completo, toque **Validar**. El estado pasa a **Validada**. Si
 
 El ícono del PDF le muestra la declaración en el formulario oficial. Mientras no esté firmada, dice "BORRADOR".
 
-## 9. Firmar y enviar a su revisor
+## 9. Firmar y enviar a su superior
 
 ![Firma](capturas/09-firma.png)
 
-1. Con la declaración validada, toque **Firmar y enviar a mi revisor**.
+1. Con la declaración validada, toque **Firmar y enviar a mi superior**.
 2. Lea el juramento, marque la casilla y firme.
-3. La app le confirma *"Declaración firmada y enviada a su revisor."* En Inicio, el seguimiento pasa a
-   **Revisor**.
+3. La app le confirma *"Declaración firmada y enviada a su superior."* En Inicio, el seguimiento pasa a
+   **Superior**.
 
-Una vez firmada **ya no se edita** desde el teléfono. Si el revisor o RRHH la devuelven, la corrección se hace
+Una vez firmada **ya no se edita** desde el teléfono. Si el superior o RRHH la devuelven, la corrección se hace
 en la web.
 
 ![PDF en revisión](capturas/10-pdf.png)
@@ -170,10 +170,9 @@ Toque el círculo con sus iniciales, arriba a la derecha, y luego **Cerrar sesi�
 | *Las clases las asigna la Coordinación de su carrera: no se mueven.* | Tocó una clase en la cuadrícula | Ubique otras tareas en las horas libres |
 | *Sin conexión. Sus cambios siguen en pantalla…* | No hay internet | Guardar cuando vuelva la señal |
 | *El servidor no confirmó el guardado a tiempo…* | La red está lenta | Revisar la conexión y volver a guardar |
-| *Esta declaración ya fue firmada y no se edita.* | Ya la firmó | Para corregir, que el revisor la devuelva |
+| *Esta declaración ya fue firmada y no se edita.* | Ya la firmó | Para corregir, que el superior la devuelva |
 
 ---
 
-`[COMPLETAR antes de entregar: exportar a PDF y revisar cada paso contra el APK final. Las capturas son de la
-2.0.0+4; si alguna pantalla cambió, reemplazarla. Para la sección 6 conviene agregar una captura del diálogo
-"¿Salir sin guardar?" tomada en el teléfono.]`
+Los textos de esta guía se revisaron contra el código de la app el 24/11/2026: botones, campos y mensajes
+coinciden. Ya usan **«Superior»** en lugar de «Revisor» (P1-03 de la matriz), que llega con la 2.0.0+8. `[COMPLETAR con la 2.0.0+8: cambiar las capturas que muestran «Revisor» (Inicio y Firma) y comparar el resto (son de la 2.0.0+4).]`

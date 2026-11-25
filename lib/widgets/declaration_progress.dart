@@ -2,7 +2,7 @@ import 'package:declara_ucr/models/declaration_status.dart';
 import 'package:flutter/material.dart';
 
 /// Where a declaration is in its journey, like a parcel tracker:
-/// Elaboración → Firmada → Revisor → Recursos Humanos → Aprobada. The same
+/// Elaboración → Firmada → Superior → Recursos Humanos → Aprobada. The same
 /// steps as the web of the Proyecto 1 (`DeclarationProgress` and
 /// `StepProgress` of DeclaraHorario). The declarant signs in the phone or the
 /// web; a returned declaration is corrected in the web (a new version).
@@ -14,11 +14,11 @@ class DeclarationProgress extends StatelessWidget {
 
   final DeclarationStatus status;
 
-  /// Steps of the process, in order (the visible names: "Revisor").
+  /// Steps of the process, in order (the visible names: "Superior").
   static const List<String> steps = [
     'Elaboración',
     'Firmada',
-    'Revisor',
+    'Superior',
     'Recursos Humanos',
     'Aprobada',
   ];
@@ -43,12 +43,12 @@ class DeclarationProgress extends StatelessWidget {
     DeclarationStatus.draft => 'En elaboración: complete y valide su horario.',
     DeclarationStatus.validated ||
     DeclarationStatus.pendingDeclarantSignature =>
-      'Validada: falta firmarla y enviarla a su revisor.',
+      'Validada: falta firmarla y enviarla a su superior.',
     DeclarationStatus.signedByDeclarant ||
     DeclarationStatus.pendingSupervisorSignature =>
-      'Firmada y enviada: su revisor la está revisando.',
+      'Firmada y enviada: su superior la está revisando.',
     DeclarationStatus.signedBySupervisor || DeclarationStatus.sentToHr =>
-      'Aprobada por su revisor: llegó a Recursos Humanos.',
+      'Aprobada por su superior: llegó a Recursos Humanos.',
     DeclarationStatus.receivedByHr =>
       'Recursos Humanos la recibió y la está revisando.',
     DeclarationStatus.closed => 'Aprobada y firmada por Recursos Humanos.',

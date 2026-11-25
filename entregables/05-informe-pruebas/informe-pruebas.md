@@ -203,7 +203,7 @@ de uso de 1 a 5 y comentarios abiertos (§8), además de utilidad, claridad y fu
 
 | Participante | Facilidad (1–5) | Comentario (con sus palabras) |
 |---|---|---|
-| P1 | `[COMPLETAR: copiar de Google Forms › Respuestas]` | «No me resultó nada difícil, solo que al inicio no sabía cómo hacer la declaración, pero eso se debe a que nunca había hecho una.» |
+| P1 | 5 (utilidad 5, claridad 5, funcionamiento 5) | «La verdad no me pareció difícil, lo entendí muy bien […] no tuve alguna dificultad.» Cambiaría: que el **Puesto** no deje elegir uno que no es el suyo (eligió Catedrático siendo Interino Licenciado). «Felicitarles, me gustó la app, muy entendible!» |
 | P2 | | |
 | P3 | | |
 | **Promedio** | | |
@@ -213,7 +213,7 @@ de uso de 1 a 5 y comentarios abiertos (§8), además de utilidad, claridad y fu
 | Id | Problema observado | Quién y en qué tarea | Impacto | Prioridad | Acción |
 |---|---|---|---|---|---|
 | U-01 | No sabía cómo empezar la declaración | P1, T1 | Necesitó ayuda para empezar | Baja | `[COMPLETAR: decidir con P2 y P3; si se repite, sube la prioridad]` |
-| U-02 | | | | | |
+| U-02 | La lista de **Puesto** deja elegir cualquier puesto, aunque no sea el de la persona (lo dijo P1 en el formulario) | P1, T1 | Una declaración con un puesto equivocado llega al revisor; hoy solo el revisor lo detecta | Media | `[COMPLETAR: decidir con P2 y P3]` |
 
 Qué vigilar en particular (son los puntos donde el recorrido sugiere que alguien se puede trabar):
 

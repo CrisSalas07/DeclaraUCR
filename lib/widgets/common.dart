@@ -21,7 +21,7 @@ String clockLabel(int minutes) {
 }
 
 /// Status of a declaration (R1), with the web's label: "Pendiente de firma
-/// del revisor", not PENDIENTE_FIRMA_SUPERIOR. A label that does not fit
+/// del superior", not PENDIENTE_FIRMA_SUPERIOR. A label that does not fit
 /// goes to a second line instead of being cut.
 class StatusChip extends StatelessWidget {
   const StatusChip(this.status, {super.key, this.onDark = false});

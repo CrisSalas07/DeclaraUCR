@@ -55,7 +55,7 @@ Future<Declaration?> _newDeclaration(BuildContext context) async {
       const <Declaration>[];
   if (profile != null && !profile.hasSuperior) {
     tell(
-      'Aún no tiene revisor asignado. Administración debe asignarlo en el '
+      'Aún no tiene superior asignado. Administración debe asignarlo en el '
       'sistema web.',
     );
     return null;

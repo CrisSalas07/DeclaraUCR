@@ -71,7 +71,7 @@ zonajeRequests/{id}                             identifications/{CEDULA_número}
 
 | Acción en el móvil | Hoy | En el Proyecto 1 |
 |---|---|---|
-| Crear borrador | `set` con `BORRADOR` | Un lote: declaración + versión 1 + evento `DECLARACION_CREADA` + reserva del período. Requiere período habilitado, asignación de Coordinación y revisor asignado |
+| Crear borrador | `set` con `BORRADOR` | Un lote: declaración + versión 1 + evento `DECLARACION_CREADA` + reserva del período. Requiere período habilitado, asignación de Coordinación y superior asignado |
 | Guardar borrador | `set` del documento completo | Escrituras en la versión (`observations`, `declarantSnapshot`) y en `appointments` / `externalJobs`. Solo en `BORRADOR` |
 | Validar | `set` con `VALIDADA` | Transacción `BORRADOR → VALIDADA` con evento `VALIDACION_EJECUTADA` y `hoursSummary` + `validationPassed` en la versión |
 | Editar una validada | `set` con `BORRADOR` | Transición `VALIDADA → BORRADOR` con evento `HORARIO_MODIFICADO` |
@@ -115,12 +115,12 @@ Son incompatibles: el zonaje del P1 necesita mapa, Storage y el régimen del per
   la web (mapa, certificación del TSE y distancia por carretera); el teléfono muestra el estado, las distancias y
   la respuesta de RRHH. No es uno de los tres procesos obligatorios.
 - **C. Registro.** Propuesta: registro en el móvil con los campos del P1 (nombre, cédula, teléfono, correo) y
-  "Completa tu perfil" (sede y carrera). El revisor lo asigna administración en la web.
+  "Completa tu perfil" (sede y carrera). El superior lo asigna administración en la web.
 - **D. Tipo de nombramiento (Interino/Propiedad).** **Decidido: se quitó del móvil.** El P1 no lo guarda,
   ningún enunciado lo exige y el "tipo de jornada o nombramiento" del laboratorio lo cubre la jornada del
   nombramiento (`workload`, p. ej. `1/4 TC`).
 - **E. Datos de prueba.** Para recorrer los procesos se necesitan, en el proyecto real: una sede y carrera, un
-  período habilitado, una persona declarante con revisor y una asignación de cursos de la Coordinación. Se
+  período habilitado, una persona declarante con superior y una asignación de cursos de la Coordinación. Se
   pueden crear desde la web con cuentas de administración y de Coordinación.
 
 ## 6. Orden propuesto
