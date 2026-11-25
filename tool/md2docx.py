@@ -157,8 +157,8 @@ def to_pdf(docx: Path, pdf: Path):
 
 if __name__ == "__main__":
     root = Path(sys.argv[1]).resolve()
-    for md in sorted(list(root.glob("0*/*.md")) + list(root.glob("0*/sesiones-usuarios/*.md"))):
-        stem = "kit-sesiones-usuarios" if md.stem == "README" else md.stem
+    for md in sorted(root.glob("0*/*.md")):
+        stem = md.stem
         if "![" not in md.read_text(encoding="utf-8"):
             convert(md, md.with_name(f"{stem}.docx"))
             print(f"{stem}.docx"); continue

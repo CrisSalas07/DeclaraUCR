@@ -9,22 +9,24 @@ same Firebase backend, schema and rules**.
 
 On the phone a declarant signs up, creates a declaration for the open period,
 places the coordination's courses and their attention and planning hours on a
-half-hour grid, validates it, signs it and sends it to the reviewer; they can
-also see the PDF, the history and the zonaje requests. Reviewer, HR,
+half-hour grid, validates it, signs it and sends it to their superior; they can
+also see the PDF, the history and the zonaje requests. The superior, HR,
 coordination and administration stay in the web.
 
 Code and technical docs are in English; everything the user sees, and the
 Proyecto 2 deliverables, are in Spanish.
 
-## Current status (22/11/2026)
+## Current status (24/11/2026)
 
-- **Version 2.0.0+7**, released on GitHub ([`v2.0.0+7`](https://github.com/CrisSalas07/DeclaraUCR/releases/tag/v2.0.0%2B7)), signed with the team
-  key, against the real Proyecto 1 backend.
+- **Version 2.0.0+7** is the released one ([`v2.0.0+7`](https://github.com/CrisSalas07/DeclaraUCR/releases/tag/v2.0.0%2B7)), signed with the team
+  key, against the real Proyecto 1 backend; the user sessions use it.
+- `main` is already at **2.0.0+8**, not released yet: the "Revisor" role is
+  now called "Superior" (Proyecto 1 feedback). It ships after the user
+  sessions, with the fixes they bring.
 - 109 automated tests pass; technical cases CP-01 to CP-07 passed, CP-08
   (clean install on another phone) pending.
-- Next: the three user sessions, the socialization video, at least two
-  improvements from the feedback (2.0.0+8) and the final tag. The detailed
-  to-do list is in [`entregables/README.md`](entregables/README.md) §4.
+- User sessions: P1 and P2 done (24/11/2026), P3 pending. Then the
+  socialization video and the final tag.
 
 ## Where to find what
 
@@ -32,8 +34,7 @@ Each README covers only its folder; this one is the entry point.
 
 | Document | What it is for |
 |---|---|
-| [`entregables/README.md`](entregables/README.md) | The eight Proyecto 2 deliverables: map of the folder, what to use for the user sessions and the video, what is left and the risks |
-| [`entregables/05-informe-pruebas/sesiones-usuarios/README.md`](entregables/05-informe-pruebas/sesiones-usuarios/README.md) | Kit to run the user sessions, step by step |
+| [`entregables/README.md`](entregables/README.md) | The eight Proyecto 2 deliverables (§11 of the brief) and what is in each folder |
 | [`entregables/03-informe-tecnico/informe-tecnico.md`](entregables/03-informe-tecnico/informe-tecnico.md) | Scope, architecture, mobile decisions, integration, deployment and known limitations (for the professor) |
 | [`entregables/02-aplicacion-distribuible/instalacion.md`](entregables/02-aplicacion-distribuible/instalacion.md) | Install, update and roll back the APK; build and release a version; prepare the real backend |
 | [`entregables/05-informe-pruebas/pruebas-tecnicas.md`](entregables/05-informe-pruebas/pruebas-tecnicas.md) | Technical test cases CP-01 to CP-08 with evidence ([`entregables/05-informe-pruebas/capturas/`](entregables/05-informe-pruebas/capturas)) |
