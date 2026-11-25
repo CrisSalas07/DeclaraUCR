@@ -7,7 +7,7 @@ y evidencia.
 
 | | |
 |---|---|
-| **Versión evaluada** | 2.0.0+5 · commit `fc21a84` ([release v2.0.0+5](https://github.com/CrisSalas07/DeclaraUCR/releases/tag/v2.0.0%2B5)) |
+| **Versión evaluada** | CP-01 a CP-07: 2.0.0+5 · commit `fc21a84` ([release v2.0.0+5](https://github.com/CrisSalas07/DeclaraUCR/releases/tag/v2.0.0%2B5)). CP-08: 2.0.0+7 · commit `0caae96` ([release v2.0.0+7](https://github.com/CrisSalas07/DeclaraUCR/releases/tag/v2.0.0%2B7)), la versión de las sesiones con usuarios |
 | **Backend** | Firebase del Proyecto 1 (`declarahorario-b186f`), el mismo de la web DeclaraHorario |
 | **Cuentas** | Las de prueba de [INSTALACION.md](INSTALACION.md) §2 (los correos y las contraseñas se entregan aparte) |
 | **Datos** | Ficticios (sede, carrera, período y cursos de [INSTALACION.md](INSTALACION.md) §6) |
@@ -18,7 +18,7 @@ y evidencia.
 emuladores con las reglas del Proyecto 1 y los datos ficticios de `backend/proyecto1/seed.mjs` (cuentas
 `docente`, `docente2` y `revisor`). Así las capturas no muestran datos de las cuentas reales del equipo y los
 casos se pueden repetir desde cero. CP-03 y CP-06 se ejecutaron el mismo día con el APK publicado y el backend real (CP-06 también
-en la web del Proyecto 1); CP-08 también se ejecuta así.
+en la web del Proyecto 1); CP-08 también se ejecuta así, con el APK publicado de la 2.0.0+7.
 En las capturas se taparon los íconos de notificaciones de la barra de estado del teléfono.
 
 Cómo llenar cada caso: **Resultado obtenido** describe lo que pasó; **Estado** es *Aprobado*, *Fallido* o
@@ -156,11 +156,11 @@ que el revisor lee exactamente lo firmado y que no se firma dos veces.
 
 | | |
 |---|---|
-| **Precondiciones** | Un teléfono Android 7.0 o superior **distinto del usado para desarrollar** y sin DeclaraUCR. El APK `DeclaraUCR-v2.0.0+7-0caae96.apk` del release y, para el paso 4, el de la 2.0.0+6 |
-| **Pasos** | 1. Descargar e instalar el APK siguiendo [INSTALACION.md](INSTALACION.md) §1.<br>2. Abrirla y revisar la versión en el inicio de sesión.<br>3. Iniciar sesión con la declarante con cursos y abrir su declaración.<br>4. Volver a la versión anterior y otra vez a la 2.0.0+7 ([INSTALACION.md](INSTALACION.md) §3 y §4) |
+| **Precondiciones** | Un teléfono Android 7.0 o superior **distinto del usado para desarrollar** y sin DeclaraUCR. El APK `DeclaraUCR-v2.0.0+7-0caae96.apk` del release y, para el paso 4, el de la 2.0.0+6 (`DeclaraUCR-v2.0.0+6-fc4caba.apk`) |
+| **Pasos** | 1. Descargar e instalar el APK siguiendo [INSTALACION.md](INSTALACION.md) §1.<br>2. Abrirla y revisar la versión en el inicio de sesión.<br>3. Iniciar sesión con la declarante con cursos y abrir su declaración.<br>4. Volver a la versión anterior (2.0.0+6) y otra vez a la 2.0.0+7 ([INSTALACION.md](INSTALACION.md) §4 y §3) |
 | **Resultado esperado** | 1: se instala sin errores de firma.<br>2: al pie, "Versión 2.0.0+7 · 0caae96".<br>3: entra y muestra los datos del backend real.<br>4: cada cambio de versión funciona como indica la guía, sin perder la sesión ni los datos guardados en el servidor |
 | **Resultado obtenido** | |
-| **Versión** | 2.0.0+7 (pendiente de ejecutar) |
+| **Versión** | 2.0.0+7 (`0caae96`), APK publicado, backend real (pendiente de ejecutar) |
 | **Evidencia** | `CP-08-1.png` (versión en el inicio de sesión), modelo del teléfono y versión de Android |
 | **Estado** | Pendiente |
 
