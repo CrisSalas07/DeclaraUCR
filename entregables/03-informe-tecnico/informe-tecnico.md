@@ -147,10 +147,10 @@ el formato de observaciones y la huella SHA-256. Lo que se reescribió fueron la
 | Firma | Llave de release del equipo, fuera del repositorio. Todas las versiones con la misma llave, así que actualizar encima funciona |
 | Actualizar | Instalar el APK nuevo encima; se conserva la sesión |
 | Volver atrás | Desinstalar e instalar el APK anterior del release; no se pierde nada porque los datos están en Firebase |
-| Cuentas de prueba | Declarante con cursos, declarante sin cursos y revisor, con datos ficticios en el backend real (`docs/INSTALACION.md` §6). Correos y contraseñas por canal privado |
+| Cuentas de prueba | Declarante con cursos, declarante sin cursos y revisor, con datos ficticios en el backend real (`entregables/02-aplicacion-distribuible/instalacion.md` §6). Correos y contraseñas por canal privado |
 | Entorno local reproducible | Emuladores de Firebase con las reglas del P1 y datos ficticios (`backend/proyecto1/README.md`) |
 
-El procedimiento paso a paso está en `docs/INSTALACION.md`, y la guía para la persona usuaria en
+El procedimiento paso a paso está en `entregables/02-aplicacion-distribuible/instalacion.md`, y la guía para la persona usuaria en
 `entregables/07-guia-uso/`.
 
 ## 7. Calidad y pruebas
@@ -176,4 +176,4 @@ El procedimiento paso a paso está en `docs/INSTALACION.md`, y la guía para la 
 - Descriptor del Proyecto 2, IF0009, II ciclo 2026.
 - *Manual de identidad visual*, Universidad de Costa Rica, ODI, 3.ª ed., 2019.
 - *Aplicación accesible de la paleta institucional en medios digitales de la UCR*, Centro de Informática, 2025.
-- `docs/COMPARACION_BACKEND_P1.md` (comparación de esquemas web y móvil).
+- `entregables/03-informe-tecnico/comparacion-backend-p1.md` (comparación de esquemas web y móvil).

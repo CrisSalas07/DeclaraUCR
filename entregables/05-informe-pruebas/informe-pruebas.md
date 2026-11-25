@@ -27,7 +27,7 @@ porque ya trae la corrección de D-01, que afecta justo la tarea 1 del guion.
 ## 2. Casos técnicos (§7)
 
 El detalle completo de cada caso (precondiciones, pasos, esperado, obtenido, versión y evidencia) está en
-[`docs/PRUEBAS.md`](../../docs/PRUEBAS.md) y las capturas en `docs/pruebas/`. Este es el resumen:
+[`entregables/05-informe-pruebas/pruebas-tecnicas.md`](pruebas-tecnicas.md) y las capturas en `entregables/05-informe-pruebas/capturas/`. Este es el resumen:
 
 | Caso | Qué cubre del §7 | Resultado | Evidencia |
 |---|---|---|---|
@@ -41,7 +41,7 @@ El detalle completo de cada caso (precondiciones, pasos, esperado, obtenido, ver
 | CP-08 | Instalación desde cero en otro teléfono | **Pendiente** `[COMPLETAR]` | `CP-08-1.png` + modelo y versión de Android |
 
 **CP-08 es lo único que falta para cerrar §7.** Se hace con un teléfono que no sea el de desarrollo (puede ser
-el de una de las personas de las sesiones, antes de empezar). Los pasos ya están escritos en `docs/PRUEBAS.md`.
+el de una de las personas de las sesiones, antes de empezar). Los pasos ya están escritos en `entregables/05-informe-pruebas/pruebas-tecnicas.md`.
 
 ## 3. Pruebas automatizadas
 
@@ -80,7 +80,7 @@ casos escritos no buscan.
   `docente`, `docente2` y `revisor`.
 - **Límite:** no es el APK en un teléfono. Sirve para encontrar defectos de lógica y de accesibilidad, no
   sustituye CP-08.
-- **Evidencia:** `entregables/05-informe-pruebas/evidencias/recorrido-2026-11-20/`.
+- **Evidencia:** `entregables/05-informe-pruebas/capturas/`.
 
 | # | Qué se hizo | Qué pasó | Captura |
 |---|---|---|---|
@@ -122,7 +122,7 @@ Observaciones que **no** son defectos de la app (se anotan para no confundirlas)
 
 Defectos anteriores (encontrados en el teléfono antes de la 2.0.0+5), ya corregidos y comprobados: período
 cerrado que seguía apareciendo, sección de cursos duplicada, PDF sin zoom, palabras cortadas con letra grande.
-Detalle en `docs/PRUEBAS.md`.
+Detalle en `entregables/05-informe-pruebas/pruebas-tecnicas.md`.
 
 ## 6. Pruebas con usuarios (§8)
 
@@ -130,7 +130,7 @@ Detalle en `docs/PRUEBAS.md`.
 
 El paso a paso (cuentas, qué revisar antes de cada sesión, nombres de las evidencias) y la bitácora que se
 llena en cada sesión están en [`sesiones-usuarios/`](sesiones-usuarios/README.md). Las evidencias van en
-`evidencias/sesiones-usuarios/`.
+`capturas/`.
 
 
 - **Versión:** 2.0.0+7, la misma para todas las sesiones.
@@ -167,9 +167,9 @@ Sin nombres ni cédulas: solo la relación con el proceso. Al menos una persona 
 
 | Id | Relación con el contexto de uso | ¿Perfil previsto? | Teléfono que usó | Fecha | Bitácora |
 |---|---|---|---|---|---|
-| P1 | `[COMPLETAR: p. ej. "docente interina de la Sede del Sur, llena la declaración cada ciclo"]` | Sí | `[COMPLETAR]` | `[COMPLETAR]` | `bitacora-sesiones.md` §3 |
-| P2 | `[COMPLETAR: p. ej. "estudiante de Informática Empresarial, no conoce el trámite"]` | No | `[COMPLETAR]` | `[COMPLETAR]` | `bitacora-sesiones.md` §4 |
-| P3 | `[COMPLETAR]` | `[COMPLETAR]` | `[COMPLETAR]` | `[COMPLETAR]` | `bitacora-sesiones.md` §5 |
+| P1 | Estudiante; nunca ha llenado una declaración jurada de jornada; usa el teléfono casi nunca para trámites | No | Honor 200 Lite, de la persona | 24/11/2026 | `bitacora-sesiones.docx` §3 |
+| P2 | `[COMPLETAR]` | `[COMPLETAR: P2 o P3 tiene que ser docente o conocer el trámite]` | `[COMPLETAR]` | `[COMPLETAR]` | `bitacora-sesiones.docx` §4 |
+| P3 | `[COMPLETAR]` | `[COMPLETAR]` | `[COMPLETAR]` | `[COMPLETAR]` | `bitacora-sesiones.docx` §5 |
 
 ### 6.4 Resultados por tarea
 
@@ -177,12 +177,12 @@ Tiempo aproximado en minutos. Éxito: **Sí**, **Con ayuda** o **No**.
 
 | Participante | Tarea | Éxito | Tiempo | Errores observados | Ayudas dadas | Evidencia |
 |---|---|---|---|---|---|---|
-| P1 | T0 | | | | | `P1-T0-inicio.png` |
+| P1 | T0 | Con ayuda | No registrado (terminó 4:24 p. m.) | — | Sí; el detalle no se anotó | `P1-T0-inicio.png` |
 | P2 | T0 | | | | | `P2-T0-inicio.png` |
 | P3 | T0 | | | | | `P3-T0-inicio.png` |
-| P1 | T1 | | | | | `P1-T1-borrador.png` |
-| P1 | T2 | | | | | `P1-T2-resumen.png` |
-| P1 | T3 | | | | | `P1-T3-estado.png` |
+| P1 | T1 | Con ayuda | No registrado (terminó 4:50 p. m.) | Al inicio no sabía cómo empezar la declaración (nunca había hecho una) | Sí; el detalle no se anotó | `P1-T1-borrador.png` |
+| P1 | T2 | Con ayuda | No registrado (terminó 4:52 p. m.) | — | Sí; el detalle no se anotó | `P1-T2-resumen.png` |
+| P1 | T3 | Con ayuda | No registrado (terminó 4:52 p. m.) | Llegó al resumen: **Borrador**, «Faltan 1,5 h de planificación de IF0011», Validar deshabilitado | Sí; el detalle no se anotó | `P1-T3-estado.png` |
 | P2 | T1 | | | | | `P2-T1-borrador.png` |
 | P2 | T2 | | | | | `P2-T2-resumen.png` |
 | P2 | T3 | | | | | `P2-T3-estado.png` |
@@ -190,15 +190,20 @@ Tiempo aproximado en minutos. Éxito: **Sí**, **Con ayuda** o **No**.
 | P3 | T2 | | | | | `P3-T2-resumen.png` |
 | P3 | T3 | | | | | `P3-T3-estado.png` |
 
+**Diferencias de P1 con el guion.** La cuenta recibió el curso **IF0011** (1/4 TC) en lugar de IF0009; las
+2 h de atención de T2 son las mismas. La persona usó su nombre y su cédula reales en lugar de los de la
+tarjeta: en las capturas están tapados con barras grises. Los tiempos de inicio no se anotaron; la hora de
+fin es la de la barra de estado de cada captura.
+
 ### 6.5 Percepción
 
 Al terminar, cada persona llena el formulario de retroalimentación marcando su número (P1, P2 o P3): facilidad
 de uso de 1 a 5 y comentarios abiertos (§8), además de utilidad, claridad y funcionamiento. Evidencia:
-`evidencias/sesiones-usuarios/respuestas-formulario.pdf`.
+`capturas/respuestas-formulario.pdf`.
 
 | Participante | Facilidad (1–5) | Comentario (con sus palabras) |
 |---|---|---|
-| P1 | | |
+| P1 | `[COMPLETAR: copiar de Google Forms › Respuestas]` | «No me resultó nada difícil, solo que al inicio no sabía cómo hacer la declaración, pero eso se debe a que nunca había hecho una.» |
 | P2 | | |
 | P3 | | |
 | **Promedio** | | |
@@ -207,7 +212,7 @@ de uso de 1 a 5 y comentarios abiertos (§8), además de utilidad, claridad y fu
 
 | Id | Problema observado | Quién y en qué tarea | Impacto | Prioridad | Acción |
 |---|---|---|---|---|---|
-| U-01 | | | | | |
+| U-01 | No sabía cómo empezar la declaración | P1, T1 | Necesitó ayuda para empezar | Baja | `[COMPLETAR: decidir con P2 y P3; si se repite, sube la prioridad]` |
 | U-02 | | | | | |
 
 Qué vigilar en particular (son los puntos donde el recorrido sugiere que alguien se puede trabar):
@@ -229,3 +234,41 @@ El descriptor pide volver a probar los problemas de mayor impacto con al menos u
 
 `[COMPLETAR al terminar las sesiones: 3 o 4 líneas. Qué tan bien completaron las tareas, qué fue lo más
 difícil, qué se corrigió y qué quedó pendiente con su justificación.]`
+
+## Anexo: capturas
+
+Las de los casos técnicos están en `pruebas-tecnicas.pdf`.
+
+### Recorrido exploratorio (§4)
+
+| R-01-inicio-sesion | R-02-contrasena-vacia | R-03-credenciales-incorrectas |
+|---|---|---|
+| ![R-01-inicio-sesion](capturas/R-01-inicio-sesion.png) | ![R-02-contrasena-vacia](capturas/R-02-contrasena-vacia.png) | ![R-03-credenciales-incorrectas](capturas/R-03-credenciales-incorrectas.png) |
+
+| R-04-inicio-declarante | R-05-lista-declaraciones | R-06-nueva-declaracion |
+|---|---|---|
+| ![R-04-inicio-declarante](capturas/R-04-inicio-declarante.png) | ![R-05-lista-declaraciones](capturas/R-05-lista-declaraciones.png) | ![R-06-nueva-declaracion](capturas/R-06-nueva-declaracion.png) |
+
+| R-07-borrador-sin-puesto | R-08-lista-de-puestos | R-09-horario-y-tareas |
+|---|---|---|
+| ![R-07-borrador-sin-puesto](capturas/R-07-borrador-sin-puesto.png) | ![R-08-lista-de-puestos](capturas/R-08-lista-de-puestos.png) | ![R-09-horario-y-tareas](capturas/R-09-horario-y-tareas.png) |
+
+| R-10-borrador-tras-recargar | R-11-zonaje | R-12-historial |
+|---|---|---|
+| ![R-10-borrador-tras-recargar](capturas/R-10-borrador-tras-recargar.png) | ![R-11-zonaje](capturas/R-11-zonaje.png) | ![R-12-historial](capturas/R-12-historial.png) |
+
+| R-13-perfil | R-14-revisor-sin-acceso |
+|---|---|
+| ![R-13-perfil](capturas/R-13-perfil.png) | ![R-14-revisor-sin-acceso](capturas/R-14-revisor-sin-acceso.png) |
+
+### Defecto D-01 antes y después (§4 y §5)
+
+| D-01-antes-1-puesto-elegido | D-01-antes-2-sale-sin-aviso | D-01-antes-3-puesto-perdido | D-01-despues-dialogo |
+|---|---|---|---|
+| ![D-01-antes-1-puesto-elegido](capturas/D-01-antes-1-puesto-elegido.png) | ![D-01-antes-2-sale-sin-aviso](capturas/D-01-antes-2-sale-sin-aviso.png) | ![D-01-antes-3-puesto-perdido](capturas/D-01-antes-3-puesto-perdido.png) | ![D-01-despues-dialogo](capturas/D-01-despues-dialogo.png) |
+
+### Sesiones con usuarios (§6)
+
+| P1-T0-inicio | P1-T1-borrador | P1-T2-resumen | P1-T3-estado |
+|---|---|---|---|
+| ![P1-T0-inicio](capturas/P1-T0-inicio.png) | ![P1-T1-borrador](capturas/P1-T1-borrador.png) | ![P1-T2-resumen](capturas/P1-T2-resumen.png) | ![P1-T3-estado](capturas/P1-T3-estado.png) |

@@ -33,8 +33,8 @@ encontró. Solo se anotan puntos reales y comprobables; no se inventan observaci
 
 | # | Origen | Observación | Acción concreta | Prioridad | Evidencia | Estado |
 |---|---|---|---|---|---|---|
-| P1-01 | Revisión del equipo | El sistema solo se usaba desde la computadora; la persona declarante no podía llenar ni firmar desde el teléfono | Módulo móvil con los tres procesos y la firma de la declarante, sobre el mismo backend | Alta | Este proyecto: release v2.0.0+7; CP-01 a CP-07 (`docs/PRUEBAS.md`) | Verificada |
-| P1-02 | Revisión del equipo | El estado `VALIDADA` lo decide el cliente; las reglas validan formato y permisos, no recalculan horas | Pendiente con justificación: requiere una Cloud Function (plan Blaze de Firebase). Propuesta: función que recalcule horas y traslapes y rechace un `VALIDADA` inválido | Media | Informe técnico §8; `docs/INSTALACION.md` §7 | Pendiente con justificación |
+| P1-01 | Revisión del equipo | El sistema solo se usaba desde la computadora; la persona declarante no podía llenar ni firmar desde el teléfono | Módulo móvil con los tres procesos y la firma de la declarante, sobre el mismo backend | Alta | Este proyecto: release v2.0.0+7; CP-01 a CP-07 (`entregables/05-informe-pruebas/pruebas-tecnicas.md`) | Verificada |
+| P1-02 | Revisión del equipo | El estado `VALIDADA` lo decide el cliente; las reglas validan formato y permisos, no recalculan horas | Pendiente con justificación: requiere una Cloud Function (plan Blaze de Firebase). Propuesta: función que recalcule horas y traslapes y rechace un `VALIDADA` inválido | Media | Informe técnico §8; `entregables/02-aplicacion-distribuible/instalacion.md` §7 | Pendiente con justificación |
 
 ## 3. Observaciones de la socialización
 
@@ -60,8 +60,8 @@ trazabilidad quede completa.
 | T-01 | Prueba en teléfono (2.0.0+3) | Un período cerrado en la web seguía apareciendo al crear una declaración | Leer los períodos del servidor, no de la copia del teléfono | Alta | Commit `0be0200`; prueba "a period closed after a first read is no longer offered" | Verificada |
 | T-02 | Prueba en teléfono (2.0.0+3) | La sección de cursos aparecía dos veces | Mostrarla una sola vez | Media | Commit `ef42e47` | Verificada |
 | T-03 | Prueba en teléfono (2.0.0+3) | La vista previa del PDF no permitía acercar | Zoom con pellizco y doble toque | Media | Commit `4d3184f` | Verificada |
-| T-04 | Prueba en teléfono (2.0.0+5) | Con la letra del sistema al 110 % se cortaban palabras en el seguimiento | Etiquetas que nunca parten una palabra | Media | Commit `f633fb8`; `docs/capturas/01-inicio.png` | Verificada |
-| T-05 | Recorrido 20/11/2026 (D-01) | Salir con Atrás perdía los cambios sin avisar | Diálogo "¿Salir sin guardar?" | Alta | Prueba "leaving with unsaved changes asks first (D-01)"; `05-informe-pruebas/evidencias/recorrido-2026-11-20/D-01-*.png`; commit `afeb1ee` (PR #8) | Verificada |
+| T-04 | Prueba en teléfono (2.0.0+5) | Con la letra del sistema al 110 % se cortaban palabras en el seguimiento | Etiquetas que nunca parten una palabra | Media | Commit `f633fb8`; `entregables/07-guia-uso/capturas/01-inicio.png` | Verificada |
+| T-05 | Recorrido 20/11/2026 (D-01) | Salir con Atrás perdía los cambios sin avisar | Diálogo "¿Salir sin guardar?" | Alta | Prueba "leaving with unsaved changes asks first (D-01)"; `05-informe-pruebas/capturas/D-01-*.png`; commit `afeb1ee` (PR #8) | Verificada |
 | T-06 | Recorrido 20/11/2026 (D-02) | La cuadrícula no se podía usar con TalkBack | Cada media hora es un botón con día, hora y contenido | Alta | Prueba "with TalkBack, each half hour says what it has and places (D-02)"; commit `afeb1ee` (PR #8) | Verificada (falta repetirla en el teléfono) |
 | T-07 | Recorrido 20/11/2026 (D-03) | Chips de horas leídos como casillas | Leerlos como texto | Baja | `lib/screens/home_screen.dart` (`_HoursChip`); commit `afeb1ee` (PR #8) | Verificada |
 | T-08 | Ensayo de las sesiones 21/11/2026 (2.0.0+7) | Después de guardar un borrador existente, la lista de declaraciones sigue mostrando las horas anteriores hasta reiniciar la app (lo guardado en el servidor sí es correcto) | Que la lista se actualice al guardar (`watchAll` en `proyecto1_declaration_repository.dart`) | Media | Ensayo de T1–T3, 21/11/2026 | Pendiente: va en la 2.0.0+8; las sesiones usan la 2.0.0+7 para que todas tengan la misma versión (§8) |
@@ -71,3 +71,7 @@ trazabilidad quede completa.
 `[COMPLETAR al cierre]` Revisión del P1: sin observaciones del docente; __ de la revisión del equipo (__ verificadas, __ pendientes con
 justificación) y __ de la socialización (__ aceptadas, __ parcialmente, __ descartadas; __ mejoras
 implementadas).
+
+## Anexo: evaluación del Proyecto 1
+
+![Evaluación del Proyecto 1](retroalimentacion-p1.png)

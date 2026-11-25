@@ -42,12 +42,12 @@ docente pueda recorrer los tres procesos.]`
 ## 4. Datos ficticios
 
 Sede, carrera, período, cursos y franjas de clase son ficticios y se crean desde la web del Proyecto 1 con una
-cuenta de Administración (pasos en `docs/INSTALACION.md` §6). Para pruebas locales repetibles existen además
+cuenta de Administración (pasos en `entregables/02-aplicacion-distribuible/instalacion.md` §6). Para pruebas locales repetibles existen además
 los datos de `backend/proyecto1/seed.mjs` (emuladores).
 
 ## 5. Instalación, actualización y vuelta atrás
 
-Procedimiento completo: `docs/INSTALACION.md` §1 a §4. Para la persona usuaria, con capturas: la guía de uso
+Procedimiento completo: `entregables/02-aplicacion-distribuible/instalacion.md` §1 a §4. Para la persona usuaria, con capturas: la guía de uso
 (`entregables/07-guia-uso/`). En resumen:
 
 1. **Instalar:** descargar el APK del release, abrirlo, permitir "instalar apps de fuentes desconocidas" y, si
@@ -59,7 +59,7 @@ Procedimiento completo: `docs/INSTALACION.md` §1 a §4. Para la persona usuaria
 
 ## 6. Instalación desde cero en otro dispositivo (§6)
 
-`[COMPLETAR]` con el resultado de CP-08 (`docs/PRUEBAS.md`):
+`[COMPLETAR]` con el resultado de CP-08 (`entregables/05-informe-pruebas/pruebas-tecnicas.md`):
 
 | | |
 |---|---|
@@ -70,11 +70,11 @@ Procedimiento completo: `docs/INSTALACION.md` §1 a §4. Para la persona usuaria
 | ¿Se instaló sin errores? | |
 | ¿Muestra la versión correcta al pie? | |
 | ¿Entró con la cuenta de prueba y vio sus datos? | |
-| Evidencia | `docs/pruebas/CP-08-1.png` |
+| Evidencia | `entregables/05-informe-pruebas/capturas/CP-08-1.png` |
 
 ## 7. Limitaciones conocidas
 
-Ver `docs/INSTALACION.md` §7 y el informe técnico §8. Las más importantes para quien evalúa:
+Ver `entregables/02-aplicacion-distribuible/instalacion.md` §7 y el informe técnico §8. Las más importantes para quien evalúa:
 
 - La app es solo para personas declarantes; revisión, RRHH y Administración se hacen en la web.
 - El zonaje se consulta en el teléfono, pero se solicita en la web.

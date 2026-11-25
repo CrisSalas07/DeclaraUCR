@@ -19,14 +19,14 @@
 | `integration_test/` | Firma contra las reglas reales del P1 en los emuladores |
 | `backend/proyecto1/` | Copia de las reglas del P1, datos ficticios y verificación, solo para emuladores |
 | `tool/build_apk.dart` | Compila el APK identificado por versión y commit |
-| `docs/INSTALACION.md` | Instalar, actualizar, volver atrás, compilar y preparar el backend |
-| `docs/PRUEBAS.md` | Casos técnicos CP-01 a CP-08 con evidencia |
-| `docs/COMPARACION_BACKEND_P1.md` | Comparación de esquemas web y móvil |
+| `entregables/02-aplicacion-distribuible/instalacion.md` | Instalar, actualizar, volver atrás, compilar y preparar el backend |
+| `entregables/05-informe-pruebas/pruebas-tecnicas.md` | Casos técnicos CP-01 a CP-08 con evidencia |
+| `entregables/03-informe-tecnico/comparacion-backend-p1.md` | Comparación de esquemas web y móvil |
 | `entregables/` | Los ocho entregables del Proyecto 2 |
 
 ## Requisitos, ejecución y construcción
 
-Están en el `README.md` de la raíz (secciones *Running* y *Tests*) y en `docs/INSTALACION.md` §5:
+Están en el `README.md` de la raíz (secciones *Running* y *Tests*) y en `entregables/02-aplicacion-distribuible/instalacion.md` §5:
 
 ```bash
 flutter pub get
@@ -68,4 +68,4 @@ git tag v2.0.0+7          # o la versión final
 git push origin v2.0.0+7
 ```
 
-Luego se publica el release en GitHub con el APK y el `.txt` (pasos en `docs/INSTALACION.md` §5).
+Luego se publica el release en GitHub con el APK y el `.txt` (pasos en `entregables/02-aplicacion-distribuible/instalacion.md` §5).

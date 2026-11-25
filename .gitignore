@@ -47,8 +47,9 @@ app.*.map.json
 # Widget Preview related
 .widget_preview/
 
-# Assignment statement (not part of the source)
-*.pdf
+# Assignment statement and the team's own slides (not part of the source)
+/proyecto_de_desarrollo_de_software_IV.pdf
+/entregables/06-socializacion/guion-video-presentacion.pdf
 
 # Firebase deploy cache
 .firebase/

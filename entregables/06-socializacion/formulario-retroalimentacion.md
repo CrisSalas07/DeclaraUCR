@@ -14,6 +14,8 @@ Creado en Google Forms como «DeclaraUCR — Retroalimentación» (Drive del equ
 Enlace para responder (bloque 10 del video, mensaje al docente y sesiones con usuarios): <https://docs.google.com/forms/d/e/1FAIpQLSf-YczF2ZjBprrvS48MGGgbn2bVO53aOX-cwGH1FgpTmfonfg/viewform>.
 QR del mismo enlace: [`qr-formulario.png`](qr-formulario.png) (y `.svg` para el video, sin pérdida al escalar).
 
+![QR del formulario](qr-formulario.png)
+
 ---
 
 **Encabezado del formulario**

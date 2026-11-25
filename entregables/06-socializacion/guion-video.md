@@ -6,7 +6,7 @@ Participan todas las personas del equipo: `[COMPLETAR: quién narra o aparece en
 
 Cada fila es un bloque del video. Lo que va entre comillas es la idea que se dice; no hace falta leerlo
 literal, pero sí cubrir cada punto que pide el descriptor. Lo que se ve puede ser el teléfono grabado, una
-captura de `docs/capturas/` o del repositorio, o la persona hablando a cámara.
+captura de `entregables/07-guia-uso/capturas/` o del repositorio, o la persona hablando a cámara.
 
 | # | Min | Bloque | Qué se ve | Qué decir (idea central) | Cubre del §9 |
 |---|---|---|---|---|---|

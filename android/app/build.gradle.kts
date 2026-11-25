@@ -8,7 +8,7 @@ plugins {
 }
 
 // The team's release key, kept OUT of the repository (see
-// docs/INSTALACION.md): android/key.properties points to the .jks file.
+// entregables/02-aplicacion-distribuible/instalacion.md): android/key.properties points to the .jks file.
 // Without it the release build is signed with this computer's debug key, so
 // nobody is blocked; tool/build_apk.dart warns about it.
 val keystoreProperties = Properties()

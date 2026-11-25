@@ -34,13 +34,12 @@ Each README covers only its folder; this one is the entry point.
 |---|---|
 | [`entregables/README.md`](entregables/README.md) | The eight Proyecto 2 deliverables: map of the folder, what to use for the user sessions and the video, what is left and the risks |
 | [`entregables/05-informe-pruebas/sesiones-usuarios/README.md`](entregables/05-informe-pruebas/sesiones-usuarios/README.md) | Kit to run the user sessions, step by step |
-| [`entregables/05-informe-pruebas/evidencias/sesiones-usuarios/LEAME.md`](entregables/05-informe-pruebas/evidencias/sesiones-usuarios/LEAME.md) | What goes in the session evidence folder |
 | [`entregables/03-informe-tecnico/informe-tecnico.md`](entregables/03-informe-tecnico/informe-tecnico.md) | Scope, architecture, mobile decisions, integration, deployment and known limitations (for the professor) |
-| [`docs/INSTALACION.md`](docs/INSTALACION.md) | Install, update and roll back the APK; build and release a version; prepare the real backend |
-| [`docs/PRUEBAS.md`](docs/PRUEBAS.md) | Technical test cases CP-01 to CP-08 with evidence ([`docs/pruebas/`](docs/pruebas)) |
-| [`docs/COMPARACION_BACKEND_P1.md`](docs/COMPARACION_BACKEND_P1.md) | Field-by-field comparison of the mobile and the Proyecto 1 data |
+| [`entregables/02-aplicacion-distribuible/instalacion.md`](entregables/02-aplicacion-distribuible/instalacion.md) | Install, update and roll back the APK; build and release a version; prepare the real backend |
+| [`entregables/05-informe-pruebas/pruebas-tecnicas.md`](entregables/05-informe-pruebas/pruebas-tecnicas.md) | Technical test cases CP-01 to CP-08 with evidence ([`entregables/05-informe-pruebas/capturas/`](entregables/05-informe-pruebas/capturas)) |
+| [`entregables/03-informe-tecnico/comparacion-backend-p1.md`](entregables/03-informe-tecnico/comparacion-backend-p1.md) | Field-by-field comparison of the mobile and the Proyecto 1 data |
 | [`backend/proyecto1/README.md`](backend/proyecto1/README.md) | Firebase emulators with the Proyecto 1 rules and fictitious data |
-| [`docs/capturas/README.txt`](docs/capturas/README.txt) | The app screenshots and what each one shows |
+| [`entregables/07-guia-uso/capturas/README.txt`](entregables/07-guia-uso/capturas/README.txt) | The app screenshots and what each one shows |
 | [`assets/fonts/README.txt`](assets/fonts/README.txt), [`assets/images/README.txt`](assets/images/README.txt) | Origin and license of the Trueno typeface and the UCR signature |
 
 ## Code map
@@ -82,7 +81,7 @@ get repositories from `Provider`, never from Firestore directly; tests swap
 in a fake Firestore, auth or network ([`test/support/`](test/support)).
 
 Why each layer and what was reused from the Proyecto 1: informe técnico §3.
-How the data maps to the Proyecto 1 schema: [`docs/COMPARACION_BACKEND_P1.md`](docs/COMPARACION_BACKEND_P1.md).
+How the data maps to the Proyecto 1 schema: [`entregables/03-informe-tecnico/comparacion-backend-p1.md`](entregables/03-informe-tecnico/comparacion-backend-p1.md).
 
 ### Rules to keep when changing code
 
@@ -125,7 +124,7 @@ With the Proyecto 1 rules and test data: [`backend/proyecto1/README.md`](backend
 
 APK to hand out (team release key, Proyecto 1 backend, named by version and
 commit): `dart run tool/build_apk.dart`. Releasing, installing and rolling
-back: [`docs/INSTALACION.md`](docs/INSTALACION.md).
+back: [`entregables/02-aplicacion-distribuible/instalacion.md`](entregables/02-aplicacion-distribuible/instalacion.md).
 
 ## Tests
 
@@ -137,7 +136,7 @@ flutter test
 Unit and widget tests in `test/` (domain, data against a fake Firestore,
 connectivity, a 360×690 dp screen that fails on any overflow);
 [`integration_test/sign_rules_test.dart`](integration_test/sign_rules_test.dart) signs against the real Proyecto 1
-rules in the emulators. The manual technical cases are in [`docs/PRUEBAS.md`](docs/PRUEBAS.md).
+rules in the emulators. The manual technical cases are in [`entregables/05-informe-pruebas/pruebas-tecnicas.md`](entregables/05-informe-pruebas/pruebas-tecnicas.md).
 All test data is fictitious.
 
 ## Visual identity decisions

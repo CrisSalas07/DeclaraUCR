@@ -26,9 +26,24 @@ Esta guía es para la persona docente que llena su declaración. No necesita sab
 
 **¿Ya la tenía instalada?** Instale la versión nueva encima y no pierde su sesión.
 
-## 3. Iniciar sesión
+## 3. Crear su cuenta (solo la primera vez)
 
-![Inicio de sesión](../../docs/capturas/00-inicio-sesion.png)
+Si ya usa la web de declaraciones, su cuenta es la misma: pase a **Iniciar sesión**.
+
+1. En el inicio de sesión toque **Crear cuenta**.
+2. Llene **Nombre completo**, **Número de cédula**, **Teléfono** y **Correo electrónico** (su correo
+   `@ucr.ac.cr`).
+3. Escriba una **Contraseña** (mínimo 8 caracteres, con letras y números), repítala en **Confirmar
+   contraseña** y toque **Crear cuenta**.
+4. En **Complete su perfil**, elija su **Sede** y su **Carrera** y toque **Guardar**. Solo se eligen una vez;
+   después solo Administración puede cambiarlas.
+
+Si dice *"Ya existe una cuenta con ese correo."*, ya tiene cuenta: inicie sesión con ella. Para que pueda crear
+su declaración, la Coordinación le asigna los cursos y Administración su revisor.
+
+## 4. Iniciar sesión
+
+![Inicio de sesión](capturas/00-inicio-sesion.png)
 
 Escriba su correo y su contraseña y toque **Iniciar sesión**. Al pie aparece la versión de la app, útil si
 tiene que reportar un problema.
@@ -38,9 +53,9 @@ tiene que reportar un problema.
 - *"No puede continuar"*: su cuenta no es de persona declarante (por ejemplo, es de revisor). Esas funciones
   están en la web.
 
-## 4. Inicio
+## 5. Inicio
 
-![Inicio](../../docs/capturas/01-inicio.png)
+![Inicio](capturas/01-inicio.png)
 
 Inicio le muestra cuántos borradores y declaraciones validadas tiene, y en qué paso va la más reciente:
 **Elaboración → Firmada → Revisor → Recursos Humanos → Aprobada**. Debajo están sus horas por tipo (HC: clases,
@@ -48,15 +63,15 @@ AE: atención a estudiantes, PyE: planificación y evaluación) y el botón para
 
 Abajo están las cuatro secciones: **Inicio**, **Declaraciones**, **Zonaje** e **Historial**.
 
-## 5. Crear su declaración (borrador)
+## 6. Crear su declaración (borrador)
 
-![Declaraciones](../../docs/capturas/02-declaraciones.png)
+![Declaraciones](capturas/02-declaraciones.png)
 
 1. Vaya a **Declaraciones** y toque **Nueva declaración**.
 2. Su nombre, su cédula, la sede, el período y la vigencia ya vienen llenos. Solo elija su **Puesto**.
 3. En **Cursos de carrera** aparecen los cursos que le asignó la Coordinación, con sus horas.
 
-![Cursos](../../docs/capturas/03-cursos.png)
+![Cursos](capturas/03-cursos.png)
 
 4. Si tiene proyectos o trabaja en otra institución, agréguelos con **Agregar proyecto** o **Agregar
    institución**.
@@ -68,9 +83,9 @@ Abajo están las cuatro secciones: **Inicio**, **Declaraciones**, **Zonaje** e *
 > Si toca **Atrás** con cambios sin guardar, la app le pregunta *"¿Salir sin guardar?"*. Elija **Seguir
 > editando** y guarde.
 
-## 6. Ubicar su horario
+## 7. Ubicar su horario
 
-![Horario semanal](../../docs/capturas/04-horario.png)
+![Horario semanal](capturas/04-horario.png)
 
 Las **clases ya están en su horario**, con un candado: las asignó la Coordinación y no se mueven. Usted ubica
 la atención a estudiantes, la planificación, los proyectos y las otras instituciones.
@@ -92,24 +107,24 @@ Reglas que la app cuida por usted:
 **Con TalkBack:** cada media hora dice el día, la hora y lo que tiene (*"Lunes, 10:00 a 10:30: libre"*). Toque
 dos veces para marcarla con la tarea elegida.
 
-## 7. Revisar y validar
+## 8. Revisar y validar
 
-![Puntos por corregir](../../docs/capturas/05-validacion.png)
+![Puntos por corregir](capturas/05-validacion.png)
 
 Toque **Ver resumen**. Arriba verá si la declaración puede validarse o *"Hay N puntos por corregir"*, con cada
 punto escrito (por ejemplo, *"Faltan 2 h de atención a estudiantes de IF0009 en el horario."*). Mientras haya
 puntos pendientes, **Validar** está apagado.
 
-![Resumen validado](../../docs/capturas/06-resumen.png)
+![Resumen validado](capturas/06-resumen.png)
 
 Cuando todo está completo, toque **Validar**. El estado pasa a **Validada**. Si después cambia algo, vuelve a
 **Borrador** y hay que validar otra vez.
 
 El ícono del PDF le muestra la declaración en el formulario oficial. Mientras no esté firmada, dice "BORRADOR".
 
-## 8. Firmar y enviar a su revisor
+## 9. Firmar y enviar a su revisor
 
-![Firma](../../docs/capturas/09-firma.png)
+![Firma](capturas/09-firma.png)
 
 1. Con la declaración validada, toque **Firmar y enviar a mi revisor**.
 2. Lea el juramento, marque la casilla y firme.
@@ -119,20 +134,20 @@ El ícono del PDF le muestra la declaración en el formulario oficial. Mientras 
 Una vez firmada **ya no se edita** desde el teléfono. Si el revisor o RRHH la devuelven, la corrección se hace
 en la web.
 
-![PDF en revisión](../../docs/capturas/10-pdf.png)
+![PDF en revisión](capturas/10-pdf.png)
 
-## 9. Zonaje e historial
+## 10. Zonaje e historial
 
-![Zonaje](../../docs/capturas/07-zonaje.png)
+![Zonaje](capturas/07-zonaje.png)
 
 **Zonaje** muestra el estado de sus solicitudes y la respuesta de Recursos Humanos. La solicitud se hace en la
 web, porque pide marcar su domicilio en un mapa y adjuntar la certificación del TSE.
 
-![Historial](../../docs/capturas/08-historial.png)
+![Historial](capturas/08-historial.png)
 
 **Historial** reúne sus declaraciones y solicitudes de todos los ciclos, por año.
 
-## 10. Si se va la señal
+## 11. Si se va la señal
 
 Arriba aparece una franja: *"Sin conexión: ve lo último guardado en el teléfono. Para guardar cambios necesita
 conexión."*
@@ -142,11 +157,11 @@ conexión."*
   cuando vuelva la señal.
 - No cierre la app mientras tenga cambios sin guardar y sin señal: eso sí se pierde.
 
-## 11. Cerrar sesión
+## 12. Cerrar sesión
 
 Toque el círculo con sus iniciales, arriba a la derecha, y luego **Cerrar sesión**.
 
-## 12. Mensajes frecuentes
+## 13. Mensajes frecuentes
 
 | Mensaje | Qué significa | Qué hacer |
 |---|---|---|
@@ -160,5 +175,5 @@ Toque el círculo con sus iniciales, arriba a la derecha, y luego **Cerrar sesi�
 ---
 
 `[COMPLETAR antes de entregar: exportar a PDF y revisar cada paso contra el APK final. Las capturas son de la
-2.0.0+4; si alguna pantalla cambió, reemplazarla. Para la sección 5 conviene agregar una captura del diálogo
+2.0.0+4; si alguna pantalla cambió, reemplazarla. Para la sección 6 conviene agregar una captura del diálogo
 "¿Salir sin guardar?" tomada en el teléfono.]`
