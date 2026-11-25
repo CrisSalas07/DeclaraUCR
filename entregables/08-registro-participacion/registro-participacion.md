@@ -52,7 +52,7 @@ Para ver el detalle: `git log --format='%h %ad %an %s' --date=short`.
 |---|---|---|---|---|
 | `[ ]` | `[ ]` | Instalación desde cero (CP-08) | | `entregables/05-informe-pruebas/capturas/CP-08-1.png` |
 | 24/11/2026 | Keity | Sesión con usuario P1 | Guió y anotó la sesión (T0–T3, perfil y formulario) | Bitácora §3 y capturas `P1-T0` a `P1-T3` |
-| `[ ]` | `[ ]` | Sesión con usuario P2 | | Informe de pruebas §6 |
+| 24/11/2026 | Cristopher | Sesión con usuario P2 | Guió y anotó la sesión, asignó superior y curso en la web | Bitácora §4 y capturas `P2-T0` a `P2-T3` |
 | `[ ]` | `[ ]` | Sesión con usuario P3 | | Informe de pruebas §6 |
 | 21/11/2026 | Cristopher | Formulario de retroalimentación | Creación y publicación en Google Forms | `06-socializacion/formulario-retroalimentacion.md` |
 | 21/11/2026 | Cristopher | Ensayo completo de la sesión | T1–T3 en el emulador con la 2.0.0+7; encontró T-08 | Matriz de mejoras T-08 |
