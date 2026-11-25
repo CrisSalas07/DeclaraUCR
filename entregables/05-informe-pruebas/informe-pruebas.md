@@ -135,7 +135,7 @@ La bitácora de las tres sesiones (guion, consentimiento, perfil, tareas, ayudas
 - **Versión:** 2.0.0+7, la misma para todas las sesiones.
 - **Cuentas:** cada participante crea la suya en la sesión (T0) con su correo `@ucr.ac.cr` y su propia
   contraseña; el equipo no las conoce. Cédula y teléfono **ficticios**, de una tarjeta que da el equipo.
-  Después del registro, el equipo asigna en la web el revisor y los mismos cursos de prueba a todas.
+  Después del registro, el equipo asigna en la web el superior y los mismos cursos de prueba a todas.
   Al terminar el estudio, las cuentas se desactivan. Nunca la cuenta personal de la persona participante.
 - **Registro:** las sesiones no se graban (el descriptor no lo exige). Quien anota llena la bitácora durante
   la sesión: tiempos con la hora del reloj, lo que la persona hace y dice (frases textuales entre comillas) y

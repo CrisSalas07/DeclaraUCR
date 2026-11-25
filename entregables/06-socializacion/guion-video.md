@@ -15,7 +15,7 @@ captura de `entregables/07-guia-uso/capturas/` o del repositorio, o la persona h
 | 3 | 1:30 | Qué cambió desde el Proyecto 1 | La matriz de mejoras §2 y §4 | "El docente nos pidió un nombre de rol que la gente reconozca: «Revisor» pasó a llamarse «Superior». Además revisamos nosotros el sistema: lo más importante que le faltaba era poder usarse desde el teléfono." | Mejoras del P1 |
 | 4 | 3:00 | Qué hace la app y qué no | Tabla de procesos P1 → móvil (informe técnico §2.1) | "Los tres procesos de la declarante están completos en el teléfono; revisión y RRHH siguen en la web, que es donde tiene sentido." | Alcance |
 | 5 | 4:00 | **Demostración** (6 min) | Pantalla del teléfono grabada (grabador de pantalla de Android o scrcpy) | Ver guion de la demostración abajo | Demostración |
-| 6 | 10:00 | Cómo instalarla y entrar | Página del release v2.0.0+7, los pasos de instalación, la versión al pie del inicio de sesión | "Es un APK, no está en la tienda: así se instala, así se actualiza y así se vuelve a la versión anterior." | Instalación y acceso |
+| 6 | 10:00 | Cómo instalarla y entrar | Página del release v2.0.0+8, los pasos de instalación, la versión al pie del inicio de sesión | "Es un APK, no está en la tienda: así se instala, así se actualiza y así se vuelve a la versión anterior." | Instalación y acceso |
 | 7 | 11:00 | Pruebas técnicas | 8 casos, 109 pruebas automatizadas, D-01 antes y después | "El recorrido encontró que salir con Atrás perdía cambios sin avisar; ahora la app pregunta." | Resultados técnicos |
 | 8 | 12:00 | Pruebas con usuarios | Perfil de las 3 personas, éxito por tarea, facilidad promedio y **una frase textual** de una persona participante, tomada de la bitácora | `[COMPLETAR con los resultados de las sesiones]` | Resultados con usuarios |
 | 9 | 13:30 | Lo que queda pendiente y por qué | `VALIDADA` en el cliente, zonaje solo consulta, sin conexión no se guarda | "Son decisiones, no olvidos: esto es lo que haríamos después y por qué no entró." | Dificultades y decisiones |
@@ -27,9 +27,9 @@ mismo mensaje, el enlace al video y el del formulario. Anotar aquí: video `[COM
 
 ## Guion de la demostración (6 minutos de video)
 
-Preparación: el teléfono con la **2.0.0+7** instalada, sesión iniciada con la **declarante con cursos**, una
+Preparación: el teléfono con la **2.0.0+8** instalada (ya dice «Superior»), sesión iniciada con la **declarante con cursos**, una
 declaración del período **en borrador y sin puesto**, el modo avión a mano y la web del Proyecto 1 abierta con
-el revisor en otra pestaña. **Grabar la firma al final**, cuando todo lo demás ya salió bien: no se puede deshacer. Si un tramo sale mal se graba de nuevo; no hace falta una sola toma.
+el superior en otra pestaña. **Grabar la firma al final**, cuando todo lo demás ya salió bien: no se puede deshacer. Si un tramo sale mal se graba de nuevo; no hace falta una sola toma.
 
 | Min | Paso | Qué se ve |
 |---|---|---|
@@ -39,8 +39,8 @@ el revisor en otra pestaña. **Grabar la firma al final**, cuando todo lo demás
 | 2:30 | **Ver resumen** con horas faltantes | "Hay N puntos por corregir", Validar apagado |
 | 3:00 | Completar lo que falta (o abrir una ya completa) y **Validar** | Estado *Validada* |
 | 3:45 | Modo avión → cambiar algo → **Guardar borrador** | Franja sin conexión, aviso y cambios en pantalla; quitar modo avión y guardar |
-| 4:45 | **Firmar y enviar a mi revisor** | Juramento, firma, seguimiento en *Revisor* |
-| 5:30 | En la web, con el revisor | La misma declaración, versión y bitácora |
+| 4:45 | **Firmar y enviar a mi superior** | Juramento, firma, seguimiento en *Superior* |
+| 5:30 | En la web, con el superior | La misma declaración, versión y bitácora |
 
 En la edición se pueden acelerar las esperas y marcar con un recuadro lo que se toca.
 
@@ -48,7 +48,7 @@ En la edición se pueden acelerar las esperas y marcar con un recuadro lo que se
 
 No hay ronda de preguntas en vivo, así que vale la pena contestarlas de una vez (en los bloques 4 y 9):
 
-- *¿Por qué el revisor no puede usar la app?* Porque su trabajo es revisar el PDF y varias declaraciones a la
+- *¿Por qué el superior no puede usar la app?* Porque su trabajo es revisar el PDF y varias declaraciones a la
   vez; en el teléfono eso sería peor que en la web. Y la app lo dice en lugar de dejarle entrar a medias.
 - *¿Qué pasa si se cae la conexión a media declaración?* CP-07: no se guarda, se avisa y nada se pierde
   mientras la app siga abierta.
