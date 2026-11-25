@@ -65,3 +65,6 @@ backend/proyecto1/emulator-data/
 
 # Disposable step-by-step guides for the team (deleted when done)
 /guias/
+
+# Word lock files while a document is open
+~$*
