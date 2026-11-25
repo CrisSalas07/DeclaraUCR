@@ -23,13 +23,13 @@ despliegue es académico: el APK se instala directamente, sin Google Play.
 
 Inicie sesión con una cuenta de prueba (tabla siguiente) o cree una con **Crear cuenta**: queda como persona
 declarante y pide elegir sede y carrera. Una cuenta nueva **no puede crear declaraciones** hasta que
-Administración le asigne revisor y la Coordinación le asigne cursos, desde la web.
+Administración le asigne superior y la Coordinación le asigne cursos, desde la web.
 
 | Rol | Para qué |
 |---|---|
-| Declarante con revisor y cursos asignados | Recorrer los tres procesos |
+| Declarante con superior y cursos asignados | Recorrer los tres procesos |
 | Declarante sin cursos asignados | Ver el mensaje que lo explica |
-| Revisor, RRHH o administración | Ver que la app es solo para declarantes |
+| Superior, RRHH o administración | Ver que la app es solo para declarantes |
 
 Las cuentas de prueba usan correos reales del equipo, porque el registro verifica el correo. Por eso los
 correos y las contraseñas se entregan aparte y no van en este documento. Los demás datos (sede, carrera,
@@ -104,19 +104,19 @@ Para recorrer los procesos en el teléfono, desde la **web del Proyecto 1** con 
 
 1. Una **sede** con su ubicación y una **carrera** de esa sede.
 2. Un **período habilitado** (por ejemplo, II Ciclo - 2026).
-3. Cuentas ficticias: una de **revisor**, una de **Coordinación** de la carrera y dos de **declarante**.
-4. A las declarantes, asignarles **revisor** (Administración › Usuarios).
+3. Cuentas ficticias: una de **superior**, una de **Coordinación** de la carrera y dos de **declarante**.
+4. A las declarantes, asignarles **superior** (Administración › Usuarios).
 5. Con la cuenta de Coordinación, **asignar cursos** y franjas de clase en el período a **una** de las
    declarantes (la otra queda sin cursos, para el caso de prueba).
    En las sesiones con usuarios, cada participante crea su propia cuenta y el equipo le asigna en la web el
-   revisor y los mismos cursos y franjas (ver `entregables/05-informe-pruebas/sesiones-usuarios/`).
+   superior y los mismos cursos y franjas (ver `entregables/05-informe-pruebas/sesiones-usuarios/`).
 6. Entregar al equipo los correos y contraseñas de las cuentas por un canal privado, no en el repositorio.
 
 ## 7. Limitaciones conocidas
 
 - **Firma de la persona declarante:** en el teléfono o en la web, con el mismo juramento y la misma huella del
   contenido. Firmada, queda de solo lectura en el teléfono.
-- **Revisión, RRHH y correcciones** se hacen en la web: la aprobación del revisor y de Recursos Humanos, y una
+- **Revisión, RRHH y correcciones** se hacen en la web: la aprobación del superior y de Recursos Humanos, y una
   declaración devuelta se corrige en la web (versión nueva).
 - **PDF:** la vista previa ("BORRADOR"), la copia en revisión y el documento final se ven en el teléfono, con el
   mismo formulario que la web.

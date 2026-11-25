@@ -62,3 +62,6 @@ backend/proyecto1/emulator-data/
 
 # Windows runner, only to run integration_test/ against the emulators
 /windows/
+
+# Disposable step-by-step guides for the team (deleted when done)
+/guias/

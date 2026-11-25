@@ -53,7 +53,7 @@ class _SignDeclarationScreenState extends State<SignDeclarationScreen> {
       );
       messenger.showSnackBar(
         const SnackBar(
-          content: Text('Declaración firmada y enviada a su revisor.'),
+          content: Text('Declaración firmada y enviada a su superior.'),
         ),
       );
       navigator.pop(true);
@@ -166,7 +166,7 @@ class _Body extends StatelessWidget {
           title: 'La declaración pasó la validación.',
           lines: [
             'Revísela (puede ver el PDF arriba), acepte la declaración jurada '
-                'y fírmela: se enviará a su revisor y ya no podrá cambiarla.',
+                'y fírmela: se enviará a su superior y ya no podrá cambiarla.',
           ],
           tone: BannerTone.success,
         ),
@@ -211,7 +211,7 @@ class _Body extends StatelessWidget {
                   child: CircularProgressIndicator(strokeWidth: 2),
                 )
               : const Icon(Icons.draw_outlined),
-          label: const Text('Firmar y enviar a mi revisor'),
+          label: const Text('Firmar y enviar a mi superior'),
         ),
       ),
     ),

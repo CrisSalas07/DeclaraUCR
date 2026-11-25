@@ -245,7 +245,7 @@ void main() {
     );
 
     expect(await state.saveDraft(), isFalse);
-    expect(state.error, contains('revisor'));
+    expect(state.error, contains('superior'));
   });
 
   test('a declaration in the signing flow is read only', () async {

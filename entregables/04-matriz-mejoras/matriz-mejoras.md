@@ -18,23 +18,22 @@ propuesta de atención**.
 | Repositorio | DeclaraHorario (sistema web del Proyecto 1) |
 | Versión base | `main` en `2661da2` (merge del PR #94, 10/11/2026), lo entregado en el Proyecto 1 |
 | Etiqueta | [`p1-entrega`](https://github.com/dayanachavarriasteller-maker/DeclaraHorario/releases/tag/p1-entrega) en DeclaraHorario, sobre `2661da2` |
-| Retroalimentación recibida | Nota **95** (peso 15 %), captura en [`retroalimentacion-p1.png`](retroalimentacion-p1.png). Comentario del docente, de palabra: el sistema estaba muy bien y solo quedaban detalles pequeños; **no pidió cambios concretos** |
+| Retroalimentación recibida | Nota **95** (peso 15 %), captura en [`retroalimentacion-p1.png`](retroalimentacion-p1.png). Comentario del docente, de palabra: el sistema estaba muy bien y solo quedaban detalles pequeños. Pidió un cambio concreto: el nombre del rol **«revisor» no es reconocible** para las personas usuarias (fila P1-03) |
 
 La app móvil usa el backend de esa versión: las reglas copiadas en `backend/proyecto1/` vienen del commit
 `5f68958` de DeclaraHorario (ver `backend/proyecto1/ORIGEN.txt`).
 
 ## 2. Observaciones de la revisión del Proyecto 1
 
-La evaluación del Proyecto 1 **no señaló observaciones que obligaran a cambiar el sistema** (ver la
-retroalimentación adjunta en §1). Por eso no hay filas del docente que atender.
-
-Para que la continuidad no quede vacía, el equipo revisó por su cuenta la versión base y registra aquí lo que
-encontró. Solo se anotan puntos reales y comprobables; no se inventan observaciones.
+La evaluación del Proyecto 1 dejó **una observación del docente** (P1-03, el nombre del rol). Además, el
+equipo revisó por su cuenta la versión base y registra lo que encontró (P1-01 y P1-02). Solo se anotan puntos
+reales y comprobables; no se inventan observaciones.
 
 | # | Origen | Observación | Acción concreta | Prioridad | Evidencia | Estado |
 |---|---|---|---|---|---|---|
 | P1-01 | Revisión del equipo | El sistema solo se usaba desde la computadora; la persona declarante no podía llenar ni firmar desde el teléfono | Módulo móvil con los tres procesos y la firma de la declarante, sobre el mismo backend | Alta | Este proyecto: release v2.0.0+7; CP-01 a CP-07 (`entregables/05-informe-pruebas/pruebas-tecnicas.md`) | Verificada |
 | P1-02 | Revisión del equipo | El estado `VALIDADA` lo decide el cliente; las reglas validan formato y permisos, no recalculan horas | Pendiente con justificación: requiere una Cloud Function (plan Blaze de Firebase). Propuesta: función que recalcule horas y traslapes y rechace un `VALIDADA` inválido | Media | Informe técnico §8; `entregables/02-aplicacion-distribuible/instalacion.md` §7 | Pendiente con justificación |
+| P1-03 | Docente (evaluación del P1, de palabra) | El rol que firma después de la persona declarante se llamaba «Revisor», un nombre que las personas usuarias no reconocen | Llamarlo **«Superior»** en toda la app: estados («Pendiente de firma del superior»), seguimiento, botón «Firmar y enviar a mi superior», avisos y PDF de la declaración. En los datos ya se llamaba `superior`, así que no cambia el backend | Media | Textos en `lib/` y pruebas actualizadas (`declaration_progress_test`, `widget_test`, `proyecto1_write_test`): 109 pruebas pasan, 24/11/2026 | En proceso: listo en el código, se publica en la 2.0.0+8 después de las sesiones (las tres usan la 2.0.0+7, §8) |
 
 ## 3. Observaciones de la socialización
 
@@ -65,12 +64,17 @@ trazabilidad quede completa.
 | T-06 | Recorrido 20/11/2026 (D-02) | La cuadrícula no se podía usar con TalkBack | Cada media hora es un botón con día, hora y contenido | Alta | Prueba "with TalkBack, each half hour says what it has and places (D-02)"; commit `afeb1ee` (PR #8) | Verificada (falta repetirla en el teléfono) |
 | T-07 | Recorrido 20/11/2026 (D-03) | Chips de horas leídos como casillas | Leerlos como texto | Baja | `lib/screens/home_screen.dart` (`_HoursChip`); commit `afeb1ee` (PR #8) | Verificada |
 | T-08 | Ensayo de las sesiones 21/11/2026 (2.0.0+7) | Después de guardar un borrador existente, la lista de declaraciones sigue mostrando las horas anteriores hasta reiniciar la app (lo guardado en el servidor sí es correcto) | Que la lista se actualice al guardar (`watchAll` en `proyecto1_declaration_repository.dart`) | Media | Ensayo de T1–T3, 21/11/2026 | Pendiente: va en la 2.0.0+8; las sesiones usan la 2.0.0+7 para que todas tengan la misma versión (§8) |
+| U-01 | Sesión P1, 24/11/2026 (T1) | La persona no sabía cómo empezar la declaración (nunca había hecho una) | `[COMPLETAR: decidir con P2 y P3]` | Baja | Bitácora §3; informe de pruebas §6.6 | Pendiente |
+| U-02 | Sesión P1, 24/11/2026 (formulario) | La lista de **Puesto** deja elegir cualquier puesto, aunque no sea el de la persona | `[COMPLETAR: decidir con P2 y P3]` | Media | Respuesta de P1 en el formulario; informe de pruebas §6.6 | Pendiente |
 
 ## 5. Resumen
 
-`[COMPLETAR al cierre]` Revisión del P1: sin observaciones del docente; __ de la revisión del equipo (__ verificadas, __ pendientes con
-justificación) y __ de la socialización (__ aceptadas, __ parcialmente, __ descartadas; __ mejoras
-implementadas).
+- **Revisión del P1:** 1 observación del docente (P1-03, en proceso: sale en la 2.0.0+8) y 2 de la revisión del
+  equipo (1 verificada, 1 pendiente con justificación: P1-02 necesita una Cloud Function).
+- **Pruebas propias del Proyecto 2:** 8 (7 verificadas; T-08 pendiente).
+- **Sesiones con usuarios:** `[COMPLETAR al terminar P2 y P3]` (por ahora U-01 y U-02, de P1, pendientes).
+- **Socialización:** `[COMPLETAR al cierre: __ observaciones (__ aceptadas, __ parcialmente, __ descartadas);
+  __ mejoras implementadas]`.
 
 ## Anexo: evaluación del Proyecto 1
 

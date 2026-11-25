@@ -152,7 +152,7 @@ class SummaryScreen extends StatelessWidget {
               title: 'Siguiente paso: firmar',
               subtitle:
                   'Acepte la declaración jurada y fírmela para enviarla a su '
-                  'revisor.',
+                  'superior.',
               children: [
                 FilledButton.icon(
                   onPressed: () async {
@@ -163,7 +163,7 @@ class SummaryScreen extends StatelessWidget {
                     }
                   },
                   icon: const Icon(Icons.draw_outlined),
-                  label: const Text('Firmar y enviar a mi revisor'),
+                  label: const Text('Firmar y enviar a mi superior'),
                 ),
                 const SizedBox(height: 8),
               ],

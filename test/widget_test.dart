@@ -253,7 +253,7 @@ void main() {
       expect(find.text('Hola, Luis'), findsOneWidget);
       expect(find.text('302220333'), findsOneWidget);
       // Only administration assigns the reviewer.
-      expect(find.text('Aún no tiene revisor asignado.'), findsOneWidget);
+      expect(find.text('Aún no tiene superior asignado.'), findsOneWidget);
     });
 
     testWidgets('signing up with a taken cédula asks for another one', (
@@ -384,7 +384,7 @@ void main() {
         find.text('Esta aplicación es para personas declarantes.'),
         findsOneWidget,
       );
-      expect(find.textContaining('rol de Revisor'), findsOneWidget);
+      expect(find.textContaining('rol de Superior'), findsOneWidget);
 
       await tester.tap(find.text('Cerrar sesión'));
       await tester.pumpAndSettle();

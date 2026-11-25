@@ -541,7 +541,7 @@ abstract final class DeclarationPdf {
               SignatureType.declarant,
               'Firma del Funcionario(a)\nDeclarante',
             ),
-            column(SignatureType.superior, 'Revisor\nCarrera'),
+            column(SignatureType.superior, 'Superior\nCarrera'),
             column(SignatureType.hr, 'Oficina de\nRecursos Humanos'),
             pw.SizedBox(
               width: 110,
