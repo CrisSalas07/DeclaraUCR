@@ -1,6 +1,11 @@
-"""Markdown -> .docx for the deliverables: `python tool/md2docx.py entregables entregables/drive`."""
+"""Markdown -> document next to each deliverable source: `python tool/md2docx.py entregables`.
+
+A source with images becomes a .pdf (through Word); the rest stay .docx.
+"""
 import re
+import subprocess
 import sys
+import tempfile
 from pathlib import Path
 
 from docx import Document
@@ -46,7 +51,7 @@ def shade(cell, hex_color):
     tc_pr.append(shd)
 
 
-def flush_table(doc, rows):
+def flush_table(doc, rows, base=Path(".")):
     rows = [r for r in rows if not re.fullmatch(r"\|?[\s:|-]+\|?", r.strip())]
     cells = [[c.strip() for c in r.strip().strip("|").split("|")] for r in rows]
     width = max(len(r) for r in cells)
@@ -61,8 +66,13 @@ def flush_table(doc, rows):
             for k, chunk in enumerate(text.split("<br>")):
                 if k:
                     par = cell.add_paragraph()
-                add_inline(par, chunk, Pt(8.5))
+                img = re.fullmatch(r"!\[[^\]]*\]\(([^)]+)\)", chunk.strip())
+                if img and (base / img.group(1)).exists():
+                    par.add_run().add_picture(str(base / img.group(1)), height=Cm(9))
+                else:
+                    add_inline(par, chunk, Pt(8.5))
             if i == 0:
+                cell.paragraphs[0].paragraph_format.keep_with_next = True  # header stays with its first row
                 shade(cell, "DCEBF7")
                 for run in cell.paragraphs[0].runs:
                     run.bold = True
@@ -92,7 +102,7 @@ def convert(md_path: Path, out_path: Path):
         if line.startswith("|"):
             table.append(line); i += 1; continue
         if table:
-            flush_table(doc, table); table = []
+            flush_table(doc, table, md_path.parent); table = []
         if line.startswith(">"):
             buf = [line.lstrip("> ").strip()]
             while i + 1 < len(lines) and lines[i + 1].startswith(">"):
@@ -107,7 +117,9 @@ def convert(md_path: Path, out_path: Path):
         elif img:
             path = (md_path.parent / img.group(2)).resolve()
             if path.exists():
-                doc.add_picture(str(path), height=Cm(11))
+                pic = doc.add_picture(str(path), height=Cm(11))
+                if pic.width > Cm(17):  # wide screenshots: fit the text width
+                    pic.height = int(pic.height * Cm(17) / pic.width); pic.width = Cm(17)
                 cap = doc.add_paragraph(); r = cap.add_run(img.group(1)); r.italic = True; r.font.size = Pt(8)
         elif re.match(r"^\s*[-*] ", line):
             p = doc.add_paragraph(style="List Bullet")
@@ -132,14 +144,25 @@ def convert(md_path: Path, out_path: Path):
             add_inline(doc.add_paragraph(), " ".join(buf))
         i += 1
     if table:
-        flush_table(doc, table)
+        flush_table(doc, table, md_path.parent)
     doc.save(out_path)
 
 
+def to_pdf(docx: Path, pdf: Path):
+    script = (f"$w = New-Object -ComObject Word.Application; $d = $w.Documents.Open('{docx}'); "
+              f"$d.SaveAs2('{pdf}', 17); $d.Close(); $w.Quit()")
+    subprocess.run(["powershell", "-NoProfile", "-Command", script], check=True)
+
+
 if __name__ == "__main__":
-    root = Path(sys.argv[1]); out = Path(sys.argv[2]); out.mkdir(parents=True, exist_ok=True)
+    root = Path(sys.argv[1]).resolve()
     for md in sorted(list(root.glob("0*/*.md")) + list(root.glob("0*/sesiones-usuarios/*.md"))):
         stem = "kit-sesiones-usuarios" if md.stem == "README" else md.stem
-        target = out / f"{md.relative_to(root).parts[0][:2]}-{stem}.docx"
-        convert(md, target)
-        print(target.name)
+        if "![" not in md.read_text(encoding="utf-8"):
+            convert(md, md.with_name(f"{stem}.docx"))
+            print(f"{stem}.docx"); continue
+        with tempfile.TemporaryDirectory() as tmp:
+            docx = Path(tmp) / f"{stem}.docx"
+            convert(md, docx)
+            to_pdf(docx, md.with_name(f"{stem}.pdf"))
+        print(f"{stem}.pdf")

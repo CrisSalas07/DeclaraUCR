@@ -9,9 +9,9 @@ y evidencia.
 |---|---|
 | **Versión evaluada** | CP-01 a CP-07: 2.0.0+5 · commit `fc21a84` ([release v2.0.0+5](https://github.com/CrisSalas07/DeclaraUCR/releases/tag/v2.0.0%2B5)). CP-08: 2.0.0+7 · commit `0caae96` ([release v2.0.0+7](https://github.com/CrisSalas07/DeclaraUCR/releases/tag/v2.0.0%2B7)), la versión de las sesiones con usuarios |
 | **Backend** | Firebase del Proyecto 1 (`declarahorario-b186f`), el mismo de la web DeclaraHorario |
-| **Cuentas** | Las de prueba de [INSTALACION.md](INSTALACION.md) §2 (los correos y las contraseñas se entregan aparte) |
-| **Datos** | Ficticios (sede, carrera, período y cursos de [INSTALACION.md](INSTALACION.md) §6) |
-| **Evidencia** | Capturas en `docs/pruebas/`, con el número del caso (por ejemplo `CP-01-1.png`) |
+| **Cuentas** | Las de prueba de [instalacion.md](../02-aplicacion-distribuible/instalacion.md) §2 (los correos y las contraseñas se entregan aparte) |
+| **Datos** | Ficticios (sede, carrera, período y cursos de [instalacion.md](../02-aplicacion-distribuible/instalacion.md) §6) |
+| **Evidencia** | Capturas en `entregables/05-informe-pruebas/capturas/`, con el número del caso (por ejemplo `CP-01-1.png`) |
 
 **Ejecución.** CP-01, CP-02, CP-04, CP-05 y CP-07 se ejecutaron el 2026-11-19 en un Samsung Galaxy A34
 (Android 16, letra al 110 %) con un build de desarrollo del **mismo commit `fc21a84`** de la 2.0.0+5, contra los
@@ -157,7 +157,7 @@ que el revisor lee exactamente lo firmado y que no se firma dos veces.
 | | |
 |---|---|
 | **Precondiciones** | Un teléfono Android 7.0 o superior **distinto del usado para desarrollar** y sin DeclaraUCR. El APK `DeclaraUCR-v2.0.0+7-0caae96.apk` del release y, para el paso 4, el de la 2.0.0+6 (`DeclaraUCR-v2.0.0+6-fc4caba.apk`) |
-| **Pasos** | 1. Descargar e instalar el APK siguiendo [INSTALACION.md](INSTALACION.md) §1.<br>2. Abrirla y revisar la versión en el inicio de sesión.<br>3. Iniciar sesión con la declarante con cursos y abrir su declaración.<br>4. Volver a la versión anterior (2.0.0+6) y otra vez a la 2.0.0+7 ([INSTALACION.md](INSTALACION.md) §4 y §3) |
+| **Pasos** | 1. Descargar e instalar el APK siguiendo [instalacion.md](../02-aplicacion-distribuible/instalacion.md) §1.<br>2. Abrirla y revisar la versión en el inicio de sesión.<br>3. Iniciar sesión con la declarante con cursos y abrir su declaración.<br>4. Volver a la versión anterior (2.0.0+6) y otra vez a la 2.0.0+7 ([instalacion.md](../02-aplicacion-distribuible/instalacion.md) §4 y §3) |
 | **Resultado esperado** | 1: se instala sin errores de firma.<br>2: al pie, "Versión 2.0.0+7 · 0caae96".<br>3: entra y muestra los datos del backend real.<br>4: cada cambio de versión funciona como indica la guía, sin perder la sesión ni los datos guardados en el servidor |
 | **Resultado obtenido** | |
 | **Versión** | 2.0.0+7 (`0caae96`), APK publicado, backend real (pendiente de ejecutar) |
@@ -195,7 +195,7 @@ Encontrados al probar en un teléfono físico (Samsung Galaxy A34, Android 16) a
 | Un período deshabilitado en la web seguía apareciendo al crear una declaración (se leía la copia del teléfono) | `0be0200` (2.0.0+3) | Prueba automatizada "a period closed after a first read is no longer offered"; en el teléfono, el período cerrado ya no aparece |
 | La sección de cursos aparecía dos veces en el formulario | `ef42e47` (2.0.0+3) | Revisado en el teléfono: una sola sección |
 | La vista previa del PDF no dejaba acercar ni alejar | `4d3184f` (2.0.0+3) | En el teléfono: pellizcar acerca y aleja; doble toque vuelve a la página completa |
-| Con la letra del teléfono al 110 %, el seguimiento y la barra inferior cortaban palabras | `f633fb8` (2.0.0+5) | Prueba automatizada actualizada; captura `docs/capturas/01-inicio.png` con la letra al 110 % |
+| Con la letra del teléfono al 110 %, el seguimiento y la barra inferior cortaban palabras | `f633fb8` (2.0.0+5) | Prueba automatizada actualizada; captura `entregables/07-guia-uso/capturas/01-inicio.png` con la letra al 110 % |
 
 Defectos encontrados al ejecutar los casos de este documento:
 
@@ -211,3 +211,31 @@ Defectos encontrados en el recorrido exploratorio del 2026-11-20 (detalle y capt
 | D-01 | Salir del formulario con **Atrás** descartaba sin avisar los cambios sin guardar | El formulario pregunta "¿Salir sin guardar?" mientras haya cambios sin guardar | Prueba automatizada "leaving with unsaved changes asks first (D-01)"; diálogo comprobado en la app |
 | D-02 | Las medias horas libres de la cuadrícula no se podían ubicar con TalkBack | Cada media hora es un botón con su día, hora y contenido | Prueba automatizada "with TalkBack, each half hour says what it has and places (D-02)" |
 | D-03 | Los chips de horas de Inicio se anunciaban como casillas | Se leen como texto | Árbol de accesibilidad revisado |
+
+## Capturas
+
+Evidencia de cada caso, con el nombre del archivo en `capturas/`.
+
+| CP-01-1 | CP-01-2 | CP-02-1 |
+|---|---|---|
+| ![CP-01-1](capturas/CP-01-1.png) | ![CP-01-2](capturas/CP-01-2.png) | ![CP-02-1](capturas/CP-02-1.png) |
+
+| CP-02-2 | CP-03-1 | CP-03-2 |
+|---|---|---|
+| ![CP-02-2](capturas/CP-02-2.png) | ![CP-03-1](capturas/CP-03-1.png) | ![CP-03-2](capturas/CP-03-2.png) |
+
+| CP-03-3 | CP-04-1 | CP-04-2 |
+|---|---|---|
+| ![CP-03-3](capturas/CP-03-3.png) | ![CP-04-1](capturas/CP-04-1.png) | ![CP-04-2](capturas/CP-04-2.png) |
+
+| CP-05-1 | CP-05-2 | CP-06-1 |
+|---|---|---|
+| ![CP-05-1](capturas/CP-05-1.png) | ![CP-05-2](capturas/CP-05-2.png) | ![CP-06-1](capturas/CP-06-1.png) |
+
+| CP-06-2 | CP-07-1 | CP-07-2 |
+|---|---|---|
+| ![CP-06-2](capturas/CP-06-2.png) | ![CP-07-1](capturas/CP-07-1.png) | ![CP-07-2](capturas/CP-07-2.png) |
+
+| CP-07-3 |
+|---|
+| ![CP-07-3](capturas/CP-07-3.png) |

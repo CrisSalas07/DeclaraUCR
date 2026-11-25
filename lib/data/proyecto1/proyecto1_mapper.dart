@@ -10,7 +10,7 @@ import 'package:declara_ucr/models/workload_items.dart';
 
 /// Reads the Proyecto 1 (DeclaraHorario) documents into the models of this
 /// app. Field names follow `docs/MODELO_FIRESTORE.md` of DeclaraHorario; the
-/// mapping is explained in `docs/COMPARACION_BACKEND_P1.md`.
+/// mapping is explained in `entregables/03-informe-tecnico/comparacion-backend-p1.md`.
 ///
 /// Stored documents are untrusted: a missing or mistyped required field
 /// throws a [FormatException] instead of building a half-valid object.

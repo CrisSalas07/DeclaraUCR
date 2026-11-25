@@ -47,7 +47,7 @@ Para ver el detalle: `git log --format='%h %ad %an %s' --date=short`.
 
 | Fecha | Integrante | Actividad | Aporte | Evidencia |
 |---|---|---|---|---|
-| `[ ]` | `[ ]` | Instalación desde cero (CP-08) | | `docs/pruebas/CP-08-1.png` |
+| `[ ]` | `[ ]` | Instalación desde cero (CP-08) | | `entregables/05-informe-pruebas/capturas/CP-08-1.png` |
 | 24/11/2026 | Keity | Sesión con usuario P1 | Guió y anotó la sesión (T0–T3, perfil y formulario) | Bitácora §3 y capturas `P1-T0` a `P1-T3` |
 | `[ ]` | `[ ]` | Sesión con usuario P2 | | Informe de pruebas §6 |
 | `[ ]` | `[ ]` | Sesión con usuario P3 | | Informe de pruebas §6 |

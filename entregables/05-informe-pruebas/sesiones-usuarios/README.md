@@ -13,9 +13,9 @@ Este kit tiene lo necesario para hacerlas y para que queden como evidencia:
 
 | Archivo | Para qué |
 |---|---|
-| `../evidencias/sesiones-usuarios/bitacora-sesiones.md` | La bitácora de las tres sesiones en un solo documento: guion, consentimiento, perfil y tareas de P1, P2 y P3. **No se imprime**: se llena directo en la compu mientras se observa. |
+| `bitacora-sesiones.docx` | La bitácora de las tres sesiones en un solo documento: guion, consentimiento, perfil y tareas de P1, P2 y P3. **No se imprime**: se llena en Word mientras se observa y las capturas se pegan en la tabla «Capturas» de cada participante. |
 | [Formulario de Google Forms](https://docs.google.com/forms/d/e/1FAIpQLSf-YczF2ZjBprrvS48MGGgbn2bVO53aOX-cwGH1FgpTmfonfg/viewform) (QR en `06-socializacion/qr-formulario.png`) | Lo llena la persona al terminar: facilidad de uso (1 a 5), utilidad, claridad, funcionamiento y comentarios. Es el mismo que responden el docente y el otro equipo tras ver el video (§9). |
-| `../evidencias/sesiones-usuarios/` | Bitácoras, capturas y fotos de cada sesión, con los nombres de abajo. |
+| `../capturas/` | Capturas y fotos de cada sesión, con los nombres de abajo. |
 | `../informe-pruebas.md` §6 | Donde se pasan en limpio los resultados de la bitácora. |
 
 ## 1. Antes de la primera sesión (una vez)
@@ -49,7 +49,7 @@ Este kit tiene lo necesario para hacerlas y para que queden como evidencia:
       **Al observar:** después de guardar cambios en un borrador, la lista de Declaraciones puede seguir
       mostrando las horas anteriores hasta reabrir la app (posible hallazgo U-, no se corrige antes de las
       sesiones). Si la persona lo comenta, se anota; no es un error suyo.
-- [x] La bitácora `../evidencias/sesiones-usuarios/bitacora-sesiones.md` abierta en la compu de quien anota.
+- [x] La bitácora `bitacora-sesiones.docx` abierta en la compu de quien anota.
 - [ ] Un reloj o cronómetro a la vista de quien anota: los tiempos se toman con la hora (por ejemplo, 10:12 a
       10:15) en que empieza y termina cada tarea.
 
@@ -96,11 +96,10 @@ El orden es: **presentar → consentimiento → tres tareas anotadas en la bitá
 
 ## 4. Nombres de las evidencias
 
-En `entregables/05-informe-pruebas/evidencias/sesiones-usuarios/`:
+En `entregables/05-informe-pruebas/capturas/`:
 
 | Archivo | Qué es |
 |---|---|
-| `bitacora-sesiones.md` | La bitácora de las tres sesiones, llena directo en la compu. Sin nombre ni cédula de las personas. |
 | `P1-T0-inicio.png` | Captura al terminar T0: Inicio con la sesión iniciada. |
 | `P1-T1-borrador.png` | Captura al terminar T1: la lista con la declaración en **Borrador**. |
 | `P1-T2-resumen.png` | Captura al terminar T2: el resumen con las horas de atención ubicadas. |
