@@ -66,13 +66,17 @@ trazabilidad quede completa.
 | T-08 | Ensayo de las sesiones 21/11/2026 (2.0.0+7) | Después de guardar un borrador existente, la lista de declaraciones sigue mostrando las horas anteriores hasta reiniciar la app (lo guardado en el servidor sí es correcto) | Que la lista se actualice al guardar (`watchAll` en `proyecto1_declaration_repository.dart`) | Media | Ensayo de T1–T3, 21/11/2026 | Pendiente: va en la 2.0.0+8; las sesiones usan la 2.0.0+7 para que todas tengan la misma versión (§8) |
 | U-01 | Sesión P1, 24/11/2026 (T1) | La persona no sabía cómo empezar la declaración (nunca había hecho una) | `[COMPLETAR: decidir con P2 y P3]` | Baja | Bitácora §3; informe de pruebas §6.6 | Pendiente |
 | U-02 | Sesión P1, 24/11/2026 (formulario) | La lista de **Puesto** deja elegir cualquier puesto, aunque no sea el de la persona | `[COMPLETAR: decidir con P2 y P3]` | Media | Respuesta de P1 en el formulario; informe de pruebas §6.6 | Pendiente |
+| U-03 | Sesión P2, 24/11/2026 (T1–T2) | No sabía cómo tocar los cuadros para asignar horas en la cuadrícula | `[COMPLETAR]` | Alta | Bitácora §4; informe de pruebas §6.6 | Pendiente |
+| U-04 | Sesión P2, 24/11/2026 (T1) | Después de Validar no vio el botón «Firmar y enviar a mi superior» | `[COMPLETAR]` | Media | Bitácora §4; informe de pruebas §6.6 | Pendiente |
+| U-05 | Sesión P2, 24/11/2026 (T1) | Después de Validar, Atrás lo devolvió al editor y la declaración volvió a Borrador | `[COMPLETAR]` | Media | Bitácora §4; informe de pruebas §6.6 | Pendiente |
+| U-06 | Sesiones P1 y P2, 24/11/2026 | Falta un tutorial la primera vez que explique cada parte | `[COMPLETAR]` | Media | Bitácora §3 y §4; informe de pruebas §6.6 | Pendiente |
 
 ## 5. Resumen
 
 - **Revisión del P1:** 1 observación del docente (P1-03, en proceso: sale en la 2.0.0+8) y 2 de la revisión del
   equipo (1 verificada, 1 pendiente con justificación: P1-02 necesita una Cloud Function).
 - **Pruebas propias del Proyecto 2:** 8 (7 verificadas; T-08 pendiente).
-- **Sesiones con usuarios:** `[COMPLETAR al terminar P2 y P3]` (por ahora U-01 y U-02, de P1, pendientes).
+- **Sesiones con usuarios:** `[COMPLETAR al terminar P2 y P3]` (por ahora U-01 a U-06, de P1 y P2, pendientes).
 - **Socialización:** `[COMPLETAR al cierre: __ observaciones (__ aceptadas, __ parcialmente, __ descartadas);
   __ mejoras implementadas]`.
 

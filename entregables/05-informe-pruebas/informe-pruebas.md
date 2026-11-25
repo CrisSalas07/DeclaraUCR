@@ -168,8 +168,8 @@ Sin nombres ni cédulas: solo la relación con el proceso. Al menos una persona 
 | Id | Relación con el contexto de uso | ¿Perfil previsto? | Teléfono que usó | Fecha | Bitácora |
 |---|---|---|---|---|---|
 | P1 | Estudiante; nunca ha llenado una declaración jurada de jornada; usa el teléfono casi nunca para trámites | No | Honor 200 Lite, de la persona | 24/11/2026 | `bitacora-sesiones.docx` §3 |
-| P2 | `[COMPLETAR]` | `[COMPLETAR: P2 o P3 tiene que ser docente o conocer el trámite]` | `[COMPLETAR]` | `[COMPLETAR]` | `bitacora-sesiones.docx` §4 |
-| P3 | `[COMPLETAR]` | `[COMPLETAR]` | `[COMPLETAR]` | `[COMPLETAR]` | `bitacora-sesiones.docx` §5 |
+| P2 | Amigo del equipo; nunca ha llenado una declaración jurada de jornada; usa el teléfono a veces para trámites | No | Honor Magic7 Lite, de la persona | 24/11/2026 | `bitacora-sesiones.docx` §4 |
+| P3 | `[COMPLETAR]` | `[COMPLETAR: tiene que ser Sí: P1 y P2 no son del perfil previsto (§8)]` | `[COMPLETAR]` | `[COMPLETAR]` | `bitacora-sesiones.docx` §5 |
 
 ### 6.4 Resultados por tarea
 
@@ -178,14 +178,14 @@ Tiempo aproximado en minutos. Éxito: **Sí**, **Con ayuda** o **No**.
 | Participante | Tarea | Éxito | Tiempo | Errores observados | Ayudas dadas | Evidencia |
 |---|---|---|---|---|---|---|
 | P1 | T0 | Con ayuda | No registrado (terminó 4:24 p. m.) | — | Sí; el detalle no se anotó | `P1-T0-inicio.png` |
-| P2 | T0 | | | | | `P2-T0-inicio.png` |
+| P2 | T0 | Sí | 3 (9:05–9:08 p. m.) | — | Ninguna | `P2-T0-inicio.png` |
 | P3 | T0 | | | | | `P3-T0-inicio.png` |
 | P1 | T1 | Con ayuda | No registrado (terminó 4:50 p. m.) | Al inicio no sabía cómo empezar la declaración (nunca había hecho una) | Sí; el detalle no se anotó | `P1-T1-borrador.png` |
 | P1 | T2 | Con ayuda | No registrado (terminó 4:52 p. m.) | Intentó ubicar más atención de la que le tocaba; la app lo detuvo («Ya ubicó todas las horas de atención…») | Sí; el detalle no se anotó | `P1-T2-resumen.png` |
 | P1 | T3 | Con ayuda | No registrado (terminó 4:52 p. m.) | Llegó al resumen: **Borrador**, «Faltan 1,5 h de planificación de IF0011», Validar deshabilitado. Por confirmar: en T2 la planificación estaba completa (4 h de 4 h); entre las dos capturas se quitaron 1,5 h | Sí; el detalle no se anotó | `P1-T3-estado.png` |
-| P2 | T1 | | | | | `P2-T1-borrador.png` |
-| P2 | T2 | | | | | `P2-T2-resumen.png` |
-| P2 | T3 | | | | | `P2-T3-estado.png` |
+| P2 | T1 | Con ayuda | 8 (9:19–9:27 p. m.) | Se adelantó hasta Validar; no sabía cómo tocar los cuadros para asignar horas; después de Validar no vio «Firmar y enviar» y con Atrás volvió al editor | Contexto de los proyectos que puede declarar; cómo tocar la cuadrícula | `P2-T1-borrador.png` |
+| P2 | T2 | Sí | ≈ 10 (no anotado) | No eligió la tarea antes de tocar; no descubrió «mantenga presionado y deslice» | Ninguna (la de la cuadrícula fue en T1) | `P2-T2-resumen.png` |
+| P2 | T3 | Sí | ≈ 5 (no anotado) | — Dijo «validada y guardada»; después firmó y envió (9:29) | Ninguna | `P2-T3-estado.png` |
 | P3 | T1 | | | | | `P3-T1-borrador.png` |
 | P3 | T2 | | | | | `P3-T2-resumen.png` |
 | P3 | T3 | | | | | `P3-T3-estado.png` |
@@ -194,6 +194,11 @@ Tiempo aproximado en minutos. Éxito: **Sí**, **Con ayuda** o **No**.
 2 h de atención de T2 son las mismas. La persona usó su nombre y su cédula reales en lugar de los de la
 tarjeta: en las capturas están tapados con barras grises. Los tiempos de inicio no se anotaron; la hora de
 fin es la de la barra de estado de cada captura. La hora de inicio anotada (4:40 aprox.) no cuadra con la captura de T0 (4:24).
+
+**Diferencias de P2 con el guion.** El curso se asignó como IF0009 1/2 TC (4 h de atención, no 2 h) y la persona
+agregó un proyecto de 0,5 h. No usó los datos de la tarjeta, sino otros inventados. En T1 se adelantó hasta
+Validar, y al final **firmó y envió** la declaración (queda «Pendiente de firma del revisor»). Las capturas van de
+9:11 a 9:30 p. m.; los tiempos aproximados de T2 y T3 no cuadran con ellas.
 
 ### 6.5 Percepción
 
@@ -204,7 +209,7 @@ de uso de 1 a 5 y comentarios abiertos (§8), además de utilidad, claridad y fu
 | Participante | Facilidad (1–5) | Comentario (con sus palabras) |
 |---|---|---|
 | P1 | 5 (utilidad 5, claridad 5, funcionamiento 5) | «La verdad no me pareció difícil, lo entendí muy bien […] no tuve alguna dificultad.» Cambiaría: que el **Puesto** no deje elegir uno que no es el suyo (eligió Catedrático siendo Interino Licenciado). «Felicitarles, me gustó la app, muy entendible!» |
-| P2 | | |
+| P2 | 4 (utilidad 5, claridad 3, funcionamiento 4) | En el formulario: «Es un poco confuso el inicio ya que no sabía qué hacía cada botón.» Cambiaría: «Poner un tutorial guía al instalar la aplicación». Errores: ninguno. En la sesión dijo lo mismo: le faltó un tutorial introductivo para saber qué hace cada cosa |
 | P3 | | |
 | **Promedio** | | |
 
@@ -214,6 +219,10 @@ de uso de 1 a 5 y comentarios abiertos (§8), además de utilidad, claridad y fu
 |---|---|---|---|---|---|
 | U-01 | No sabía cómo empezar la declaración | P1, T1 | Necesitó ayuda para empezar | Baja | `[COMPLETAR: decidir con P2 y P3; si se repite, sube la prioridad]` |
 | U-02 | La lista de **Puesto** deja elegir cualquier puesto, aunque no sea el de la persona (lo dijo P1 en el formulario) | P1, T1 | Una declaración con un puesto equivocado llega al revisor; hoy solo el revisor lo detecta | Media | `[COMPLETAR: decidir con P2 y P3]` |
+| U-03 | No sabía cómo tocar los cuadros para asignar horas en la cuadrícula; no entendió la lógica de la app | P2, T1–T2 | Necesitó ayuda para ubicar horas (proceso 2) | Alta | `[COMPLETAR: corregir y volver a probar con P2 (§6.7)]` |
+| U-04 | Después de Validar no vio el botón «Firmar y enviar a mi superior» | P2, T1 | No supo cuál era el siguiente paso | Media | `[COMPLETAR]` |
+| U-05 | Después de Validar, Atrás lo devolvió al editor y la declaración volvió a Borrador | P2, T1 | Salió del resumen sin firmar y tuvo que validar otra vez | Media | `[COMPLETAR]` |
+| U-06 | Pide un tutorial la primera vez que explique cada parte (lo dijeron P2 y, en parte, P1) | P2 (y P1, T1) | Sin guía no entiende la lógica de la app | Media | `[COMPLETAR]` |
 
 Qué vigilar en particular (son los puntos donde el recorrido sugiere que alguien se puede trabar):
 
@@ -272,3 +281,7 @@ Las de los casos técnicos están en `pruebas-tecnicas.pdf`.
 | P1-T0-inicio | P1-T1-borrador | P1-T2-resumen | P1-T3-estado |
 |---|---|---|---|
 | ![P1-T0-inicio](capturas/P1-T0-inicio.png) | ![P1-T1-borrador](capturas/P1-T1-borrador.png) | ![P1-T2-resumen](capturas/P1-T2-resumen.png) | ![P1-T3-estado](capturas/P1-T3-estado.png) |
+
+| P2-T0-inicio | P2-T1-borrador | P2-T2-resumen | P2-T3-estado |
+|---|---|---|---|
+| ![P2-T0-inicio](capturas/P2-T0-inicio.png) | ![P2-T1-borrador](capturas/P2-T1-borrador.png) | ![P2-T2-resumen](capturas/P2-T2-resumen.png) | ![P2-T3-estado](capturas/P2-T3-estado.png) |
