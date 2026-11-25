@@ -45,6 +45,8 @@ Para ver el detalle: `git log --format='%h %ad %an %s' --date=short`.
 | 22/11/2026 | Cristopher | Orden de los entregables | Mapa de entregables y README raíz como entrada | PR #20, #21 |
 | 24/11/2026 | Keity | Sesiones sin grabación y CP-08 con la 2.0.0+7 | Kit sin audio; CP-08 con el APK publicado; registro de la sesión P1 | `2cfd459`, `912f737`, `cc7cc5b` (PR #22, #23) |
 | 24/11/2026 | Cristopher | Una sola carpeta de entregables | Bitácora en Word, capturas dentro de los PDF, revisión contra el descriptor | `77fae16` (PR #24) |
+| 24/11/2026 | Cristopher | Retroalimentación del P1: rol «Superior» | «Revisor» pasa a «Superior» en estados, seguimiento, botón de firma, avisos y PDF; pruebas actualizadas (matriz P1-03) | `68da1f3` (PR #25) |
+| 24/11/2026 | Cristopher | Registro de las sesiones P1 y P2 | Bitácora, informe de pruebas §6 y matriz U-01 a U-07, con capturas, formulario y horas de Firebase | PR #26 a #31 |
 
 ### Actividades sin commit
 
