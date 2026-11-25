@@ -17,7 +17,7 @@ captura de `docs/capturas/` o del repositorio, o la persona hablando a cámara.
 | 5 | 4:00 | **Demostración** (6 min) | Pantalla del teléfono grabada (grabador de pantalla de Android o scrcpy) | Ver guion de la demostración abajo | Demostración |
 | 6 | 10:00 | Cómo instalarla y entrar | Página del release v2.0.0+7, los pasos de instalación, la versión al pie del inicio de sesión | "Es un APK, no está en la tienda: así se instala, así se actualiza y así se vuelve a la versión anterior." | Instalación y acceso |
 | 7 | 11:00 | Pruebas técnicas | 8 casos, 109 pruebas automatizadas, D-01 antes y después | "El recorrido encontró que salir con Atrás perdía cambios sin avisar; ahora la app pregunta." | Resultados técnicos |
-| 8 | 12:00 | Pruebas con usuarios | Perfil de las 3 personas, éxito por tarea, facilidad promedio y **un fragmento corto de audio** de una sesión (con su permiso) | `[COMPLETAR con los resultados de las sesiones]` | Resultados con usuarios |
+| 8 | 12:00 | Pruebas con usuarios | Perfil de las 3 personas, éxito por tarea, facilidad promedio y **una frase textual** de una persona participante, tomada de la bitácora | `[COMPLETAR con los resultados de las sesiones]` | Resultados con usuarios |
 | 9 | 13:30 | Lo que queda pendiente y por qué | `VALIDADA` en el cliente, zonaje solo consulta, sin conexión no se guarda | "Son decisiones, no olvidos: esto es lo que haríamos después y por qué no entró." | Dificultades y decisiones |
 | 10 | 14:30 | Cierre y formulario | Enlace y QR del formulario en pantalla (`qr-formulario.svg`) | "Su opinión cambia la versión final: al menos dos mejoras van a salir de este formulario." | Instrumento |
 

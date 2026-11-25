@@ -3,10 +3,11 @@
 El §8 del descriptor pide sesiones con **al menos tres personas que no sean del equipo**, todas con **la misma
 versión** y **el mismo guion de tres tareas**, observando y anotando cada ayuda. Al menos una persona debe ser
 del perfil previsto (docente o alguien que conozca la declaración jurada de jornada). Datos ficticios,
-participación voluntaria y permiso antes de grabar.
+participación voluntaria; si se grabara algo, se pide permiso antes.
 
-**Las sesiones se graban en audio**, con un teléfono del equipo (no el que usa la persona). El audio prueba que la persona
-usó la app y guarda lo que dijo; no reemplaza las notas ni las capturas, porque no muestra la pantalla.
+**Las sesiones no se graban**: el descriptor no lo exige. La evidencia es la bitácora llena durante la sesión
+(tiempos con el reloj, lo que la persona hizo y dijo, cada ayuda), las cuatro capturas de cada participante y sus
+respuestas del formulario. Si pueden, van dos del equipo: una persona guía y la otra anota.
 
 Este kit tiene lo necesario para hacerlas y para que queden como evidencia:
 
@@ -49,9 +50,8 @@ Este kit tiene lo necesario para hacerlas y para que queden como evidencia:
       mostrando las horas anteriores hasta reabrir la app (posible hallazgo U-, no se corrige antes de las
       sesiones). Si la persona lo comenta, se anota; no es un error suyo.
 - [x] La bitácora `../evidencias/sesiones-usuarios/bitacora-sesiones.md` abierta en la compu de quien anota.
-- [ ] Un segundo teléfono para grabar el audio, con espacio y batería. Probar antes que se oye bien a medio
-      metro.
-- [ ] Los tiempos se toman del audio: anotar el minuto en que empieza y termina cada tarea.
+- [ ] Un reloj o cronómetro a la vista de quien anota: los tiempos se toman con la hora (por ejemplo, 10:12 a
+      10:15) en que empieza y termina cada tarea.
 
 ## 2. Antes de cada sesión
 
@@ -63,18 +63,16 @@ Este kit tiene lo necesario para hacerlas y para que queden como evidencia:
 
 ## 3. Durante la sesión
 
-El orden es: **presentar → grabar con consentimiento → tres tareas anotadas en la bitácora → formulario**.
+El orden es: **presentar → consentimiento → tres tareas anotadas en la bitácora → formulario**.
 
 0. **Presentar en 2 minutos**: qué problema resuelve DeclaraUCR (la declaración jurada de horario que cada
    docente llena cada ciclo), quién la usa y qué se le va a pedir (tres tareas cortas). **No mostrar la
    demostración ni el video antes de las tareas**: la prueba mide si la app se entiende sola. El video se
    puede mostrar al final, si la persona quiere verlo.
 
-1. Leer el párrafo de bienvenida de la bitácora (§2). **Empezar a grabar y preguntar en el audio**: "¿Está de acuerdo en
-   participar y en que grabemos el audio?". Así la autorización queda en la misma grabación. Si no acepta, se
-   detiene, se borra y alcanza con las notas.
-2. En el audio decir solo "Participante P1" (o P2, P3) y la fecha. **Nunca el nombre**; si la persona lo dice,
-   se anota el minuto para recortarlo.
+1. Leer el párrafo de bienvenida de la bitácora (§2) y preguntar: "¿Está de acuerdo en participar de forma
+   voluntaria?". Marcar el consentimiento en la bitácora. Si no acepta, no se hace la sesión.
+2. En la bitácora anotar solo "Participante P1" (o P2, P3), la fecha y la hora. **Nunca el nombre.**
 3. **T0, crear la cuenta.** Antes de leer la tarea, preguntar: "¿Alguna vez entró a DeclaraHorario con su
    correo de la UCR?". Si dice que sí, la app va a responder «Ya existe una cuenta con ese correo.»: que se
    registre con un correo personal (Gmail, Outlook, Hotmail, Live o Zoho, que el backend también acepta).
@@ -84,12 +82,14 @@ El orden es: **presentar → grabar con consentimiento → tres tareas anotadas 
    le asigna en la web el **revisor** (Administración › Usuarios) y los **cursos** (Coordinación) en el
    período. Se anota cuánto tardó la pausa; no cuenta en los tiempos. La app lo toma sola, sin cerrar
    sesión.
-4. Dar una tarea a la vez, leyendo la frase de la bitácora en voz alta (queda en el audio). No explicar la
-   pantalla.
-5. Anotar el minuto del audio en que empieza y termina cada tarea, lo que la persona intenta, dónde duda y cada ayuda (qué se le dijo y por qué).
-   Solo se ayuda si la persona lo pide o lleva más de un minuto trabada.
+4. Dar una tarea a la vez, leyendo la frase de la bitácora en voz alta, tal cual. No explicar la pantalla.
+5. Anotar la hora en que empieza (al terminar de leer la tarea) y termina (al cumplirse el criterio) cada tarea,
+   lo que la persona intenta, dónde duda y cada ayuda (qué se le dijo y por qué). Las frases importantes que
+   diga en voz alta se anotan entre comillas, con sus palabras. Solo se ayuda si la persona lo pide o lleva más
+   de un minuto trabada.
 6. Al final de cada tarea, **captura de pantalla** de cómo quedó (ver nombres abajo).
-7. Al terminar las cuatro, detener la grabación y **pasarle el formulario** en el teléfono: [enlace](https://docs.google.com/forms/d/e/1FAIpQLSf-YczF2ZjBprrvS48MGGgbn2bVO53aOX-cwGH1FgpTmfonfg/viewform) o el QR
+7. Al terminar las cuatro, preguntar "¿Qué fue lo más difícil?" y "¿Qué cambiaría?" y anotar las respuestas.
+   Después, **pasarle el formulario** en el teléfono: [enlace](https://docs.google.com/forms/d/e/1FAIpQLSf-YczF2ZjBprrvS48MGGgbn2bVO53aOX-cwGH1FgpTmfonfg/viewform) o el QR
    `../../06-socializacion/qr-formulario.png` en la pantalla de la compu. Se le
    dice su número de participante (P1, P2 o P3) para que lo marque; así sus respuestas se unen con la
    bitácora sin pedir el nombre. Quien observa no mira mientras responde.
@@ -107,7 +107,6 @@ En `entregables/05-informe-pruebas/evidencias/sesiones-usuarios/`:
 | `P1-T3-estado.png` | Captura al terminar T3: el resumen con el estado y lo que falta. |
 | `respuestas-formulario.pdf` | Al final de las tres sesiones: en Google Forms, *Respuestas* › descargar como PDF (o captura del resumen). Prueba de que las personas usaron la app y opinaron. |
 | `P1-sesion.jpg` | (Opcional) Foto de la sesión **sin la cara** de la persona, o solo de las manos y el teléfono. |
-| `P1-audio.m4a` | Audio de la sesión completa, con la autorización al inicio. Va al Drive del equipo, **no al repositorio** (es público); en el informe se pone el enlace. |
 
 Igual para P2 y P3. La nueva comprobación (§6.7 del informe) usa el prefijo `R-` y el participante: por
 ejemplo, `R-P1-T2-resumen.png`.
@@ -115,8 +114,7 @@ ejemplo, `R-P1-T2-resumen.png`.
 ## 5. Después de las tres sesiones
 
 1. Pasar a `informe-pruebas.md` §6.3 y §6.4 lo de las tres bitácoras, y a §6.5 las respuestas del formulario
-   de P1, P2 y P3, con el audio para los tiempos y las frases
-   textuales.
+   de P1, P2 y P3, con los tiempos y las frases textuales anotados en la bitácora.
 2. Juntar los problemas en §6.6 (U-01, U-02…): qué se vio, quién y en qué tarea, impacto y prioridad.
 3. Corregir los de mayor impacto, subir versión (2.0.0+8), compilar y publicar.
 4. **Volver a probar** esos problemas con al menos una de las personas (§6.7) y guardar la evidencia con `R-`.

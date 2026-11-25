@@ -52,7 +52,7 @@ entregables/
 
 Fuera de `entregables/`: [`docs/INSTALACION.md`](../docs/INSTALACION.md) (instalar, actualizar, volver atrás), [`docs/PRUEBAS.md`](../docs/PRUEBAS.md) y
 [`docs/pruebas/`](../docs/pruebas) (casos CP-01 a CP-08 con capturas) y [`docs/capturas/`](../docs/capturas) (pantallas de la app para el video).
-Los audios de las sesiones y el video van al **Drive del equipo**, nunca al repositorio (es público).
+El video va al **Drive del equipo**, nunca al repositorio (es público).
 
 ## 3. Qué se usa para cada tarea
 
@@ -64,7 +64,7 @@ Los audios de las sesiones y el video van al **Drive del equipo**, nunca al repo
 | Dar los datos ficticios a la persona | [`05-informe-pruebas/sesiones-usuarios/tarjetas.md`](05-informe-pruebas/sesiones-usuarios/tarjetas.md) (una tarjeta por participante) |
 | Leer el guion y anotar T0–T3 mientras observa | [`05-informe-pruebas/evidencias/sesiones-usuarios/bitacora-sesiones.md`](05-informe-pruebas/evidencias/sesiones-usuarios/bitacora-sesiones.md) §2 y la sección de P1, P2 o P3 |
 | Paso a paso durante la sesión | [`05-informe-pruebas/sesiones-usuarios/README.md`](05-informe-pruebas/sesiones-usuarios/README.md) §3 |
-| Grabar el audio | Un segundo teléfono del equipo; el archivo (`P1-audio.m4a`…) va al Drive |
+| Tomar los tiempos | La hora del reloj al inicio y al fin de cada tarea, anotada en la bitácora (las sesiones no se graban) |
 | Capturas al final de cada tarea | En [`05-informe-pruebas/evidencias/sesiones-usuarios/`](05-informe-pruebas/evidencias/sesiones-usuarios), con los nombres de [`05-informe-pruebas/sesiones-usuarios/README.md`](05-informe-pruebas/sesiones-usuarios/README.md) §4 |
 | Formulario al terminar | El enlace o [`06-socializacion/qr-formulario.png`](06-socializacion/qr-formulario.png); la persona marca su número (P1, P2, P3) |
 | Después de las tres | [`05-informe-pruebas/sesiones-usuarios/README.md`](05-informe-pruebas/sesiones-usuarios/README.md) §5: pasar todo a [`05-informe-pruebas/informe-pruebas.md`](05-informe-pruebas/informe-pruebas.md) §6 |
@@ -79,7 +79,7 @@ Los audios de las sesiones y el video van al **Drive del equipo**, nunca al repo
 | Bloque 5: demostración (6 min) | La app 2.0.0+7 en el teléfono; pasos en [`06-socializacion/guion-video.md`](06-socializacion/guion-video.md) (guion de la demostración) |
 | Bloque 6: instalación | [Página del release v2.0.0+7](https://github.com/CrisSalas07/DeclaraUCR/releases/tag/v2.0.0%2B7) y [`docs/INSTALACION.md`](../docs/INSTALACION.md) |
 | Bloque 7: pruebas técnicas | [`docs/PRUEBAS.md`](../docs/PRUEBAS.md) y las capturas D-01 de [`05-informe-pruebas/evidencias/recorrido-2026-11-20/`](05-informe-pruebas/evidencias/recorrido-2026-11-20) |
-| Bloque 8: pruebas con usuarios | [`05-informe-pruebas/informe-pruebas.md`](05-informe-pruebas/informe-pruebas.md) §6 (ya lleno tras las sesiones) y un fragmento de audio del Drive, con permiso |
+| Bloque 8: pruebas con usuarios | [`05-informe-pruebas/informe-pruebas.md`](05-informe-pruebas/informe-pruebas.md) §6 (ya lleno tras las sesiones) y una frase textual de la bitácora |
 | Bloque 9: pendientes | [`03-informe-tecnico/informe-tecnico.md`](03-informe-tecnico/informe-tecnico.md) §8 (limitaciones conocidas) |
 | Bloque 10: cierre | [`06-socializacion/qr-formulario.svg`](06-socializacion/qr-formulario.svg) en pantalla |
 | Pantallas de apoyo | [`docs/capturas/`](../docs/capturas) |
