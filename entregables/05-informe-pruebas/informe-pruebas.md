@@ -222,6 +222,7 @@ de uso de 1 a 5 y comentarios abiertos (§8), además de utilidad, claridad y fu
 | U-04 | Después de Validar no vio el botón «Firmar y enviar a mi superior» | P2, T1 | No supo cuál era el siguiente paso | Media | `[COMPLETAR]` |
 | U-05 | Después de Validar, Atrás lo devolvió al editor y la declaración volvió a Borrador | P2, T1 | Salió del resumen sin firmar y tuvo que validar otra vez | Media | `[COMPLETAR]` |
 | U-06 | Pide un tutorial la primera vez que explique cada parte (lo dijeron P2 y, en parte, P1) | P2 (y P1, T1) | Sin guía no entiende la lógica de la app | Media | `[COMPLETAR]` |
+| U-07 | El perfil solo muestra los datos: no deja corregir el nombre ni la cédula | P2 (después de las tareas) | Si se equivoca al registrarse (P1 puso sus datos reales), no lo puede corregir | Media | Decidido: dejar editar nombre, cédula y teléfono desde el perfil (las reglas del P1 ya lo permiten); correo, sede y carrera siguen con Administración. Se hace en la 2.0.0+8 |
 
 Qué vigilar en particular (son los puntos donde el recorrido sugiere que alguien se puede trabar):
 

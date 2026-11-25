@@ -70,13 +70,14 @@ trazabilidad quede completa.
 | U-04 | Sesión P2, 24/11/2026 (T1) | Después de Validar no vio el botón «Firmar y enviar a mi superior» | `[COMPLETAR]` | Media | Bitácora §4; informe de pruebas §6.6 | Pendiente |
 | U-05 | Sesión P2, 24/11/2026 (T1) | Después de Validar, Atrás lo devolvió al editor y la declaración volvió a Borrador | `[COMPLETAR]` | Media | Bitácora §4; informe de pruebas §6.6 | Pendiente |
 | U-06 | Sesiones P1 y P2, 24/11/2026 | Falta un tutorial la primera vez que explique cada parte | `[COMPLETAR]` | Media | Bitácora §3 y §4; informe de pruebas §6.6 | Pendiente |
+| U-07 | Sesión P2, 24/11/2026 | El perfil no deja editar el nombre ni la cédula | Editar nombre, cédula (9 dígitos, se reserva la nueva) y teléfono desde el perfil; las declaraciones ya firmadas conservan sus datos. Correo, sede y carrera siguen con Administración | Media | Bitácora §4; informe de pruebas §6.6 | Pendiente: 2.0.0+8, después de P3 |
 
 ## 5. Resumen
 
 - **Revisión del P1:** 1 observación del docente (P1-03, en proceso: sale en la 2.0.0+8) y 2 de la revisión del
   equipo (1 verificada, 1 pendiente con justificación: P1-02 necesita una Cloud Function).
 - **Pruebas propias del Proyecto 2:** 8 (7 verificadas; T-08 pendiente).
-- **Sesiones con usuarios:** `[COMPLETAR al terminar P2 y P3]` (por ahora U-01 a U-06, de P1 y P2, pendientes).
+- **Sesiones con usuarios:** `[COMPLETAR al terminar P2 y P3]` (por ahora U-01 a U-07, de P1 y P2, pendientes).
 - **Socialización:** `[COMPLETAR al cierre: __ observaciones (__ aceptadas, __ parcialmente, __ descartadas);
   __ mejoras implementadas]`.
 
