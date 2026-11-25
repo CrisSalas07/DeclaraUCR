@@ -176,12 +176,12 @@ Tiempo aproximado en minutos. Éxito: **Sí**, **Con ayuda** o **No**.
 
 | Participante | Tarea | Éxito | Tiempo | Errores observados | Ayudas dadas | Evidencia |
 |---|---|---|---|---|---|---|
-| P1 | T0 | Con ayuda | No registrado (terminó 4:24 p. m.) | — | Sí; el detalle no se anotó | `P1-T0-inicio.png` |
+| P1 | T0 | Con ayuda | ≈ 9 (≈ 4:15–4:24 p. m.) | — | Sí; el detalle no se anotó | `P1-T0-inicio.png` |
 | P2 | T0 | Sí | 3 (9:05–9:08 p. m.) | — | Ninguna | `P2-T0-inicio.png` |
 | P3 | T0 | | | | | `P3-T0-inicio.png` |
-| P1 | T1 | Con ayuda | No registrado (terminó 4:50 p. m.) | Al inicio no sabía cómo empezar la declaración (nunca había hecho una) | Sí; el detalle no se anotó | `P1-T1-borrador.png` |
-| P1 | T2 | Con ayuda | No registrado (terminó 4:52 p. m.) | Intentó ubicar más atención de la que le tocaba; la app lo detuvo («Ya ubicó todas las horas de atención…») | Sí; el detalle no se anotó | `P1-T2-resumen.png` |
-| P1 | T3 | Con ayuda | No registrado (terminó 4:52 p. m.) | Llegó al resumen: **Borrador**, «Faltan 1,5 h de planificación de IF0011», Validar deshabilitado. Por confirmar: en T2 la planificación estaba completa (4 h de 4 h); entre las dos capturas se quitaron 1,5 h | Sí; el detalle no se anotó | `P1-T3-estado.png` |
+| P1 | T1 | Con ayuda | ≈ 20 (≈ 4:30–4:50 p. m.) | Al inicio no sabía cómo empezar la declaración (nunca había hecho una) | Sí; el detalle no se anotó | `P1-T1-borrador.png` |
+| P1 | T2 | Con ayuda | 2 (4:50–4:52 p. m.) | Intentó ubicar más atención de la que le tocaba; la app lo detuvo («Ya ubicó todas las horas de atención…») | Sí; el detalle no se anotó | `P1-T2-resumen.png` |
+| P1 | T3 | Con ayuda | ≈ 3 (4:52–≈ 4:55 p. m.) | Llegó al resumen: **Borrador**, «Faltan 1,5 h de planificación de IF0011», Validar deshabilitado. En T2 la planificación estaba completa (4 h de 4 h); entre las dos capturas se quitaron 1,5 h. Lo de T2 y T3 no se guardó (Firebase: único guardado a las 4:50:17 p. m.) | Sí; el detalle no se anotó | `P1-T3-estado.png` |
 | P2 | T1 | Con ayuda | 8 (9:19–9:27 p. m.) | Se adelantó hasta Validar; no sabía cómo tocar los cuadros para asignar horas; después de Validar no vio «Firmar y enviar» y con Atrás volvió al editor | Contexto de los proyectos que puede declarar; cómo tocar la cuadrícula | `P2-T1-borrador.png` |
 | P2 | T2 | Sí | ≈ 10 (no anotado) | No eligió la tarea antes de tocar; no descubrió «mantenga presionado y deslice» | Ninguna (la de la cuadrícula fue en T1) | `P2-T2-resumen.png` |
 | P2 | T3 | Sí | ≈ 5 (no anotado) | — Dijo «validada y guardada»; después firmó y envió (9:29) | Ninguna | `P2-T3-estado.png` |
@@ -191,8 +191,9 @@ Tiempo aproximado en minutos. Éxito: **Sí**, **Con ayuda** o **No**.
 
 **Diferencias de P1 con el guion.** La cuenta recibió el curso **IF0011** (1/4 TC) en lugar de IF0009; las
 2 h de atención de T2 son las mismas. La persona usó su nombre y su cédula reales en lugar de los de la
-tarjeta: en las capturas están tapados con barras grises. Los tiempos de inicio no se anotaron; la hora de
-fin es la de la barra de estado de cada captura. La hora de inicio anotada (4:40 aprox.) no cuadra con la captura de T0 (4:24).
+tarjeta: en las capturas están tapados con barras grises. Las horas salen de la barra de estado de las capturas y, el fin de
+T1, de la creación de la declaración en Firebase (4:50:17 p. m.); las marcadas con ≈ son estimadas porque no se
+anotaron. La hora de inicio anotada (4:40 aprox.) no cuadraba con la captura de T0 (4:24): la sesión empezó ≈ 4:15.
 
 **Diferencias de P2 con el guion.** El curso se asignó como IF0009 1/2 TC (4 h de atención, no 2 h) y la persona
 agregó un proyecto de 0,5 h. No usó los datos de la tarjeta, sino otros inventados. En T1 se adelantó hasta
