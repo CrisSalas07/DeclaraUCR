@@ -128,9 +128,8 @@ Detalle en `entregables/05-informe-pruebas/pruebas-tecnicas.md`.
 
 ### 6.1 Preparación
 
-El paso a paso (cuentas, qué revisar antes de cada sesión, nombres de las evidencias) y la bitácora que se
-llena en cada sesión están en [`sesiones-usuarios/`](sesiones-usuarios/README.md). Las evidencias van en
-`capturas/`.
+La bitácora de las tres sesiones (guion, consentimiento, perfil, tareas, ayudas y capturas) es
+`sesiones-usuarios/bitacora-sesiones.docx`. Las capturas de cada tarea están en `capturas/` (`P1-T0-inicio.png` …).
 
 
 - **Versión:** 2.0.0+7, la misma para todas las sesiones.
