@@ -138,10 +138,10 @@ llena en cada sesión están en [`sesiones-usuarios/`](sesiones-usuarios/README.
   contraseña; el equipo no las conoce. Cédula y teléfono **ficticios**, de una tarjeta que da el equipo.
   Después del registro, el equipo asigna en la web el revisor y los mismos cursos de prueba a todas.
   Al terminar el estudio, las cuentas se desactivan. Nunca la cuenta personal de la persona participante.
-- **Grabación:** cada sesión se graba en audio, con la autorización preguntada al inicio de la misma
-  grabación (`PN-audio.m4a`, en el Drive del equipo, no en el repositorio). Sin nombres en el audio.
-- **Consentimiento:** participación voluntaria; si se graba la pantalla o la voz, se pide permiso antes y se
-  anota en la tabla.
+- **Registro:** las sesiones no se graban (el descriptor no lo exige). Quien anota llena la bitácora durante
+  la sesión: tiempos con la hora del reloj, lo que la persona hace y dice (frases textuales entre comillas) y
+  cada ayuda. Se suman las capturas al final de cada tarea y las respuestas del formulario.
+- **Consentimiento:** participación voluntaria, preguntada al inicio y marcada en la bitácora.
 - **Quién observa:** una persona del equipo guía y anota; no ayuda salvo que la persona se trabe más de un
   minuto o lo pida. Cada ayuda se anota.
 
@@ -165,11 +165,11 @@ Antes de empezar se lee esto, tal cual:
 Sin nombres ni cédulas: solo la relación con el proceso. Al menos una persona debe ser del perfil previsto
 (docente, o alguien que haya llenado una declaración jurada de jornada).
 
-| Id | Relación con el contexto de uso | ¿Perfil previsto? | Teléfono que usó | Fecha | Bitácora | Audio |
-|---|---|---|---|---|---|---|
-| P1 | `[COMPLETAR: p. ej. "docente interina de la Sede del Sur, llena la declaración cada ciclo"]` | Sí | `[COMPLETAR]` | `[COMPLETAR]` | `bitacora-sesiones.md` §3 | `[enlace a P1-audio.m4a]` |
-| P2 | `[COMPLETAR: p. ej. "estudiante de Informática Empresarial, no conoce el trámite"]` | No | `[COMPLETAR]` | `[COMPLETAR]` | `bitacora-sesiones.md` §4 | `[enlace a P2-audio.m4a]` |
-| P3 | `[COMPLETAR]` | `[COMPLETAR]` | `[COMPLETAR]` | `[COMPLETAR]` | `bitacora-sesiones.md` §5 | `[enlace a P3-audio.m4a]` |
+| Id | Relación con el contexto de uso | ¿Perfil previsto? | Teléfono que usó | Fecha | Bitácora |
+|---|---|---|---|---|---|
+| P1 | `[COMPLETAR: p. ej. "docente interina de la Sede del Sur, llena la declaración cada ciclo"]` | Sí | `[COMPLETAR]` | `[COMPLETAR]` | `bitacora-sesiones.md` §3 |
+| P2 | `[COMPLETAR: p. ej. "estudiante de Informática Empresarial, no conoce el trámite"]` | No | `[COMPLETAR]` | `[COMPLETAR]` | `bitacora-sesiones.md` §4 |
+| P3 | `[COMPLETAR]` | `[COMPLETAR]` | `[COMPLETAR]` | `[COMPLETAR]` | `bitacora-sesiones.md` §5 |
 
 ### 6.4 Resultados por tarea
 
