@@ -3,7 +3,7 @@ Android 16, text size 110 %), against the Firebase emulators with the
 Proyecto 1 rules and the fictitious data of backend/proyecto1/seed.mjs
 (never the real backend). Used in the guide and the socialization video.
 
-00-inicio-sesion.png  Sign-in
+00-inicio-sesion.png  Sign-in (retaken 26/11/2026 with 2.0.0+7, empty form, no data)
 01-inicio.png         Inicio with the tracking of the latest declaration
 02-declaraciones.png  Declaraciones with statuses
 03-cursos.png         Courses assigned by the coordination and their hours
