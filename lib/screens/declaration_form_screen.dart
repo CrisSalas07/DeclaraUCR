@@ -198,7 +198,14 @@ class _FormBodyState extends State<_FormBody> {
         ),
         bottomNavigationBar: BottomActions(
           secondaryLabel: 'Guardar borrador',
-          onSecondary: state.saving || !editable ? null : _saveDraft,
+          // A validated declaration without changes has nothing to save:
+          // saving it as a draft would undo the validation (U-05).
+          onSecondary:
+              state.saving ||
+                  !editable ||
+                  (!state.unsaved && d.status != DeclarationStatus.draft)
+              ? null
+              : _saveDraft,
           primaryLabel: 'Ver resumen',
           onPrimary: state.saving ? null : _openSummary,
         ),

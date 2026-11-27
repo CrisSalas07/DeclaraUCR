@@ -8,7 +8,9 @@ import 'package:declara_ucr/models/declaration.dart';
 import 'package:declara_ucr/models/declaration_status.dart';
 import 'package:declara_ucr/models/schedule_task.dart';
 import 'package:declara_ucr/screens/declarations_screen.dart';
+import 'package:declara_ucr/screens/edit_profile_screen.dart';
 import 'package:declara_ucr/screens/sign_declaration_screen.dart';
+import 'package:declara_ucr/screens/tutorial_screen.dart';
 import 'package:declara_ucr/state/loadable.dart';
 import 'package:declara_ucr/theme/ucr_theme.dart';
 import 'package:declara_ucr/widgets/common.dart';
@@ -25,15 +27,28 @@ class HomeScreen extends StatelessWidget {
   void _showProfile(BuildContext context, AppUser user, UserProfile? p) =>
       showModalBottomSheet<void>(
         context: context,
+        // Taller than the default 9/16 of the screen on a small phone.
+        isScrollControlled: true,
         builder: (sheetContext) => _ProfileSheet(
           user: user,
           profile: p,
+          onEdit: p == null
+              ? null
+              : () =>
+                    _replaceSheet(sheetContext, EditProfileScreen(profile: p)),
+          onTour: () => _replaceSheet(sheetContext, const TutorialScreen()),
           onSignOut: () {
             Navigator.of(sheetContext).pop();
             context.read<AuthRepository>().signOut();
           },
         ),
       );
+
+  /// Closes the profile sheet and opens [screen] in its place.
+  static void _replaceSheet(BuildContext sheetContext, Widget screen) {
+    final navigator = Navigator.of(sheetContext)..pop();
+    navigator.push(MaterialPageRoute<void>(builder: (_) => screen));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -329,18 +344,22 @@ class _ProfileSheet extends StatelessWidget {
   const _ProfileSheet({
     required this.user,
     required this.profile,
+    required this.onEdit,
+    required this.onTour,
     required this.onSignOut,
   });
 
   final AppUser user;
   final UserProfile? profile;
+  final VoidCallback? onEdit;
+  final VoidCallback onTour;
   final VoidCallback onSignOut;
 
   @override
   Widget build(BuildContext context) {
     final text = Theme.of(context).textTheme;
     return SafeArea(
-      child: Padding(
+      child: SingleChildScrollView(
         padding: const EdgeInsets.fromLTRB(24, 0, 24, 16),
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -372,7 +391,32 @@ class _ProfileSheet extends StatelessWidget {
               textAlign: TextAlign.center,
               style: text.labelMedium,
             ),
-            const SizedBox(height: 24),
+            Text(
+              profile == null || profile!.phone.isEmpty
+                  ? 'Sin teléfono'
+                  : 'Teléfono ${profile!.phone}',
+              textAlign: TextAlign.center,
+              style: text.labelMedium,
+            ),
+            const SizedBox(height: 20),
+            SizedBox(
+              width: double.infinity,
+              child: FilledButton.tonalIcon(
+                onPressed: onEdit,
+                icon: const Icon(Icons.edit_outlined),
+                label: const Text('Editar mis datos'),
+              ),
+            ),
+            const SizedBox(height: 8),
+            SizedBox(
+              width: double.infinity,
+              child: OutlinedButton.icon(
+                onPressed: onTour,
+                icon: const Icon(Icons.help_outline),
+                label: const Text('Cómo funciona'),
+              ),
+            ),
+            const SizedBox(height: 8),
             SizedBox(
               width: double.infinity,
               child: OutlinedButton.icon(

@@ -26,6 +26,19 @@ abstract class ProfileRepository {
   /// account has it.
   Future<void> create(String uid, UserProfile profile);
 
+  /// Changes the person's own name, cédula and phone (U-07). A new cédula is
+  /// reserved and the old one released in the same transaction: throws
+  /// [IdentificationTakenException] when another account has it. Email,
+  /// campus and career stay with Administración. Signed declarations keep
+  /// the data they were signed with.
+  Future<void> updateOwn(
+    String uid,
+    UserProfile current, {
+    required String fullName,
+    required String identification,
+    required String phone,
+  });
+
   /// Stores the campus and career the person chose ("Completa tu perfil").
   /// Each one is written only while it is empty: the rules never let the
   /// person change them afterwards. A declarant also gets their entry in the
@@ -123,6 +136,59 @@ class FirestoreProfileRepository implements ProfileRepository {
       // A reservation is never rewritten: an earlier attempt of this same
       // account may have left it.
       if (!held.exists) tx.set(reservation, {'uid': uid});
+    });
+  }
+
+  @override
+  Future<void> updateOwn(
+    String uid,
+    UserProfile current, {
+    required String fullName,
+    required String identification,
+    required String phone,
+  }) async {
+    final name = fullName.trim();
+    final id = identification.trim();
+    final type = current.identificationType;
+    final moved = id != current.identification;
+    final reservation = _ids.doc(reservationId(type, id));
+    final previous = _ids.doc(reservationId(type, current.identification));
+    // From the server first: offline it fails at once instead of leaving
+    // the change queued in the phone.
+    try {
+      await _users.doc(uid).get(const GetOptions(source: Source.server));
+    } on FirebaseException catch (e) {
+      if (e.code == 'unavailable') throw const OfflineException();
+      rethrow;
+    }
+    await _firestore.runTransaction((tx) async {
+      // Every read of a transaction goes before its writes.
+      final held = moved ? await tx.get(reservation) : null;
+      final old = moved ? await tx.get(previous) : null;
+      if (held != null && held.exists && held.data()?['uid'] != uid) {
+        throw const IdentificationTakenException();
+      }
+      // Only the contact fields the rules let the person edit.
+      tx.update(_users.doc(uid), {
+        'fullName': name,
+        'identification': id,
+        'phone': phone.trim(),
+      });
+      if (held != null && !held.exists) tx.set(reservation, {'uid': uid});
+      // Older accounts may have no reservation to release.
+      if (old != null && old.exists && old.data()?['uid'] == uid) {
+        tx.delete(previous);
+      }
+      // The career coordination finds the person by this entry: it must
+      // match the profile (the rules compare them).
+      if (current.active && current.isDeclarant && current.unitId != null) {
+        tx.set(_firestore.collection('teacherDirectory').doc(uid), {
+          'fullName': name,
+          'unitId': current.unitId!,
+          'identification': id,
+          'updatedAt': FieldValue.serverTimestamp(),
+        });
+      }
     });
   }
 

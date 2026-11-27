@@ -152,6 +152,84 @@ void main() {
     },
   );
 
+  group('editing the own profile (U-07)', () {
+    const stored = UserProfile(
+      fullName: 'Ana Pérez Mora',
+      identification: '105430987',
+      phone: '88881234',
+      email: 'ana.perez@ucr.ac.cr',
+      roles: {UserRole.declarant},
+      active: true,
+      unitId: 'ie',
+    );
+
+    Future<Map<String, dynamic>?> read(String path) async =>
+        (await firestore.doc(path).get()).data();
+
+    test('a new cédula is reserved and the old one released', () async {
+      final profiles = FirestoreProfileRepository(firestore);
+      await profiles.create('user-a', ana);
+      await profiles.updateOwn(
+        'user-a',
+        stored,
+        fullName: ' Ana Pérez Solano ',
+        identification: '105430988',
+        phone: '88884321',
+      );
+
+      final user = (await read('users/user-a'))!;
+      expect(user['fullName'], 'Ana Pérez Solano');
+      expect(user['identification'], '105430988');
+      expect(user['phone'], '88884321');
+      expect(user['email'], 'ana.perez@ucr.ac.cr');
+      expect(await read('identifications/CEDULA_105430988'), {'uid': 'user-a'});
+      expect(await read('identifications/CEDULA_105430987'), isNull);
+      final entry = (await read('teacherDirectory/user-a'))!;
+      expect(entry['fullName'], 'Ana Pérez Solano');
+      expect(entry['identification'], '105430988');
+    });
+
+    test("another account's cédula is refused and nothing changes", () async {
+      final profiles = FirestoreProfileRepository(firestore);
+      await profiles.create('user-a', ana);
+      await profiles.create(
+        'user-b',
+        const UserProfile(
+          fullName: 'Beto',
+          identification: '205550111',
+          phone: '88880000',
+          email: 'beto@ucr.ac.cr',
+        ),
+      );
+      await expectLater(
+        profiles.updateOwn(
+          'user-a',
+          stored,
+          fullName: 'Ana',
+          identification: '205550111',
+          phone: '88881234',
+        ),
+        throwsA(isA<IdentificationTakenException>()),
+      );
+      expect((await read('users/user-a'))!['identification'], '105430987');
+      expect(await read('identifications/CEDULA_105430987'), {'uid': 'user-a'});
+    });
+
+    test('the same cédula keeps its reservation', () async {
+      final profiles = FirestoreProfileRepository(firestore);
+      await profiles.create('user-a', ana);
+      await profiles.updateOwn(
+        'user-a',
+        stored,
+        fullName: 'Ana Pérez',
+        identification: '105430987',
+        phone: '88881234',
+      );
+      expect((await read('users/user-a'))!['fullName'], 'Ana Pérez');
+      expect(await read('identifications/CEDULA_105430987'), {'uid': 'user-a'});
+    });
+  });
+
   test('a campus set by administration is never rewritten', () async {
     final profiles = FirestoreProfileRepository(firestore);
     await firestore.collection('users').doc('user-a').set({'campusId': 'a'});

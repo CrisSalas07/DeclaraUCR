@@ -182,7 +182,7 @@ class _ScheduleEditorState extends State<ScheduleEditor> {
         ),
         const SizedBox(height: 16),
         Text(
-          'Qué va a ubicar',
+          '1. Elija qué va a ubicar',
           style: theme.textTheme.labelLarge?.copyWith(
             color: theme.colorScheme.onSurfaceVariant,
           ),
@@ -226,13 +226,9 @@ class _ScheduleEditorState extends State<ScheduleEditor> {
           ),
           const SizedBox(height: 8),
         ],
-        Text(
-          'Toque una media hora para marcarla. Mantenga presionado y deslice '
-          'para marcar varias seguidas.',
-          style: theme.textTheme.bodySmall?.copyWith(
-            color: theme.colorScheme.onSurfaceVariant,
-          ),
-        ),
+        // What a tap places, always in sight above the grid (U-03): the
+        // first sessions tapped the grid not knowing a task was chosen.
+        _BrushStrip(name: _name(brush, d), color: _colorOf(brush, owners)),
         const SizedBox(height: 12),
         _dayGrid(d, cells, brush, owners, theme, fixed: fixed),
         const SizedBox(height: 12),
@@ -591,6 +587,54 @@ class _DayTabs extends StatelessWidget {
           ),
         ],
       ],
+    );
+  }
+}
+
+/// "2. Toque el horario para ubicar: IF0009 · Atención", in the color of
+/// the chosen task, with how to mark several half hours at once.
+class _BrushStrip extends StatelessWidget {
+  const _BrushStrip({required this.name, required this.color});
+
+  final String name;
+  final Color color;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return Container(
+      padding: const EdgeInsets.fromLTRB(12, 10, 12, 10),
+      decoration: BoxDecoration(
+        color: Color.alphaBlend(color.withValues(alpha: 0.10), UcrColors.white),
+        border: Border(left: BorderSide(color: color, width: 4)),
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            '2. Toque el horario para ubicar:',
+            style: theme.textTheme.labelLarge?.copyWith(
+              color: theme.colorScheme.onSurfaceVariant,
+            ),
+          ),
+          const SizedBox(height: 2),
+          Text(
+            name,
+            style: theme.textTheme.titleSmall?.copyWith(
+              fontWeight: FontWeight.w700,
+            ),
+          ),
+          const SizedBox(height: 4),
+          Text(
+            'Cada toque marca media hora; tocarla otra vez la libera. Para '
+            'varias seguidas, mantenga presionado y deslice.',
+            style: theme.textTheme.bodySmall?.copyWith(
+              color: theme.colorScheme.onSurfaceVariant,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

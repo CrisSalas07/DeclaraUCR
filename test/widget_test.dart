@@ -3,6 +3,7 @@ import 'package:declara_ucr/data/proyecto1/declaration_signer.dart';
 import 'package:declara_ucr/data/proyecto1/proyecto1_declaration_repository.dart';
 import 'package:declara_ucr/data/profile_repository.dart';
 import 'package:declara_ucr/data/network_status.dart';
+import 'package:declara_ucr/data/onboarding_store.dart';
 import 'package:declara_ucr/data/zonaje_repository.dart';
 import 'package:declara_ucr/main.dart';
 import 'package:declara_ucr/widgets/offline_banner.dart';
@@ -38,6 +39,7 @@ Future<Widget> _app({
   bool assignment = true,
   Future<void> Function(FakeFirebaseFirestore db)? extra,
   NetworkStatus network = const AlwaysOnline(),
+  OnboardingStore? onboarding,
 }) async {
   final firestore = FakeFirebaseFirestore();
   // Campus, career, the open period and, for Ana, the coordination's
@@ -61,6 +63,7 @@ Future<Widget> _app({
         FirestoreDeclarationDocumentReader(firestore, uid: uid),
     signerFor: (uid) => FirestoreDeclarationSigner(firestore, uid: uid),
     network: network,
+    onboarding: onboarding,
   );
 }
 
@@ -403,6 +406,66 @@ void main() {
     });
   });
 
+  testWidgets('the tour shows once on a new phone, then from the profile '
+      '(U-06)', (tester) async {
+    final store = MemoryOnboardingStore(wasSeen: false);
+    await tester.pumpWidget(
+      await _app(mode: AppUserMode.signedIn, onboarding: store),
+    );
+    await tester.pumpAndSettle();
+    expect(find.text('Paso 1 de 4'), findsOneWidget);
+    for (var i = 0; i < 3; i++) {
+      await tester.tap(find.text('Siguiente'));
+      await tester.pumpAndSettle();
+    }
+    expect(find.text('Validar y firmar'), findsOneWidget);
+    await tester.tap(find.text('Empezar'));
+    await tester.pumpAndSettle();
+    expect(find.text('Hola, Ana'), findsOneWidget);
+    expect(store.wasSeen, isTrue);
+
+    await tester.tap(find.bySemanticsLabel('Perfil y cerrar sesión'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Cómo funciona'));
+    await tester.pumpAndSettle();
+    expect(find.text('Paso 1 de 4'), findsOneWidget);
+    await tester.tap(find.text('Saltar'));
+    await tester.pumpAndSettle();
+    expect(find.text('Hola, Ana'), findsOneWidget);
+  });
+
+  testWidgets('the person corrects name, cédula and phone (U-07)', (
+    tester,
+  ) async {
+    await tester.pumpWidget(await _app(mode: AppUserMode.signedIn));
+    await tester.pumpAndSettle();
+    await tester.tap(find.bySemanticsLabel('Perfil y cerrar sesión'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Editar mis datos'));
+    await tester.pumpAndSettle();
+
+    await tester.enterText(
+      find.widgetWithText(TextFormField, 'Número de cédula'),
+      '1054',
+    );
+    await tester.tap(find.text('Guardar'));
+    await tester.pumpAndSettle();
+    expect(find.text('Mis datos'), findsOneWidget);
+
+    await tester.enterText(
+      find.widgetWithText(TextFormField, 'Nombre completo'),
+      'Ana Pérez Solano',
+    );
+    await tester.enterText(
+      find.widgetWithText(TextFormField, 'Número de cédula'),
+      '105430988',
+    );
+    await tester.tap(find.text('Guardar'));
+    await tester.pumpAndSettle();
+    expect(find.text('Sus datos se guardaron.'), findsOneWidget);
+    expect(find.text('105430988'), findsOneWidget);
+  });
+
   testWidgets('sections: Inicio, Declaraciones, Zonaje and Historial', (
     tester,
   ) async {
@@ -641,6 +704,27 @@ void main() {
       semantics.dispose();
     },
   );
+
+  testWidgets('the grid always says what a tap places (U-03)', (tester) async {
+    await tester.pumpWidget(await _app(mode: AppUserMode.signedIn));
+    await tester.pumpAndSettle();
+    await _openNewDeclaration(tester);
+    await tester.scrollUntilVisible(
+      find.text('2. Toque el horario para ubicar:'),
+      300,
+      scrollable: find.byType(Scrollable).first,
+    );
+    await tester.pumpAndSettle();
+    // The chip and the strip above the grid.
+    expect(find.text('IF0009 · Atención'), findsNWidgets(2));
+
+    await tester.ensureVisible(find.text('IF0009 · Planificación'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('IF0009 · Planificación'));
+    await tester.pumpAndSettle();
+    expect(find.text('IF0009 · Planificación'), findsNWidgets(2));
+    expect(find.text('IF0009 · Atención'), findsOneWidget);
+  });
 
   testWidgets('a course gives its hours, placed on the grid, to the summary', (
     tester,

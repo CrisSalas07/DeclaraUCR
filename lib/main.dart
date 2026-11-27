@@ -3,6 +3,7 @@ import 'package:declara_ucr/config/firebase_config.dart';
 import 'package:declara_ucr/data/auth_repository.dart';
 import 'package:declara_ucr/data/declaration_repository.dart';
 import 'package:declara_ucr/data/network_status.dart';
+import 'package:declara_ucr/data/onboarding_store.dart';
 import 'package:declara_ucr/data/profile_repository.dart';
 import 'package:declara_ucr/data/proyecto1/declaration_document_reader.dart';
 import 'package:declara_ucr/data/proyecto1/declaration_signer.dart';
@@ -53,6 +54,7 @@ Future<void> main() async {
             FirestoreDeclarationDocumentReader(firestore, uid: uid),
         signerFor: (uid) => FirestoreDeclarationSigner(firestore, uid: uid),
         network: PluginNetworkStatus(),
+        onboarding: PrefsOnboardingStore(),
       ),
     );
   } catch (e) {
@@ -103,6 +105,7 @@ class DeclaraUcrApp extends StatefulWidget {
     required this.documentsFor,
     required this.signerFor,
     this.network = const AlwaysOnline(),
+    this.onboarding,
   });
 
   final AuthRepository auth;
@@ -123,12 +126,18 @@ class DeclaraUcrApp extends StatefulWidget {
   /// and saves are not attempted without one.
   final NetworkStatus network;
 
+  /// Whether the first-use tour was shown on this phone. Without one (tests)
+  /// it counts as seen.
+  final OnboardingStore? onboarding;
+
   @override
   State<DeclaraUcrApp> createState() => _DeclaraUcrAppState();
 }
 
 class _DeclaraUcrAppState extends State<DeclaraUcrApp> {
   late final Stream<AppUser?> _users = widget.auth.userChanges();
+  late final OnboardingStore _onboarding =
+      widget.onboarding ?? MemoryOnboardingStore();
 
   static Loadable<T> _failed<T>(String what, Object? error) {
     // Technical details go to the log, never to the user.
@@ -181,6 +190,7 @@ class _DeclaraUcrAppState extends State<DeclaraUcrApp> {
         key: ValueKey(user?.uid),
         providers: [
           Provider<NetworkStatus>.value(value: widget.network),
+          Provider<OnboardingStore>.value(value: _onboarding),
           StreamProvider<Connection>(
             create: (_) => widget.network.watchOnline().map(
               (online) => Connection(online: online),

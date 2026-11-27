@@ -327,17 +327,29 @@ class Proyecto1DeclarationRepository implements DeclarationRepository {
         .doc(id)
         .collection('versions')
         .doc(stored['currentVersionId'] as String);
-    final (versionDoc, appointments, jobs, periodDoc) = await (
+    final (versionDoc, appointments, jobs, periodDoc, userDoc) = await (
       versionRef.get(),
       versionRef.collection('appointments').get(),
       versionRef.collection('externalJobs').get(),
       _firestore.collection('periods').doc(stored['periodId'] as String).get(),
+      _firestore.collection('users').doc(_uid).get(),
     ).wait;
     final snapshot = Map<String, dynamic>.from(
       versionDoc.data()?['declarantSnapshot'] as Map? ?? const {},
     );
+    // An unsigned draft carries the profile as it is now: the person may
+    // have corrected their name, cédula or phone (U-07).
+    final user = userDoc.data();
     final batch = _firestore.batch()
-      ..update(versionRef, {'observations': ScheduleObservations.compose(d)});
+      ..update(versionRef, {
+        'observations': ScheduleObservations.compose(d),
+        if (user != null)
+          'declarantSnapshot': {
+            ...snapshot,
+            for (final key in const ['fullName', 'identification', 'phone'])
+              if (user[key] is String) key: user[key],
+          },
+      });
     _addContent(
       batch,
       versionRef,

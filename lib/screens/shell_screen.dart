@@ -1,8 +1,11 @@
+import 'package:declara_ucr/data/onboarding_store.dart';
 import 'package:declara_ucr/screens/declarations_screen.dart';
 import 'package:declara_ucr/screens/history_screen.dart';
 import 'package:declara_ucr/screens/home_screen.dart';
 import 'package:declara_ucr/screens/zonaje_screen.dart';
+import 'package:declara_ucr/screens/tutorial_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 /// The sections of the app after signing in, with a bottom navigation bar:
 /// Inicio, Declaraciones, Zonaje and Historial. Each section keeps its
@@ -16,6 +19,32 @@ class ShellScreen extends StatefulWidget {
 
 class _ShellScreenState extends State<ShellScreen> {
   int _index = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    _tourOnFirstUse();
+  }
+
+  /// The first time on this phone, the tour of the steps (U-06).
+  Future<void> _tourOnFirstUse() async {
+    final store = context.read<OnboardingStore>();
+    try {
+      if (await store.seen()) return;
+      await store.markSeen();
+    } catch (e) {
+      // Without the phone's storage the tour is just not shown.
+      debugPrint('Onboarding store failed: $e');
+      return;
+    }
+    if (!mounted) return;
+    await Navigator.of(context).push(
+      MaterialPageRoute<void>(
+        fullscreenDialog: true,
+        builder: (_) => const TutorialScreen(),
+      ),
+    );
+  }
 
   void _go(int index) => setState(() => _index = index);
 
