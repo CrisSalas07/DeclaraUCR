@@ -16,7 +16,7 @@ abstract class DeclarationRepository {
   /// Creates or updates the declaration and returns its id. Its [status]
   /// says where it should end: BORRADOR, or VALIDADA after validating.
   /// Throws a [DeclarationSaveException] when the save is not possible for
-  /// a reason the person can understand (e.g. no reviewer assigned).
+  /// a reason the person can understand (e.g. no superior assigned).
   Future<String> save(Declaration declaration);
 }
 

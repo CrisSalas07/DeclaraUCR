@@ -106,7 +106,7 @@ class Declaration {
   String? versionId;
   int? versionNumber;
 
-  /// Why the reviewer or HR returned it (status DEVUELTA).
+  /// Why the superior or HR returned it (status DEVUELTA).
   String? pendingObservation;
 
   /// The lesson slots the career coordination assigned for the period. When

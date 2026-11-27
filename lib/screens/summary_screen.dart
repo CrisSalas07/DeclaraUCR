@@ -10,6 +10,7 @@ import 'package:declara_ucr/screens/sign_declaration_screen.dart';
 import 'package:declara_ucr/state/declaration_form_state.dart';
 import 'package:declara_ucr/theme/ucr_theme.dart';
 import 'package:declara_ucr/widgets/common.dart';
+import 'package:declara_ucr/widgets/tour_anchor.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -75,35 +76,43 @@ class SummaryScreen extends StatelessWidget {
         body: ListView(
           padding: const EdgeInsets.fromLTRB(16, 8, 16, 24),
           children: [
-            _Hero(declaration: d),
+            TourAnchor(
+              id: 'summary.hero',
+              child: _Hero(declaration: d),
+            ),
             const SizedBox(height: 16),
-            if (validated && d.id != null)
-              const InfoBanner(
-                icon: Icons.draw_outlined,
-                title: 'Validada. Siguiente paso: firmarla.',
-                lines: [
-                  'Toque «Firmar y enviar» abajo: acepta la declaración jurada '
-                      'y la envía a su superior.',
-                ],
-                tone: BannerTone.success,
-              )
-            else if (problems.isEmpty)
-              const InfoBanner(
-                icon: Icons.check_circle_outline,
-                title: 'Sin problemas: la declaración puede validarse.',
-                tone: BannerTone.success,
-              )
-            else
-              InfoBanner(
-                icon: Icons.error_outline,
-                title: problems.length == 1
-                    ? 'Hay 1 punto por corregir'
-                    : 'Hay ${problems.length} puntos por corregir',
-                lines: problems,
-                tone: BannerTone.error,
-              ),
+            TourAnchor(
+              id: 'summary.check',
+              child: validated && d.id != null
+                  ? const InfoBanner(
+                      icon: Icons.draw_outlined,
+                      title: 'Validada. Siguiente paso: firmarla.',
+                      lines: [
+                        'Toque «Firmar y enviar» abajo: acepta la declaración jurada '
+                            'y la envía a su superior.',
+                      ],
+                      tone: BannerTone.success,
+                    )
+                  : problems.isEmpty
+                  ? const InfoBanner(
+                      icon: Icons.check_circle_outline,
+                      title: 'Sin problemas: la declaración puede validarse.',
+                      tone: BannerTone.success,
+                    )
+                  : InfoBanner(
+                      icon: Icons.error_outline,
+                      title: problems.length == 1
+                          ? 'Hay 1 punto por corregir'
+                          : 'Hay ${problems.length} puntos por corregir',
+                      lines: problems,
+                      tone: BannerTone.error,
+                    ),
+            ),
             const SizedBox(height: 16),
-            _HoursCard(declaration: d),
+            TourAnchor(
+              id: 'summary.hours',
+              child: _HoursCard(declaration: d),
+            ),
             SectionCard(
               icon: Icons.calendar_view_week_outlined,
               title: 'Horario semanal',
@@ -186,19 +195,22 @@ class SummaryScreen extends StatelessWidget {
             ),
           ],
         ),
-        bottomNavigationBar: BottomActions(
-          secondaryLabel: 'Corregir',
-          onSecondary: () => Navigator.of(context).pop(),
-          // Once validated, the next step is signing (U-04). Any edit sends
-          // the declaration back to BORRADOR and brings back "Validar".
-          primaryLabel: canSign ? 'Firmar y enviar' : 'Validar',
-          onPrimary: state.saving
-              ? null
-              : canSign
-              ? () => _sign(context, d.id!)
-              : state.canValidate && !validated
-              ? () => _validate(context)
-              : null,
+        bottomNavigationBar: TourAnchor(
+          id: 'summary.actions',
+          child: BottomActions(
+            secondaryLabel: 'Corregir',
+            onSecondary: () => Navigator.of(context).pop(),
+            // Once validated, the next step is signing (U-04). Any edit sends
+            // the declaration back to BORRADOR and brings back "Validar".
+            primaryLabel: canSign ? 'Firmar y enviar' : 'Validar',
+            onPrimary: state.saving
+                ? null
+                : canSign
+                ? () => _sign(context, d.id!)
+                : state.canValidate && !validated
+                ? () => _validate(context)
+                : null,
+          ),
         ),
       ),
     );
@@ -260,11 +272,14 @@ class _Hero extends StatelessWidget {
                 ),
               ),
               const SizedBox(width: 10),
-              Padding(
-                padding: const EdgeInsets.only(bottom: 8),
-                child: Text(
-                  'por semana',
-                  style: text.bodyMedium?.copyWith(color: soft),
+              // Wraps under large text instead of overflowing.
+              Flexible(
+                child: Padding(
+                  padding: const EdgeInsets.only(bottom: 8),
+                  child: Text(
+                    'por semana',
+                    style: text.bodyMedium?.copyWith(color: soft),
+                  ),
                 ),
               ),
             ],

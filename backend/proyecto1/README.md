@@ -44,7 +44,7 @@ firebase emulators:exec --config backend/proyecto1/firebase.json --project demo-
 ```
 
 **Probar la firma de la persona declarante contra las reglas** (opcional, con los emuladores cerrados). Corre el
-código de la app en Windows: crea, valida y firma como `docente@ucr.ac.cr`, y el revisor lee lo firmado. La
+código de la app en Windows: crea, valida y firma como `docente@ucr.ac.cr`, y el superior lee lo firmado. La
 primera vez, `flutter create --platforms=windows .` (no se sube al repositorio):
 
 ```
@@ -63,9 +63,9 @@ Todas las cuentas tienen la contraseña `123456` y el correo ya verificado.
 
 | Correo | Rol | Para qué |
 |---|---|---|
-| `docente@ucr.ac.cr` | Declarante | Tiene revisor y 2 cursos asignados (1/2 TC): puede crear su declaración |
+| `docente@ucr.ac.cr` | Declarante | Tiene superior y 2 cursos asignados (1/2 TC): puede crear su declaración |
 | `docente2@ucr.ac.cr` | Declarante | Sin cursos asignados: la app debe explicar por qué no puede crear la declaración |
-| `revisor@ucr.ac.cr` | Revisor (`superior`) | Revisor de las dos personas docentes |
+| `superior@ucr.ac.cr` | Superior (`superior`) | Superior de las dos personas docentes |
 | `coordinacion@ucr.ac.cr` | Coordinación de carrera | Asignó los cursos |
 | `rrhh@ucr.ac.cr` | RRHH | Para pruebas de acceso por rol |
 | `admin@ucr.ac.cr` | Administración | Para pruebas de acceso por rol |

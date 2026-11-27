@@ -123,7 +123,7 @@ class FirestoreProfileRepository implements ProfileRepository {
         throw const IdentificationTakenException();
       }
       // The fields the rules accept at sign-up, and nothing else: roles,
-      // campus, career and reviewer are not the person's to set here.
+      // campus, career and superior are not the person's to set here.
       tx.set(_users.doc(uid), {
         'fullName': profile.fullName.trim(),
         'identification': id,

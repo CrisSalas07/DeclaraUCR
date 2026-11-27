@@ -16,7 +16,7 @@ import 'support/fake_network_status.dart';
 import 'support/proyecto1_fixture.dart';
 
 /// Ana's profile as the web system leaves it after administration assigned
-/// her career and reviewer.
+/// her career and superior.
 const Map<String, Object> _ana = {
   'fullName': 'Ana Pérez Mora',
   'identification': '105430987',
@@ -255,7 +255,7 @@ void main() {
 
       expect(find.text('Hola, Luis'), findsOneWidget);
       expect(find.text('302220333'), findsOneWidget);
-      // Only administration assigns the reviewer.
+      // Only administration assigns the superior.
       expect(find.text('Aún no tiene superior asignado.'), findsOneWidget);
     });
 
@@ -408,18 +408,47 @@ void main() {
 
   testWidgets('the tour shows once on a new phone, then from the profile '
       '(U-06)', (tester) async {
+    // With "remove animations" on, as the scroll animations of the tour do
+    // not run under the test clock; the phone checks the animated path.
+    tester.platformDispatcher.accessibilityFeaturesTestValue =
+        const FakeAccessibilityFeatures(disableAnimations: true);
+    addTearDown(tester.platformDispatcher.clearAccessibilityFeaturesTestValue);
     final store = MemoryOnboardingStore(wasSeen: false);
     await tester.pumpWidget(
       await _app(mode: AppUserMode.signedIn, onboarding: store),
     );
-    await tester.pumpAndSettle();
-    expect(find.text('Paso 1 de 4'), findsOneWidget);
-    for (var i = 0; i < 3; i++) {
-      await tester.tap(find.text('Siguiente'));
-      await tester.pumpAndSettle();
+    // The hint breathes while the tour is open: no pumpAndSettle in it.
+    // Waits for the card of the next stop (the screen may scroll first).
+    final card = find.textContaining(RegExp(r'^\d+ de \d+$'));
+    Future<void> settle() async {
+      // Past the fade out of the card that was there.
+      await tester.pump(const Duration(milliseconds: 600));
+      for (var i = 0; i < 40 && card.evaluate().isEmpty; i++) {
+        await tester.pump(const Duration(milliseconds: 100));
+      }
+      await tester.pump(const Duration(milliseconds: 300));
     }
-    expect(find.text('Validar y firmar'), findsOneWidget);
-    await tester.tap(find.text('Empezar'));
+
+    await settle();
+    expect(find.text('Bienvenido a DeclaraUCR'), findsOneWidget);
+    // A tap on the card goes on; every stop finds its part (an assert in
+    // the tour fails otherwise), the real screens behind show the demo
+    // teacher and "Atrás" goes back one.
+    await tester.tap(find.text('Bienvenido a DeclaraUCR'));
+    await settle();
+    expect(find.text('Su declaración del ciclo'), findsOneWidget);
+    expect(find.text('112340567', skipOffstage: false), findsOneWidget);
+    await tester.tap(find.text('Atrás'));
+    await settle();
+    expect(find.text('Bienvenido a DeclaraUCR'), findsOneWidget);
+    for (var i = 0; find.text('Toque para empezar').evaluate().isEmpty; i++) {
+      expect(i, lessThan(40), reason: 'the tour never ends');
+      await tester.tap(card);
+      await settle();
+    }
+    expect(find.text('Listo'), findsOneWidget);
+    expect(find.text('Saltar'), findsOneWidget); // kept in place, hidden
+    await tester.tap(find.text('Listo'));
     await tester.pumpAndSettle();
     expect(find.text('Hola, Ana'), findsOneWidget);
     expect(store.wasSeen, isTrue);
@@ -427,8 +456,8 @@ void main() {
     await tester.tap(find.bySemanticsLabel('Perfil y cerrar sesión'));
     await tester.pumpAndSettle();
     await tester.tap(find.text('Cómo funciona'));
-    await tester.pumpAndSettle();
-    expect(find.text('Paso 1 de 4'), findsOneWidget);
+    await settle();
+    expect(find.text('Bienvenido a DeclaraUCR'), findsOneWidget);
     await tester.tap(find.text('Saltar'));
     await tester.pumpAndSettle();
     expect(find.text('Hola, Ana'), findsOneWidget);

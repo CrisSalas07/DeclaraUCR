@@ -15,6 +15,7 @@ import 'package:declara_ucr/state/loadable.dart';
 import 'package:declara_ucr/theme/ucr_theme.dart';
 import 'package:declara_ucr/widgets/common.dart';
 import 'package:declara_ucr/widgets/declaration_progress.dart';
+import 'package:declara_ucr/widgets/tour_anchor.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -74,7 +75,7 @@ class HomeScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              // The rules reject a new declaration without a reviewer, and
+              // The rules reject a new declaration without a superior, and
               // only administration assigns one (from the web).
               if (profile != null && !profile.hasSuperior) ...[
                 const InfoBanner(
@@ -116,7 +117,10 @@ class HomeScreen extends StatelessWidget {
                   ],
                 )
               else
-                _LatestCard(declaration: latest),
+                TourAnchor(
+                  id: 'home.latest',
+                  child: _LatestCard(declaration: latest),
+                ),
               const SizedBox(height: 24),
               const Center(child: UcrSignature()),
             ],
@@ -158,24 +162,27 @@ class _Header extends StatelessWidget {
                 children: [
                   const BrandMark(),
                   const Spacer(),
-                  Semantics(
-                    container: true,
-                    button: true,
-                    label: 'Perfil y cerrar sesión',
-                    excludeSemantics: true,
-                    child: InkResponse(
-                      onTap: onProfile,
-                      radius: 28,
-                      child: Padding(
-                        padding: const EdgeInsets.all(6),
-                        child: CircleAvatar(
-                          radius: 20,
-                          backgroundColor: UcrColors.skyBlue,
-                          child: Text(
-                            user.initials,
-                            style: text.labelLarge?.copyWith(
-                              color: UcrColors.ink,
-                              fontWeight: FontWeight.w800,
+                  TourAnchor(
+                    id: 'home.profile',
+                    child: Semantics(
+                      container: true,
+                      button: true,
+                      label: 'Perfil y cerrar sesión',
+                      excludeSemantics: true,
+                      child: InkResponse(
+                        onTap: onProfile,
+                        radius: 28,
+                        child: Padding(
+                          padding: const EdgeInsets.all(6),
+                          child: CircleAvatar(
+                            radius: 20,
+                            backgroundColor: UcrColors.skyBlue,
+                            child: Text(
+                              user.initials,
+                              style: text.labelLarge?.copyWith(
+                                color: UcrColors.ink,
+                                fontWeight: FontWeight.w800,
+                              ),
                             ),
                           ),
                         ),

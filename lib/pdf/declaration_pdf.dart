@@ -485,7 +485,7 @@ abstract final class DeclarationPdf {
     ]);
   }
 
-  /// Signature lines of the declarant, the reviewer and HR, and the date of
+  /// Signature lines of the declarant, the superior and HR, and the date of
   /// the declaration.
   static pw.Widget _signatures(
     DeclarationDocument document,

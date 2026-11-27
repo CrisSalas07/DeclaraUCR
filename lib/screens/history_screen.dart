@@ -4,6 +4,7 @@ import 'package:declara_ucr/models/zonaje_request.dart';
 import 'package:declara_ucr/screens/declarations_screen.dart';
 import 'package:declara_ucr/screens/zonaje_screen.dart';
 import 'package:declara_ucr/state/loadable.dart';
+import 'package:declara_ucr/widgets/tour_anchor.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -50,22 +51,25 @@ class _HistoryScreenState extends State<HistoryScreen> {
           : ListView(
               padding: const EdgeInsets.fromLTRB(16, 8, 16, 24),
               children: [
-                Wrap(
-                  spacing: 8,
-                  runSpacing: 8,
-                  children: [
-                    ChoiceChip(
-                      label: const Text('Todos'),
-                      selected: year == null,
-                      onSelected: (_) => setState(() => _year = null),
-                    ),
-                    for (final y in years)
+                TourAnchor(
+                  id: 'history.years',
+                  child: Wrap(
+                    spacing: 8,
+                    runSpacing: 8,
+                    children: [
                       ChoiceChip(
-                        label: Text('$y'),
-                        selected: year == y,
-                        onSelected: (_) => setState(() => _year = y),
+                        label: const Text('Todos'),
+                        selected: year == null,
+                        onSelected: (_) => setState(() => _year = null),
                       ),
-                  ],
+                      for (final y in years)
+                        ChoiceChip(
+                          label: Text('$y'),
+                          selected: year == y,
+                          onSelected: (_) => setState(() => _year = y),
+                        ),
+                    ],
+                  ),
                 ),
                 const SizedBox(height: 20),
                 Text(

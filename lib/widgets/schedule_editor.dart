@@ -6,6 +6,7 @@ import 'package:declara_ucr/models/schedule_task.dart';
 import 'package:declara_ucr/models/weekday.dart';
 import 'package:declara_ucr/state/declaration_form_state.dart';
 import 'package:declara_ucr/theme/ucr_theme.dart';
+import 'package:declara_ucr/widgets/tour_anchor.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -175,10 +176,13 @@ class _ScheduleEditorState extends State<ScheduleEditor> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        _DayTabs(
-          selected: _day,
-          minutesOf: (day) => ScheduleGrid.minutesOn(day, cells),
-          onSelect: (day) => setState(() => _day = day),
+        TourAnchor(
+          id: 'schedule.days',
+          child: _DayTabs(
+            selected: _day,
+            minutesOf: (day) => ScheduleGrid.minutesOn(day, cells),
+            onSelect: (day) => setState(() => _day = day),
+          ),
         ),
         const SizedBox(height: 16),
         Text(
@@ -188,20 +192,23 @@ class _ScheduleEditorState extends State<ScheduleEditor> {
           ),
         ),
         const SizedBox(height: 8),
-        Wrap(
-          spacing: 8,
-          runSpacing: 8,
-          children: [
-            for (final task in brushes)
-              _BrushChip(
-                label: _name(task, d),
-                placed: ScheduleRequirements.placedMinutes(d, task),
-                required: required[task],
-                color: _colorOf(task, owners),
-                selected: task == brush,
-                onTap: () => setState(() => _brush = task),
-              ),
-          ],
+        TourAnchor(
+          id: 'schedule.brushes',
+          child: Wrap(
+            spacing: 8,
+            runSpacing: 8,
+            children: [
+              for (final task in brushes)
+                _BrushChip(
+                  label: _name(task, d),
+                  placed: ScheduleRequirements.placedMinutes(d, task),
+                  required: required[task],
+                  color: _colorOf(task, owners),
+                  selected: task == brush,
+                  onTap: () => setState(() => _brush = task),
+                ),
+            ],
+          ),
         ),
         const SizedBox(height: 12),
         if (fixed) ...[
@@ -230,7 +237,10 @@ class _ScheduleEditorState extends State<ScheduleEditor> {
         // first sessions tapped the grid not knowing a task was chosen.
         _BrushStrip(name: _name(brush, d), color: _colorOf(brush, owners)),
         const SizedBox(height: 12),
-        _dayGrid(d, cells, brush, owners, theme, fixed: fixed),
+        TourAnchor(
+          id: 'schedule.grid',
+          child: _dayGrid(d, cells, brush, owners, theme, fixed: fixed),
+        ),
         const SizedBox(height: 12),
         Row(
           children: [
