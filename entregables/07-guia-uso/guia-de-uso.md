@@ -100,13 +100,14 @@ Abajo están las cuatro secciones: **Inicio**, **Declaraciones**, **Zonaje** e *
 Las **clases ya están en su horario**, con un candado: las asignó la Coordinación y no se mueven. Usted ubica
 la atención a estudiantes, la planificación, los proyectos y las otras instituciones.
 
-1. Arriba, en **Horario de sus clases**, vea los días y horas de cada curso; toque uno para abrir ese día.
-   Elija el día (**Lun** a **Sáb**).
-2. En **Qué va a ubicar**, toque la tarea, por ejemplo *IF0009 · Atención*. Debajo dice cuánto lleva: *0 h de
-   2 h*.
-3. Toque una media hora libre para marcarla. Tóquela otra vez para liberarla.
-4. Para marcar varias seguidas: **mantenga presionado y deslice** hacia abajo.
-5. Si un día se repite, use **Copiar a otros días**.
+1. Arriba, en **Horario de sus clases**, vea los días y horas de las clases de cada curso. Úselo para ubicar
+   la atención y la planificación alrededor de ellas. Si toca un horario, se abre ese día.
+2. Elija el día (**Lun** a **Sáb**).
+3. En **Qué va a ubicar**, toque la tarea, por ejemplo *IF0009 · Atención*. Debajo dice cuánto lleva, por
+   ejemplo *0 h de 2 h*; cuando están todas, aparece un ✓.
+4. Toque una media hora libre para marcarla. Tóquela otra vez para liberarla.
+5. Para marcar varias seguidas: **mantenga presionado y deslice** hacia abajo.
+6. Si un día se repite, use **Copiar a otros días**.
 
 Reglas que la app cuida por usted:
 
