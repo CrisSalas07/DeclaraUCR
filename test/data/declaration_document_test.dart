@@ -113,19 +113,30 @@ void main() {
     );
   });
 
-  test('before signing, the default oath is filled with the data', () async {
+  test('before signing, the oath is the one of the official form', () async {
     await _seed(db);
-    final oath = OathText.of(await reader.read('d1'));
     expect(
-      oath,
-      startsWith(
-        'Yo, Ana Mora Solís, cédula 1-0543-0987, en mi '
-        'condición de Interino de la carrera Informática Empresarial',
-      ),
+      OathText.of(await reader.read('d1')),
+      'Declaro bajo juramento que los datos proporcionados en este documento '
+      'son ciertos y que conozco las sanciones establecidas por la '
+      'legislación institucional y nacional vigentes, que se refieren a la '
+      'declaración falsa u omisa de las jornadas y horarios laborales aquí '
+      'consignados.',
     );
-    expect(oath, contains('versión 1 del período II Ciclo - 2026'));
-    expect(oath, contains('Universidad es de 1/2 TC (20 h)'));
-    expect(oath, contains('otras instituciones de 10 h por semana'));
+  });
+
+  test('the variables of a template are filled with the data', () async {
+    await _seed(
+      db,
+      oathTemplate:
+          '{nombre}, {cedula}, {puesto}, {carrera}, {version}, {periodo}, '
+          '{jornadaUcr}, {horasExternas}',
+    );
+    expect(
+      OathText.of(await reader.read('d1')),
+      'Ana Mora Solís, 1-0543-0987, Interino, Informática Empresarial, 1, '
+      'II Ciclo - 2026, 1/2 TC (20 h), 10 h por semana',
+    );
   });
 
   test("the administrator's template is used when there is one", () async {

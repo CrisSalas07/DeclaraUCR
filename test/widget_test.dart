@@ -8,6 +8,7 @@ import 'package:declara_ucr/data/zonaje_repository.dart';
 import 'package:declara_ucr/main.dart';
 import 'package:declara_ucr/widgets/offline_banner.dart';
 import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -733,6 +734,60 @@ void main() {
       semantics.dispose();
     },
   );
+
+  testWidgets('the lessons of each course are listed above the days', (
+    tester,
+  ) async {
+    await tester.pumpWidget(await _app(mode: AppUserMode.signedIn));
+    await tester.pumpAndSettle();
+    await _openNewDeclaration(tester);
+    await tester.scrollUntilVisible(
+      find.byKey(const ValueKey('lesson-summary')),
+      300,
+      scrollable: find.byType(Scrollable).first,
+    );
+    await tester.pumpAndSettle();
+
+    expect(find.text('Horario de sus clases'), findsOneWidget);
+    expect(
+      find.bySemanticsLabel('Clases el lunes, 8:00 – 10:00'),
+      findsOneWidget,
+    );
+  });
+
+  testWidgets('a long press and slide places several half hours', (
+    tester,
+  ) async {
+    await tester.pumpWidget(await _app(mode: AppUserMode.signedIn));
+    await tester.pumpAndSettle();
+    await _openNewDeclaration(tester);
+    await tester.scrollUntilVisible(
+      find.byKey(const ValueKey('cell-1-600')),
+      300,
+      scrollable: find.byType(Scrollable).first,
+    );
+    await Scrollable.ensureVisible(
+      tester.element(find.byKey(const ValueKey('cell-1-600'))),
+      alignment: 0.3,
+    );
+    await tester.pumpAndSettle();
+    expect(find.bySemanticsLabel('Lunes: 2 h'), findsOneWidget);
+
+    // From 10:00 down to 10:30: one hour of attention, the whole of it.
+    final from = tester.getCenter(find.byKey(const ValueKey('cell-1-600')));
+    final to = tester.getCenter(find.byKey(const ValueKey('cell-1-630')));
+    final gesture = await tester.startGesture(from);
+    await tester.pump(kLongPressTimeout + const Duration(milliseconds: 100));
+    await gesture.moveTo(from + const Offset(0, 20));
+    await tester.pump();
+    await gesture.moveTo(to);
+    await tester.pump();
+    await gesture.up();
+    await tester.pumpAndSettle();
+
+    expect(find.bySemanticsLabel('Lunes: 3 h'), findsOneWidget);
+    expect(find.text('1 h de 1 h'), findsOneWidget);
+  });
 
   testWidgets('the grid always says what a tap places (U-03)', (tester) async {
     await tester.pumpWidget(await _app(mode: AppUserMode.signedIn));

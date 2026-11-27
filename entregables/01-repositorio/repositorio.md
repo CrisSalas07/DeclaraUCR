@@ -7,7 +7,7 @@
 | Repositorio de la app móvil | <https://github.com/CrisSalas07/DeclaraUCR> |
 | Repositorio del Proyecto 1 (web y reglas) | <https://github.com/dayanachavarriasteller-maker/DeclaraHorario> |
 | Rama principal | `main` (cada cambio entra por pull request) |
-| Versión final | `[COMPLETAR: etiqueta final, p. ej. v2.0.0+7 o la que salga después de la socialización]` |
+| Versión final | [`v2.0.0+10`](https://github.com/CrisSalas07/DeclaraUCR/releases/tag/v2.0.0%2B10) (commit `60d5813`) |
 | Versión base del Proyecto 1 | [`p1-entrega`](https://github.com/dayanachavarriasteller-maker/DeclaraHorario/releases/tag/p1-entrega) en DeclaraHorario (`2661da2`) (ver matriz de mejoras §1) |
 
 ## Qué hay en el repositorio
@@ -15,7 +15,7 @@
 | Ruta | Contenido |
 |---|---|
 | `lib/` | Código de la app (presentación, estado, dominio, datos, modelos) |
-| `test/` | 109 pruebas automatizadas |
+| `test/` | 121 pruebas automatizadas |
 | `integration_test/` | Firma contra las reglas reales del P1 en los emuladores |
 | `backend/proyecto1/` | Copia de las reglas del P1, datos ficticios y verificación, solo para emuladores |
 | `tool/build_apk.dart` | Compila el APK identificado por versión y commit |
@@ -52,6 +52,8 @@ El historial está en los commits y en los releases de GitHub. Hitos del Proyect
 | 19/11/2026 | 2.0.0+6 | Estados legibles, CP-03 y CP-06 ejecutados |
 | 20/11/2026 | 2.0.0+7 | Aviso al salir sin guardar (D-01), cuadrícula accesible con TalkBack (D-02), chips de horas (D-03) |
 | 27/11/2026 | 2.0.0+8 | Rol «Superior» (P1-03); correcciones de las sesiones con usuarios: qué se ubica en la cuadrícula (U-03), firmar después de validar (U-04, U-05), recorrido de primer uso (U-06), editar mis datos (U-07) |
+| 27/11/2026 | 2.0.0+9 | Recorrido guiado sobre las pantallas reales con una docente de ejemplo (U-06 rehecho); la lista ya no se salta un borrador recién guardado (T-09) |
+| 27/11/2026 | 2.0.0+10 | Horario de las clases de cada curso arriba de los días del editor; juramento del formulario oficial en el PDF y en la firma (PR #37) |
 
 ## Revisión de seguridad del repositorio
 
@@ -65,8 +67,8 @@ El historial está en los commits y en los releases de GitHub. Hitos del Proyect
 ## Cómo etiquetar la versión final
 
 ```bash
-git tag v2.0.0+7          # o la versión final
-git push origin v2.0.0+7
+git tag v2.0.0+10         # versión final
+git push origin v2.0.0+10
 ```
 
 Luego se publica el release en GitHub con el APK y el `.txt` (pasos en `entregables/02-aplicacion-distribuible/instalacion.md` §5).

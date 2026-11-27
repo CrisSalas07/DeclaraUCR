@@ -6,14 +6,14 @@
 
 | | |
 |---|---|
-| Versión a entregar | **2.0.0+8** (correcciones de las sesiones con usuarios y rol «Superior») |
-| Commit | `abc5818` (etiqueta `v2.0.0+8`) |
-| Archivo | `DeclaraUCR-v2.0.0+8-abc5818.apk` |
-| SHA-256 | `7b55df9eb74adde97918fd0c0b9a5619641efd4569869dc2b20e318cd8dc7183` |
-| Descarga | <https://github.com/CrisSalas07/DeclaraUCR/releases/tag/v2.0.0%2B8> · versiones anteriores: <https://github.com/CrisSalas07/DeclaraUCR/releases> |
-| Cómo se ve en la app | Al pie del inicio de sesión y en el perfil: "Versión 2.0.0+8 · abc5818" |
+| Versión a entregar | **2.0.0+10** (horario de las clases sobre los días y juramento del formulario oficial, sobre las correcciones de las sesiones, el rol «Superior» y el recorrido guiado) |
+| Commit | `60d5813` (etiqueta `v2.0.0+10`) |
+| Archivo | `DeclaraUCR-v2.0.0+10-60d5813.apk` |
+| SHA-256 | `b09e100fc6d9dfc8c2c1215c32203e5e201602b5f8a02921487d379cb73d76a6` |
+| Descarga | <https://github.com/CrisSalas07/DeclaraUCR/releases/tag/v2.0.0%2B10> · versiones anteriores: <https://github.com/CrisSalas07/DeclaraUCR/releases> |
+| Cómo se ve en la app | Al pie del inicio de sesión y en el perfil: "Versión 2.0.0+10 · 60d5813" |
 
-Versiones ya publicadas: v2.0.0+2, +3 (prelanzamientos), v2.0.0+4, +5 y +6 (19/11/2026), v2.0.0+7 (20/11/2026), v2.0.0+8 (27/11/2026).
+Versiones ya publicadas: v2.0.0+2, +3 (prelanzamientos), v2.0.0+4, +5 y +6 (19/11/2026), v2.0.0+7 (20/11/2026), v2.0.0+8, +9 y +10 (27/11/2026).
 
 ## 2. Entorno de prueba accesible
 

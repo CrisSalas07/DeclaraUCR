@@ -8,18 +8,15 @@ import 'package:declara_ucr/models/declaration_document.dart';
 /// administrator's template (or the default one) filled with the data of
 /// the declaration. Pure Dart.
 abstract final class OathText {
-  /// `OathText.defaultTemplate` of DeclaraHorario, word for word.
+  /// The oath of the official form (the Excel format of the university),
+  /// word for word. It has no variables: the data of the person is already
+  /// in the header of the PDF.
   static const String defaultTemplate =
-      'Yo, {nombre}, cédula {cedula}, en mi condición de {puesto} de la '
-      'carrera {carrera} de la Universidad de Costa Rica, {sede}, '
-      'declaro bajo fe de juramento que la información consignada en esta '
-      'declaración jurada de horario y jornada de trabajo, versión {version} '
-      'del período {periodo}, es verdadera y completa. Mi jornada en la '
-      'Universidad es de {jornadaUcr} y en otras instituciones de '
-      '{horasExternas}, sin superposición de horarios entre ellas. Me '
-      'comprometo a comunicar cualquier cambio en mis nombramientos o en mi '
-      'horario. Conozco las consecuencias legales de declarar falsamente '
-      'bajo juramento.';
+      'Declaro bajo juramento que los datos proporcionados en este documento '
+      'son ciertos y que conozco las sanciones establecidas por la '
+      'legislación institucional y nacional vigentes, que se refieren a la '
+      'declaración falsa u omisa de las jornadas y horarios laborales aquí '
+      'consignados.';
 
   static final RegExp _variable = RegExp(r'\{([^{}\s]*)\}');
 

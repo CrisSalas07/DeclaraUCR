@@ -143,7 +143,8 @@ final _stages = [
       'schedule.grid',
       'Horario: las medias horas',
       'Toque cada media hora donde lo hace. Para varias seguidas, mantenga '
-          'presionado y deslice. Las clases ya vienen puestas.',
+          'presionado y deslice. Las clases ya vienen puestas y su horario '
+          'está arriba de los días.',
       align: 0.05,
     ),
     _Stop(
