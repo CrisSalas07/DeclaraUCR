@@ -57,7 +57,14 @@ class Proyecto1DeclarationRepository implements DeclarationRepository {
       final mine = ++latest;
       final lookups = _Lookups(_periods);
       final items = await Future.wait(
-        snap.docs.map((doc) => _tryLoad(doc.id, doc.data(), lookups)),
+        snap.docs.map(
+          (doc) => _tryLoad(
+            doc.id,
+            doc.data(),
+            lookups,
+            pending: doc.metadata.hasPendingWrites,
+          ),
+        ),
       );
       if (mine != latest || out.isClosed) return;
       out.add(
@@ -93,10 +100,11 @@ class Proyecto1DeclarationRepository implements DeclarationRepository {
   Future<Declaration?> _tryLoad(
     String id,
     Map<String, dynamic> data,
-    _Lookups lookups,
-  ) async {
+    _Lookups lookups, {
+    bool pending = false,
+  }) async {
     try {
-      return await _load(id, data, lookups);
+      return await _load(id, data, lookups, pending: pending);
     } catch (e) {
       debugPrint('Skipping declaration $id: $e');
       return null;
@@ -113,18 +121,24 @@ class Proyecto1DeclarationRepository implements DeclarationRepository {
   Future<Declaration> _load(
     String id,
     Map<String, dynamic> data,
-    _Lookups lookups,
-  ) async {
+    _Lookups lookups, {
+    bool pending = false,
+  }) async {
     final versionId = data['currentVersionId'];
     final periodId = data['periodId'];
     if (versionId is! String || periodId is! String) {
       throw FormatException('Malformed declaration $id');
     }
     final version = _declarations.doc(id).collection('versions').doc(versionId);
+    // A batch the server has not confirmed yet: its version exists only in
+    // the phone, and the server rules deny reading it (no parent yet).
+    final source = GetOptions(
+      source: pending ? Source.cache : Source.serverAndCache,
+    );
     final (versionDoc, appointments, externalJobs, assignment, period) = await (
-      version.get(),
-      version.collection('appointments').get(),
-      version.collection('externalJobs').get(),
+      version.get(source),
+      version.collection('appointments').get(source),
+      version.collection('externalJobs').get(source),
       lookups.assignment(periodId),
       lookups.period(periodId),
     ).wait;

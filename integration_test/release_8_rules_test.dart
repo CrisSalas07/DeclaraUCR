@@ -8,6 +8,7 @@
 //      integration_test/release_8_rules_test.dart"
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:declara_ucr/config/firebase_config.dart';
+import 'package:declara_ucr/data/network_status.dart';
 import 'package:declara_ucr/data/profile_repository.dart';
 import 'package:declara_ucr/data/proyecto1/period_repository.dart';
 import 'package:declara_ucr/data/proyecto1/proyecto1_declaration_repository.dart';
@@ -19,6 +20,7 @@ import 'package:declara_ucr/models/workload_items.dart';
 import 'package:declara_ucr/state/declaration_form_state.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
 
@@ -29,6 +31,17 @@ void main() {
     tester,
   ) async {
     expect(FirebaseConfig.useEmulators, isTrue, reason: 'only emulators');
+    // The list must never skip a draft, not even before the server confirms
+    // it (the rules deny reading a version whose declaration is not there).
+    final skipped = <String>[];
+    final print = debugPrint;
+    debugPrint = (message, {wrapWidth}) {
+      if (message?.startsWith('Skipping declaration') ?? false) {
+        skipped.add(message!);
+      }
+      print(message, wrapWidth: wrapWidth);
+    };
+    addTearDown(() => debugPrint = print);
     await Firebase.initializeApp(options: FirebaseConfig.options);
     final auth = FirebaseAuth.instance;
     final db = FirebaseFirestore.instance;
@@ -121,7 +134,26 @@ void main() {
     expect(saved.declarantName, 'Daniela Docente Mora');
     expect(saved.identification, '100000095');
 
+    // 5. Offline: the save writes nothing and says so, the form keeps the
+    // change, and the list (reloaded from the phone's copy) keeps the draft.
+    final listedBefore = lists.length;
+    await db.disableNetwork();
+    form.edit((d) => d.notes = 'Escrito sin conexión');
+    expect(await form.saveDraft(), isFalse);
+    expect(form.error, OfflineException.message);
+    expect(form.declaration.notes, 'Escrito sin conexión');
+    final offline = await listed(
+      (d) => d.id == form.declaration.id && lists.length > listedBefore,
+    );
+    expect(offline.notes, 'Con mis datos corregidos');
+
+    // Back online, the same save goes through.
+    await db.enableNetwork();
+    expect(await form.saveDraft(), isTrue, reason: form.error);
+    await listed((d) => d.notes == 'Escrito sin conexión');
+
     await sub.cancel();
+    expect(skipped, isEmpty);
     await auth.signOut();
   });
 }
