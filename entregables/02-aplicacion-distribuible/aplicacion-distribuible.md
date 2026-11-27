@@ -6,14 +6,14 @@
 
 | | |
 |---|---|
-| Versión a entregar | **2.0.0+7** `[COMPLETAR: confirmar si se entrega esta o una posterior a la socialización]` |
-| Commit | `0caae96` (etiqueta `v2.0.0+7`) |
-| Archivo | `DeclaraUCR-v2.0.0+7-0caae96.apk` |
-| SHA-256 | `15a92747d020e5203e1186f0e94709f6071e98c2706b419264fbda704727b019` |
-| Descarga | <https://github.com/CrisSalas07/DeclaraUCR/releases/tag/v2.0.0%2B7> · versiones anteriores: <https://github.com/CrisSalas07/DeclaraUCR/releases> |
-| Cómo se ve en la app | Al pie del inicio de sesión y en el perfil: "Versión 2.0.0+7 · 0caae96" |
+| Versión a entregar | **2.0.0+8** (correcciones de las sesiones con usuarios y rol «Superior») |
+| Commit | `abc5818` (etiqueta `v2.0.0+8`) |
+| Archivo | `DeclaraUCR-v2.0.0+8-abc5818.apk` |
+| SHA-256 | `7b55df9eb74adde97918fd0c0b9a5619641efd4569869dc2b20e318cd8dc7183` |
+| Descarga | <https://github.com/CrisSalas07/DeclaraUCR/releases/tag/v2.0.0%2B8> · versiones anteriores: <https://github.com/CrisSalas07/DeclaraUCR/releases> |
+| Cómo se ve en la app | Al pie del inicio de sesión y en el perfil: "Versión 2.0.0+8 · abc5818" |
 
-Versiones ya publicadas: v2.0.0+2, +3 (prelanzamientos), v2.0.0+4, +5 y +6 (19/11/2026), v2.0.0+7 (20/11/2026).
+Versiones ya publicadas: v2.0.0+2, +3 (prelanzamientos), v2.0.0+4, +5 y +6 (19/11/2026), v2.0.0+7 (20/11/2026), v2.0.0+8 (27/11/2026).
 
 ## 2. Entorno de prueba accesible
 

@@ -51,6 +51,7 @@ El historial está en los commits y en los releases de GitHub. Hitos del Proyect
 | 19/11/2026 | 2.0.0+5 | Etiquetas con letra grande, capturas, casos técnicos |
 | 19/11/2026 | 2.0.0+6 | Estados legibles, CP-03 y CP-06 ejecutados |
 | 20/11/2026 | 2.0.0+7 | Aviso al salir sin guardar (D-01), cuadrícula accesible con TalkBack (D-02), chips de horas (D-03) |
+| 27/11/2026 | 2.0.0+8 | Rol «Superior» (P1-03); correcciones de las sesiones con usuarios: qué se ubica en la cuadrícula (U-03), firmar después de validar (U-04, U-05), recorrido de primer uso (U-06), editar mis datos (U-07) |
 
 ## Revisión de seguridad del repositorio
 

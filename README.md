@@ -16,17 +16,16 @@ coordination and administration stay in the web.
 Code and technical docs are in English; everything the user sees, and the
 Proyecto 2 deliverables, are in Spanish.
 
-## Current status (24/11/2026)
+## Current status (27/11/2026)
 
-- **Version 2.0.0+7** is the released one ([`v2.0.0+7`](https://github.com/CrisSalas07/DeclaraUCR/releases/tag/v2.0.0%2B7)), signed with the team
-  key, against the real Proyecto 1 backend; the user sessions use it.
-- `main` is already at **2.0.0+8**, not released yet: the "Revisor" role is
-  now called "Superior" (Proyecto 1 feedback). It ships after the user
-  sessions, with the fixes they bring.
-- 109 automated tests pass; technical cases CP-01 to CP-07 passed, CP-08
+- **Version 2.0.0+8** is the released one ([`v2.0.0+8`](https://github.com/CrisSalas07/DeclaraUCR/releases/tag/v2.0.0%2B8)), signed with the team
+  key, against the real Proyecto 1 backend: the "Superior" role (Proyecto 1
+  feedback) and the fixes from the user sessions (U-01, U-03 to U-07).
+  The user sessions used 2.0.0+7.
+- 117 automated tests pass; technical cases CP-01 to CP-07 passed, CP-08
   (clean install on another phone) pending.
-- User sessions: P1 and P2 done (24/11/2026), P3 pending. Then the
-  socialization video and the final tag.
+- User sessions P1 to P3 done; left: the retest with a participant on
+  2.0.0+8, the socialization video and the final tag.
 
 ## Where to find what
 
