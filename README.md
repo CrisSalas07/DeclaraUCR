@@ -18,14 +18,15 @@ Proyecto 2 deliverables, are in Spanish.
 
 ## Current status (27/11/2026)
 
-- **Version 2.0.0+8** is the released one ([`v2.0.0+8`](https://github.com/CrisSalas07/DeclaraUCR/releases/tag/v2.0.0%2B8)), signed with the team
-  key, against the real Proyecto 1 backend: the "Superior" role (Proyecto 1
-  feedback) and the fixes from the user sessions (U-01, U-03 to U-07).
-  The user sessions used 2.0.0+7.
-- 117 automated tests pass; technical cases CP-01 to CP-07 passed, CP-08
+- **Version 2.0.0+10** is the final one ([`v2.0.0+10`](https://github.com/CrisSalas07/DeclaraUCR/releases/tag/v2.0.0%2B10)), signed with the
+  team key, against the real Proyecto 1 backend: the lessons of each course
+  above the schedule days and the oath of the official form in the PDF, on top
+  of 2.0.0+9 (guided tour) and 2.0.0+8 ("Superior" role, fixes from the user
+  sessions U-01, U-03 to U-07). The user sessions used 2.0.0+7.
+- 121 automated tests pass; technical cases CP-01 to CP-07 passed, CP-08
   (clean install on another phone) pending.
-- User sessions P1 to P3 done; left: the retest with a participant on
-  2.0.0+8, the socialization video and the final tag.
+- Left: session P3, the retest with a participant, CP-08 with 2.0.0+10 and the
+  socialization (video, synthesis and its improvements in the matrix).
 
 ## Where to find what
 

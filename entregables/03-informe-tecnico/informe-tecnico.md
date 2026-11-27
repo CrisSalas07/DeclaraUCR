@@ -3,7 +3,7 @@
 **Proyecto 2 · IF0009 Desarrollo de Software IV · UCR Sede del Sur**
 Evolución del Sistema de Declaraciones Juradas de Horario y Jornada de Trabajo hacia una aplicación móvil.
 
-Versión descrita: **2.0.0+7** · Repositorio: <https://github.com/CrisSalas07/DeclaraUCR> ·
+Versión descrita: **2.0.0+10** · Repositorio: <https://github.com/CrisSalas07/DeclaraUCR> ·
 Sistema web del Proyecto 1: DeclaraHorario (<https://declarahorario-b186f.web.app>).
 
 ---
@@ -143,7 +143,7 @@ el formato de observaciones y la huella SHA-256. Lo que se reescribió fueron la
 |---|---|
 | Backend | Firebase del Proyecto 1, accesible desde cualquier teléfono con internet; no depende de la computadora de desarrollo |
 | APK | `dart run tool/build_apk.dart`: se niega a compilar con cambios sin commit o sin la llave del equipo, y deja `dist/DeclaraUCR-v{versión}-{commit}.apk` con un `.txt` que trae versión, commit, backend, firma y SHA-256 |
-| Distribución | GitHub Releases, una por versión (`v2.0.0+2` a `v2.0.0+6` publicadas; `v2.0.0+7` publicada el 20/11/2026) |
+| Distribución | GitHub Releases, una por versión (`v2.0.0+2` a `v2.0.0+6` publicadas el 18 y 19/11/2026, `v2.0.0+7` el 20/11/2026 y `v2.0.0+8` a `v2.0.0+10` el 27/11/2026) |
 | Firma | Llave de release del equipo, fuera del repositorio. Todas las versiones con la misma llave, así que actualizar encima funciona |
 | Actualizar | Instalar el APK nuevo encima; se conserva la sesión |
 | Volver atrás | Desinstalar e instalar el APK anterior del release; no se pierde nada porque los datos están en Firebase |

@@ -13,8 +13,8 @@ GitHub al hacer merge); el correo de los commits confirma que son la misma perso
 
 | Integrante | Identidad en git | Commits en DeclaraUCR (P2) | Commits en DeclaraHorario (P1) |
 |---|---|---|---|
-| Cristopher Mora Salas | `Salas07` (commits), `CrisSalas07` (merges de PR) | 22 + 12 merges (12 al 21/11) | 139 + 52 |
-| Keity Chavarría Steller | `Keity` (commits), `dayanachavarriasteller-maker` (merges de PR) | 28 + 7 merges (18 y 19/11) | 75 + 38 |
+| Cristopher Mora Salas | `Salas07` (commits), `CrisSalas07` (merges de PR) | 42 + 26 merges (12 al 27/11) | 139 + 52 |
+| Keity Chavarría Steller | `Keity` (commits), `dayanachavarriasteller-maker` (merges de PR) | 39 + 11 merges (18 al 27/11) | 75 + 38 |
 | Lucía Palacios | `Lucia`, `luciaapalacio608-dot` | — | 25 + 2 |
 
 Para ver el detalle: `git log --format='%h %ad %an %s' --date=short`.
@@ -47,6 +47,13 @@ Para ver el detalle: `git log --format='%h %ad %an %s' --date=short`.
 | 24/11/2026 | Cristopher | Una sola carpeta de entregables | Bitácora en Word, capturas dentro de los PDF, revisión contra el descriptor | `77fae16` (PR #24) |
 | 24/11/2026 | Cristopher | Retroalimentación del P1: rol «Superior» | «Revisor» pasa a «Superior» en estados, seguimiento, botón de firma, avisos y PDF; pruebas actualizadas (matriz P1-03) | `68da1f3` (PR #25) |
 | 24/11/2026 | Cristopher | Registro de las sesiones P1 y P2 | Bitácora, informe de pruebas §6 y matriz U-01 a U-07, con capturas, formulario y horas de Firebase | PR #26 a #31 |
+| 24/11/2026 | Cristopher | «Superior» en los entregables | Guion del video, informe de pruebas y registro con el nombre nuevo del rol | `575ed74` (PR #32) |
+| 26/11/2026 | Keity | Guion del video y demostración | Bloques del video repartidos entre el equipo, guion de la demostración, captura de inicio de sesión con la 2.0.0+7 | `fbebdf9`, `e7539b0`, `ad0108a` (PR #33) |
+| 27/11/2026 | Cristopher | Correcciones de las sesiones, versión 2.0.0+8 | U-03 a U-07 en la app y en los entregables; release de la 2.0.0+8 | `abc5818`, `aaeb992` (PR #34) |
+| 27/11/2026 | Cristopher | Borrador recién guardado en la lista (T-09) | La lista lee de la copia del teléfono lo que el servidor aún no confirma; prueba contra las reglas | `096dcbd` (PR #35) |
+| 27/11/2026 | Cristopher | Recorrido guiado, versión 2.0.0+9 | Recorrido sobre las pantallas reales con una docente de ejemplo (U-06 rehecho); capturas nuevas de la guía | `7ea44f2`, `2bad858` (PR #36) |
+| 27/11/2026 | Keity | Horario de las clases y juramento oficial, versión 2.0.0+10 | Tarjeta «Horario de sus clases» arriba de los días; juramento del formulario oficial en el PDF y la firma; capturas 04, 09 y 10 de la guía; versión final 2.0.0+10 y sus documentos | `4c913e6`, `372d224`, `a40d61d`, `60d5813` (PR #37) |
+| 27/11/2026 | Keity | Revisión e integración | Merge de los PR #22, #23, #33 y #37 | PR en GitHub |
 
 ### Actividades sin commit
 
