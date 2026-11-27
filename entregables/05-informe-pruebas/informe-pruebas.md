@@ -20,6 +20,7 @@ corrigió.
 | 2.0.0+5 | `fc21a84` | Casos técnicos CP-01 a CP-07 (19/11/2026) |
 | 2.0.0+6 | `fc4caba` | CP-06 (persistencia tras reinstalar y actualizar) |
 | 2.0.0+7 | `afeb1ee` (fusionado en `af4b3f2`, PR #8) | Recorrido exploratorio y correcciones del 20/11/2026; versión para las sesiones con usuarios |
+| 2.0.0+8 | `abc5818` (PR #34) | Correcciones de las sesiones (U-01, U-03 a U-07), rol «Superior» (P1-03); nueva comprobación con participantes (§6.7) |
 
 Las sesiones con usuarios deben hacerse **todas con la misma versión** (§8). La recomendada es la 2.0.0+7,
 porque ya trae la corrección de D-01, que afecta justo la tarea 1 del guion.
@@ -217,13 +218,13 @@ de uso de 1 a 5 y comentarios abiertos (§8), además de utilidad, claridad y fu
 
 | Id | Problema observado | Quién y en qué tarea | Impacto | Prioridad | Acción |
 |---|---|---|---|---|---|
-| U-01 | No sabía cómo empezar la declaración | P1, T1 | Necesitó ayuda para empezar | Baja | `[COMPLETAR: decidir con P2 y P3; si se repite, sube la prioridad]` |
-| U-02 | La lista de **Puesto** deja elegir cualquier puesto, aunque no sea el de la persona (lo dijo P1 en el formulario) | P1, T1 | Una declaración con un puesto equivocado llega al revisor; hoy solo el revisor lo detecta | Media | `[COMPLETAR: decidir con P2 y P3]` |
-| U-03 | No sabía cómo tocar los cuadros para asignar horas en la cuadrícula; no entendió la lógica de la app | P2, T1–T2 | Necesitó ayuda para ubicar horas (proceso 2) | Alta | `[COMPLETAR: corregir y volver a probar con P2 (§6.7)]` |
-| U-04 | Después de Validar no vio el botón «Firmar y enviar a mi superior» | P2, T1 | No supo cuál era el siguiente paso | Media | `[COMPLETAR]` |
-| U-05 | Después de Validar, Atrás lo devolvió al editor y la declaración volvió a Borrador | P2, T1 | Salió del resumen sin firmar y tuvo que validar otra vez | Media | `[COMPLETAR]` |
-| U-06 | Pide un tutorial la primera vez que explique cada parte (lo dijeron P2 y, en parte, P1) | P2 (y P1, T1) | Sin guía no entiende la lógica de la app | Media | `[COMPLETAR]` |
-| U-07 | El perfil solo muestra los datos: no deja corregir el nombre ni la cédula | P2 (después de las tareas) | Si se equivoca al registrarse (P1 puso sus datos reales), no lo puede corregir | Media | Decidido: dejar editar nombre, cédula y teléfono desde el perfil (las reglas del P1 ya lo permiten); correo, sede y carrera siguen con Administración. Se hace en la 2.0.0+8 |
+| U-01 | No sabía cómo empezar la declaración | P1, T1 | Necesitó ayuda para empezar | Baja | Cubierta por el recorrido de primer uso de U-06 (paso «Inicio»). 2.0.0+8 |
+| U-02 | La lista de **Puesto** deja elegir cualquier puesto, aunque no sea el de la persona (lo dijo P1 en el formulario) | P1, T1 | Una declaración con un puesto equivocado llega al revisor; hoy solo el revisor lo detecta | Media | Pendiente con justificación: la app no tiene de dónde sacar el puesto real de la persona. Propuesta: que Administración lo asigne en la web y la app lo muestre fijo (matriz U-02) |
+| U-03 | No sabía cómo tocar los cuadros para asignar horas en la cuadrícula; no entendió la lógica de la app | P2, T1–T2 | Necesitó ayuda para ubicar horas (proceso 2) | Alta | Encima de la cuadrícula se ve siempre qué se ubica con cada toque, con su color y pasos numerados. 2.0.0+8; se vuelve a probar con P2 (§6.7) |
+| U-04 | Después de Validar no vio el botón «Firmar y enviar a mi superior» | P2, T1 | No supo cuál era el siguiente paso | Media | Después de Validar, el botón principal es **Firmar y enviar** y un aviso dice que es el siguiente paso. 2.0.0+8 |
+| U-05 | Después de Validar, Atrás lo devolvió al editor y la declaración volvió a Borrador | P2, T1 | Salió del resumen sin firmar y tuvo que validar otra vez | Media | Atrás después de validar vuelve al inicio sin tocar la declaración; solo «Corregir» abre el editor. 2.0.0+8 |
+| U-06 | Pide un tutorial la primera vez que explique cada parte (lo dijeron P2 y, en parte, P1) | P2 (y P1, T1) | Sin guía no entiende la lógica de la app | Media | Recorrido de 4 pasos la primera vez en el teléfono, y en el perfil («Cómo funciona»). 2.0.0+8 |
+| U-07 | El perfil solo muestra los datos: no deja corregir el nombre ni la cédula | P2 (después de las tareas) | Si se equivoca al registrarse (P1 puso sus datos reales), no lo puede corregir | Media | Editar nombre, cédula (se reserva la nueva y se libera la anterior) y teléfono desde el perfil; un borrador sin firmar toma los datos corregidos. Correo, sede y carrera siguen con Administración. 2.0.0+8 |
 
 Qué vigilar en particular (son los puntos donde el recorrido sugiere que alguien se puede trabar):
 
@@ -236,9 +237,17 @@ Qué vigilar en particular (son los puntos donde el recorrido sugiere que alguie
 
 El descriptor pide volver a probar los problemas de mayor impacto con al menos una de las personas.
 
+Cambios aplicados en la 2.0.0+8 (commit `abc5818`, PR #34). Antes de entregarla al participante se
+comprobaron con pruebas automatizadas (117 pasan, 27/11/2026) y en el emulador Android contra las reglas del
+P1 (`integration_test/release_8_rules_test.dart`).
+
 | Hallazgo | Cambio aplicado (commit) | Quién lo volvió a probar | Resultado | Evidencia |
 |---|---|---|---|---|
-| | | | | `R-P_-T_-….png` |
+| U-03 | Qué se ubica con cada toque, siempre a la vista (`abc5818`) | `[COMPLETAR: P2]` | `[COMPLETAR]` | `R-P2-T2-….png` |
+| U-04 / U-05 | Firmar como siguiente paso; Atrás vuelve al inicio (`abc5818`) | `[COMPLETAR: P2]` | `[COMPLETAR]` | `R-P2-T1-….png` |
+| U-06 | Recorrido de primer uso (`abc5818`) | `[COMPLETAR: P2]` | `[COMPLETAR]` | `R-P2-T0-….png` |
+| U-07 | Editar mis datos (`abc5818`) | `[COMPLETAR: P2]` | `[COMPLETAR]` | `R-P2-perfil-….png` |
+| T-08 | Lista actualizada al guardar un borrador (no se reprodujo en emulador) | `[COMPLETAR: equipo, en el teléfono]` | `[COMPLETAR]` | `R-T08-….png` |
 
 ## 7. Conclusión
 

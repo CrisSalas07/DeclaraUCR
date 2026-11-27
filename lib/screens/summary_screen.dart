@@ -34,6 +34,14 @@ class SummaryScreen extends StatelessWidget {
     );
   }
 
+  Future<void> _sign(BuildContext context, String id) async {
+    final navigator = Navigator.of(context);
+    if (await openSigning(context, id)) {
+      // Signed: back to the start, which shows its tracking.
+      navigator.popUntil((route) => route.isFirst);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final state = context.watch<DeclarationFormState>();
@@ -49,144 +57,149 @@ class SummaryScreen extends StatelessWidget {
         d.status == DeclarationStatus.validated ||
         d.status == DeclarationStatus.pendingDeclarantSignature;
 
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Resumen de la declaración'),
-        // Appears once it is validated and saved.
-        actions: [DeclarationPdfAction(id: d.id, status: d.status)],
-      ),
-      body: ListView(
-        padding: const EdgeInsets.fromLTRB(16, 8, 16, 24),
-        children: [
-          _Hero(declaration: d),
-          const SizedBox(height: 16),
-          if (problems.isEmpty)
-            const InfoBanner(
-              icon: Icons.check_circle_outline,
-              title: 'Sin problemas: la declaración puede validarse.',
-              tone: BannerTone.success,
-            )
-          else
-            InfoBanner(
-              icon: Icons.error_outline,
-              title: problems.length == 1
-                  ? 'Hay 1 punto por corregir'
-                  : 'Hay ${problems.length} puntos por corregir',
-              lines: problems,
-              tone: BannerTone.error,
-            ),
-          const SizedBox(height: 16),
-          _HoursCard(declaration: d),
-          SectionCard(
-            icon: Icons.calendar_view_week_outlined,
-            title: 'Horario semanal',
-            children: [
-              if (sorted.isEmpty)
-                const Padding(
-                  padding: EdgeInsets.only(bottom: 8),
-                  child: Text('Sin intervalos registrados.'),
-                )
-              else ...[
-                WeekOverview(intervals: sorted),
-                const SizedBox(height: 16),
-                const Divider(),
-                for (final i in sorted)
-                  _IntervalLine(i, ScheduleRequirements.describe(i.task, d)),
-              ],
-            ],
-          ),
-          SectionCard(
-            icon: Icons.badge_outlined,
-            title: 'Datos generales',
-            children: [
-              ReadOnlyLine(label: 'Nombre', value: d.declarantName),
-              ReadOnlyLine(label: 'Cédula', value: d.identification),
-            ],
-          ),
-          SectionCard(
-            icon: Icons.work_outline,
-            title: 'Información laboral',
-            children: [
-              ReadOnlyLine(label: 'Institución y sede', value: d.institution),
-              ReadOnlyLine(label: 'Puesto', value: d.position),
-              if (d.periodName != null)
-                ReadOnlyLine(label: 'Período', value: d.periodName!),
-              ReadOnlyLine(
-                label: 'Vigencia',
-                value: '${formatDate(d.validFrom)} – ${formatDate(d.validTo)}',
+    final canSign = validated && d.id != null;
+
+    // After validating, Back goes to the start, not to the editor (U-05):
+    // only "Corregir" opens the editor again.
+    return PopScope(
+      canPop: !canSign,
+      onPopInvokedWithResult: (didPop, _) {
+        if (!didPop) Navigator.of(context).popUntil((r) => r.isFirst);
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('Resumen de la declaración'),
+          // Appears once it is validated and saved.
+          actions: [DeclarationPdfAction(id: d.id, status: d.status)],
+        ),
+        body: ListView(
+          padding: const EdgeInsets.fromLTRB(16, 8, 16, 24),
+          children: [
+            _Hero(declaration: d),
+            const SizedBox(height: 16),
+            if (validated && d.id != null)
+              const InfoBanner(
+                icon: Icons.draw_outlined,
+                title: 'Validada. Siguiente paso: firmarla.',
+                lines: [
+                  'Toque «Firmar y enviar» abajo: acepta la declaración jurada '
+                      'y la envía a su superior.',
+                ],
+                tone: BannerTone.success,
+              )
+            else if (problems.isEmpty)
+              const InfoBanner(
+                icon: Icons.check_circle_outline,
+                title: 'Sin problemas: la declaración puede validarse.',
+                tone: BannerTone.success,
+              )
+            else
+              InfoBanner(
+                icon: Icons.error_outline,
+                title: problems.length == 1
+                    ? 'Hay 1 punto por corregir'
+                    : 'Hay ${problems.length} puntos por corregir',
+                lines: problems,
+                tone: BannerTone.error,
               ),
-              ReadOnlyLine(
-                label: 'Cursos',
-                value: d.courses
-                    .map((c) => c.code.isEmpty ? c.name : '${c.code} ${c.name}')
-                    .join('\n'),
-              ),
-              ReadOnlyLine(
-                label: 'Proyectos',
-                value: d.projects
-                    .map(
-                      (p) =>
-                          '${p.name} (${TimeRules.hoursLabel(p.weeklyMinutes)})',
-                    )
-                    .join('\n'),
-              ),
-              ReadOnlyLine(
-                label: 'Otras instituciones',
-                value: d.externalJobs
-                    .map(
-                      (j) =>
-                          '${j.institution} · ${j.position} '
-                          '(${TimeRules.hoursLabel(j.weeklyMinutes)})',
-                    )
-                    .join('\n'),
-              ),
-              ReadOnlyLine(
-                label: 'Observaciones',
-                value: ScheduleObservations.compose(d),
-              ),
-            ],
-          ),
-          if (validated && d.id != null)
+            const SizedBox(height: 16),
+            _HoursCard(declaration: d),
             SectionCard(
-              icon: Icons.draw_outlined,
-              title: 'Siguiente paso: firmar',
-              subtitle:
-                  'Acepte la declaración jurada y fírmela para enviarla a su '
-                  'superior.',
+              icon: Icons.calendar_view_week_outlined,
+              title: 'Horario semanal',
               children: [
-                FilledButton.icon(
-                  onPressed: () async {
-                    final navigator = Navigator.of(context);
-                    if (await openSigning(context, d.id!)) {
-                      // Signed: back to the start, which shows its tracking.
-                      navigator.popUntil((route) => route.isFirst);
-                    }
-                  },
-                  icon: const Icon(Icons.draw_outlined),
-                  label: const Text('Firmar y enviar a mi superior'),
-                ),
-                const SizedBox(height: 8),
+                if (sorted.isEmpty)
+                  const Padding(
+                    padding: EdgeInsets.only(bottom: 8),
+                    child: Text('Sin intervalos registrados.'),
+                  )
+                else ...[
+                  WeekOverview(intervals: sorted),
+                  const SizedBox(height: 16),
+                  const Divider(),
+                  for (final i in sorted)
+                    _IntervalLine(i, ScheduleRequirements.describe(i.task, d)),
+                ],
               ],
             ),
-          const InfoBanner(
-            icon: Icons.info_outline,
-            title: 'Alcance de esta aplicación',
-            lines: [
-              'Aquí se elabora, valida y firma la declaración. La revisión y la '
-                  'aprobación de Recursos Humanos se hacen en el sistema web.',
-            ],
-          ),
-        ],
-      ),
-      bottomNavigationBar: BottomActions(
-        secondaryLabel: 'Corregir',
-        onSecondary: () => Navigator.of(context).pop(),
-        // Once validated it stays off until something changes: any edit
-        // sends the declaration back to BORRADOR.
-        primaryLabel: validated ? 'Validada' : 'Validar',
-        onPrimary: state.canValidate && !state.saving && !validated
-            ? () => _validate(context)
-            : null,
+            SectionCard(
+              icon: Icons.badge_outlined,
+              title: 'Datos generales',
+              children: [
+                ReadOnlyLine(label: 'Nombre', value: d.declarantName),
+                ReadOnlyLine(label: 'Cédula', value: d.identification),
+              ],
+            ),
+            SectionCard(
+              icon: Icons.work_outline,
+              title: 'Información laboral',
+              children: [
+                ReadOnlyLine(label: 'Institución y sede', value: d.institution),
+                ReadOnlyLine(label: 'Puesto', value: d.position),
+                if (d.periodName != null)
+                  ReadOnlyLine(label: 'Período', value: d.periodName!),
+                ReadOnlyLine(
+                  label: 'Vigencia',
+                  value:
+                      '${formatDate(d.validFrom)} – ${formatDate(d.validTo)}',
+                ),
+                ReadOnlyLine(
+                  label: 'Cursos',
+                  value: d.courses
+                      .map(
+                        (c) => c.code.isEmpty ? c.name : '${c.code} ${c.name}',
+                      )
+                      .join('\n'),
+                ),
+                ReadOnlyLine(
+                  label: 'Proyectos',
+                  value: d.projects
+                      .map(
+                        (p) =>
+                            '${p.name} (${TimeRules.hoursLabel(p.weeklyMinutes)})',
+                      )
+                      .join('\n'),
+                ),
+                ReadOnlyLine(
+                  label: 'Otras instituciones',
+                  value: d.externalJobs
+                      .map(
+                        (j) =>
+                            '${j.institution} · ${j.position} '
+                            '(${TimeRules.hoursLabel(j.weeklyMinutes)})',
+                      )
+                      .join('\n'),
+                ),
+                ReadOnlyLine(
+                  label: 'Observaciones',
+                  value: ScheduleObservations.compose(d),
+                ),
+              ],
+            ),
+            const InfoBanner(
+              icon: Icons.info_outline,
+              title: 'Alcance de esta aplicación',
+              lines: [
+                'Aquí se elabora, valida y firma la declaración. La revisión y la '
+                    'aprobación de Recursos Humanos se hacen en el sistema web.',
+              ],
+            ),
+          ],
+        ),
+        bottomNavigationBar: BottomActions(
+          secondaryLabel: 'Corregir',
+          onSecondary: () => Navigator.of(context).pop(),
+          // Once validated, the next step is signing (U-04). Any edit sends
+          // the declaration back to BORRADOR and brings back "Validar".
+          primaryLabel: canSign ? 'Firmar y enviar' : 'Validar',
+          onPrimary: state.saving
+              ? null
+              : canSign
+              ? () => _sign(context, d.id!)
+              : state.canValidate && !validated
+              ? () => _validate(context)
+              : null,
+        ),
       ),
     );
   }

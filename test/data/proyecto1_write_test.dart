@@ -189,6 +189,25 @@ void main() {
     expect(reopened['newStatus'], 'BORRADOR');
   });
 
+  test('saving a draft carries the corrected profile (U-07)', () async {
+    final state = DeclarationFormState(
+      repository: repository,
+      initial: complete(placed()),
+    );
+    expect(await state.saveDraft(), isTrue);
+    final id = state.declaration.id!;
+    await db.collection('users').doc(Proyecto1Fixture.uid).update({
+      'fullName': 'Ana Pérez Solano',
+      'identification': '105430988',
+    });
+
+    state.edit((d) => d.notes = 'Después');
+    expect(await state.saveDraft(), isTrue);
+    final saved = (await repository.getById(id))!;
+    expect(saved.declarantName, 'Ana Pérez Solano');
+    expect(saved.identification, '105430988');
+  });
+
   test('the list shows what was saved, also after a content save', () async {
     final state = DeclarationFormState(
       repository: repository,

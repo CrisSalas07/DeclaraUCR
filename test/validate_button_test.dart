@@ -24,8 +24,8 @@ class _AlwaysValid extends DeclarationValidator {
 }
 
 void main() {
-  testWidgets('a validated declaration cannot be validated again until it '
-      'changes', (tester) async {
+  testWidgets('a validated declaration offers signing, not validating again, '
+      'until it changes (U-04)', (tester) async {
     final db = FakeFirebaseFirestore();
     final state = DeclarationFormState(
       repository: Proyecto1DeclarationRepository(
@@ -48,12 +48,56 @@ void main() {
     FilledButton button(String label) =>
         tester.widget<FilledButton>(find.widgetWithText(FilledButton, label));
 
-    expect(button('Validada').onPressed, isNull);
+    expect(find.text('Validar'), findsNothing);
+    expect(button('Firmar y enviar').onPressed, isNotNull);
+    expect(find.text('Validada. Siguiente paso: firmarla.'), findsOneWidget);
 
     // Any change sends it back to BORRADOR: it can be validated again.
     state.edit((d) => d.notes = 'Cambio');
     await tester.pump();
     expect(state.declaration.status, DeclarationStatus.draft);
     expect(button('Validar').onPressed, isNotNull);
+    expect(find.text('Firmar y enviar'), findsNothing);
+  });
+
+  testWidgets('Back after validating goes to the start, not to the editor '
+      '(U-05)', (tester) async {
+    final db = FakeFirebaseFirestore();
+    final state = DeclarationFormState(
+      repository: Proyecto1DeclarationRepository(
+        db,
+        uid: 'ana',
+        periods: FirestorePeriodRepository(db, uid: 'ana'),
+      ),
+      validator: const _AlwaysValid(),
+      initial: Declaration(id: 'd1', status: DeclarationStatus.validated),
+    );
+    final navigator = GlobalKey<NavigatorState>();
+    await tester.pumpWidget(
+      MaterialApp(
+        navigatorKey: navigator,
+        theme: buildUcrTheme(),
+        home: const Text('Inicio'),
+      ),
+    );
+    // Start → editor → summary, as in the app.
+    navigator.currentState!.push(
+      MaterialPageRoute<void>(builder: (_) => const Text('Editor')),
+    );
+    navigator.currentState!.push(
+      MaterialPageRoute<void>(
+        builder: (_) => ChangeNotifierProvider.value(
+          value: state,
+          child: const SummaryScreen(),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    await tester.binding.handlePopRoute();
+    await tester.pumpAndSettle();
+    expect(find.text('Inicio'), findsOneWidget);
+    expect(find.text('Editor'), findsNothing);
+    expect(state.declaration.status, DeclarationStatus.validated);
   });
 }
