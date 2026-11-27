@@ -67,7 +67,7 @@ async function ownerGet(path) {
 
 const docente = await signIn('docente@ucr.ac.cr');
 const profile = await ownerGet(`users/${docente.localId}`);
-const revisorUid = profile.fields.superiorUid.stringValue;
+const superiorUid = profile.fields.superiorUid.stringValue;
 
 const checks = [
   ['Lee su propio perfil', 200,
@@ -76,8 +76,8 @@ const checks = [
     await request('GET', `workloadAssignments/2026_II_${docente.localId}`, docente.idToken)],
   ['Lee el período', 200,
     await request('GET', 'periods/2026_II', docente.idToken)],
-  ['No lee el perfil de otra persona (revisor)', 403,
-    await request('GET', `users/${revisorUid}`, docente.idToken)],
+  ['No lee el perfil de otra persona (superior)', 403,
+    await request('GET', `users/${superiorUid}`, docente.idToken)],
   // The current mobile schema: the Proyecto 1 rules must reject it.
   ['Rechaza una declaración con el formato actual del móvil', 403,
     await request('PATCH', 'declarations/prueba-formato-movil', docente.idToken, {

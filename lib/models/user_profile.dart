@@ -27,7 +27,7 @@ enum UserRole {
 
 /// The person's profile at `users/{uid}`, as the Proyecto 1 (DeclaraHorario)
 /// stores it. Name and cédula are copied into every declaration; campus,
-/// career and reviewer decide whether the person can declare.
+/// career and superior decide whether the person can declare.
 class UserProfile {
   const UserProfile({
     required this.fullName,
@@ -64,7 +64,7 @@ class UserProfile {
   /// Career (`units/{id}`), chosen once by a declarant.
   final String? unitId;
 
-  /// Reviewer, assigned by administration from the web. Without one, the
+  /// Superior, assigned by administration from the web. Without one, the
   /// rules reject a new declaration.
   final String? superiorUid;
 

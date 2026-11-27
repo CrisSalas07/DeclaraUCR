@@ -8,7 +8,7 @@ import 'package:crypto/crypto.dart';
 /// content was not changed afterwards.
 ///
 /// It must be EXACTLY `ContentHashService.computeVersionHash` of
-/// DeclaraHorario (Proyecto 1): the reviewer and HR sign that same hash, and
+/// DeclaraHorario (Proyecto 1): the superior and HR sign that same hash, and
 /// a different serialization would give a declaration signed in the phone
 /// another fingerprint than the web would compute. It works on the stored
 /// documents, reading each field as DeclaraHorario's models do (same

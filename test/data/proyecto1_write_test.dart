@@ -252,7 +252,7 @@ void main() {
     expect((await db.collection('declarations').get()).docs, isEmpty);
   });
 
-  test('without a reviewer it cannot be created', () async {
+  test('without a superior it cannot be created', () async {
     db = FakeFirebaseFirestore();
     await Proyecto1Fixture.seed(
       db,
@@ -274,7 +274,7 @@ void main() {
     );
     await state.validateAndSave();
     final id = state.declaration.id!;
-    // The web moved it on to the reviewer.
+    // The web moved it on to the superior.
     await declarationDoc(id).update({'status': 'PENDIENTE_FIRMA_SUPERIOR'});
 
     final opened = DeclarationFormState(

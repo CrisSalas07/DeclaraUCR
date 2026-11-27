@@ -5,6 +5,7 @@ import 'package:declara_ucr/screens/declarations_screen.dart' show EmptyMessage;
 import 'package:declara_ucr/state/loadable.dart';
 import 'package:declara_ucr/theme/ucr_theme.dart';
 import 'package:declara_ucr/widgets/common.dart';
+import 'package:declara_ucr/widgets/tour_anchor.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -52,7 +53,11 @@ class ZonajeScreen extends StatelessWidget {
               body: 'Cuando la envíe desde el sistema web, aparecerá aquí.',
             )
           else
-            for (final r in requests) _RequestCard(request: r),
+            for (final (i, r) in requests.indexed)
+              TourAnchor(
+                id: 'zonaje.card.$i',
+                child: _RequestCard(request: r),
+              ),
         ],
       ),
     );

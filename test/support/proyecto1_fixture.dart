@@ -5,7 +5,7 @@ import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';
 
 /// Fictitious data in the Proyecto 1 schema, as the web leaves it: a
 /// campus and career, the open period [periodId] and, for [uid], a profile
-/// with reviewer and the coordination's assignment of the course "Redes"
+/// with superior and the coordination's assignment of the course "Redes"
 /// (IF0009, 1/8 TC: lessons Monday 8:00-10:00).
 abstract final class Proyecto1Fixture {
   static const String uid = 'user-a';

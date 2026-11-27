@@ -1,7 +1,7 @@
 // The declarant's signature against the REAL rules of the Proyecto 1, on
 // the emulators of backend/proyecto1 (fake Firestore does not apply rules).
 // It runs the app's own code: create, validate, read the oath and sign, then
-// the reviewer reads what was signed. From the repository root:
+// the superior reads what was signed. From the repository root:
 //
 //   flutter create --platforms=windows .   (only once; do not commit it)
 //   firebase emulators:exec --config backend/proyecto1/firebase.json
@@ -92,10 +92,10 @@ void main() {
       throwsA(isA<DeclarationSaveException>()),
     );
 
-    // 3. The reviewer, now responsible, reads exactly what was signed.
+    // 3. The superior, now responsible, reads exactly what was signed.
     await auth.signOut();
     await auth.signInWithEmailAndPassword(
-      email: 'revisor@ucr.ac.cr',
+      email: 'superior@ucr.ac.cr',
       password: '123456',
     );
     expect(stored['currentResponsibleUid'], auth.currentUser!.uid);

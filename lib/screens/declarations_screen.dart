@@ -9,6 +9,7 @@ import 'package:declara_ucr/screens/declaration_form_screen.dart';
 import 'package:declara_ucr/state/loadable.dart';
 import 'package:declara_ucr/theme/ucr_theme.dart';
 import 'package:declara_ucr/widgets/common.dart';
+import 'package:declara_ucr/widgets/tour_anchor.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -155,40 +156,46 @@ class _DeclarationsScreenState extends State<DeclarationsScreen> {
 
     return Scaffold(
       appBar: AppBar(title: const Text('Mis declaraciones')),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () => openDeclaration(context, null),
-        icon: const Icon(Icons.add),
-        label: const Text('Nueva declaración'),
+      floatingActionButton: TourAnchor(
+        id: 'declarations.new',
+        child: FloatingActionButton.extended(
+          onPressed: () => openDeclaration(context, null),
+          icon: const Icon(Icons.add),
+          label: const Text('Nueva declaración'),
+        ),
       ),
       body: Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
-            child: Row(
-              children: [
-                _FilterTile(
-                  label: 'Todas',
-                  count: all.length,
-                  selected: _filter == null,
-                  onTap: () => setState(() => _filter = null),
-                ),
-                const SizedBox(width: 10),
-                _FilterTile(
-                  label: 'Borradores',
-                  count: count(DeclarationStatus.draft),
-                  selected: _filter == DeclarationStatus.draft,
-                  onTap: () =>
-                      setState(() => _filter = DeclarationStatus.draft),
-                ),
-                const SizedBox(width: 10),
-                _FilterTile(
-                  label: 'Validadas',
-                  count: count(DeclarationStatus.validated),
-                  selected: _filter == DeclarationStatus.validated,
-                  onTap: () =>
-                      setState(() => _filter = DeclarationStatus.validated),
-                ),
-              ],
+          TourAnchor(
+            id: 'declarations.filters',
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
+              child: Row(
+                children: [
+                  _FilterTile(
+                    label: 'Todas',
+                    count: all.length,
+                    selected: _filter == null,
+                    onTap: () => setState(() => _filter = null),
+                  ),
+                  const SizedBox(width: 10),
+                  _FilterTile(
+                    label: 'Borradores',
+                    count: count(DeclarationStatus.draft),
+                    selected: _filter == DeclarationStatus.draft,
+                    onTap: () =>
+                        setState(() => _filter = DeclarationStatus.draft),
+                  ),
+                  const SizedBox(width: 10),
+                  _FilterTile(
+                    label: 'Validadas',
+                    count: count(DeclarationStatus.validated),
+                    selected: _filter == DeclarationStatus.validated,
+                    onTap: () =>
+                        setState(() => _filter = DeclarationStatus.validated),
+                  ),
+                ],
+              ),
             ),
           ),
           Expanded(
@@ -218,9 +225,12 @@ class _DeclarationsScreenState extends State<DeclarationsScreen> {
                     padding: const EdgeInsets.fromLTRB(16, 8, 16, 104),
                     itemCount: visible.length,
                     separatorBuilder: (_, _) => const SizedBox(height: 12),
-                    itemBuilder: (_, i) => DeclarationCard(
-                      declaration: visible[i],
-                      onTap: () => openDeclaration(context, visible[i].id),
+                    itemBuilder: (_, i) => TourAnchor(
+                      id: 'declarations.card.$i',
+                      child: DeclarationCard(
+                        declaration: visible[i],
+                        onTap: () => openDeclaration(context, visible[i].id),
+                      ),
                     ),
                   ),
           ),

@@ -119,7 +119,7 @@ class DeclaraUcrApp extends StatefulWidget {
   final DeclarationDocumentReader Function(String uid) documentsFor;
 
   /// The declarant's signature, which sends the declaration to the
-  /// reviewer.
+  /// superior.
   final DeclarationSigner Function(String uid) signerFor;
 
   /// Whether the phone has a network: an offline strip on every screen,

@@ -1,6 +1,6 @@
 // Leaves the LOCAL EMULATORS with fictitious data of the Proyecto 1 schema,
 // enough to walk the three mobile processes: a campus and career, an open
-// period, a declarant with a reviewer and the courses the coordination
+// period, a declarant with a superior and the courses the coordination
 // assigned. It erases everything in the emulators first.
 //
 // It only talks to the emulators: it refuses to run unless
@@ -19,8 +19,8 @@ const PEOPLE = {
     email: 'admin@ucr.ac.cr', fullName: 'Ana Administración', identification: '100000001',
     roles: ['admin'],
   },
-  revisor: {
-    email: 'revisor@ucr.ac.cr', fullName: 'Rodrigo Revisor', identification: '100000002',
+  superior: {
+    email: 'superior@ucr.ac.cr', fullName: 'Rodrigo Superior', identification: '100000002',
     roles: ['superior'],
   },
   coordinacion: {
@@ -31,16 +31,16 @@ const PEOPLE = {
     email: 'rrhh@ucr.ac.cr', fullName: 'Raúl Recursos Humanos', identification: '100000004',
     roles: ['hr'],
   },
-  // Has a reviewer and courses assigned: can create a declaration.
+  // Has a superior and courses assigned: can create a declaration.
   docente: {
     email: 'docente@ucr.ac.cr', fullName: 'Daniela Docente', identification: '100000005',
-    roles: ['declarant'], unit: true, superior: 'revisor', salaryRegime: 'COMPUESTO',
+    roles: ['declarant'], unit: true, superior: 'superior', salaryRegime: 'COMPUESTO',
   },
   // No courses assigned in the period: the app must explain why it cannot
   // create a declaration (and the rules reject it).
   sinAsignacion: {
     email: 'docente2@ucr.ac.cr', fullName: 'Diego Sin Asignación', identification: '100000006',
-    roles: ['declarant'], unit: true, superior: 'revisor',
+    roles: ['declarant'], unit: true, superior: 'superior',
   },
 };
 
@@ -157,7 +157,7 @@ async function main() {
   });
 
   // 4. Profiles, as they are after an administrator assigned roles, career
-  // and reviewer, with the reservation of each identification.
+  // and superior, with the reservation of each identification.
   for (const [key, person] of Object.entries(PEOPLE)) {
     await put(`users/${uid[key]}`, {
       fullName: person.fullName,
@@ -236,7 +236,7 @@ async function main() {
   const name = past.course.name;
   await put(`declarations/${DECL}`, {
     declarantUid: uid.docente, declarantName: docente.fullName, periodId: PAST,
-    superiorUid: uid.revisor, campusId: CAMPUS_ID, status: 'FINALIZADA',
+    superiorUid: uid.superior, campusId: CAMPUS_ID, status: 'FINALIZADA',
     currentVersionId: VERSION, currentVersionNumber: 1,
     hrResult: 'FINALIZADA', hrResultAt: now, lastEventId: 'seed-cierre',
     createdAt: now, updatedAt: now,

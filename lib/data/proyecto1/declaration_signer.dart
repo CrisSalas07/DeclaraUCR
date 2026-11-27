@@ -7,7 +7,7 @@ import 'package:flutter/foundation.dart';
 /// The declarant's signature (DIP: the UI never sees Firestore).
 abstract class DeclarationSigner {
   /// Signs the current version of declaration [id] with the [oathText] the
-  /// person accepted, and sends it to their reviewer: it ends in
+  /// person accepted, and sends it to their superior: it ends in
   /// PENDIENTE_FIRMA_SUPERIOR. Throws [DeclarationSaveException] with a
   /// message for the person, or [OfflineException] without connection.
   Future<void> signAndSend(String id, {required String oathText});

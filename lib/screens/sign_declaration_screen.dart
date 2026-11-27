@@ -20,7 +20,7 @@ Future<bool> openSigning(BuildContext context, String id) async =>
 
 /// "Firmar declaración", as in the web of the Proyecto 1: the person reads
 /// the sworn declaration filled with their data (and the PDF if they want),
-/// accepts it and signs. The declaration goes to their reviewer and, from
+/// accepts it and signs. The declaration goes to their superior and, from
 /// then on, is read only.
 ///
 /// The text shown is exactly the one stored with the signature, and it is

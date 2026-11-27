@@ -67,7 +67,7 @@ void main() {
   Future<Map<String, dynamic>> doc(String path) async =>
       (await db.doc(path).get()).data()!;
 
-  test('signs a validated declaration and sends it to the reviewer', () async {
+  test('signs a validated declaration and sends it to the superior', () async {
     await _seed(db);
     await signer.signAndSend('d1', oathText: 'Yo, Ana, juro.');
 

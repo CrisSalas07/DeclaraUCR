@@ -15,6 +15,7 @@ import 'package:declara_ucr/theme/ucr_theme.dart';
 import 'package:declara_ucr/widgets/common.dart';
 import 'package:declara_ucr/widgets/schedule_editor.dart';
 import 'package:declara_ucr/widgets/workload_dialogs.dart';
+import 'package:declara_ucr/widgets/tour_anchor.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -122,24 +123,27 @@ class _FormBodyState extends State<_FormBody> {
                 _ReadOnlyNotice(declaration: d),
                 const SizedBox(height: 16),
               ],
-              SectionCard(
-                icon: Icons.badge_outlined,
-                title: 'Persona declarante',
-                subtitle: 'Datos de su cuenta',
-                children: [
-                  // Below the title, not beside it: the title keeps the whole
-                  // width whatever the status (as in the list of declarations).
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: StatusChip(d.status),
-                  ),
-                  const SizedBox(height: 12),
-                  ReadOnlyLine(
-                    label: 'Nombre completo',
-                    value: d.declarantName,
-                  ),
-                  ReadOnlyLine(label: 'Cédula', value: d.identification),
-                ],
+              TourAnchor(
+                id: 'form.declarant',
+                child: SectionCard(
+                  icon: Icons.badge_outlined,
+                  title: 'Persona declarante',
+                  subtitle: 'Datos de su cuenta',
+                  children: [
+                    // Below the title, not beside it: the title keeps the whole
+                    // width whatever the status (as in the list of declarations).
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: StatusChip(d.status),
+                    ),
+                    const SizedBox(height: 12),
+                    ReadOnlyLine(
+                      label: 'Nombre completo',
+                      value: d.declarantName,
+                    ),
+                    ReadOnlyLine(label: 'Cédula', value: d.identification),
+                  ],
+                ),
               ),
               SectionCard(
                 icon: Icons.work_outline,
@@ -149,21 +153,24 @@ class _FormBodyState extends State<_FormBody> {
                     label: 'Institución y sede',
                     value: Workplace.full,
                   ),
-                  DropdownButtonFormField<String>(
-                    initialValue: Positions.university.contains(d.position)
-                        ? d.position
-                        : null,
-                    isExpanded: true,
-                    decoration: const InputDecoration(labelText: 'Puesto *'),
-                    items: [
-                      for (final p in Positions.university)
-                        DropdownMenuItem(value: p, child: Text(p)),
-                    ],
-                    validator: (v) =>
-                        v == null ? 'Este campo es obligatorio.' : null,
-                    onChanged: editable
-                        ? (v) => state.edit((d) => d.position = v ?? '')
-                        : null,
+                  TourAnchor(
+                    id: 'form.position',
+                    child: DropdownButtonFormField<String>(
+                      initialValue: Positions.university.contains(d.position)
+                          ? d.position
+                          : null,
+                      isExpanded: true,
+                      decoration: const InputDecoration(labelText: 'Puesto *'),
+                      items: [
+                        for (final p in Positions.university)
+                          DropdownMenuItem(value: p, child: Text(p)),
+                      ],
+                      validator: (v) =>
+                          v == null ? 'Este campo es obligatorio.' : null,
+                      onChanged: editable
+                          ? (v) => state.edit((d) => d.position = v ?? '')
+                          : null,
+                    ),
                   ),
                   const SizedBox(height: 16),
                   // The validity is the period's: the rules require it.
@@ -176,9 +183,18 @@ class _FormBodyState extends State<_FormBody> {
                   ),
                 ],
               ),
-              _CoursesSection(state: state),
-              _ProjectsSection(state: state),
-              _ExternalJobsSection(state: state),
+              TourAnchor(
+                id: 'form.courses',
+                child: _CoursesSection(state: state),
+              ),
+              TourAnchor(
+                id: 'form.projects',
+                child: _ProjectsSection(state: state),
+              ),
+              TourAnchor(
+                id: 'form.external',
+                child: _ExternalJobsSection(state: state),
+              ),
               SectionCard(
                 icon: Icons.calendar_view_week_outlined,
                 title: 'Horario semanal',
@@ -192,22 +208,28 @@ class _FormBodyState extends State<_FormBody> {
                   const SizedBox(height: 8),
                 ],
               ),
-              _ObservationsSection(state: state),
+              TourAnchor(
+                id: 'form.observations',
+                child: _ObservationsSection(state: state),
+              ),
             ],
           ),
         ),
-        bottomNavigationBar: BottomActions(
-          secondaryLabel: 'Guardar borrador',
-          // A validated declaration without changes has nothing to save:
-          // saving it as a draft would undo the validation (U-05).
-          onSecondary:
-              state.saving ||
-                  !editable ||
-                  (!state.unsaved && d.status != DeclarationStatus.draft)
-              ? null
-              : _saveDraft,
-          primaryLabel: 'Ver resumen',
-          onPrimary: state.saving ? null : _openSummary,
+        bottomNavigationBar: TourAnchor(
+          id: 'form.actions',
+          child: BottomActions(
+            secondaryLabel: 'Guardar borrador',
+            // A validated declaration without changes has nothing to save:
+            // saving it as a draft would undo the validation (U-05).
+            onSecondary:
+                state.saving ||
+                    !editable ||
+                    (!state.unsaved && d.status != DeclarationStatus.draft)
+                ? null
+                : _saveDraft,
+            primaryLabel: 'Ver resumen',
+            onPrimary: state.saving ? null : _openSummary,
+          ),
         ),
       ),
     );
@@ -552,7 +574,7 @@ class _ProgressHeader extends StatelessWidget implements PreferredSizeWidget {
 }
 
 /// Why the declaration cannot be edited in the phone, and, when it was
-/// returned, the reviewer's or HR's observation.
+/// returned, the superior's or HR's observation.
 class _ReadOnlyNotice extends StatelessWidget {
   const _ReadOnlyNotice({required this.declaration});
 

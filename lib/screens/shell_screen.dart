@@ -4,6 +4,7 @@ import 'package:declara_ucr/screens/history_screen.dart';
 import 'package:declara_ucr/screens/home_screen.dart';
 import 'package:declara_ucr/screens/zonaje_screen.dart';
 import 'package:declara_ucr/screens/tutorial_screen.dart';
+import 'package:declara_ucr/widgets/tour_anchor.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -70,30 +71,33 @@ class _ShellScreenState extends State<ShellScreen> {
             Theme.of(context).textTheme.labelMedium?.copyWith(fontSize: 11.5),
           ),
         ),
-        child: NavigationBar(
-          selectedIndex: _index,
-          onDestinationSelected: _go,
-          destinations: const [
-            NavigationDestination(
-              icon: Icon(Icons.home_outlined),
-              selectedIcon: Icon(Icons.home),
-              label: 'Inicio',
-            ),
-            NavigationDestination(
-              icon: Icon(Icons.description_outlined),
-              selectedIcon: Icon(Icons.description),
-              label: 'Declaraciones',
-            ),
-            NavigationDestination(
-              icon: Icon(Icons.directions_car_outlined),
-              selectedIcon: Icon(Icons.directions_car),
-              label: 'Zonaje',
-            ),
-            NavigationDestination(
-              icon: Icon(Icons.history),
-              label: 'Historial',
-            ),
-          ],
+        child: TourAnchor(
+          id: 'shell.nav',
+          child: NavigationBar(
+            selectedIndex: _index,
+            onDestinationSelected: _go,
+            destinations: const [
+              NavigationDestination(
+                icon: Icon(Icons.home_outlined),
+                selectedIcon: Icon(Icons.home),
+                label: 'Inicio',
+              ),
+              NavigationDestination(
+                icon: Icon(Icons.description_outlined),
+                selectedIcon: Icon(Icons.description),
+                label: 'Declaraciones',
+              ),
+              NavigationDestination(
+                icon: Icon(Icons.directions_car_outlined),
+                selectedIcon: Icon(Icons.directions_car),
+                label: 'Zonaje',
+              ),
+              NavigationDestination(
+                icon: Icon(Icons.history),
+                label: 'Historial',
+              ),
+            ],
+          ),
         ),
       ),
     ),
