@@ -20,6 +20,8 @@ import 'package:provider/provider.dart';
 ///   how many of its hours are placed, and never takes more.
 /// - Long-press and slide to place (or free) a whole range; a long press
 ///   does not fight with the page scroll the way a plain drag would.
+/// - The lessons of every course are listed above the days, so attention
+///   and planning can be placed around them without visiting each day.
 /// - "Copiar a otros días" repeats the day, e.g. Monday to Friday.
 ///
 /// The lunch hour is closed and no day passes 10 hours
@@ -173,9 +175,29 @@ class _ScheduleEditorState extends State<ScheduleEditor> {
     final cells = ScheduleGrid.cellsOf(d.intervals);
     final dayMinutes = ScheduleGrid.minutesOn(_day, cells);
 
+    final lessons = _lessonsByCourse(d);
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
+        if (lessons.isNotEmpty) ...[
+          _LessonSummary(
+            courses: [
+              for (final entry in lessons.entries)
+                (
+                  name: _courseName(entry.key, d),
+                  color: _colorOf(
+                    ScheduleTask(TaskKind.lesson, entry.key),
+                    owners,
+                  ),
+                  slots: entry.value,
+                ),
+            ],
+            selectedDay: _day,
+            onSelectDay: (day) => setState(() => _day = day),
+          ),
+          const SizedBox(height: 16),
+        ],
         TourAnchor(
           id: 'schedule.days',
           child: _DayTabs(
@@ -405,6 +427,42 @@ class _ScheduleEditorState extends State<ScheduleEditor> {
     );
   }
 
+  /// The lessons on the schedule, joined into ranges, by course in the
+  /// order of the declaration.
+  static Map<String, List<_Slot>> _lessonsByCourse(Declaration d) {
+    final byCourse = <String, List<_Slot>>{};
+    for (final i in d.sortedIntervals) {
+      if (i.task.kind != TaskKind.lesson || i.durationMinutes == 0) continue;
+      final slots = byCourse.putIfAbsent(i.task.name, () => []);
+      final last = slots.isEmpty ? null : slots.last;
+      if (last != null && last.day == i.day && last.end == i.startMinutes) {
+        slots[slots.length - 1] = (
+          day: last.day,
+          start: last.start,
+          end: i.endMinutes,
+        );
+      } else {
+        slots.add((day: i.day, start: i.startMinutes, end: i.endMinutes));
+      }
+    }
+    final order = [for (final c in d.courses) c.name];
+    int rank(String name) {
+      final i = order.indexOf(name);
+      return i < 0 ? order.length : i;
+    }
+
+    return Map.fromEntries(
+      byCourse.entries.toList()
+        ..sort((a, b) => rank(a.key).compareTo(rank(b.key))),
+    );
+  }
+
+  /// The sigla of the course, else its name.
+  static String _courseName(String name, Declaration d) {
+    final course = d.courses.where((c) => c.name == name);
+    return course.isEmpty ? name : course.first.shortName;
+  }
+
   /// "Lunes, 10:00 a 10:30: libre" or the task placed there.
   String _cellLabel(int start, Map<GridCell, String> cells, Declaration d) {
     final range =
@@ -520,6 +578,153 @@ class _ScheduleEditorState extends State<ScheduleEditor> {
   }
 }
 
+typedef _Slot = ({Weekday day, int start, int end});
+
+/// "Horario de sus clases": every course with the days and hours of its
+/// lessons, so the person sees them while placing attention and planning.
+/// Tapping a range opens its day on the grid.
+class _LessonSummary extends StatelessWidget {
+  const _LessonSummary({
+    required this.courses,
+    required this.selectedDay,
+    required this.onSelectDay,
+  });
+
+  final List<({String name, Color color, List<_Slot> slots})> courses;
+  final Weekday selectedDay;
+  final ValueChanged<Weekday> onSelectDay;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final scheme = theme.colorScheme;
+    return Container(
+      key: const ValueKey('lesson-summary'),
+      padding: const EdgeInsets.fromLTRB(12, 10, 12, 12),
+      decoration: BoxDecoration(
+        color: scheme.surfaceContainerLow,
+        border: Border.all(color: scheme.outlineVariant),
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              const Icon(
+                Icons.event_note_outlined,
+                size: 18,
+                color: UcrColors.blue,
+              ),
+              const SizedBox(width: 6),
+              Expanded(
+                child: Text(
+                  'Horario de sus clases',
+                  style: theme.textTheme.titleSmall?.copyWith(
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          for (final course in courses) ...[
+            const SizedBox(height: 10),
+            Row(
+              children: [
+                Container(
+                  width: 10,
+                  height: 10,
+                  decoration: BoxDecoration(
+                    color: course.color,
+                    shape: BoxShape.circle,
+                  ),
+                ),
+                const SizedBox(width: 6),
+                Text(course.name, style: theme.textTheme.labelLarge),
+              ],
+            ),
+            const SizedBox(height: 6),
+            Wrap(
+              spacing: 6,
+              runSpacing: 6,
+              children: [
+                for (final slot in course.slots)
+                  _SlotChip(
+                    slot: slot,
+                    color: course.color,
+                    selected: slot.day == selectedDay,
+                    onTap: () => onSelectDay(slot.day),
+                  ),
+              ],
+            ),
+          ],
+        ],
+      ),
+    );
+  }
+}
+
+class _SlotChip extends StatelessWidget {
+  const _SlotChip({
+    required this.slot,
+    required this.color,
+    required this.selected,
+    required this.onTap,
+  });
+
+  final _Slot slot;
+  final Color color;
+  final bool selected;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final range =
+        '${TimeRules.shortClock(slot.start)} – ${TimeRules.shortClock(slot.end)}';
+    return Semantics(
+      button: true,
+      selected: selected,
+      label: 'Clases el ${slot.day.label}, $range',
+      excludeSemantics: true,
+      child: Material(
+        color: selected
+            ? Color.alphaBlend(color.withValues(alpha: 0.16), UcrColors.white)
+            : UcrColors.white,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8),
+          side: BorderSide(
+            color: selected ? color : theme.colorScheme.outlineVariant,
+            width: selected ? 2 : 1,
+          ),
+        ),
+        child: InkWell(
+          onTap: onTap,
+          borderRadius: BorderRadius.circular(8),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+            child: Text.rich(
+              TextSpan(
+                children: [
+                  TextSpan(
+                    text: '${slot.day.title.substring(0, 3)}  ',
+                    style: const TextStyle(fontWeight: FontWeight.w700),
+                  ),
+                  TextSpan(text: range),
+                ],
+              ),
+              style: theme.textTheme.labelMedium?.copyWith(
+                color: UcrColors.ink,
+                fontFeatures: const [FontFeature.tabularFigures()],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
 class _Run {
   _Run({required this.first, required this.start, required this.task});
 
@@ -602,7 +807,7 @@ class _DayTabs extends StatelessWidget {
 }
 
 /// "2. Toque el horario para ubicar: IF0009 · Atención", in the color of
-/// the chosen task, with how to mark several half hours at once.
+/// the chosen task.
 class _BrushStrip extends StatelessWidget {
   const _BrushStrip({required this.name, required this.color});
 
@@ -633,14 +838,6 @@ class _BrushStrip extends StatelessWidget {
             name,
             style: theme.textTheme.titleSmall?.copyWith(
               fontWeight: FontWeight.w700,
-            ),
-          ),
-          const SizedBox(height: 4),
-          Text(
-            'Cada toque marca media hora; tocarla otra vez la libera. Para '
-            'varias seguidas, mantenga presionado y deslice.',
-            style: theme.textTheme.bodySmall?.copyWith(
-              color: theme.colorScheme.onSurfaceVariant,
             ),
           ),
         ],
