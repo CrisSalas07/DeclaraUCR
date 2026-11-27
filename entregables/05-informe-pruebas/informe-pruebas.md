@@ -21,6 +21,7 @@ corrigió.
 | 2.0.0+6 | `fc4caba` | CP-06 (persistencia tras reinstalar y actualizar) |
 | 2.0.0+7 | `afeb1ee` (fusionado en `af4b3f2`, PR #8) | Recorrido exploratorio y correcciones del 20/11/2026; versión para las sesiones con usuarios |
 | 2.0.0+8 | `abc5818` (PR #34) | Correcciones de las sesiones (U-01, U-03 a U-07), rol «Superior» (P1-03); nueva comprobación con participantes (§6.7) |
+| 2.0.0+9 | ver la [release](https://github.com/CrisSalas07/DeclaraUCR/releases/tag/v2.0.0%2B9) (PR #35 y #36) | Recorrido guiado sobre las pantallas reales (U-06 rehecho) y la lista que ya no se salta un borrador recién guardado (T-09); recorrido completo en el emulador el 27/11/2026 (§3); nueva comprobación con participantes (§6.7) |
 
 Las sesiones con usuarios deben hacerse **todas con la misma versión** (§8). La recomendada es la 2.0.0+7,
 porque ya trae la corrección de D-01, que afecta justo la tarea 1 del guion.
@@ -70,6 +71,15 @@ Qué reglas de negocio de alto riesgo cubren:
 Además, contra las **reglas reales del Proyecto 1** en los emuladores: `backend/proyecto1/verify.mjs` (nadie lee
 ni escribe lo de otra persona, no hay dos declaraciones por período, no se salta la firma) e
 `integration_test/sign_rules_test.dart` (la firma desde el código de la app).
+
+**Repetidas el 27/11/2026 sobre la 2.0.0+9:** `flutter analyze` sin problemas y **118 pruebas, todas pasan**
+(se agregaron las de U-03 a U-07, el recorrido guiado y los datos de la docente de ejemplo). En el emulador
+Android (Pixel 4, Android 11) con las reglas del P1: `verify.mjs` (26 comprobaciones), `sign_rules_test.dart` y
+`release_8_rules_test.dart` (lista, edición del perfil y guardar sin conexión) pasan. Además se hizo **a mano el
+recorrido completo** con la cuenta ficticia `docente@ucr.ac.cr`: recorrido guiado, crear la declaración, ubicar
+atención y planificación en la cuadrícula, validar, firmar y enviar al superior (queda «Pendiente de firma del
+superior»), ver el PDF, Zonaje, Historial y editar el teléfono en «Mis datos»; todo funcionó. Las capturas de
+esa corrida están en la guía de uso (`07-guia-uso/capturas/`).
 
 ## 4. Recorrido exploratorio (20/11/2026)
 
@@ -223,7 +233,7 @@ de uso de 1 a 5 y comentarios abiertos (§8), además de utilidad, claridad y fu
 | U-03 | No sabía cómo tocar los cuadros para asignar horas en la cuadrícula; no entendió la lógica de la app | P2, T1–T2 | Necesitó ayuda para ubicar horas (proceso 2) | Alta | Encima de la cuadrícula se ve siempre qué se ubica con cada toque, con su color y pasos numerados. 2.0.0+8; se vuelve a probar con P2 (§6.7) |
 | U-04 | Después de Validar no vio el botón «Firmar y enviar a mi superior» | P2, T1 | No supo cuál era el siguiente paso | Media | Después de Validar, el botón principal es **Firmar y enviar** y un aviso dice que es el siguiente paso. 2.0.0+8 |
 | U-05 | Después de Validar, Atrás lo devolvió al editor y la declaración volvió a Borrador | P2, T1 | Salió del resumen sin firmar y tuvo que validar otra vez | Media | Atrás después de validar vuelve al inicio sin tocar la declaración; solo «Corregir» abre el editor. 2.0.0+8 |
-| U-06 | Pide un tutorial la primera vez que explique cada parte (lo dijeron P2 y, en parte, P1) | P2 (y P1, T1) | Sin guía no entiende la lógica de la app | Media | Recorrido de 4 pasos la primera vez en el teléfono, y en el perfil («Cómo funciona»). 2.0.0+8 |
+| U-06 | Pide un tutorial la primera vez que explique cada parte (lo dijeron P2 y, en parte, P1) | P2 (y P1, T1) | Sin guía no entiende la lógica de la app | Media | Recorrido la primera vez en el teléfono, y en el perfil («Cómo funciona»): 4 páginas en la 2.0.0+8; en la 2.0.0+9, un recorrido guiado sobre las pantallas reales con una docente ficticia que enfoca cada parte y explica qué va en cada campo |
 | U-07 | El perfil solo muestra los datos: no deja corregir el nombre ni la cédula | P2 (después de las tareas) | Si se equivoca al registrarse (P1 puso sus datos reales), no lo puede corregir | Media | Editar nombre, cédula (se reserva la nueva y se libera la anterior) y teléfono desde el perfil; un borrador sin firmar toma los datos corregidos. Correo, sede y carrera siguen con Administración. 2.0.0+8 |
 
 Qué vigilar en particular (son los puntos donde el recorrido sugiere que alguien se puede trabar):

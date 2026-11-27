@@ -53,6 +53,16 @@ tiene que reportar un problema.
 - *"No puede continuar"*: su cuenta no es de persona declarante (por ejemplo, es de superior). Esas funciones
   están en la web.
 
+### Recorrido guiado (la primera vez)
+
+![Recorrido guiado](capturas/11-recorrido.png)
+
+La primera vez que entra en un teléfono, la app le muestra un recorrido por todas sus pantallas con una
+**docente de ejemplo** (Ana Lucía, datos ficticios: nada se guarda). En cada paso se resalta una parte, el resto
+se oscurece, y una tarjeta le explica para qué sirve y qué va en ese campo. **Toque en cualquier lugar para
+continuar**; **Atrás** vuelve un paso y **Saltar** lo cierra. Puede volver a verlo cuando quiera desde su
+perfil, en **Cómo funciona** (sección 12).
+
 ## 5. Inicio
 
 ![Inicio](capturas/01-inicio.png)
@@ -157,9 +167,18 @@ conexión."*
   cuando vuelva la señal.
 - No cierre la app mientras tenga cambios sin guardar y sin señal: eso sí se pierde.
 
-## 12. Cerrar sesión
+## 12. Su perfil: editar sus datos, ver el recorrido y cerrar sesión
 
-Toque el círculo con sus iniciales, arriba a la derecha, y luego **Cerrar sesión**.
+Toque el círculo con sus iniciales, arriba a la derecha. Ahí ve su nombre, correo, cédula, sede y teléfono, y
+tres botones:
+
+![Editar mis datos](capturas/12-mis-datos.png)
+
+- **Editar mis datos:** corrija su nombre completo, su cédula (9 dígitos, sin guiones) o su teléfono (8 dígitos)
+  y toque **Guardar**. Se usan en sus próximas declaraciones; las que ya firmó conservan los datos con que se
+  firmaron. El correo, la sede y la carrera los cambia Administración.
+- **Cómo funciona:** vuelve a mostrar el recorrido guiado.
+- **Cerrar sesión.**
 
 ## 13. Mensajes frecuentes
 
@@ -174,5 +193,5 @@ Toque el círculo con sus iniciales, arriba a la derecha, y luego **Cerrar sesi�
 
 ---
 
-Los textos de esta guía se revisaron contra el código de la app el 24/11/2026: botones, campos y mensajes
-coinciden. Ya usan **«Superior»** en lugar de «Revisor» (P1-03 de la matriz), que llega con la 2.0.0+8. `[COMPLETAR con la 2.0.0+8: cambiar las capturas que muestran «Revisor» (Inicio y Firma) y comparar el resto (son de la 2.0.0+4).]`
+Los textos de esta guía se revisaron contra el código de la app 2.0.0+9 el 27/11/2026: botones, campos y
+mensajes coinciden, y usan **«Superior»** para la persona que firma después de usted (P1-03 de la matriz).
