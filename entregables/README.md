@@ -45,8 +45,11 @@ entregables/
 │   └── sintesis-resultados.docx     ← síntesis de las respuestas del docente y de otro equipo
 ├── 07-guia-uso/
 │   └── guia-de-uso.pdf              ← instalar y usar la app, con capturas
-└── 08-registro-participacion/
-    └── registro-participacion.docx  ← quién hizo qué
+├── 08-registro-participacion/
+│   └── registro-participacion.docx  ← quién hizo qué
+└── DeclaraUCR.mp4                   ← el video de DeclaraUCR
 ```
+
+El video está en esta carpeta: [`DeclaraUCR.mp4`](DeclaraUCR.mp4).
 
 Las capturas de pantalla están dentro de cada PDF; las imágenes sueltas siguen en el historial de git.
