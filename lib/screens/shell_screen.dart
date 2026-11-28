@@ -1,4 +1,5 @@
 import 'package:declara_ucr/data/onboarding_store.dart';
+import 'package:declara_ucr/models/app_user.dart';
 import 'package:declara_ucr/screens/declarations_screen.dart';
 import 'package:declara_ucr/screens/history_screen.dart';
 import 'package:declara_ucr/screens/home_screen.dart';
@@ -27,12 +28,14 @@ class _ShellScreenState extends State<ShellScreen> {
     _tourOnFirstUse();
   }
 
-  /// The first time on this phone, the tour of the steps (U-06).
+  /// The first time each account gets here, the tour of the steps (U-06).
   Future<void> _tourOnFirstUse() async {
     final store = context.read<OnboardingStore>();
+    final uid = context.read<AppUser?>()?.uid;
+    if (uid == null) return;
     try {
-      if (await store.seen()) return;
-      await store.markSeen();
+      if (await store.seen(uid)) return;
+      await store.markSeen(uid);
     } catch (e) {
       // Without the phone's storage the tour is just not shown.
       debugPrint('Onboarding store failed: $e');
