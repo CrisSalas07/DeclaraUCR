@@ -32,7 +32,8 @@ Proyecto 2 deliverables, are in Spanish.
   accounts: a declarant with a superior and IF0009 in III Ciclo - 2027, and a
   coordination and superior account.
 - Left: the retest with P2 (P3 cannot retest), CP-08 and the socialization
-  (video, synthesis and its improvements in the matrix).
+  (synthesis and its improvements in the matrix). The video is done:
+  [`entregables/DeclaraUCR.mp4`](entregables/DeclaraUCR.mp4).
 
 ## Where to find what
 
