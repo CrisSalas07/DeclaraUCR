@@ -104,7 +104,8 @@ sesión anterior.
 La capa de dominio vino casi sin cambios de la web: detección de traslapes, reglas de tiempo, el contrato de
 validación (los mensajes dicen el día, los intervalos y la hora exacta del choque), los nombres de estado, la
 cuadrícula de medias horas, el catálogo de jornadas y las horas de cada curso (VD-12928-2024, VD-13015-2024),
-el formato de observaciones y la huella SHA-256. Lo que se reescribió fueron las pantallas.
+el formato de observaciones y la huella SHA-256. Lo que se reescribió fueron las pantallas. Desde la 2.0.0+11 las
+observaciones unen los horarios con «y», como el machote oficial (matriz U-10); la web del P1 sigue usando coma.
 
 ## 4. Decisiones de adaptación móvil
 
@@ -170,6 +171,8 @@ El procedimiento paso a paso está en `entregables/02-aplicacion-distribuible/in
 - Un nombramiento por declaración: si en la web se agregó más de uno, el teléfono edita el primero y deja los
   demás como están.
 - No incluido en el móvil: verificación del correo, registro con pasaporte, revisión, RRHH y Administración.
+- Las observaciones no llevan el **grupo** del curso («IF0004 G2» en el machote oficial): el esquema del P1 no lo
+  guarda. Agregarlo es un cambio de la web y del esquema (matriz U-10).
 - La pantalla de carga con la firma promocional (manual de identidad, p. 122) no se hizo: ese recurso solo está
   en el paquete privado de la ODI.
 
