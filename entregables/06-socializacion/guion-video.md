@@ -35,9 +35,9 @@ mismo mensaje, el enlace al video y el del formulario. Anotar aquí: video `[COM
 
 - [ ] **Una declarante del equipo para la demostración.** Hoy el backend tiene solo la declarante que se le entrega
   al docente: no se usa en el video, porque la firma no se deshace. Crearla con **Crear cuenta** y, en la web,
-  asignarle el superior y un curso en «III Ciclo - 2027» (`entregables/02-aplicacion-distribuible/instalacion.md` §6).
+  asignarle el superior y un curso en «III Ciclo - 2027» (`entregables/02-aplicacion-distribuible/instalacion.docx` §6).
 - [ ] En el teléfono de Keity, la **2.0.0+11** del release; si no es el teléfono de desarrollo, sirve también para
-  **CP-08** (`entregables/05-informe-pruebas/pruebas-tecnicas.md`): capturar la versión al pie del inicio de sesión.
+  **CP-08** (`entregables/05-informe-pruebas/pruebas-tecnicas.pdf`): capturar la versión al pie del inicio de sesión.
 - [ ] Ver el recorrido guiado una vez antes de grabar, para saber dónde tocar.
 - [ ] Durante la grabación, después de firmar, abrir el PDF y hacer una captura de pantalla: reemplaza
   `entregables/07-guia-uso/capturas/10-pdf.png`, que muestra las etiquetas anteriores a la 2.0.0+11.

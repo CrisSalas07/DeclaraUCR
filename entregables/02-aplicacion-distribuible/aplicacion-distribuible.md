@@ -37,17 +37,17 @@ El 27/11/2026 se limpió el backend (solo quedó la cuenta de Administración y 
 cuentas. Revisado ese día en Firebase: la declarante tiene superior y su curso en «III Ciclo - 2027», y no tiene
 ninguna declaración, así que el docente puede recorrer los tres procesos desde cero. Si se firma una, no se
 deshace: para repetir, el superior la devuelve desde la web. No hay cuenta de declarante sin cursos: CP-05 se
-probó con los datos ficticios de los emuladores (`entregables/05-informe-pruebas/pruebas-tecnicas.md`).
+probó con los datos ficticios de los emuladores (`entregables/05-informe-pruebas/pruebas-tecnicas.pdf`).
 
 ## 4. Datos ficticios
 
 Sede, carrera, período, cursos y franjas de clase son ficticios y se crean desde la web del Proyecto 1 con una
-cuenta de Administración (pasos en `entregables/02-aplicacion-distribuible/instalacion.md` §6). Para pruebas locales repetibles existen además
+cuenta de Administración (pasos en `entregables/02-aplicacion-distribuible/instalacion.docx` §6). Para pruebas locales repetibles existen además
 los datos de `backend/proyecto1/seed.mjs` (emuladores).
 
 ## 5. Instalación, actualización y vuelta atrás
 
-Procedimiento completo: `entregables/02-aplicacion-distribuible/instalacion.md` §1 a §4. Para la persona usuaria, con capturas: la guía de uso
+Procedimiento completo: `entregables/02-aplicacion-distribuible/instalacion.docx` §1 a §4. Para la persona usuaria, con capturas: la guía de uso
 (`entregables/07-guia-uso/`). En resumen:
 
 1. **Instalar:** descargar el APK del release, abrirlo, permitir "instalar apps de fuentes desconocidas" y, si
@@ -59,7 +59,7 @@ Procedimiento completo: `entregables/02-aplicacion-distribuible/instalacion.md` 
 
 ## 6. Instalación desde cero en otro dispositivo (§6)
 
-`[COMPLETAR]` con el resultado de CP-08 (`entregables/05-informe-pruebas/pruebas-tecnicas.md`):
+`[COMPLETAR]` con el resultado de CP-08 (`entregables/05-informe-pruebas/pruebas-tecnicas.pdf`):
 
 | | |
 |---|---|
@@ -74,7 +74,7 @@ Procedimiento completo: `entregables/02-aplicacion-distribuible/instalacion.md` 
 
 ## 7. Limitaciones conocidas
 
-Ver `entregables/02-aplicacion-distribuible/instalacion.md` §7 y el informe técnico §8. Las más importantes para quien evalúa:
+Ver `entregables/02-aplicacion-distribuible/instalacion.docx` §7 y el informe técnico §8. Las más importantes para quien evalúa:
 
 - La app es solo para personas declarantes; revisión, RRHH y Administración se hacen en la web.
 - El zonaje se consulta en el teléfono, pero se solicita en la web.

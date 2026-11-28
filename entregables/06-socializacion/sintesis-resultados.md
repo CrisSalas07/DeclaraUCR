@@ -31,7 +31,7 @@ dijeron algo parecido.
 
 ## 3. Decisiones
 
-Cada observación se registra en `04-matriz-mejoras/matriz-mejoras.md` §3 como **aceptada**, **parcialmente
+Cada observación se registra en `04-matriz-mejoras/matriz-mejoras.pdf` §3 como **aceptada**, **parcialmente
 aceptada** o **descartada**, con su justificación.
 
 | Observación | Decisión | Justificación |

@@ -41,10 +41,10 @@ Each README covers only its folder; this one is the entry point.
 | Document | What it is for |
 |---|---|
 | [`entregables/README.md`](entregables/README.md) | The eight Proyecto 2 deliverables (§11 of the brief) and what is in each folder |
-| [`entregables/03-informe-tecnico/informe-tecnico.md`](entregables/03-informe-tecnico/informe-tecnico.md) | Scope, architecture, mobile decisions, integration, deployment and known limitations (for the professor) |
-| [`entregables/02-aplicacion-distribuible/instalacion.md`](entregables/02-aplicacion-distribuible/instalacion.md) | Install, update and roll back the APK; build and release a version; prepare the real backend |
-| [`entregables/05-informe-pruebas/pruebas-tecnicas.md`](entregables/05-informe-pruebas/pruebas-tecnicas.md) | Technical test cases CP-01 to CP-08 with evidence ([`entregables/05-informe-pruebas/capturas/`](entregables/05-informe-pruebas/capturas)) |
-| [`entregables/03-informe-tecnico/comparacion-backend-p1.md`](entregables/03-informe-tecnico/comparacion-backend-p1.md) | Field-by-field comparison of the mobile and the Proyecto 1 data |
+| [`entregables/03-informe-tecnico/informe-tecnico.docx`](entregables/03-informe-tecnico/informe-tecnico.docx) | Scope, architecture, mobile decisions, integration, deployment and known limitations (for the professor) |
+| [`entregables/02-aplicacion-distribuible/instalacion.docx`](entregables/02-aplicacion-distribuible/instalacion.docx) | Install, update and roll back the APK; build and release a version; prepare the real backend |
+| [`entregables/05-informe-pruebas/pruebas-tecnicas.pdf`](entregables/05-informe-pruebas/pruebas-tecnicas.pdf) | Technical test cases CP-01 to CP-08 with evidence ([`entregables/05-informe-pruebas/capturas/`](entregables/05-informe-pruebas/capturas)) |
+| [`entregables/03-informe-tecnico/comparacion-backend-p1.docx`](entregables/03-informe-tecnico/comparacion-backend-p1.docx) | Field-by-field comparison of the mobile and the Proyecto 1 data |
 | [`backend/proyecto1/README.md`](backend/proyecto1/README.md) | Firebase emulators with the Proyecto 1 rules and fictitious data |
 | [`entregables/07-guia-uso/capturas/README.txt`](entregables/07-guia-uso/capturas/README.txt) | The app screenshots and what each one shows |
 | [`assets/fonts/README.txt`](assets/fonts/README.txt), [`assets/images/README.txt`](assets/images/README.txt) | Origin and license of the Trueno typeface and the UCR signature |
@@ -90,7 +90,7 @@ get repositories from `Provider`, never from Firestore directly; tests swap
 in a fake Firestore, auth or network ([`test/support/`](test/support)).
 
 Why each layer and what was reused from the Proyecto 1: informe técnico §3.
-How the data maps to the Proyecto 1 schema: [`entregables/03-informe-tecnico/comparacion-backend-p1.md`](entregables/03-informe-tecnico/comparacion-backend-p1.md).
+How the data maps to the Proyecto 1 schema: [`entregables/03-informe-tecnico/comparacion-backend-p1.docx`](entregables/03-informe-tecnico/comparacion-backend-p1.docx).
 
 ### Rules to keep when changing code
 
@@ -133,7 +133,7 @@ With the Proyecto 1 rules and test data: [`backend/proyecto1/README.md`](backend
 
 APK to hand out (team release key, Proyecto 1 backend, named by version and
 commit): `dart run tool/build_apk.dart`. Releasing, installing and rolling
-back: [`entregables/02-aplicacion-distribuible/instalacion.md`](entregables/02-aplicacion-distribuible/instalacion.md).
+back: [`entregables/02-aplicacion-distribuible/instalacion.docx`](entregables/02-aplicacion-distribuible/instalacion.docx).
 
 ## Tests
 
@@ -148,7 +148,7 @@ connectivity, a 360×690 dp screen that fails on any overflow);
 rules in the emulators, and
 [`integration_test/release_8_rules_test.dart`](integration_test/release_8_rules_test.dart) checks the list refresh
 (T-08, T-09) and the profile edit (U-07) with the real Firestore SDK on an
-Android emulator (how to run both: [`backend/proyecto1/README.md`](backend/proyecto1/README.md)). The manual technical cases are in [`entregables/05-informe-pruebas/pruebas-tecnicas.md`](entregables/05-informe-pruebas/pruebas-tecnicas.md).
+Android emulator (how to run both: [`backend/proyecto1/README.md`](backend/proyecto1/README.md)). The manual technical cases are in [`entregables/05-informe-pruebas/pruebas-tecnicas.pdf`](entregables/05-informe-pruebas/pruebas-tecnicas.pdf).
 All test data is fictitious.
 
 ## Visual identity decisions

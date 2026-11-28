@@ -53,7 +53,7 @@ Future<void> main(List<String> args) async {
   if (!hasKey && !allowDebugKey) {
     stderr.writeln(
       'Falta android/key.properties con la llave de release del equipo '
-      '(ver entregables/02-aplicacion-distribuible/instalacion.md). Sin ella el APK se firma con la llave de '
+      '(ver entregables/02-aplicacion-distribuible/instalacion.docx). Sin ella el APK se firma con la llave de '
       'debug de esta computadora y no actualizaría a las versiones firmadas '
       'con la del equipo. Use --allow-debug-key solo para pruebas locales.',
     );
@@ -104,6 +104,6 @@ Future<void> main(List<String> args) async {
     ..writeln('\nListo: ${out.path}')
     ..writeln(
       'Siguiente: git tag v$version && git push origin v$version, y '
-      'publique el APK (ver entregables/02-aplicacion-distribuible/instalacion.md).',
+      'publique el APK (ver entregables/02-aplicacion-distribuible/instalacion.docx).',
     );
 }

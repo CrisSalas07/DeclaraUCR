@@ -32,7 +32,7 @@ con una docente si el recorrido guiado lo resolvía (§6.4).
 ## 2. Casos técnicos (§7)
 
 El detalle completo de cada caso (precondiciones, pasos, esperado, obtenido, versión y evidencia) está en
-[`entregables/05-informe-pruebas/pruebas-tecnicas.md`](pruebas-tecnicas.md) y las capturas en `entregables/05-informe-pruebas/capturas/`. Este es el resumen:
+[`entregables/05-informe-pruebas/pruebas-tecnicas.pdf`](pruebas-tecnicas.pdf) y las capturas en `entregables/05-informe-pruebas/capturas/`. Este es el resumen:
 
 | Caso | Qué cubre del §7 | Resultado | Evidencia |
 |---|---|---|---|
@@ -46,7 +46,7 @@ El detalle completo de cada caso (precondiciones, pasos, esperado, obtenido, ver
 | CP-08 | Instalación desde cero en otro teléfono | **Pendiente** `[COMPLETAR]` | `CP-08-1.png` + modelo y versión de Android |
 
 **CP-08 es lo único que falta para cerrar §7.** Se hace con un teléfono que no sea el de desarrollo (puede ser
-el de una de las personas de las sesiones, antes de empezar). Los pasos ya están escritos en `entregables/05-informe-pruebas/pruebas-tecnicas.md`.
+el de una de las personas de las sesiones, antes de empezar). Los pasos ya están escritos en `entregables/05-informe-pruebas/pruebas-tecnicas.pdf`.
 
 ## 3. Pruebas automatizadas
 
@@ -146,7 +146,7 @@ Observaciones que **no** son defectos de la app (se anotan para no confundirlas)
 
 Defectos anteriores (encontrados en el teléfono antes de la 2.0.0+5), ya corregidos y comprobados: período
 cerrado que seguía apareciendo, sección de cursos duplicada, PDF sin zoom, palabras cortadas con letra grande.
-Detalle en `entregables/05-informe-pruebas/pruebas-tecnicas.md`.
+Detalle en `entregables/05-informe-pruebas/pruebas-tecnicas.pdf`.
 
 ## 6. Pruebas con usuarios (§8)
 

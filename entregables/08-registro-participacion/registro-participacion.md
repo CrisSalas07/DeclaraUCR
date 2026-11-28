@@ -65,7 +65,7 @@ Para ver el detalle: `git log --format='%h %ad %an %s' --date=short`.
 | 24/11/2026 | Cristopher | Sesión con usuario P2 | Guió y anotó la sesión, asignó superior y curso en la web | Bitácora §4 y capturas `P2-T0` a `P2-T3` |
 | 27/11/2026 | Cristopher | Sesión con usuario P3 | Guió y anotó la sesión con una docente (T0–T3, formulario, machote oficial) | Bitácora §5 |
 | 27/11/2026 | Cristopher | Backend de producción y cuentas de evaluación | Limpieza de cuentas y datos de prueba; cuentas nuevas con superior y curso en III Ciclo - 2027 | Aplicación distribuible §3 |
-| 21/11/2026 | Cristopher | Formulario de retroalimentación | Creación y publicación en Google Forms | `06-socializacion/formulario-retroalimentacion.md` |
+| 21/11/2026 | Cristopher | Formulario de retroalimentación | Creación y publicación en Google Forms | `06-socializacion/formulario-retroalimentacion.pdf` |
 | 21/11/2026 | Cristopher | Ensayo completo de la sesión | T1–T3 en el emulador con la 2.0.0+7; encontró T-08 | Matriz de mejoras T-08 |
 | `[ ]` | `[ ]` | Video de socialización | Grabó, narró o editó el bloque ___ | Enlace al video |
 | `[ ]` | `[ ]` | Mejoras posteriores a la socialización | | `[commit]` |
