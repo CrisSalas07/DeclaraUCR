@@ -43,10 +43,9 @@ Each README covers only its folder; this one is the entry point.
 | [`entregables/README.md`](entregables/README.md) | The eight Proyecto 2 deliverables (§11 of the brief) and what is in each folder |
 | [`entregables/03-informe-tecnico/informe-tecnico.docx`](entregables/03-informe-tecnico/informe-tecnico.docx) | Scope, architecture, mobile decisions, integration, deployment and known limitations (for the professor) |
 | [`entregables/02-aplicacion-distribuible/instalacion.docx`](entregables/02-aplicacion-distribuible/instalacion.docx) | Install, update and roll back the APK; build and release a version; prepare the real backend |
-| [`entregables/05-informe-pruebas/pruebas-tecnicas.pdf`](entregables/05-informe-pruebas/pruebas-tecnicas.pdf) | Technical test cases CP-01 to CP-08 with evidence ([`entregables/05-informe-pruebas/capturas/`](entregables/05-informe-pruebas/capturas)) |
+| [`entregables/05-informe-pruebas/pruebas-tecnicas.pdf`](entregables/05-informe-pruebas/pruebas-tecnicas.pdf) | Technical test cases CP-01 to CP-08 with their screenshots |
 | [`entregables/03-informe-tecnico/comparacion-backend-p1.docx`](entregables/03-informe-tecnico/comparacion-backend-p1.docx) | Field-by-field comparison of the mobile and the Proyecto 1 data |
 | [`backend/proyecto1/README.md`](backend/proyecto1/README.md) | Firebase emulators with the Proyecto 1 rules and fictitious data |
-| [`entregables/07-guia-uso/capturas/README.txt`](entregables/07-guia-uso/capturas/README.txt) | The app screenshots and what each one shows |
 | [`assets/fonts/README.txt`](assets/fonts/README.txt), [`assets/images/README.txt`](assets/images/README.txt) | Origin and license of the Trueno typeface and the UCR signature |
 
 ## Code map

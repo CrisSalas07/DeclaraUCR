@@ -36,20 +36,17 @@ entregables/
 ├── 05-informe-pruebas/
 │   ├── informe-pruebas.pdf          ← recorrido, defectos, pruebas automatizadas y pruebas con usuarios
 │   ├── pruebas-tecnicas.pdf         ← casos CP-01 a CP-08 con sus capturas
-│   ├── capturas/                          ← evidencias: CP-…, R-…, D-01-…, P1-T0-…
 │   └── sesiones-usuarios/
 │       └── bitacora-sesiones.docx         ← bitácora de las sesiones con P1, P2 y P3
 ├── 06-socializacion/
-│   ├── guion-video.docx             ← presentación: guion del video y de la demostración
 │   ├── formulario-retroalimentacion.pdf ← instrumento: preguntas, enlace y QR
-│   ├── qr-formulario.png / .svg
+│   ├── qr-formulario.png
+│   ├── respuestas-formulario.pdf    ← respuestas del formulario (P1, P2 y P3)
 │   └── sintesis-resultados.docx     ← síntesis de las respuestas del docente y de otro equipo
 ├── 07-guia-uso/
-│   ├── guia-de-uso.pdf              ← instalar y usar la app, con capturas
-│   └── capturas/                          ← pantallas de la app
+│   └── guia-de-uso.pdf              ← instalar y usar la app, con capturas
 └── 08-registro-participacion/
     └── registro-participacion.docx  ← quién hizo qué
 ```
 
-El video de la socialización está en el Drive del equipo, no en el repositorio (es público); su enlace se
-anota en [`06-socializacion/guion-video.docx`](06-socializacion/guion-video.docx).
+Las capturas de pantalla están dentro de cada PDF; las imágenes sueltas siguen en el historial de git.
