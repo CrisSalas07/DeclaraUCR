@@ -23,6 +23,7 @@ corrigió.
 | 2.0.0+8 | `abc5818` (PR #34) | Correcciones de las sesiones (U-01, U-03 a U-07), rol «Superior» (P1-03); nueva comprobación con participantes (§6.7) |
 | 2.0.0+9 | ver la [release](https://github.com/CrisSalas07/DeclaraUCR/releases/tag/v2.0.0%2B9) (PR #35 y #36) | Recorrido guiado sobre las pantallas reales (U-06 rehecho) y la lista que ya no se salta un borrador recién guardado (T-09); recorrido completo en el emulador el 27/11/2026 (§3); nueva comprobación con participantes (§6.7) |
 | 2.0.0+10 | `60d5813` ([release](https://github.com/CrisSalas07/DeclaraUCR/releases/tag/v2.0.0%2B10), PR #37) | Horario de las clases sobre los días y juramento del formulario oficial; los cambios se probaron en un Samsung Galaxy A34 (build de depuración) contra el backend real, y el flujo completo en el emulador (§3) |
+| 2.0.0+11 | `b64791b` ([release](https://github.com/CrisSalas07/DeclaraUCR/releases/tag/v2.0.0%2B11), PR #38) | Observaciones y etiquetas del PDF como el formulario oficial (U-10); pruebas repetidas (§3) |
 
 Las sesiones con usuarios deben hacerse **todas con la misma versión** (§8). La recomendada es la 2.0.0+7,
 porque ya trae la corrección de D-01, que afecta justo la tarea 1 del guion.
@@ -81,6 +82,9 @@ recorrido completo** con la cuenta ficticia `docente@ucr.ac.cr`: recorrido guiad
 atención y planificación en la cuadrícula, validar, firmar y enviar al superior (queda «Pendiente de firma del
 superior»), ver el PDF, Zonaje, Historial y editar el teléfono en «Mis datos»; todo funcionó. Las capturas de
 esa corrida están en la guía de uso (`07-guia-uso/capturas/`).
+
+**Repetidas el 27/11/2026 sobre la 2.0.0+11:** `flutter analyze` sin problemas y **124 pruebas, todas pasan** (nuevas: las
+observaciones unen los horarios con «y», como el formulario oficial).
 
 **Repetidas el 27/11/2026 sobre la 2.0.0+10:** `flutter analyze` sin problemas y **121 pruebas, todas pasan**
 (nuevas: la tarjeta con las clases de cada curso, mantener presionado y deslizar, y el juramento del formulario

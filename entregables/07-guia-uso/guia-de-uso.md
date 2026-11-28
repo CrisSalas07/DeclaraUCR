@@ -195,5 +195,5 @@ tres botones:
 
 ---
 
-Los textos de esta guía se revisaron contra el código de la app 2.0.0+9 el 27/11/2026: botones, campos y
+Los textos de esta guía se revisaron contra el código de la app 2.0.0+11 el 27/11/2026: botones, campos y
 mensajes coinciden, y usan **«Superior»** para la persona que firma después de usted (P1-03 de la matriz).

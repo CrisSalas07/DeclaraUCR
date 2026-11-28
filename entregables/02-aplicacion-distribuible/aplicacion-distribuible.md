@@ -6,14 +6,14 @@
 
 | | |
 |---|---|
-| Versión a entregar | **2.0.0+10** (horario de las clases sobre los días y juramento del formulario oficial, sobre las correcciones de las sesiones, el rol «Superior» y el recorrido guiado) |
-| Commit | `60d5813` (etiqueta `v2.0.0+10`) |
-| Archivo | `DeclaraUCR-v2.0.0+10-60d5813.apk` |
-| SHA-256 | `b09e100fc6d9dfc8c2c1215c32203e5e201602b5f8a02921487d379cb73d76a6` |
-| Descarga | <https://github.com/CrisSalas07/DeclaraUCR/releases/tag/v2.0.0%2B10> · versiones anteriores: <https://github.com/CrisSalas07/DeclaraUCR/releases> |
-| Cómo se ve en la app | Al pie del inicio de sesión y en el perfil: "Versión 2.0.0+10 · 60d5813" |
+| Versión a entregar | **2.0.0+11** (observaciones y PDF como el formulario oficial, sobre el horario de las clases, el juramento oficial, el recorrido guiado, las correcciones de las sesiones y el rol «Superior») |
+| Commit | `b64791b` (etiqueta `v2.0.0+11`) |
+| Archivo | `DeclaraUCR-v2.0.0+11-b64791b.apk` |
+| SHA-256 | `c5b2df657d749bef62a7d5fadf5413c18b4048f0719ed670d9f2a36601e3e93a` |
+| Descarga | <https://github.com/CrisSalas07/DeclaraUCR/releases/tag/v2.0.0%2B11> · versiones anteriores: <https://github.com/CrisSalas07/DeclaraUCR/releases> |
+| Cómo se ve en la app | Al pie del inicio de sesión y en el perfil: "Versión 2.0.0+11 · b64791b" |
 
-Versiones ya publicadas: v2.0.0+2, +3 (prelanzamientos), v2.0.0+4, +5 y +6 (19/11/2026), v2.0.0+7 (20/11/2026), v2.0.0+8, +9 y +10 (27/11/2026).
+Versiones ya publicadas: v2.0.0+2, +3 (prelanzamientos), v2.0.0+4, +5 y +6 (19/11/2026), v2.0.0+7 (20/11/2026), v2.0.0+8, +9, +10 y +11 (27/11/2026).
 
 ## 2. Entorno de prueba accesible
 
@@ -29,15 +29,15 @@ mensaje privado al docente en **Mediación Virtual**.
 
 | Rol | Para qué sirve | Datos con los que viene |
 |---|---|---|
-| Declarante con superior y cursos | Recorrer los tres procesos y la firma | Sede del Sur, Informática Empresarial, II Ciclo 2026, cursos asignados por la Coordinación (ficticios) |
-| Declarante sin cursos | Ver el mensaje que explica por qué no puede crear la declaración (CP-05) | Misma sede y carrera, sin asignación |
-| Superior | Ver que la app es solo para declarantes; revisar en la web lo firmado desde el teléfono | Superior de las dos declarantes |
+| Declarante con superior y curso | Recorrer los tres procesos y la firma | Sede del Sur, Informática Empresarial; en **III Ciclo - 2027**, IF0009 *Base de datos II* (20 h por semana) con clases el martes de 7:30 a 12:00 y el viernes de 13:30 a 17:00, asignadas por la Coordinación; sin declaración todavía |
+| Coordinación y superior | En la web: asignar cursos y revisar lo firmado desde el teléfono; en la app, ver que es solo para declarantes | Superior de la declarante; asignó su curso |
 | Declarantes P1, P2, P3 | Sesiones con usuarios (§8): las crea cada participante en la sesión, con su correo y su contraseña (el equipo no las conoce) | Cédula y teléfono ficticios; superior y los mismos cursos de prueba asignados por el equipo en la web; se desactivan al terminar |
 
-Revisado en el backend el 21/11/2026: las tres cuentas existen y están activas. La declarante con cursos tiene
-IF0009 asignado en «II Ciclo - 2026» y su declaración de ese período está **firmada y pendiente de firma del
-superior**. `[COMPLETAR: Keity, como superior, la devuelve desde la web antes de enviar las cuentas, para que el
-docente pueda recorrer los tres procesos.]`
+El 27/11/2026 se limpió el backend (solo quedó la cuenta de Administración y los catálogos) y se crearon estas
+cuentas. Revisado ese día en Firebase: la declarante tiene superior y su curso en «III Ciclo - 2027», y no tiene
+ninguna declaración, así que el docente puede recorrer los tres procesos desde cero. Si se firma una, no se
+deshace: para repetir, el superior la devuelve desde la web. No hay cuenta de declarante sin cursos: CP-05 se
+probó con los datos ficticios de los emuladores (`entregables/05-informe-pruebas/pruebas-tecnicas.md`).
 
 ## 4. Datos ficticios
 

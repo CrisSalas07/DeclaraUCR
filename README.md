@@ -18,22 +18,21 @@ Proyecto 2 deliverables, are in Spanish.
 
 ## Current status (27/11/2026)
 
-- **Version 2.0.0+10** is the latest release ([`v2.0.0+10`](https://github.com/CrisSalas07/DeclaraUCR/releases/tag/v2.0.0%2B10)), signed with the
-  team key, against the real Proyecto 1 backend: the lessons of each course
-  above the schedule days (U-09) and the oath of the official form (U-08),
-  both asked by P3, a teacher; on top of 2.0.0+9 (guided tour) and 2.0.0+8
+- **Version 2.0.0+11** is the final one ([`v2.0.0+11`](https://github.com/CrisSalas07/DeclaraUCR/releases/tag/v2.0.0%2B11)), signed with the
+  team key, against the real Proyecto 1 backend: observations and PDF labels
+  as in the official Excel form (U-10); on top of 2.0.0+10 (lessons of each
+  course above the schedule days, U-09, and the oath of the official form,
+  U-08, both asked by P3, a teacher), 2.0.0+9 (guided tour) and 2.0.0+8
   ("Superior" role, fixes U-01, U-03 to U-07). Sessions P1 and P2 used
-  2.0.0+7, P3 used 2.0.0+9.
-- **2.0.0+11** is in the code, not released yet: observations and PDF labels
-  as in the official Excel form (U-10). The course group of the form is not
-  in the Proyecto 1 schema.
+  2.0.0+7, P3 used 2.0.0+9. The course group of the form is not in the
+  Proyecto 1 schema.
 - 124 automated tests pass; technical cases CP-01 to CP-07 passed, CP-08
   (clean install on another phone) pending.
-- The production backend was cleaned on 27/11/2026: only the administration
-  account is left, plus the catalogs (campuses, units, courses, periods). The
-  team is creating new evaluation accounts to run the whole flow again.
-- Left: release 2.0.0+11, the retest with P2 (P3 cannot retest), CP-08 and the
-  socialization (video, synthesis and its improvements in the matrix).
+- The production backend was cleaned on 27/11/2026 and has new evaluation
+  accounts: a declarant with a superior and IF0009 in III Ciclo - 2027, and a
+  coordination and superior account.
+- Left: the retest with P2 (P3 cannot retest), CP-08 and the socialization
+  (video, synthesis and its improvements in the matrix).
 
 ## Where to find what
 
