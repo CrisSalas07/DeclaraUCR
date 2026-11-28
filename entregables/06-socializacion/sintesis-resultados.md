@@ -1,7 +1,10 @@
 # Síntesis de resultados de la socialización
 
-**Fecha:** `[COMPLETAR]` · **Versión mostrada:** `[COMPLETAR]` · **Respuestas del formulario:** `[n]`
+**Fecha:** `[COMPLETAR]` · **Versión mostrada:** 2.0.0+11 · **Respuestas del formulario:** `[n]`
 (docente: `[n]`, otros equipos: `[n]`)
+
+> Cuentan solo las respuestas con rol «Docente del curso» o «Integrante de otro equipo». Las tres que ya hay
+> (27/11/2026) son de las sesiones con usuarios P1 a P3 y están en el informe de pruebas §6.5.
 
 ## 1. Valoraciones
 
