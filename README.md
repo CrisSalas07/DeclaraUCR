@@ -7,6 +7,8 @@ Proyecto 1 ([DeclaraHorario](https://github.com/dayanachavarriasteller-maker/Dec
 <https://declarahorario-b186f.web.app>) to the phone and works against **the
 same Firebase backend, schema and rules**.
 
+Repository: <https://github.com/CrisSalas07/DeclaraUCR>
+
 On the phone a declarant signs up, creates a declaration for the open period,
 places the coordination's courses and their attention and planning hours on a
 half-hour grid, validates it, signs it and sends it to their superior; they can
