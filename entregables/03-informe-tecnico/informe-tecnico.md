@@ -32,7 +32,7 @@ declaraciones abiertas a la vez.
 
 | Proceso en el Proyecto 1 (web) | En el móvil | Cómo se adaptó |
 |---|---|---|
-| Registro y perfil (cédula, teléfono, sede, carrera) | **Sí** | Mismo esquema `users/{uid}` y reserva de cédula `identifications/CEDULA_{n}`; sede y carrera se eligen una vez |
+| Registro y perfil (cédula, teléfono, sede, carrera) | **Sí** | Mismo esquema `users/{uid}` y reserva de cédula `identifications/CEDULA_{n}`; sede y carrera se eligen una vez; nombre, cédula y teléfono se corrigen desde el perfil (U-07) |
 | **Crear, editar y recuperar una declaración en borrador** (§5.1-1) | **Sí — proceso 1** | Un período abierto, una declaración por período; nombre, cédula, institución, período y vigencia vienen del perfil y del período; la persona solo elige el puesto |
 | **Registro de horarios, cálculo de horas y traslapes** (§5.1-2) | **Sí — proceso 2** | La cuadrícula de medias horas de la web, un día a la vez; clases fijas de la Coordinación; cada tarea muestra "x h de y h" y nunca toma más |
 | **Resumen, validaciones y estado** (§5.1-3) | **Sí — proceso 3** | Resumen con horas por categoría, lista de puntos por corregir y botón **Validar** que solo se activa sin problemas; seguimiento de 5 pasos en Inicio |
@@ -118,6 +118,8 @@ el formato de observaciones y la huella SHA-256. Lo que se reescribió fueron la
 | Zonaje necesita mapa y un archivo del TSE | Solo consulta en el teléfono | Elegir un punto en un mapa y adjuntar un PDF en un teléfono es frágil; la web ya lo resuelve |
 | Salir sin guardar (D-01) | El formulario pregunta antes de descartar cambios | §5: nada se pierde sin que la persona lo sepa |
 | Lector de pantalla (D-02) | Cada media hora es un botón para TalkBack con día, hora y contenido | La cuadrícula era el único paso que no se podía hacer sin ver |
+| Primer uso (U-06) | Recorrido guiado sobre las pantallas reales con una docente de ejemplo; enfoca una parte a la vez y se repite desde el perfil («Cómo funciona») | En las sesiones, sin guía no se entendía la cuadrícula; el recorrido no guarda nada |
+| Ubicar horas alrededor de las clases | Arriba de los días, **Horario de sus clases** muestra los días y horas de cada curso; tocar uno abre ese día | Un día a la vez oculta el resto de la semana |
 
 ## 5. Integración con autenticación, servicios y persistencia
 
@@ -155,7 +157,7 @@ El procedimiento paso a paso está en `entregables/02-aplicacion-distribuible/in
 
 ## 7. Calidad y pruebas
 
-- 109 pruebas automatizadas, todas pasan; `flutter analyze` sin problemas.
+- 121 pruebas automatizadas, todas pasan; `flutter analyze` sin problemas.
 - 8 casos técnicos; CP-01 a CP-07 aprobados, CP-08 (instalación desde cero) `[COMPLETAR]`.
 - Detalle en `entregables/05-informe-pruebas/informe-pruebas.md`.
 

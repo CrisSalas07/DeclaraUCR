@@ -96,7 +96,7 @@ casos escritos no buscan.
 
 - **Cómo:** build web de la app en un navegador con pantalla de teléfono (412 × 915), contra los emuladores
   de Firebase con las reglas del Proyecto 1 y los datos ficticios de `backend/proyecto1/seed.mjs`. Cuentas
-  `docente`, `docente2` y `revisor`.
+  `docente`, `docente2` y `superior`.
 - **Límite:** no es el APK en un teléfono. Sirve para encontrar defectos de lógica y de accesibilidad, no
   sustituye CP-08.
 - **Evidencia:** `entregables/05-informe-pruebas/capturas/`.
@@ -111,7 +111,7 @@ casos escritos no buscan.
 | R-09 | Horario semanal | Clases de la Coordinación fijas con candado; solo se ofrecen atención y planificación | `R-09-horario-y-tareas.png` |
 | R-10 | Recargar la app | El borrador sigue ahí, con 8 h de clases | `R-10-borrador-tras-recargar.png` |
 | R-11 a R-13 | Zonaje, historial y perfil | Zonaje de solo lectura con la observación de RRHH; historial por año | `R-11` a `R-13` |
-| R-14 | Entrar como revisor | "No puede continuar": la app es solo para declarantes | `R-14-revisor-sin-acceso.png` |
+| R-14 | Entrar como superior | "No puede continuar": la app es solo para declarantes | `R-14-superior-sin-acceso.png` |
 
 ### Defectos encontrados en el recorrido
 
@@ -216,7 +216,7 @@ anotaron. La hora de inicio anotada (4:40 aprox.) no cuadraba con la captura de 
 
 **Diferencias de P2 con el guion.** El curso se asignó como IF0009 1/2 TC (4 h de atención, no 2 h) y la persona
 agregó un proyecto de 0,5 h. No usó los datos de la tarjeta, sino otros inventados. En T1 se adelantó hasta
-Validar, y al final **firmó y envió** la declaración (queda «Pendiente de firma del revisor»). Las capturas van de
+Validar, y al final **firmó y envió** la declaración (queda «Pendiente de firma del superior»). Las capturas van de
 9:11 a 9:30 p. m.; los tiempos aproximados de T2 y T3 no cuadran con ellas.
 
 ### 6.5 Percepción
@@ -237,7 +237,7 @@ de uso de 1 a 5 y comentarios abiertos (§8), además de utilidad, claridad y fu
 | Id | Problema observado | Quién y en qué tarea | Impacto | Prioridad | Acción |
 |---|---|---|---|---|---|
 | U-01 | No sabía cómo empezar la declaración | P1, T1 | Necesitó ayuda para empezar | Baja | Cubierta por el recorrido de primer uso de U-06 (paso «Inicio»). 2.0.0+8 |
-| U-02 | La lista de **Puesto** deja elegir cualquier puesto, aunque no sea el de la persona (lo dijo P1 en el formulario) | P1, T1 | Una declaración con un puesto equivocado llega al revisor; hoy solo el revisor lo detecta | Media | Pendiente con justificación: la app no tiene de dónde sacar el puesto real de la persona. Propuesta: que Administración lo asigne en la web y la app lo muestre fijo (matriz U-02) |
+| U-02 | La lista de **Puesto** deja elegir cualquier puesto, aunque no sea el de la persona (lo dijo P1 en el formulario) | P1, T1 | Una declaración con un puesto equivocado llega al superior; hoy solo el superior lo detecta | Media | Pendiente con justificación: la app no tiene de dónde sacar el puesto real de la persona. Propuesta: que Administración lo asigne en la web y la app lo muestre fijo (matriz U-02) |
 | U-03 | No sabía cómo tocar los cuadros para asignar horas en la cuadrícula; no entendió la lógica de la app | P2, T1–T2 | Necesitó ayuda para ubicar horas (proceso 2) | Alta | Encima de la cuadrícula se ve siempre qué se ubica con cada toque, con su color y pasos numerados. 2.0.0+8; se vuelve a probar con P2 (§6.7) |
 | U-04 | Después de Validar no vio el botón «Firmar y enviar a mi superior» | P2, T1 | No supo cuál era el siguiente paso | Media | Después de Validar, el botón principal es **Firmar y enviar** y un aviso dice que es el siguiente paso. 2.0.0+8 |
 | U-05 | Después de Validar, Atrás lo devolvió al editor y la declaración volvió a Borrador | P2, T1 | Salió del resumen sin firmar y tuvo que validar otra vez | Media | Atrás después de validar vuelve al inicio sin tocar la declaración; solo «Corregir» abre el editor. 2.0.0+8 |
@@ -294,9 +294,9 @@ Las de los casos técnicos están en `pruebas-tecnicas.pdf`.
 |---|---|---|
 | ![R-10-borrador-tras-recargar](capturas/R-10-borrador-tras-recargar.png) | ![R-11-zonaje](capturas/R-11-zonaje.png) | ![R-12-historial](capturas/R-12-historial.png) |
 
-| R-13-perfil | R-14-revisor-sin-acceso |
+| R-13-perfil | R-14-superior-sin-acceso |
 |---|---|
-| ![R-13-perfil](capturas/R-13-perfil.png) | ![R-14-revisor-sin-acceso](capturas/R-14-revisor-sin-acceso.png) |
+| ![R-13-perfil](capturas/R-13-perfil.png) | ![R-14-superior-sin-acceso](capturas/R-14-superior-sin-acceso.png) |
 
 ### Defecto D-01 antes y después (§4 y §5)
 

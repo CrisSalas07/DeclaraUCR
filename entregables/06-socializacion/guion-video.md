@@ -21,8 +21,8 @@ captura de `entregables/07-guia-uso/capturas/` o del repositorio, o la persona h
 | 3 | 1:30 | Cristopher | Qué cambió desde el Proyecto 1 | La matriz de mejoras §2 y §4 | "El docente nos pidió un nombre de rol que la gente reconozca: «Revisor» pasó a llamarse «Superior». Además revisamos nosotros el sistema: lo más importante que le faltaba era poder usarse desde el teléfono." | Mejoras del P1 |
 | 4 | 3:00 | Cristopher | Qué hace la app y qué no | Tabla de procesos P1 → móvil (informe técnico §2.1) | "Los tres procesos de la declarante están completos en el teléfono; revisión y RRHH siguen en la web, que es donde tiene sentido." | Alcance |
 | 5 | 4:00 | Keity | **Demostración** (6 min) | Pantalla del teléfono grabada (grabador de pantalla de Android o scrcpy) | Ver guion de la demostración abajo | Demostración |
-| 6 | 10:00 | Keity | Cómo instalarla y entrar | Página del release v2.0.0+8, los pasos de instalación, la versión al pie del inicio de sesión | "Es un APK, no está en la tienda: así se instala, así se actualiza y así se vuelve a la versión anterior." | Instalación y acceso |
-| 7 | 11:00 | Cristopher | Pruebas técnicas | 8 casos, 109 pruebas automatizadas, D-01 antes y después | "El recorrido encontró que salir con Atrás perdía cambios sin avisar; ahora la app pregunta." | Resultados técnicos |
+| 6 | 10:00 | Keity | Cómo instalarla y entrar | Página del release v2.0.0+10, los pasos de instalación, la versión al pie del inicio de sesión | "Es un APK, no está en la tienda: así se instala, así se actualiza y así se vuelve a la versión anterior." | Instalación y acceso |
+| 7 | 11:00 | Cristopher | Pruebas técnicas | 8 casos, 121 pruebas automatizadas, D-01 antes y después | "El recorrido encontró que salir con Atrás perdía cambios sin avisar; ahora la app pregunta." | Resultados técnicos |
 | 8 | 12:00 | Lucía | Pruebas con usuarios | Perfil de las 3 personas, éxito por tarea, facilidad promedio y **una frase textual** de una persona participante, tomada de la bitácora | `[COMPLETAR con los resultados de las sesiones]` | Resultados con usuarios |
 | 9 | 13:30 | Lucía | Lo que queda pendiente y por qué | `VALIDADA` en el cliente, zonaje solo consulta, sin conexión no se guarda | "Son decisiones, no olvidos: esto es lo que haríamos después y por qué no entró." | Dificultades y decisiones |
 | 10 | 14:30 | Lucía | Cierre y formulario | Enlace y QR del formulario en pantalla (`qr-formulario.svg`) | "Su opinión cambia la versión final: al menos dos mejoras van a salir de este formulario." | Instrumento |
@@ -33,7 +33,7 @@ mismo mensaje, el enlace al video y el del formulario. Anotar aquí: video `[COM
 
 ## Guion de la demostración (6 minutos de video)
 
-Preparación: el teléfono con la **2.0.0+8** instalada (ya dice «Superior»), sesión iniciada con la **declarante con cursos**, una
+Preparación: el teléfono con la **2.0.0+10** instalada (ya dice «Superior»), sesión iniciada con la **declarante con cursos**, una
 declaración del período **en borrador y sin puesto**, el modo avión a mano y la web del Proyecto 1 abierta con
 el superior en otra pestaña. **Grabar la firma al final**, cuando todo lo demás ya salió bien: no se puede deshacer. Si un tramo sale mal se graba de nuevo; no hace falta una sola toma.
 
