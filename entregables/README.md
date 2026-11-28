@@ -41,6 +41,7 @@ entregables/
 ├── 06-socializacion/
 │   ├── formulario-retroalimentacion.pdf ← instrumento: preguntas, enlace y QR
 │   ├── qr-formulario.png
+│   ├── respuestas-formulario.pdf    ← respuestas del formulario (P1, P2 y P3)
 │   └── sintesis-resultados.docx     ← síntesis de las respuestas del docente y de otro equipo
 ├── 07-guia-uso/
 │   └── guia-de-uso.pdf              ← instalar y usar la app, con capturas
