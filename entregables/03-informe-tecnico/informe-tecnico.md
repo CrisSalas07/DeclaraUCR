@@ -36,7 +36,7 @@ declaraciones abiertas a la vez.
 | **Crear, editar y recuperar una declaración en borrador** (§5.1-1) | **Sí — proceso 1** | Un período abierto, una declaración por período; nombre, cédula, institución, período y vigencia vienen del perfil y del período; la persona solo elige el puesto |
 | **Registro de horarios, cálculo de horas y traslapes** (§5.1-2) | **Sí — proceso 2** | La cuadrícula de medias horas de la web, un día a la vez; clases fijas de la Coordinación; cada tarea muestra "x h de y h" y nunca toma más |
 | **Resumen, validaciones y estado** (§5.1-3) | **Sí — proceso 3** | Resumen con horas por categoría, lista de puntos por corregir y botón **Validar** que solo se activa sin problemas; seguimiento de 5 pasos en Inicio |
-| Firma de la persona declarante | **Sí** | Misma huella SHA-256 del contenido y mismo registro de la firma; el juramento es el del formulario oficial, o la plantilla de Administración si existe (matriz T-11); envía al superior |
+| Firma de la persona declarante | **Sí** | Misma huella SHA-256 del contenido y mismo registro de la firma; el juramento es el del formulario oficial, o la plantilla de Administración si existe (matriz U-08); envía al superior |
 | PDF de la declaración | **Sí** (consulta) | Mismo formulario oficial: vista previa "BORRADOR", copia en revisión y documento final |
 | Historial por año | **Sí** | Declaraciones y solicitudes de zonaje de todos los períodos |
 | Zonaje | **Consulta** | Estado, distancias y respuesta de RRHH; la solicitud se hace en la web (necesita mapa y la certificación del TSE) |

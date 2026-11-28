@@ -187,7 +187,7 @@ Sin nombres ni cédulas: solo la relación con el proceso. Al menos una persona 
 |---|---|---|---|---|---|
 | P1 | Estudiante; nunca ha llenado una declaración jurada de jornada; usa el teléfono casi nunca para trámites | No | Honor 200 Lite, de la persona | 24/11/2026 | `bitacora-sesiones.docx` §3 |
 | P2 | Amigo del equipo; nunca ha llenado una declaración jurada de jornada; usa el teléfono a veces para trámites | No | Honor Magic7 Lite, de la persona | 24/11/2026 | `bitacora-sesiones.docx` §4 |
-| P3 | `[COMPLETAR]` | `[COMPLETAR: tiene que ser Sí: P1 y P2 no son del perfil previsto (§8)]` | `[COMPLETAR]` | `[COMPLETAR]` | `bitacora-sesiones.docx` §5 |
+| P3 | Docente de la Sede del Sur, carrera Informática Empresarial; llenó la declaración jurada durante varios años, a mano en Excel, sin sistema; usa el teléfono para trámites con frecuencia | **Sí** | `[COMPLETAR: modelo]` | 27/11/2026 | `bitacora-sesiones.docx` §5 |
 
 ### 6.4 Resultados por tarea
 
@@ -197,16 +197,16 @@ Tiempo aproximado en minutos. Éxito: **Sí**, **Con ayuda** o **No**.
 |---|---|---|---|---|---|---|
 | P1 | T0 | Con ayuda | ≈ 9 (≈ 4:15–4:24 p. m.) | — | Sí; el detalle no se anotó | `P1-T0-inicio.png` |
 | P2 | T0 | Sí | 3 (9:05–9:08 p. m.) | — | Ninguna | `P2-T0-inicio.png` |
-| P3 | T0 | | | | | `P3-T0-inicio.png` |
+| P3 | T0 | Sí | ≈ 5 (3:40–3:45 p. m.) | — | Ninguna | `P3-T0-inicio.png` |
 | P1 | T1 | Con ayuda | ≈ 20 (≈ 4:30–4:50 p. m.) | Al inicio no sabía cómo empezar la declaración (nunca había hecho una) | Sí; el detalle no se anotó | `P1-T1-borrador.png` |
 | P1 | T2 | Con ayuda | 2 (4:50–4:52 p. m.) | Intentó ubicar más atención de la que le tocaba; la app lo detuvo («Ya ubicó todas las horas de atención…») | Sí; el detalle no se anotó | `P1-T2-resumen.png` |
 | P1 | T3 | Con ayuda | ≈ 3 (4:52–≈ 4:55 p. m.) | Llegó al resumen: **Borrador**, «Faltan 1,5 h de planificación de IF0011», Validar deshabilitado. En T2 la planificación estaba completa (4 h de 4 h); entre las dos capturas se quitaron 1,5 h. Lo de T2 y T3 no se guardó (Firebase: único guardado a las 4:50:17 p. m.) | Sí; el detalle no se anotó | `P1-T3-estado.png` |
 | P2 | T1 | Con ayuda | 8 (9:19–9:27 p. m.) | Se adelantó hasta Validar; no sabía cómo tocar los cuadros para asignar horas; después de Validar no vio «Firmar y enviar» y con Atrás volvió al editor | Contexto de los proyectos que puede declarar; cómo tocar la cuadrícula | `P2-T1-borrador.png` |
 | P2 | T2 | Sí | ≈ 10 (no anotado) | No eligió la tarea antes de tocar; no descubrió «mantenga presionado y deslice» | Ninguna (la de la cuadrícula fue en T1) | `P2-T2-resumen.png` |
 | P2 | T3 | Sí | ≈ 5 (no anotado) | — Dijo «validada y guardada»; después firmó y envió (9:29) | Ninguna | `P2-T3-estado.png` |
-| P3 | T1 | | | | | `P3-T1-borrador.png` |
-| P3 | T2 | | | | | `P3-T2-resumen.png` |
-| P3 | T3 | | | | | `P3-T3-estado.png` |
+| P3 | T1 | Sí | ≈ 6 (3:45–3:51 p. m.) | — | Ninguna | `P3-T1-borrador.png` |
+| P3 | T2 | Sí | ≈ 5 (3:51–3:56 p. m.) | — | Ninguna | `P3-T2-resumen.png` |
+| P3 | T3 | Sí | ≈ 4 (3:56–4:00 p. m.) | — | Ninguna | `P3-T3-estado.png` |
 
 **Diferencias de P1 con el guion.** La cuenta recibió el curso **IF0011** (1/4 TC) en lugar de IF0009; las
 2 h de atención de T2 son las mismas. La persona usó su nombre y su cédula reales en lugar de los de la
@@ -219,6 +219,13 @@ agregó un proyecto de 0,5 h. No usó los datos de la tarjeta, sino otros invent
 Validar, y al final **firmó y envió** la declaración (queda «Pendiente de firma del superior»). Las capturas van de
 9:11 a 9:30 p. m.; los tiempos aproximados de T2 y T3 no cuadran con ellas.
 
+**Diferencias de P3 con el guion.** La sesión fue el 27/11/2026 de 3:40 a 4:00 p. m. y se usó la **2.0.0+9**
+(con el recorrido guiado), no la 2.0.0+7: P1 y P2 ya habían mostrado que sin guía no se entendía la app (U-06).
+Solo se anotaron el inicio y el fin; los 20 minutos se repartieron entre las tareas según lo observado, por
+eso los tiempos llevan ≈. La persona usó su nombre y cédula reales. La Coordinación le asignó clases el miércoles
+de 8:00 a 11:00 y el jueves de 13:00 a 17:00. **No pidió ayuda ni preguntó cómo hacer nada**: según quien guió,
+gracias al recorrido guiado del inicio.
+
 ### 6.5 Percepción
 
 Al terminar, cada persona llena el formulario de retroalimentación marcando su número (P1, P2 o P3): facilidad
@@ -229,7 +236,7 @@ de uso de 1 a 5 y comentarios abiertos (§8), además de utilidad, claridad y fu
 |---|---|---|
 | P1 | 5 (utilidad 5, claridad 5, funcionamiento 5) | «La verdad no me pareció difícil, lo entendí muy bien […] no tuve alguna dificultad.» Cambiaría: que el **Puesto** no deje elegir uno que no es el suyo (eligió Catedrático siendo Interino Licenciado). «Felicitarles, me gustó la app, muy entendible!» |
 | P2 | 4 (utilidad 5, claridad 3, funcionamiento 4) | En el formulario: «Es un poco confuso el inicio ya que no sabía qué hacía cada botón.» Cambiaría: «Poner un tutorial guía al instalar la aplicación». Errores: ninguno. En la sesión dijo lo mismo: le faltó un tutorial introductivo para saber qué hace cada cosa |
-| P3 | | |
+| P3 | `[COMPLETAR: si llenó el formulario]` | Pidió que el juramento fuera el del **formulario oficial** de la Universidad (`[COMPLETAR: sus palabras]`) |
 | **Promedio** | | |
 
 ### 6.6 Hallazgos de las sesiones
@@ -242,6 +249,7 @@ de uso de 1 a 5 y comentarios abiertos (§8), además de utilidad, claridad y fu
 | U-04 | Después de Validar no vio el botón «Firmar y enviar a mi superior» | P2, T1 | No supo cuál era el siguiente paso | Media | Después de Validar, el botón principal es **Firmar y enviar** y un aviso dice que es el siguiente paso. 2.0.0+8 |
 | U-05 | Después de Validar, Atrás lo devolvió al editor y la declaración volvió a Borrador | P2, T1 | Salió del resumen sin firmar y tuvo que validar otra vez | Media | Atrás después de validar vuelve al inicio sin tocar la declaración; solo «Corregir» abre el editor. 2.0.0+8 |
 | U-06 | Pide un tutorial la primera vez que explique cada parte (lo dijeron P2 y, en parte, P1) | P2 (y P1, T1) | Sin guía no entiende la lógica de la app | Media | Recorrido la primera vez en el teléfono, y en el perfil («Cómo funciona»): 4 páginas en la 2.0.0+8; en la 2.0.0+9, un recorrido guiado sobre las pantallas reales con una docente ficticia que enfoca cada parte y explica qué va en cada campo |
+| U-08 | El juramento no era el del formulario oficial de la Universidad | P3 (después de las tareas) | El texto que firma la persona no coincide con el que conoce del formato oficial | Media | El juramento predeterminado es el del formulario oficial, palabra por palabra; la plantilla de Administración en la web sigue mandando. 2.0.0+10 |
 | U-07 | El perfil solo muestra los datos: no deja corregir el nombre ni la cédula | P2 (después de las tareas) | Si se equivoca al registrarse (P1 puso sus datos reales), no lo puede corregir | Media | Editar nombre, cédula (se reserva la nueva y se libera la anterior) y teléfono desde el perfil; un borrador sin firmar toma los datos corregidos. Correo, sede y carrera siguen con Administración. 2.0.0+8 |
 
 Qué vigilar en particular (son los puntos donde el recorrido sugiere que alguien se puede trabar):
@@ -265,6 +273,7 @@ P1 (`integration_test/release_8_rules_test.dart`).
 | U-04 / U-05 | Firmar como siguiente paso; Atrás vuelve al inicio (`abc5818`) | `[COMPLETAR: P2]` | `[COMPLETAR]` | `R-P2-T1-….png` |
 | U-06 | Recorrido de primer uso (`abc5818`) | `[COMPLETAR: P2]` | `[COMPLETAR]` | `R-P2-T0-….png` |
 | U-07 | Editar mis datos (`abc5818`) | `[COMPLETAR: P2]` | `[COMPLETAR]` | `R-P2-perfil-….png` |
+| U-01, U-03, U-06 | Recorrido guiado sobre las pantallas reales (2.0.0+9, PR #36) | P3 (persona nueva, docente), 27/11/2026 | Hizo T0 a T3 sin ayuda ni preguntas; según quien guió, gracias al recorrido | Bitácora §5, `P3-T0-…` a `P3-T3-….png` |
 | T-08 | Lista actualizada al guardar un borrador (no se reprodujo en emulador) | `[COMPLETAR: equipo, en el teléfono]` | `[COMPLETAR]` | `R-T08-….png` |
 
 ## 7. Conclusión

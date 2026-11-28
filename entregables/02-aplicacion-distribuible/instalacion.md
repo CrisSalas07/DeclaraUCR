@@ -116,7 +116,7 @@ Para recorrer los procesos en el teléfono, desde la **web del Proyecto 1** con 
 
 - **Firma de la persona declarante:** en el teléfono o en la web, con la misma huella del contenido. El
   teléfono usa el juramento del formulario oficial; para que la web muestre el mismo antes de firmar,
-  Administración lo guarda como plantilla del juramento (matriz T-11). Firmada, queda de solo lectura en el teléfono.
+  Administración lo guarda como plantilla del juramento (matriz U-08). Firmada, queda de solo lectura en el teléfono.
 - **Revisión, RRHH y correcciones** se hacen en la web: la aprobación del superior y de Recursos Humanos, y una
   declaración devuelta se corrige en la web (versión nueva).
 - **PDF:** la vista previa ("BORRADOR"), la copia en revisión y el documento final se ven en el teléfono, con el
