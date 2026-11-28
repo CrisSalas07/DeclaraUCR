@@ -13,7 +13,7 @@ GitHub al hacer merge); el correo de los commits confirma que son la misma perso
 
 | Integrante | Identidad en git | Commits en DeclaraUCR (P2) | Commits en DeclaraHorario (P1) |
 |---|---|---|---|
-| Cristopher Mora Salas | `Salas07` (commits), `CrisSalas07` (merges de PR) | 42 + 26 merges (12 al 27/11) | 139 + 52 |
+| Cristopher Mora Salas | `Salas07` (commits), `CrisSalas07` (merges de PR) | 55 + 27 merges (12 al 27/11) | 139 + 52 |
 | Keity Chavarría Steller | `Keity` (commits), `dayanachavarriasteller-maker` (merges de PR) | 39 + 11 merges (18 al 27/11) | 75 + 38 |
 | Lucía Palacios | `Lucia`, `luciaapalacio608-dot` | — | 25 + 2 |
 
@@ -54,6 +54,7 @@ Para ver el detalle: `git log --format='%h %ad %an %s' --date=short`.
 | 27/11/2026 | Cristopher | Recorrido guiado, versión 2.0.0+9 | Recorrido sobre las pantallas reales con una docente de ejemplo (U-06 rehecho); capturas nuevas de la guía | `7ea44f2`, `2bad858` (PR #36) |
 | 27/11/2026 | Keity | Horario de las clases y juramento oficial, versión 2.0.0+10 | Tarjeta «Horario de sus clases» arriba de los días; juramento del formulario oficial en el PDF y la firma; capturas 04, 09 y 10 de la guía; versión final 2.0.0+10 y sus documentos | `4c913e6`, `372d224`, `a40d61d`, `60d5813` (PR #37) |
 | 27/11/2026 | Keity | Revisión e integración | Merge de los PR #22, #23, #33 y #37 | PR en GitHub |
+| 27/11/2026 | Cristopher | Entregables al día, sesión P3 y formato oficial, versión 2.0.0+11 | Entregables con la 2.0.0+10 y sin «revisor»; sesión P3 en la bitácora, el informe y la matriz (U-08 a U-10); observaciones y PDF como el formulario oficial; comentarios del código; release de la 2.0.0+11 | `69f50a3`, `567c699` y otros (PR #38) |
 
 ### Actividades sin commit
 
@@ -62,7 +63,8 @@ Para ver el detalle: `git log --format='%h %ad %an %s' --date=short`.
 | `[ ]` | `[ ]` | Instalación desde cero (CP-08) | | `entregables/05-informe-pruebas/capturas/CP-08-1.png` |
 | 24/11/2026 | Keity | Sesión con usuario P1 | Guió y anotó la sesión (T0–T3, perfil y formulario) | Bitácora §3 y capturas `P1-T0` a `P1-T3` |
 | 24/11/2026 | Cristopher | Sesión con usuario P2 | Guió y anotó la sesión, asignó superior y curso en la web | Bitácora §4 y capturas `P2-T0` a `P2-T3` |
-| `[ ]` | `[ ]` | Sesión con usuario P3 | | Informe de pruebas §6 |
+| 27/11/2026 | Cristopher | Sesión con usuario P3 | Guió y anotó la sesión con una docente (T0–T3, formulario, machote oficial) | Bitácora §5 |
+| 27/11/2026 | Cristopher | Backend de producción y cuentas de evaluación | Limpieza de cuentas y datos de prueba; cuentas nuevas con superior y curso en III Ciclo - 2027 | Aplicación distribuible §3 |
 | 21/11/2026 | Cristopher | Formulario de retroalimentación | Creación y publicación en Google Forms | `06-socializacion/formulario-retroalimentacion.md` |
 | 21/11/2026 | Cristopher | Ensayo completo de la sesión | T1–T3 en el emulador con la 2.0.0+7; encontró T-08 | Matriz de mejoras T-08 |
 | `[ ]` | `[ ]` | Video de socialización | Grabó, narró o editó el bloque ___ | Enlace al video |

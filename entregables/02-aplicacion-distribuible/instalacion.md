@@ -103,13 +103,13 @@ Los datos de prueba del emulador (`backend/proyecto1/seed.mjs`) **no** llegan al
 Para recorrer los procesos en el teléfono, desde la **web del Proyecto 1** con una cuenta de administración:
 
 1. Una **sede** con su ubicación y una **carrera** de esa sede.
-2. Un **período habilitado** (por ejemplo, II Ciclo - 2026).
+2. Un **período habilitado** (hoy, III Ciclo - 2027).
 3. Cuentas ficticias: una de **superior**, una de **Coordinación** de la carrera y dos de **declarante**.
 4. A las declarantes, asignarles **superior** (Administración › Usuarios).
 5. Con la cuenta de Coordinación, **asignar cursos** y franjas de clase en el período a **una** de las
    declarantes (la otra queda sin cursos, para el caso de prueba).
    En las sesiones con usuarios, cada participante crea su propia cuenta y el equipo le asigna en la web el
-   superior y los mismos cursos y franjas (ver `entregables/05-informe-pruebas/sesiones-usuarios/`).
+   superior y los cursos y franjas (informe de pruebas §6.1).
 6. Entregar al equipo los correos y contraseñas de las cuentas por un canal privado, no en el repositorio.
 
 ## 7. Limitaciones conocidas
