@@ -23,7 +23,7 @@ captura de `entregables/07-guia-uso/capturas/` o del repositorio, o la persona h
 | 5 | 4:00 | Keity | **Demostración** (6 min) | Pantalla del teléfono grabada (grabador de pantalla de Android o scrcpy) | Ver guion de la demostración abajo | Demostración |
 | 6 | 10:00 | Keity | Cómo instalarla y entrar | Página del release v2.0.0+10, los pasos de instalación, la versión al pie del inicio de sesión | "Es un APK, no está en la tienda: así se instala, así se actualiza y así se vuelve a la versión anterior." | Instalación y acceso |
 | 7 | 11:00 | Cristopher | Pruebas técnicas | 8 casos, 121 pruebas automatizadas, D-01 antes y después | "El recorrido encontró que salir con Atrás perdía cambios sin avisar; ahora la app pregunta." | Resultados técnicos |
-| 8 | 12:00 | Lucía | Pruebas con usuarios | Perfil de las 3 personas, éxito por tarea, facilidad promedio y **una frase textual** de una persona participante, tomada de la bitácora | `[COMPLETAR con los resultados de las sesiones]` | Resultados con usuarios |
+| 8 | 12:00 | Lucía | Pruebas con usuarios | Perfil de las 3 personas, éxito por tarea, facilidad promedio y **una frase textual** de una persona participante, tomada de la bitácora; después, la matriz U-03 a U-07 | `[COMPLETAR con los resultados de las sesiones]` y "Con lo que vimos cambiamos la app: el recorrido guiado, qué se ubica con cada toque, firmar justo después de validar y editar mis datos (versiones 2.0.0+8 a +10)." | Resultados con usuarios |
 | 9 | 13:30 | Lucía | Lo que queda pendiente y por qué | `VALIDADA` en el cliente, zonaje solo consulta, sin conexión no se guarda | "Son decisiones, no olvidos: esto es lo que haríamos después y por qué no entró." | Dificultades y decisiones |
 | 10 | 14:30 | Lucía | Cierre y formulario | Enlace y QR del formulario en pantalla (`qr-formulario.svg`) | "Su opinión cambia la versión final: al menos dos mejoras van a salir de este formulario." | Instrumento |
 
@@ -33,8 +33,9 @@ mismo mensaje, el enlace al video y el del formulario. Anotar aquí: video `[COM
 
 ## Guion de la demostración (6 minutos de video)
 
-Preparación: el teléfono con la **2.0.0+10** instalada (ya dice «Superior»), sesión iniciada con la **declarante con cursos**, una
-declaración del período **en borrador y sin puesto**, el modo avión a mano y la web del Proyecto 1 abierta con
+Preparación: el teléfono con la **2.0.0+10** instalada (ya dice «Superior»), sesión iniciada con la **declarante con cursos**
+(una cuenta del equipo, **no** la que se le entrega al docente: la firma no se deshace), una
+declaración del período **III Ciclo - 2027** **en borrador y sin puesto**, el modo avión a mano y la web del Proyecto 1 abierta con
 el superior en otra pestaña. **Grabar la firma al final**, cuando todo lo demás ya salió bien: no se puede deshacer. Si un tramo sale mal se graba de nuevo; no hace falta una sola toma.
 
 **La graba y la narra Keity** (es la única con Android). Lo más cómodo: grabar primero la pantalla sin hablar
@@ -43,9 +44,10 @@ cada segundo.
 
 | Min | Paso | Qué se ve | Qué decir (idea central) |
 |---|---|---|---|
-| 0:00 | Inicio | Seguimiento en *Elaboración*, horas por tipo | "Esta es la pantalla de inicio de una docente con dos cursos. Arriba ve en qué etapa va su declaración y cuántas horas lleva de cada tipo." |
+| 0:00 | Recorrido guiado | Perfil › **Cómo funciona**: dos o tres pasos, una parte enfocada y el resto oscurecido | "La primera vez, la app enseña cada pantalla con una docente de ejemplo; se puede repetir desde el perfil." |
+| 0:20 | Inicio | Seguimiento en *Elaboración*, horas por tipo | "Esta es la pantalla de inicio de una docente con sus cursos. Arriba ve en qué etapa va su declaración y cuántas horas lleva de cada tipo." |
 | 0:30 | Abrir la declaración, elegir el puesto y tocar **Atrás** | Aparece *"¿Salir sin guardar?"* → **Seguir editando** → **Guardar borrador** | "Elijo el puesto y, sin querer, toco Atrás. Antes esto perdía los cambios sin avisar; ahora la app pregunta. Sigo editando y guardo el borrador." |
-| 1:15 | Horario: elegir *Atención*, tocar una media hora, luego mantener y deslizar | Sube "x h de y h"; tocar una clase muestra que no se mueve | "Para llenar el horario elijo el tipo de actividad, en este caso atención a estudiantes, y toco o deslizo sobre las medias horas. Arriba se ve cuánto llevo de lo que me corresponde. Las clases vienen fijas de la Coordinación, por eso no se pueden mover." |
+| 1:15 | Horario: tarjeta **Horario de sus clases**, elegir *Atención*, tocar una media hora, luego mantener y deslizar | Arriba, los días y horas de cada curso; sube "x h de y h"; tocar una clase muestra que no se mueve | "Arriba veo cuándo son mis clases, y toco un horario para abrir ese día. Para llenar el horario elijo el tipo de actividad, en este caso atención a estudiantes, y toco o deslizo sobre las medias horas. Arriba se ve cuánto llevo de lo que me corresponde. Las clases vienen fijas de la Coordinación, por eso no se pueden mover." |
 | 2:30 | **Ver resumen** con horas faltantes | "Hay N puntos por corregir", Validar apagado | "Si reviso el resumen antes de terminar, la app me dice exactamente qué falta y no me deja validar todavía." |
 | 3:00 | Completar lo que falta (o abrir una ya completa) y **Validar** | Estado *Validada* | "Completo las horas que faltaban y ahora sí puedo validar. Son las mismas reglas que usa el sistema web del Proyecto 1." |
 | 3:45 | Modo avión → cambiar algo → **Guardar borrador** | Franja sin conexión, aviso y cambios en pantalla; quitar modo avión y guardar | "¿Y si se cae la conexión? Pongo modo avión y hago un cambio. La app avisa que no se pudo guardar, pero no pierdo nada: al volver la señal, guardo y listo." |
