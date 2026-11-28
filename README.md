@@ -18,6 +18,16 @@ coordination and administration stay in the web.
 Code and technical docs are in English; everything the user sees, and the
 Proyecto 2 deliverables, are in Spanish.
 
+## Evaluation account
+
+To try the app, install the [APK](https://github.com/CrisSalas07/DeclaraUCR/releases/download/v2.0.0%2B11/DeclaraUCR-v2.0.0%2B11-2c930c4.apk)
+and sign in with this declarant account (it already has a superior and IF0009
+in III Ciclo - 2027):
+
+| Email | Password |
+|---|---|
+| `declarante@gmail.com` | `declarante123` |
+
 ## Current status (27/11/2026)
 
 - **Version 2.0.0+11** is the final one ([`v2.0.0+11`](https://github.com/CrisSalas07/DeclaraUCR/releases/tag/v2.0.0%2B11)), signed with the
