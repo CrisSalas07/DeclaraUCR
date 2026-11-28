@@ -187,7 +187,7 @@ Sin nombres ni cédulas: solo la relación con el proceso. Al menos una persona 
 |---|---|---|---|---|---|
 | P1 | Estudiante; nunca ha llenado una declaración jurada de jornada; usa el teléfono casi nunca para trámites | No | Honor 200 Lite, de la persona | 24/11/2026 | `bitacora-sesiones.docx` §3 |
 | P2 | Amigo del equipo; nunca ha llenado una declaración jurada de jornada; usa el teléfono a veces para trámites | No | Honor Magic7 Lite, de la persona | 24/11/2026 | `bitacora-sesiones.docx` §4 |
-| P3 | Docente de la Sede del Sur, carrera Informática Empresarial; llenó la declaración jurada durante varios años, a mano en Excel, sin sistema; usa el teléfono para trámites con frecuencia | **Sí** | `[COMPLETAR: modelo]` | 27/11/2026 | `bitacora-sesiones.docx` §5 |
+| P3 | Docente de la Sede del Sur, carrera Informática Empresarial; llenó la declaración jurada durante varios años, a mano en Excel, sin sistema; usa el teléfono para trámites con frecuencia | **Sí** | Samsung Galaxy S24 Ultra, de la persona | 27/11/2026 | `bitacora-sesiones.docx` §5 |
 
 ### 6.4 Resultados por tarea
 
