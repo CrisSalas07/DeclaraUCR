@@ -272,7 +272,7 @@ abstract final class DeclarationPdf {
         box(restWidth, 'Cédula: ${document(person.identification)}', data),
       ]),
       _row([
-        box(labelWidth, 'Carrera:', label),
+        box(labelWidth, 'Unidad Académica o Administrativa:', label),
         box(valueWidth, person.unitName, value, align: pw.Alignment.center),
         box(restWidth, 'Correo electrónico: ${person.email}', data),
       ]),
@@ -541,7 +541,7 @@ abstract final class DeclarationPdf {
               SignatureType.declarant,
               'Firma del Funcionario(a)\nDeclarante',
             ),
-            column(SignatureType.superior, 'Superior\nCarrera'),
+            column(SignatureType.superior, 'Superior Jerárquico\nUnidad'),
             column(SignatureType.hr, 'Oficina de\nRecursos Humanos'),
             pw.SizedBox(
               width: 110,
