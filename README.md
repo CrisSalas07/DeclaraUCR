@@ -41,6 +41,7 @@ Each README covers only its folder; this one is the entry point.
 | Document | What it is for |
 |---|---|
 | [`entregables/README.md`](entregables/README.md) | The eight Proyecto 2 deliverables (§11 of the brief) and what is in each folder |
+| [`entregables/DeclaraUCR.mp4`](entregables/DeclaraUCR.mp4) | The DeclaraUCR video |
 | [`entregables/03-informe-tecnico/informe-tecnico.docx`](entregables/03-informe-tecnico/informe-tecnico.docx) | Scope, architecture, mobile decisions, integration, deployment and known limitations (for the professor) |
 | [`entregables/02-aplicacion-distribuible/instalacion.docx`](entregables/02-aplicacion-distribuible/instalacion.docx) | Install, update and roll back the APK; build and release a version; prepare the real backend |
 | [`entregables/05-informe-pruebas/pruebas-tecnicas.pdf`](entregables/05-informe-pruebas/pruebas-tecnicas.pdf) | Technical test cases CP-01 to CP-08 with their screenshots |
