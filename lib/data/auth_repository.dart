@@ -21,8 +21,11 @@ abstract class AuthRepository {
   /// right after registering).
   Stream<AppUser?> userChanges();
 
+  /// The signed-in person, or `null`.
   AppUser? get currentUser;
 
+  /// Throws an [AuthException] with the Spanish message to show (wrong
+  /// password, no network...).
   Future<void> signIn({required String email, required String password});
 
   /// Creates the account and its declarant profile (name, cédula, phone and
@@ -42,9 +45,11 @@ abstract class AuthRepository {
   /// Silent when the account does not exist (no account enumeration).
   Future<void> sendPasswordReset(String email);
 
+  /// Ends the session; every per-person provider is dropped with it.
   Future<void> signOut();
 }
 
+/// [AuthRepository] on Firebase Auth, with the profile in Firestore.
 class FirebaseAuthRepository implements AuthRepository {
   FirebaseAuthRepository(this._auth, this._profiles) {
     // Verification and reset e-mails in Spanish.

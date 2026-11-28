@@ -6,7 +6,8 @@ import 'package:declara_ucr/models/declaration_document.dart';
 /// builds it (`OathText`, `OathTemplate` and `OathTextService`): once the
 /// declarant signed, exactly the text they accepted; before, the
 /// administrator's template (or the default one) filled with the data of
-/// the declaration. Pure Dart.
+/// the declaration. Only the default text differs from the web: here it is
+/// the oath of the official form (U-08). Pure Dart.
 abstract final class OathText {
   /// The oath of the official form (the Excel format of the university),
   /// word for word. It has no variables: the data of the person is already

@@ -16,7 +16,7 @@ y evidencia.
 **Ejecución.** CP-01, CP-02, CP-04, CP-05 y CP-07 se ejecutaron el 2026-11-19 en un Samsung Galaxy A34
 (Android 16, letra al 110 %) con un build de desarrollo del **mismo commit `fc21a84`** de la 2.0.0+5, contra los
 emuladores con las reglas del Proyecto 1 y los datos ficticios de `backend/proyecto1/seed.mjs` (cuentas
-`docente`, `docente2` y `revisor`). Así las capturas no muestran datos de las cuentas reales del equipo y los
+`docente`, `docente2` y `superior`). Así las capturas no muestran datos de las cuentas reales del equipo y los
 casos se pueden repetir desde cero. CP-03 y CP-06 se ejecutaron el mismo día con el APK publicado y el backend real (CP-06 también
 en la web del Proyecto 1); CP-08 también se ejecuta así, con el APK publicado de la 2.0.0+7.
 En las capturas se taparon los íconos de notificaciones de la barra de estado del teléfono.
@@ -79,15 +79,15 @@ traslape bloquea la validación con el mensaje "Traslape el lunes entre … y �
 | | |
 |---|---|
 | **Precondiciones** | El borrador de CP-02 con todas las horas ubicadas. Con conexión |
-| **Pasos** | 1. En el resumen, revisar el estado y tocar **Validar**.<br>2. Revisar el botón y el ícono rojo del PDF; abrir el PDF.<br>3. Tocar **Firmar y enviar a mi revisor** (tarjeta "Siguiente paso: firmar"), leer el juramento, marcar la casilla y firmar.<br>4. Volver a **Inicio** |
-| **Resultado esperado** | 1: "Sin problemas: la declaración puede validarse." → aviso "Declaración validada y guardada." y estado **VALIDADA**.<br>2: el botón dice **Validada** y queda deshabilitado; el PDF muestra la marca "BORRADOR".<br>3: aviso "Declaración firmada y enviada a su revisor."; estado **PENDIENTE_FIRMA_SUPERIOR**.<br>4: el seguimiento muestra Elaboración ✓, Firmada ✓ y **Revisor** resaltado, con "Firmada y enviada: su revisor la está revisando."; el PDF pasa a "COPIA PARA REVISIÓN" con la firma |
-| **Resultado obtenido** | Precondición real: la declaración de la declarante de prueba en el backend real, devuelta por Recursos Humanos y corregida en la web como **versión 2** (BORRADOR), con las horas completas.<br>1: "Sin problemas: la declaración puede validarse." → "Declaración validada y guardada." y estado **VALIDADA**.<br>2: el botón dice **Validada** y está deshabilitado; el PDF muestra "VISTA PREVIA - BORRADOR SIN FIRMAS".<br>3: la pantalla de firma muestra "Versión 2" y el juramento con los datos de la declarante; al firmar, vuelve a Inicio y la declaración queda en **PENDIENTE_FIRMA_SUPERIOR**.<br>4: seguimiento con Elaboración ✓, Firmada ✓ y **Revisor** resaltado, "Firmada y enviada: su revisor la está revisando."; el PDF dice "COPIA PARA REVISIÓN", con la firma de la declarante ("Firmado electrónicamente el 19/11/2026") y al pie "Versión 2 · huella SHA-256 …". Al abrirla, queda de solo lectura (**Guardar borrador** deshabilitado). La firma de una versión que no es la primera funciona contra las reglas reales |
+| **Pasos** | 1. En el resumen, revisar el estado y tocar **Validar**.<br>2. Revisar el botón y el ícono rojo del PDF; abrir el PDF.<br>3. Tocar **Firmar y enviar a mi superior** (tarjeta "Siguiente paso: firmar"), leer el juramento, marcar la casilla y firmar.<br>4. Volver a **Inicio** |
+| **Resultado esperado** | 1: "Sin problemas: la declaración puede validarse." → aviso "Declaración validada y guardada." y estado **VALIDADA**.<br>2: el botón dice **Validada** y queda deshabilitado; el PDF muestra la marca "BORRADOR".<br>3: aviso "Declaración firmada y enviada a su superior."; estado **PENDIENTE_FIRMA_SUPERIOR**.<br>4: el seguimiento muestra Elaboración ✓, Firmada ✓ y **Superior** resaltado, con "Firmada y enviada: su superior la está revisando."; el PDF pasa a "COPIA PARA REVISIÓN" con la firma |
+| **Resultado obtenido** | Precondición real: la declaración de la declarante de prueba en el backend real, devuelta por Recursos Humanos y corregida en la web como **versión 2** (BORRADOR), con las horas completas.<br>1: "Sin problemas: la declaración puede validarse." → "Declaración validada y guardada." y estado **VALIDADA**.<br>2: el botón dice **Validada** y está deshabilitado; el PDF muestra "VISTA PREVIA - BORRADOR SIN FIRMAS".<br>3: la pantalla de firma muestra "Versión 2" y el juramento con los datos de la declarante; al firmar, vuelve a Inicio y la declaración queda en **PENDIENTE_FIRMA_SUPERIOR**.<br>4: seguimiento con Elaboración ✓, Firmada ✓ y **Superior** resaltado, "Firmada y enviada: su superior la está revisando."; el PDF dice "COPIA PARA REVISIÓN", con la firma de la declarante ("Firmado electrónicamente el 19/11/2026") y al pie "Versión 2 · huella SHA-256 …". Al abrirla, queda de solo lectura (**Guardar borrador** deshabilitado). La firma de una versión que no es la primera funciona contra las reglas reales |
 | **Versión** | 2.0.0+5 (`fc21a84`), APK publicado, backend real (2026-11-19) |
 | **Evidencia** | `CP-03-1.png` (validada), `CP-03-2.png` (firma), `CP-03-3.png` (seguimiento en Inicio). Son de una cuenta del backend real: el nombre, la cédula y el saludo están tapados con barras grises |
 | **Estado** | Aprobado |
 
 > La firma queda registrada en el backend real y la persona declarante no puede deshacerla. Para repetir el
-> caso, el revisor **devuelve** la declaración desde la web y se corrige como versión nueva.
+> caso, el superior **devuelve** la declaración desde la web y se corrige como versión nueva.
 
 ## CP-04
 
@@ -95,7 +95,7 @@ traslape bloquea la validación con el mensaje "Traslape el lunes entre … y �
 
 | | |
 |---|---|
-| **Precondiciones** | Sesión de una declarante con cursos y **sin** declaración en el período (otra cuenta, o después de que el revisor devuelva la de CP-03). Con conexión |
+| **Precondiciones** | Sesión de una declarante con cursos y **sin** declaración en el período (otra cuenta, o después de que el superior devuelva la de CP-03). Con conexión |
 | **Pasos** | 1. **Nueva declaración** y, sin elegir el puesto, tocar **Guardar borrador**.<br>2. Tocar **Ver resumen** sin ubicar atención ni planificación.<br>3. Volver, elegir el puesto y abrir de nuevo el resumen |
 | **Resultado esperado** | 1: se guarda igual (es un borrador) con el aviso "Borrador guardado. Falta 1 dato obligatorio."; el campo marca "Este campo es obligatorio." y arriba dice "5 de 6 datos obligatorios".<br>2: "Hay N puntos por corregir", con "Falta: Puesto." y cada hora faltante ("Faltan 2 h de atención a estudiantes de IF0009 en el horario.", …); **Validar** deshabilitado.<br>3: desaparece "Falta: Puesto."; siguen las horas faltantes y **Validar** sigue deshabilitado |
 | **Resultado obtenido** | 1: "Borrador guardado. Falta 1 dato obligatorio.", el campo **Puesto** en rojo con "Este campo es obligatorio." y "5 de 6 datos obligatorios".<br>2: "Hay 5 puntos por corregir": "Falta: Puesto." y las cuatro horas faltantes ("Faltan 2 h de atención a estudiantes de IF0009 en el horario.", …); **Validar** deshabilitado.<br>3: "Hay 4 puntos por corregir" (desaparece "Falta: Puesto."); **Validar** sigue deshabilitado |
@@ -109,10 +109,10 @@ traslape bloquea la validación con el mensaje "Traslape el lunes entre … y �
 
 | | |
 |---|---|
-| **Precondiciones** | Cuentas de prueba: **revisor o Coordinación** (sin rol de declarante) y **declarante sin cursos**. Con conexión |
-| **Pasos** | 1. Iniciar sesión con la cuenta de revisor o Coordinación.<br>2. Cerrar sesión e iniciar con la declarante sin cursos.<br>3. Tocar **Nueva declaración** |
+| **Precondiciones** | Cuentas de prueba: **superior o Coordinación** (sin rol de declarante) y **declarante sin cursos**. Con conexión |
+| **Pasos** | 1. Iniciar sesión con la cuenta de superior o Coordinación.<br>2. Cerrar sesión e iniciar con la declarante sin cursos.<br>3. Tocar **Nueva declaración** |
 | **Resultado esperado** | 1: pantalla "No puede continuar" con "Esta aplicación es para personas declarantes." y el rol de la cuenta; solo deja **Cerrar sesión**.<br>3: "La Coordinación de su carrera aún no le asignó cursos en II Ciclo - 2026." y no se crea nada |
-| **Resultado obtenido** | 1: con la cuenta de revisor, "No puede continuar", "Esta aplicación es para personas declarantes." y "Su cuenta tiene el rol de Revisor. Use el sistema web de declaraciones para sus funciones."; solo **Cerrar sesión**.<br>3: con la declarante sin cursos, "La Coordinación de su carrera aún no le asignó cursos en II Ciclo - 2026." y la lista sigue vacía |
+| **Resultado obtenido** | 1: con la cuenta de superior, "No puede continuar", "Esta aplicación es para personas declarantes." y "Su cuenta tiene el rol de Superior. Use el sistema web de declaraciones para sus funciones."; solo **Cerrar sesión**.<br>3: con la declarante sin cursos, "La Coordinación de su carrera aún no le asignó cursos en II Ciclo - 2026." y la lista sigue vacía |
 | **Versión** | 2.0.0+5 (`fc21a84`), build de desarrollo contra los emuladores con datos ficticios |
 | **Evidencia** | `CP-05-1.png` (cuenta sin rol de declarante), `CP-05-2.png` (sin cursos) |
 | **Estado** | Aprobado |
@@ -120,7 +120,7 @@ traslape bloquea la validación con el mensaje "Traslape el lunes entre … y �
 Los mismos controles están en las **reglas del backend**, no solo en la app: `backend/proyecto1/verify.mjs`
 comprueba contra las reglas del Proyecto 1 que una persona no lee la declaración, la asignación ni el zonaje
 de otra, no crea dos declaraciones en un período y no se salta la firma; `integration_test/sign_rules_test.dart`,
-que el revisor lee exactamente lo firmado y que no se firma dos veces.
+que el superior lee exactamente lo firmado y que no se firma dos veces.
 
 ## CP-06
 
@@ -131,7 +131,7 @@ que el revisor lee exactamente lo firmado y que no se firma dos veces.
 | **Precondiciones** | La declaración firmada de CP-03. Acceso a la web <https://declarahorario-b186f.web.app> |
 | **Pasos** | 1. En la web, iniciar sesión con la misma declarante y abrir la declaración.<br>2. En el teléfono, cerrar sesión y volver a iniciarla.<br>3. Abrir la declaración en el teléfono |
 | **Resultado esperado** | 1: la web muestra la misma declaración: estado, horario, cursos y la firma de la declarante.<br>2: tras volver a entrar aparecen las mismas declaraciones (los datos están en el servidor, no solo en el teléfono).<br>3: queda de **solo lectura** (firmada): no se editan el puesto ni el horario y no aparece **Guardar borrador** habilitado; el PDF sí se abre |
-| **Resultado obtenido** | 1: en la web (con la misma declarante), "Mis declaraciones" muestra II Ciclo - 2026, **Versión 2**, "Pendiente de firma del revisor" y el seguimiento en **Revisor**, igual que el teléfono. "Seguimiento del trámite" indica responsable actual **Revisor**, versión 2, y la bitácora registra lo que hizo el teléfono en la versión 2 con los mismos eventos que escribe la web: "Validación ejecutada" (17:22), "Firma iniciada", "Firma registrada · Firmada por el declarante" y "Firma registrada · Pendiente de firma del revisor" (17:24).<br>2: la app se desinstaló y se volvió a instalar en el teléfono (2.0.0+5) y, al iniciar sesión de nuevo, mostró las mismas declaraciones; también después de actualizar a la 2.0.0+6.<br>3: con la 2.0.0+6, la declaración abre con "Esta declaración ya fue firmada y no se edita.", el estado "Pendiente de firma del revisor", **Guardar borrador** deshabilitado y el PDF disponible |
+| **Resultado obtenido** | 1: en la web (con la misma declarante), "Mis declaraciones" muestra II Ciclo - 2026, **Versión 2**, "Pendiente de firma del superior" y el seguimiento en **Superior**, igual que el teléfono. "Seguimiento del trámite" indica responsable actual **Superior**, versión 2, y la bitácora registra lo que hizo el teléfono en la versión 2 con los mismos eventos que escribe la web: "Validación ejecutada" (17:22), "Firma iniciada", "Firma registrada · Firmada por el declarante" y "Firma registrada · Pendiente de firma del superior" (17:24).<br>2: la app se desinstaló y se volvió a instalar en el teléfono (2.0.0+5) y, al iniciar sesión de nuevo, mostró las mismas declaraciones; también después de actualizar a la 2.0.0+6.<br>3: con la 2.0.0+6, la declaración abre con "Esta declaración ya fue firmada y no se edita.", el estado "Pendiente de firma del superior", **Guardar borrador** deshabilitado y el PDF disponible |
 | **Versión** | Web del Proyecto 1 y app 2.0.0+5 / 2.0.0+6 (APK publicado), backend real (2026-11-19) |
 | **Evidencia** | `CP-06-1.png` (seguimiento en la web), `CP-06-2.png` (bitácora en la web con los eventos de la firma desde el teléfono). El nombre de la cuenta está tapado con barras grises. El paso 3 se comprobó en la pantalla del teléfono; la vista de solo lectura es la de CP-03 |
 | **Estado** | Aprobado |

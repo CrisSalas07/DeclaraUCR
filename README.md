@@ -18,14 +18,21 @@ Proyecto 2 deliverables, are in Spanish.
 
 ## Current status (27/11/2026)
 
-- **Version 2.0.0+10** is the final one ([`v2.0.0+10`](https://github.com/CrisSalas07/DeclaraUCR/releases/tag/v2.0.0%2B10)), signed with the
+- **Version 2.0.0+10** is the latest release ([`v2.0.0+10`](https://github.com/CrisSalas07/DeclaraUCR/releases/tag/v2.0.0%2B10)), signed with the
   team key, against the real Proyecto 1 backend: the lessons of each course
-  above the schedule days and the oath of the official form in the PDF, on top
-  of 2.0.0+9 (guided tour) and 2.0.0+8 ("Superior" role, fixes from the user
-  sessions U-01, U-03 to U-07). The user sessions used 2.0.0+7.
-- 121 automated tests pass; technical cases CP-01 to CP-07 passed, CP-08
+  above the schedule days (U-09) and the oath of the official form (U-08),
+  both asked by P3, a teacher; on top of 2.0.0+9 (guided tour) and 2.0.0+8
+  ("Superior" role, fixes U-01, U-03 to U-07). Sessions P1 and P2 used
+  2.0.0+7, P3 used 2.0.0+9.
+- **2.0.0+11** is in the code, not released yet: observations and PDF labels
+  as in the official Excel form (U-10). The course group of the form is not
+  in the Proyecto 1 schema.
+- 124 automated tests pass; technical cases CP-01 to CP-07 passed, CP-08
   (clean install on another phone) pending.
-- Left: session P3, the retest with a participant, CP-08 with 2.0.0+10 and the
+- The production backend was cleaned on 27/11/2026: only the administration
+  account is left, plus the catalogs (campuses, units, courses, periods). The
+  team is creating new evaluation accounts to run the whole flow again.
+- Left: release 2.0.0+11, the retest with P2 (P3 cannot retest), CP-08 and the
   socialization (video, synthesis and its improvements in the matrix).
 
 ## Where to find what
@@ -49,12 +56,14 @@ Each README covers only its folder; this one is the entry point.
 |---|---|
 | Sections Inicio · Declaraciones · Zonaje · Historial | [`lib/screens/shell_screen.dart`](lib/screens/shell_screen.dart), `home_screen.dart`, `declarations_screen.dart`, `zonaje_screen.dart`, `history_screen.dart` |
 | Sign-in, sign-up (cédula, phone), campus and career, account notice | [`lib/screens/auth/`](lib/screens/auth) |
+| Profile: edit name, cédula and phone (U-07) | [`lib/screens/edit_profile_screen.dart`](lib/screens/edit_profile_screen.dart), [`lib/data/profile_repository.dart`](lib/data/profile_repository.dart) |
+| Guided tour over the real screens with a demo teacher (U-06), shown once per phone and from the profile | [`lib/screens/tutorial_screen.dart`](lib/screens/tutorial_screen.dart), [`lib/widgets/tour_anchor.dart`](lib/widgets/tour_anchor.dart), [`lib/data/demo_session.dart`](lib/data/demo_session.dart), [`lib/data/onboarding_store.dart`](lib/data/onboarding_store.dart) |
 | Declaration form: position, courses, projects, other jobs | [`lib/screens/declaration_form_screen.dart`](lib/screens/declaration_form_screen.dart), [`lib/widgets/workload_dialogs.dart`](lib/widgets/workload_dialogs.dart) |
-| Weekly half-hour grid (one day at a time, TalkBack) | [`lib/widgets/schedule_editor.dart`](lib/widgets/schedule_editor.dart), [`lib/domain/schedule_grid.dart`](lib/domain/schedule_grid.dart), `schedule_requirements.dart` |
+| Weekly half-hour grid (one day at a time, lessons of each course above the days, TalkBack) | [`lib/widgets/schedule_editor.dart`](lib/widgets/schedule_editor.dart), [`lib/domain/schedule_grid.dart`](lib/domain/schedule_grid.dart), `schedule_requirements.dart` |
 | Validation: hours per task, overlaps, required fields | [`lib/domain/declaration_validator.dart`](lib/domain/declaration_validator.dart), `overlap_detector.dart`, `field_rules.dart` |
 | Course hours and workdays | [`lib/domain/course_rules.dart`](lib/domain/course_rules.dart), `workload_catalog.dart` |
 | Summary, Validar and the 5-step tracking | [`lib/screens/summary_screen.dart`](lib/screens/summary_screen.dart), [`lib/widgets/declaration_progress.dart`](lib/widgets/declaration_progress.dart) |
-| Signature and PDF | [`lib/screens/sign_declaration_screen.dart`](lib/screens/sign_declaration_screen.dart), [`lib/data/proyecto1/declaration_signer.dart`](lib/data/proyecto1/declaration_signer.dart), [`lib/pdf/declaration_pdf.dart`](lib/pdf/declaration_pdf.dart) |
+| Signature (official-form oath) and PDF | [`lib/screens/sign_declaration_screen.dart`](lib/screens/sign_declaration_screen.dart), [`lib/domain/oath_text.dart`](lib/domain/oath_text.dart), [`lib/data/proyecto1/declaration_signer.dart`](lib/data/proyecto1/declaration_signer.dart), [`lib/pdf/declaration_pdf.dart`](lib/pdf/declaration_pdf.dart) |
 | Reads and writes in the Proyecto 1 schema | [`lib/data/proyecto1/`](lib/data/proyecto1) |
 | Offline strip and save rules | [`lib/data/network_status.dart`](lib/data/network_status.dart), [`lib/widgets/offline_banner.dart`](lib/widgets/offline_banner.dart), [`lib/state/declaration_form_state.dart`](lib/state/declaration_form_state.dart) |
 | Backend selection (emulators or production) | [`lib/config/firebase_config.dart`](lib/config/firebase_config.dart) |
@@ -137,7 +146,10 @@ flutter test
 Unit and widget tests in `test/` (domain, data against a fake Firestore,
 connectivity, a 360×690 dp screen that fails on any overflow);
 [`integration_test/sign_rules_test.dart`](integration_test/sign_rules_test.dart) signs against the real Proyecto 1
-rules in the emulators. The manual technical cases are in [`entregables/05-informe-pruebas/pruebas-tecnicas.md`](entregables/05-informe-pruebas/pruebas-tecnicas.md).
+rules in the emulators, and
+[`integration_test/release_8_rules_test.dart`](integration_test/release_8_rules_test.dart) checks the list refresh
+(T-08, T-09) and the profile edit (U-07) with the real Firestore SDK on an
+Android emulator (how to run both: [`backend/proyecto1/README.md`](backend/proyecto1/README.md)). The manual technical cases are in [`entregables/05-informe-pruebas/pruebas-tecnicas.md`](entregables/05-informe-pruebas/pruebas-tecnicas.md).
 All test data is fictitious.
 
 ## Visual identity decisions

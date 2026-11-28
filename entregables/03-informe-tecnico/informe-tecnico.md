@@ -32,11 +32,11 @@ declaraciones abiertas a la vez.
 
 | Proceso en el Proyecto 1 (web) | En el móvil | Cómo se adaptó |
 |---|---|---|
-| Registro y perfil (cédula, teléfono, sede, carrera) | **Sí** | Mismo esquema `users/{uid}` y reserva de cédula `identifications/CEDULA_{n}`; sede y carrera se eligen una vez |
+| Registro y perfil (cédula, teléfono, sede, carrera) | **Sí** | Mismo esquema `users/{uid}` y reserva de cédula `identifications/CEDULA_{n}`; sede y carrera se eligen una vez; nombre, cédula y teléfono se corrigen desde el perfil (U-07) |
 | **Crear, editar y recuperar una declaración en borrador** (§5.1-1) | **Sí — proceso 1** | Un período abierto, una declaración por período; nombre, cédula, institución, período y vigencia vienen del perfil y del período; la persona solo elige el puesto |
 | **Registro de horarios, cálculo de horas y traslapes** (§5.1-2) | **Sí — proceso 2** | La cuadrícula de medias horas de la web, un día a la vez; clases fijas de la Coordinación; cada tarea muestra "x h de y h" y nunca toma más |
 | **Resumen, validaciones y estado** (§5.1-3) | **Sí — proceso 3** | Resumen con horas por categoría, lista de puntos por corregir y botón **Validar** que solo se activa sin problemas; seguimiento de 5 pasos en Inicio |
-| Firma de la persona declarante | **Sí** | Mismo juramento y misma huella SHA-256 del contenido; envía al superior |
+| Firma de la persona declarante | **Sí** | Misma huella SHA-256 del contenido y mismo registro de la firma; el juramento es el del formulario oficial, o la plantilla de Administración si existe (matriz U-08); envía al superior |
 | PDF de la declaración | **Sí** (consulta) | Mismo formulario oficial: vista previa "BORRADOR", copia en revisión y documento final |
 | Historial por año | **Sí** | Declaraciones y solicitudes de zonaje de todos los períodos |
 | Zonaje | **Consulta** | Estado, distancias y respuesta de RRHH; la solicitud se hace en la web (necesita mapa y la certificación del TSE) |
@@ -104,7 +104,8 @@ sesión anterior.
 La capa de dominio vino casi sin cambios de la web: detección de traslapes, reglas de tiempo, el contrato de
 validación (los mensajes dicen el día, los intervalos y la hora exacta del choque), los nombres de estado, la
 cuadrícula de medias horas, el catálogo de jornadas y las horas de cada curso (VD-12928-2024, VD-13015-2024),
-el formato de observaciones y la huella SHA-256. Lo que se reescribió fueron las pantallas.
+el formato de observaciones y la huella SHA-256. Lo que se reescribió fueron las pantallas. Desde la 2.0.0+11 las
+observaciones unen los horarios con «y», como el machote oficial (matriz U-10); la web del P1 sigue usando coma.
 
 ## 4. Decisiones de adaptación móvil
 
@@ -118,6 +119,8 @@ el formato de observaciones y la huella SHA-256. Lo que se reescribió fueron la
 | Zonaje necesita mapa y un archivo del TSE | Solo consulta en el teléfono | Elegir un punto en un mapa y adjuntar un PDF en un teléfono es frágil; la web ya lo resuelve |
 | Salir sin guardar (D-01) | El formulario pregunta antes de descartar cambios | §5: nada se pierde sin que la persona lo sepa |
 | Lector de pantalla (D-02) | Cada media hora es un botón para TalkBack con día, hora y contenido | La cuadrícula era el único paso que no se podía hacer sin ver |
+| Primer uso (U-06) | Recorrido guiado sobre las pantallas reales con una docente de ejemplo; enfoca una parte a la vez y se repite desde el perfil («Cómo funciona») | En las sesiones, sin guía no se entendía la cuadrícula; el recorrido no guarda nada |
+| Ubicar horas alrededor de las clases (U-09, pedido por una docente en las pruebas) | Arriba de los días, **Horario de sus clases** muestra los días y horas de cada curso; tocar uno abre ese día | Un día a la vez oculta el resto de la semana |
 
 ## 5. Integración con autenticación, servicios y persistencia
 
@@ -155,7 +158,7 @@ El procedimiento paso a paso está en `entregables/02-aplicacion-distribuible/in
 
 ## 7. Calidad y pruebas
 
-- 109 pruebas automatizadas, todas pasan; `flutter analyze` sin problemas.
+- 121 pruebas automatizadas, todas pasan; `flutter analyze` sin problemas.
 - 8 casos técnicos; CP-01 a CP-07 aprobados, CP-08 (instalación desde cero) `[COMPLETAR]`.
 - Detalle en `entregables/05-informe-pruebas/informe-pruebas.md`.
 
@@ -168,6 +171,8 @@ El procedimiento paso a paso está en `entregables/02-aplicacion-distribuible/in
 - Un nombramiento por declaración: si en la web se agregó más de uno, el teléfono edita el primero y deja los
   demás como están.
 - No incluido en el móvil: verificación del correo, registro con pasaporte, revisión, RRHH y Administración.
+- Las observaciones no llevan el **grupo** del curso («IF0004 G2» en el machote oficial): el esquema del P1 no lo
+  guarda. Agregarlo es un cambio de la web y del esquema (matriz U-10).
 - La pantalla de carga con la firma promocional (manual de identidad, p. 122) no se hizo: ese recurso solo está
   en el paquete privado de la ODI.
 

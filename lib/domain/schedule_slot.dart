@@ -1,6 +1,7 @@
 import 'package:declara_ucr/models/weekday.dart';
 
-/// Where a schedule block comes from.
+/// Where a schedule block comes from: an appointment at the university or a
+/// job at another institution.
 enum SlotOrigin { appointment, externalJob }
 
 /// "Flattened" block used by the overlap detector: merges the blocks of the

@@ -21,6 +21,8 @@ abstract class PeriodRepository {
   Future<WorkloadAssignment?> assignmentFor(String periodId);
 }
 
+/// [PeriodRepository] on `periods` and `workloadAssignments` of the
+/// Proyecto 1, for one person.
 class FirestorePeriodRepository implements PeriodRepository {
   FirestorePeriodRepository(this._firestore, {required this._uid});
 

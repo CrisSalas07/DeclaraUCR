@@ -3,12 +3,15 @@ import 'package:declara_ucr/models/schedule_task.dart';
 import 'package:declara_ucr/models/weekday.dart';
 
 /// The observations of a declaration, written from its schedule; reused
-/// from DeclaraHorario (`ScheduleObservations`). Pure Dart.
+/// from DeclaraHorario (`ScheduleObservations`), except that ranges are
+/// joined with "y" as in the official Excel form (U-10), where the web uses
+/// commas. The form also writes the course group ("IF0004 G2"); the
+/// Proyecto 1 schema does not store it. Pure Dart.
 ///
 /// One line per course, project and job at another institution, in the
 /// style of the official form:
 ///
-///     IF0004 HC: L 1 pm a 5 pm, K 1 pm a 5 pm. AE: L 10 am a 12 pm. PyE: M 7 am a 12 pm.
+///     IF0004 HC: L 1 pm a 5 pm y K 1 pm a 5 pm. AE: L 10 am a 12 pm. PyE: M 7 am a 12 pm.
 ///     Huertas (proyecto): V 2 pm a 4 pm.
 ///     Colegio X: S 8 am a 12 pm.
 ///
@@ -36,7 +39,8 @@ abstract final class ScheduleObservations {
         : '$shown:${minute.toString().padLeft(2, '0')} $suffix';
   }
 
-  /// "L 1 pm a 5 pm, K 1 pm a 5 pm", by day and time.
+  /// "L 1 pm a 5 pm y K 1 pm a 5 pm", by day and time; with three or more,
+  /// commas and "y" before the last one, as in the official form.
   static String ranges(Iterable<ScheduleInterval> intervals) {
     final ordered = intervals.toList()
       ..sort(
@@ -44,13 +48,12 @@ abstract final class ScheduleObservations {
             ? a.day.number.compareTo(b.day.number)
             : a.startMinutes.compareTo(b.startMinutes),
       );
-    return ordered
-        .map(
-          (i) =>
-              '${_days[i.day]} ${clock(i.startMinutes)} a '
-              '${clock(i.endMinutes)}',
-        )
-        .join(', ');
+    final parts = [
+      for (final i in ordered)
+        '${_days[i.day]} ${clock(i.startMinutes)} a ${clock(i.endMinutes)}',
+    ];
+    if (parts.length < 2) return parts.join();
+    return '${parts.sublist(0, parts.length - 1).join(', ')} y ${parts.last}';
   }
 
   /// The lines of the schedule: every course (by sigla), then the projects

@@ -10,7 +10,10 @@ import 'package:pdf/widgets.dart' as pw;
 /// The declaration PDF on the official form of the Oficina de Recursos
 /// Humanos, "Declaración jurada de horario y jornada de trabajo": the same
 /// document the web of the Proyecto 1 prints (`PdfBuilderService` of
-/// DeclaraHorario), built here from the same stored data.
+/// DeclaraHorario), built here from the same stored data. Two labels follow
+/// the official Excel form instead of the web (U-10): "Unidad Académica o
+/// Administrativa:" and "Superior Jerárquico Unidad". The HR signature,
+/// absent from the form, stays because the Proyecto 1 process ends there.
 ///
 /// Landscape letter page with the person's data, the appointments at the
 /// university and the other institutions (per day, "De"/"A"), observations,
@@ -272,7 +275,7 @@ abstract final class DeclarationPdf {
         box(restWidth, 'Cédula: ${document(person.identification)}', data),
       ]),
       _row([
-        box(labelWidth, 'Carrera:', label),
+        box(labelWidth, 'Unidad Académica o Administrativa:', label),
         box(valueWidth, person.unitName, value, align: pw.Alignment.center),
         box(restWidth, 'Correo electrónico: ${person.email}', data),
       ]),
@@ -541,7 +544,7 @@ abstract final class DeclarationPdf {
               SignatureType.declarant,
               'Firma del Funcionario(a)\nDeclarante',
             ),
-            column(SignatureType.superior, 'Superior\nCarrera'),
+            column(SignatureType.superior, 'Superior Jerárquico\nUnidad'),
             column(SignatureType.hr, 'Oficina de\nRecursos Humanos'),
             pw.SizedBox(
               width: 110,

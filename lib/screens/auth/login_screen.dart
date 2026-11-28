@@ -7,6 +7,8 @@ import 'package:declara_ucr/widgets/common.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+/// Sign-in with e-mail and password, with links to sign up and to reset
+/// the password.
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 

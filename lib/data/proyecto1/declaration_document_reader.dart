@@ -29,6 +29,7 @@ class DocumentUnavailableException implements Exception {
   String toString() => message;
 }
 
+/// [DeclarationDocumentReader] on the Proyecto 1 schema, for one person.
 class FirestoreDeclarationDocumentReader implements DeclarationDocumentReader {
   FirestoreDeclarationDocumentReader(this._firestore, {required this._uid});
 

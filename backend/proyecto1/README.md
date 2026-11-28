@@ -51,6 +51,15 @@ primera vez, `flutter create --platforms=windows .` (no se sube al repositorio):
 firebase emulators:exec --config backend/proyecto1/firebase.json --project demo-declaraucr --only auth,firestore "node backend/proyecto1/seed.mjs && flutter test integration_test/sign_rules_test.dart -d windows --dart-define=EMULATOR_HOST=127.0.0.1"
 ```
 
+**Probar la lista y la edición del perfil contra las reglas** (opcional, con los emuladores cerrados y un
+emulador de Android abierto). Usa el SDK real de Firestore, con su caché: la lista se actualiza al guardar un
+borrador (T-08, T-09) y la persona corrige nombre, cédula y teléfono (U-07). Cada prueba de integración necesita
+datos recién cargados, porque `verify.mjs` y la otra prueba dejan un borrador:
+
+```
+firebase emulators:exec --config backend/proyecto1/firebase.json --project demo-declaraucr --only auth,firestore "node backend/proyecto1/seed.mjs && flutter test integration_test/release_8_rules_test.dart"
+```
+
 **Actualizar las reglas** cuando cambien en DeclaraHorario:
 
 ```

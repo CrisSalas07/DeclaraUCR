@@ -22,6 +22,8 @@ Future<void> showProjectDialog(
   ),
 );
 
+/// Dialog to add or edit a job at another institution; [onSave] returns a
+/// Spanish message when it cannot be saved.
 Future<void> showExternalJobDialog(
   BuildContext context, {
   ExternalJob? initial,

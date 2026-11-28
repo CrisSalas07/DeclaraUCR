@@ -57,6 +57,8 @@ abstract class ProfileRepository {
   Future<List<OrgUnit>> activeCareers(String campusId);
 }
 
+/// [ProfileRepository] on the Proyecto 1 collections `users`,
+/// `identifications`, `campuses` and `units`.
 class FirestoreProfileRepository implements ProfileRepository {
   FirestoreProfileRepository(this._firestore)
     : _users = _firestore.collection('users'),

@@ -37,6 +37,8 @@ class ScheduleInterval {
   String get institution =>
       task.kind == TaskKind.external ? task.name : Workplace.institution;
 
+  /// An independent copy: the form edits it and leaves the original as it
+  /// was.
   ScheduleInterval copy() => ScheduleInterval(
     id: id,
     day: day,
@@ -114,12 +116,14 @@ class Declaration {
   /// person does not move them (as in DeclaraHorario).
   final List<LessonSlot> lessonSlots;
 
+  /// Workplace printed on the university rows of the form.
   String get institution => Workplace.full;
 
   /// Weekly load of the courses (the workday the courses give).
   int get coursesMinutes =>
       courses.fold(0, (total, c) => total + c.workloadMinutes);
 
+  /// Weekly minutes of the projects.
   int get projectsMinutes =>
       projects.fold(0, (total, p) => total + p.weeklyMinutes);
 

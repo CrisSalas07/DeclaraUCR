@@ -111,6 +111,7 @@ class DeclaraUcrApp extends StatefulWidget {
   final AuthRepository auth;
   final ProfileRepository profiles;
   final PeriodRepository Function(String uid) periodsFor;
+  /// Declarations of the person, read and written in the Proyecto 1 schema.
   final DeclarationRepository Function(String uid, PeriodRepository periods)
   repositoryFor;
   final ZonajeRepository Function(String uid) zonajeFor;
