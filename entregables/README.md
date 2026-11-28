@@ -2,8 +2,8 @@
 
 Una carpeta por cada entregable del §11 del descriptor, en el mismo orden. Cada documento está en el formato
 para entregar: **PDF** si lleva capturas, **Word** si no. Las fuentes en Markdown y `tool/md2docx.py`, que
-generaba estos archivos, se borraron el 27/11/2026; siguen en el historial de git, en el commit `678c440`
-(`git checkout 678c440 -- entregables tool/md2docx.py`).
+generaba estos archivos, se borraron el 27/11/2026; siguen en el historial de git, en el commit `3d6ca2e`
+(`git checkout 3d6ca2e -- 'entregables/*/*.md' tool/md2docx.py`).
 
 ## 1. Los ocho entregables
 
