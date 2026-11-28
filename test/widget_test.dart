@@ -452,7 +452,9 @@ void main() {
     await tester.tap(find.text('Listo'));
     await tester.pumpAndSettle();
     expect(find.text('Hola, Ana'), findsOneWidget);
-    expect(store.wasSeen, isTrue);
+    // Seen per account: another account on this phone still gets it once.
+    expect(await store.seen(FakeAuthRepository.verifiedUser.uid), isTrue);
+    expect(await store.seen('otra-cuenta'), isFalse);
 
     await tester.tap(find.bySemanticsLabel('Perfil y cerrar sesión'));
     await tester.pumpAndSettle();

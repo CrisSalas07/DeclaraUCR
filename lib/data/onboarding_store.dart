@@ -1,26 +1,28 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
-/// Whether this phone already showed the first-use tour (U-06). Kept on the
-/// phone, not in the account: a new phone shows it again, which is fine.
+/// Whether an account already saw the first-use tour on this phone (U-06).
+/// Per account, so every new account sees it once even on a phone where
+/// someone else already did; a new phone shows it again, which is fine.
 abstract class OnboardingStore {
-  /// Whether the tour was already shown on this phone.
-  Future<bool> seen();
+  /// Whether the account [uid] was already shown the tour.
+  Future<bool> seen(String uid);
 
-  /// Records that the tour was shown, so it does not open by itself again.
-  Future<void> markSeen();
+  /// Records that [uid] saw the tour, so it does not open by itself again.
+  Future<void> markSeen(String uid);
 }
 
 /// [OnboardingStore] in the phone's shared preferences.
 class PrefsOnboardingStore implements OnboardingStore {
-  static const _key = 'onboarding.seen';
-
   final _prefs = SharedPreferencesAsync();
 
-  @override
-  Future<bool> seen() async => await _prefs.getBool(_key) ?? false;
+  static String _key(String uid) => 'onboarding.seen.$uid';
 
   @override
-  Future<void> markSeen() => _prefs.setBool(_key, true);
+  Future<bool> seen(String uid) async =>
+      await _prefs.getBool(_key(uid)) ?? false;
+
+  @override
+  Future<void> markSeen(String uid) => _prefs.setBool(_key(uid), true);
 }
 
 /// For tests and previews: the tour counts as seen unless told otherwise.
@@ -28,10 +30,11 @@ class MemoryOnboardingStore implements OnboardingStore {
   MemoryOnboardingStore({this.wasSeen = true});
 
   bool wasSeen;
+  final _seenBy = <String>{};
 
   @override
-  Future<bool> seen() async => wasSeen;
+  Future<bool> seen(String uid) async => wasSeen || _seenBy.contains(uid);
 
   @override
-  Future<void> markSeen() async => wasSeen = true;
+  Future<void> markSeen(String uid) async => _seenBy.add(uid);
 }
