@@ -205,7 +205,7 @@ Tiempo aproximado en minutos. Éxito: **Sí**, **Con ayuda** o **No**.
 | P2 | T2 | Sí | ≈ 10 (no anotado) | No eligió la tarea antes de tocar; no descubrió «mantenga presionado y deslice» | Ninguna (la de la cuadrícula fue en T1) | `P2-T2-resumen.png` |
 | P2 | T3 | Sí | ≈ 5 (no anotado) | — Dijo «validada y guardada»; después firmó y envió (9:29) | Ninguna | `P2-T3-estado.png` |
 | P3 | T1 | Sí | ≈ 6 (3:45–3:51 p. m.) | — | Ninguna | `P3-T1-borrador.png` |
-| P3 | T2 | Sí | ≈ 5 (3:51–3:56 p. m.) | — | Ninguna | `P3-T2-resumen.png` |
+| P3 | T2 | Sí | ≈ 5 (3:51–3:56 p. m.) | Al empezar no sabía qué día ni a qué hora tenía las clases asignadas («se me perdía el tema de las horas de clase»); lo resolvió sin pedir ayuda | Ninguna | `P3-T2-resumen.png` |
 | P3 | T3 | Sí | ≈ 4 (3:56–4:00 p. m.) | — | Ninguna | `P3-T3-estado.png` |
 
 **Diferencias de P1 con el guion.** La cuenta recibió el curso **IF0011** (1/4 TC) en lugar de IF0009; las
@@ -236,7 +236,7 @@ de uso de 1 a 5 y comentarios abiertos (§8), además de utilidad, claridad y fu
 |---|---|---|
 | P1 | 5 (utilidad 5, claridad 5, funcionamiento 5) | «La verdad no me pareció difícil, lo entendí muy bien […] no tuve alguna dificultad.» Cambiaría: que el **Puesto** no deje elegir uno que no es el suyo (eligió Catedrático siendo Interino Licenciado). «Felicitarles, me gustó la app, muy entendible!» |
 | P2 | 4 (utilidad 5, claridad 3, funcionamiento 4) | En el formulario: «Es un poco confuso el inicio ya que no sabía qué hacía cada botón.» Cambiaría: «Poner un tutorial guía al instalar la aplicación». Errores: ninguno. En la sesión dijo lo mismo: le faltó un tutorial introductivo para saber qué hace cada cosa |
-| P3 | `[COMPLETAR: si llenó el formulario]` | Pidió que el juramento fuera el del **formulario oficial** de la Universidad (`[COMPLETAR: sus palabras]`) |
+| P3 | `[COMPLETAR: si llenó el formulario]` | En la sesión: «cuando estaba empezando a hacer la declaración, como es celular se me perdía el tema de las horas de clase, sería bueno que donde dice horas de clase diga el horario del curso que se me asignó, como información, como para que uno pueda guiarse y no se pierda, porque al inicio me pasó eso, no sabía qué día ni qué hora me asignaron las HC y después de eso con el tema de la declaración jurada lo del párrafo de declaración». Después entregó al equipo el Excel con el machote oficial de la declaración |
 | **Promedio** | | |
 
 ### 6.6 Hallazgos de las sesiones
@@ -249,7 +249,8 @@ de uso de 1 a 5 y comentarios abiertos (§8), además de utilidad, claridad y fu
 | U-04 | Después de Validar no vio el botón «Firmar y enviar a mi superior» | P2, T1 | No supo cuál era el siguiente paso | Media | Después de Validar, el botón principal es **Firmar y enviar** y un aviso dice que es el siguiente paso. 2.0.0+8 |
 | U-05 | Después de Validar, Atrás lo devolvió al editor y la declaración volvió a Borrador | P2, T1 | Salió del resumen sin firmar y tuvo que validar otra vez | Media | Atrás después de validar vuelve al inicio sin tocar la declaración; solo «Corregir» abre el editor. 2.0.0+8 |
 | U-06 | Pide un tutorial la primera vez que explique cada parte (lo dijeron P2 y, en parte, P1) | P2 (y P1, T1) | Sin guía no entiende la lógica de la app | Media | Recorrido la primera vez en el teléfono, y en el perfil («Cómo funciona»): 4 páginas en la 2.0.0+8; en la 2.0.0+9, un recorrido guiado sobre las pantallas reales con una docente ficticia que enfoca cada parte y explica qué va en cada campo |
-| U-08 | El juramento no era el del formulario oficial de la Universidad | P3 (después de las tareas) | El texto que firma la persona no coincide con el que conoce del formato oficial | Media | El juramento predeterminado es el del formulario oficial, palabra por palabra; la plantilla de Administración en la web sigue mandando. 2.0.0+10 |
+| U-09 | En el horario no veía qué día ni a qué hora tenía las clases asignadas («se me perdía el tema de las horas de clase») | P3, T2 | Al inicio no sabía alrededor de qué ubicar la atención y la planificación | Media | Tarjeta **Horario de sus clases** arriba de los días, con los días y horas de cada curso; tocar uno abre ese día. 2.0.0+10 |
+| U-08 | El juramento («lo del párrafo de declaración») no era el del formulario oficial de la Universidad; entregó el machote en Excel | P3 (después de las tareas) | El texto que firma la persona no coincide con el que conoce del formato oficial | Media | El juramento predeterminado es el del formulario oficial, palabra por palabra; la plantilla de Administración en la web sigue mandando. 2.0.0+10 |
 | U-07 | El perfil solo muestra los datos: no deja corregir el nombre ni la cédula | P2 (después de las tareas) | Si se equivoca al registrarse (P1 puso sus datos reales), no lo puede corregir | Media | Editar nombre, cédula (se reserva la nueva y se libera la anterior) y teléfono desde el perfil; un borrador sin firmar toma los datos corregidos. Correo, sede y carrera siguen con Administración. 2.0.0+8 |
 
 Qué vigilar en particular (son los puntos donde el recorrido sugiere que alguien se puede trabar):

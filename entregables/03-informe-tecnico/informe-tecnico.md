@@ -119,7 +119,7 @@ el formato de observaciones y la huella SHA-256. Lo que se reescribió fueron la
 | Salir sin guardar (D-01) | El formulario pregunta antes de descartar cambios | §5: nada se pierde sin que la persona lo sepa |
 | Lector de pantalla (D-02) | Cada media hora es un botón para TalkBack con día, hora y contenido | La cuadrícula era el único paso que no se podía hacer sin ver |
 | Primer uso (U-06) | Recorrido guiado sobre las pantallas reales con una docente de ejemplo; enfoca una parte a la vez y se repite desde el perfil («Cómo funciona») | En las sesiones, sin guía no se entendía la cuadrícula; el recorrido no guarda nada |
-| Ubicar horas alrededor de las clases | Arriba de los días, **Horario de sus clases** muestra los días y horas de cada curso; tocar uno abre ese día | Un día a la vez oculta el resto de la semana |
+| Ubicar horas alrededor de las clases (U-09, pedido por una docente en las pruebas) | Arriba de los días, **Horario de sus clases** muestra los días y horas de cada curso; tocar uno abre ese día | Un día a la vez oculta el resto de la semana |
 
 ## 5. Integración con autenticación, servicios y persistencia
 
