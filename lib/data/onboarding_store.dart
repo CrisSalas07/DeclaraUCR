@@ -3,11 +3,14 @@ import 'package:shared_preferences/shared_preferences.dart';
 /// Whether this phone already showed the first-use tour (U-06). Kept on the
 /// phone, not in the account: a new phone shows it again, which is fine.
 abstract class OnboardingStore {
+  /// Whether the tour was already shown on this phone.
   Future<bool> seen();
 
+  /// Records that the tour was shown, so it does not open by itself again.
   Future<void> markSeen();
 }
 
+/// [OnboardingStore] in the phone's shared preferences.
 class PrefsOnboardingStore implements OnboardingStore {
   static const _key = 'onboarding.seen';
 

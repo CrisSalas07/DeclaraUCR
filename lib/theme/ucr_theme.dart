@@ -45,6 +45,7 @@ class StatusColors extends ThemeExtension<StatusColors> {
 
   final Map<DeclarationStatus, Color> background;
 
+  /// Background of the chip of [status].
   Color of(DeclarationStatus status) => background[status] ?? UcrColors.skyBlue;
 
   @override
@@ -55,6 +56,8 @@ class StatusColors extends ThemeExtension<StatusColors> {
   StatusColors lerp(ThemeExtension<StatusColors>? other, double t) => this;
 }
 
+/// The app theme: UCR colors, Trueno and 48 dp touch targets (README,
+/// "Visual identity decisions").
 ThemeData buildUcrTheme() {
   const scheme = ColorScheme(
     brightness: Brightness.light,

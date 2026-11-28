@@ -73,6 +73,7 @@ class DeclarationDocument {
   };
 }
 
+/// Which PDF a declaration gives, by how far its signing went.
 enum DocumentKind {
   /// "BORRADOR": validated, not signed yet; no signatures are printed.
   preview,
@@ -138,6 +139,7 @@ class DocumentBlock {
   final int endMinutes;
 }
 
+/// Who signs, in order; [value] is the type stored by the Proyecto 1.
 enum SignatureType {
   declarant('declarant'),
   superior('superior'),

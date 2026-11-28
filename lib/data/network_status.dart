@@ -9,6 +9,7 @@ abstract class NetworkStatus {
   /// `true` while there is a network; emits the current value first.
   Stream<bool> watchOnline();
 
+  /// Whether there is a network right now.
   Future<bool> isOnline();
 }
 

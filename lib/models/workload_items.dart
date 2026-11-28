@@ -31,7 +31,10 @@ class CourseLoad {
 
   /// Lesson minutes: the coordination's, or 2 of every 5 hours of the load.
   int get lessonMinutes => _lessonMinutes ?? workloadMinutes * 2 ~/ 5;
+  /// Attention to students: 30 minutes per lesson hour.
   int get attentionMinutes => lessonMinutes ~/ 2;
+
+  /// Planning and evaluation: the rest of the load.
   int get planningMinutes => workloadMinutes - lessonMinutes - attentionMinutes;
 
   /// How the observations and the grid name it: the sigla, else the name.

@@ -12,6 +12,7 @@ class GridCell {
   /// later.
   final int startMinutes;
 
+  /// End in minutes since midnight.
   int get endMinutes => startMinutes + ScheduleGrid.stepMinutes;
 
   @override

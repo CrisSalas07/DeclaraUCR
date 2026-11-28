@@ -16,6 +16,7 @@ enum TaskKind {
   /// Short Spanish name for chips.
   final String label;
 
+  /// Lessons, attention or planning: the parts of a course.
   bool get isCourse => this == lesson || this == attention || this == planning;
 
   static TaskKind fromCode(String code) => TaskKind.values.firstWhere(

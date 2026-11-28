@@ -106,6 +106,7 @@ class DeclarationFormState extends ChangeNotifier {
       'pantalla: revise la conexión y vuelva a guardar.';
   final Declaration declaration;
 
+  /// A save is in progress; the buttons wait.
   bool saving = false;
 
   /// Changes on screen that are not stored yet; leaving asks first, so
@@ -116,11 +117,14 @@ class DeclarationFormState extends ChangeNotifier {
   String? error;
   int _nextId = 0;
 
+  /// Required fields still empty, by their Spanish label.
   List<String> get missingFields => _validator.missingFields(declaration);
 
   /// How many required fields the form has (all missing on an empty one).
   int get requiredFieldCount => _validator.missingFields(Declaration()).length;
+  /// Everything that blocks validation (fields, hours, overlaps).
   List<ValidationIssue> get issues => _validator.issues(declaration);
+  /// No issues: "Validar" is enabled.
   bool get canValidate => _validator.isValid(declaration);
 
   /// Until it is signed (BORRADOR, VALIDADA, or PENDIENTE_FIRMA_DECLARANTE
@@ -147,6 +151,8 @@ class DeclarationFormState extends ChangeNotifier {
   // ---- Projects and other institutions ------------------------------------
   // (Courses come from the career coordination's assignment.)
 
+  /// Adds [project], or replaces the one at [index] and renames its blocks;
+  /// returns a Spanish message instead when the hours do not fit.
   String? saveProject(ProjectHours project, {int? index}) {
     final d = declaration;
     final projects = [...d.projects];
@@ -179,6 +185,7 @@ class DeclarationFormState extends ChangeNotifier {
     return null;
   }
 
+  /// Removes the project at [index] and its blocks of the schedule.
   void removeProject(int index) => edit((d) {
     final task = ScheduleTask(
       TaskKind.project,
@@ -187,6 +194,7 @@ class DeclarationFormState extends ChangeNotifier {
     d.intervals.removeWhere((i) => i.task == task);
   });
 
+  /// Like [saveProject], for a job at another institution.
   String? saveExternalJob(ExternalJob job, {int? index}) {
     final d = declaration;
     final jobs = [...d.externalJobs];
@@ -216,6 +224,7 @@ class DeclarationFormState extends ChangeNotifier {
     return null;
   }
 
+  /// Removes the job at [index] and its blocks of the schedule.
   void removeExternalJob(int index) => edit((d) {
     final task = ScheduleTask(
       TaskKind.external,

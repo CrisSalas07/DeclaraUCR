@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
+/// Sign-up of a declarant: name, cédula, phone, e-mail and password.
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
 

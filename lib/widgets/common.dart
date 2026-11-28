@@ -353,9 +353,9 @@ class InfoBanner extends StatelessWidget {
   }
 }
 
+/// Color and icon of a banner.
 enum BannerTone { success, error, info }
 
-/// Two-button bar pinned at the bottom of form and summary.
 /// Two buttons side by side on a phone: less side padding, so labels such
 /// as "Guardar borrador" stay on one line.
 const ButtonStyle _compact = ButtonStyle(
@@ -376,6 +376,7 @@ class _OneLine extends StatelessWidget {
   );
 }
 
+/// Two-button bar pinned at the bottom of form and summary.
 class BottomActions extends StatelessWidget {
   const BottomActions({
     super.key,

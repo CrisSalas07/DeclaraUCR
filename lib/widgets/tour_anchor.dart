@@ -15,9 +15,11 @@ class TourScope extends InheritedWidget {
   bool updateShouldNotify(TourScope oldWidget) => keys != oldWidget.keys;
 }
 
+/// A part of a screen the tour can point at, found by its [id].
 class TourAnchor extends StatelessWidget {
   const TourAnchor({super.key, required this.id, required this.child});
 
+  /// Id of the part, as the tour's stops name it (`schedule.grid`).
   final String id;
   final Widget child;
 

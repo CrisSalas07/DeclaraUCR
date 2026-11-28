@@ -71,6 +71,7 @@ class UserProfile {
   /// Name copied into declarations.
   String get name => fullName;
 
+  /// Only declarants can use the app.
   bool get isDeclarant => roles.contains(UserRole.declarant);
 
   /// The campus is still to be chosen.
@@ -83,6 +84,7 @@ class UserProfile {
       !roles.contains(UserRole.careerCoordinator) &&
       unitId == null;
 
+  /// Without a superior, the person cannot create a declaration.
   bool get hasSuperior => superiorUid != null;
 }
 
