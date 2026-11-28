@@ -23,13 +23,26 @@ captura de `entregables/07-guia-uso/capturas/` o del repositorio, o la persona h
 | 5 | 4:00 | Keity | **Demostración** (6 min) | Pantalla del teléfono grabada (grabador de pantalla de Android o scrcpy) | Ver guion de la demostración abajo | Demostración |
 | 6 | 10:00 | Keity | Cómo instalarla y entrar | Página del release v2.0.0+11, los pasos de instalación, la versión al pie del inicio de sesión | "Es un APK, no está en la tienda: así se instala, así se actualiza y así se vuelve a la versión anterior." | Instalación y acceso |
 | 7 | 11:00 | Cristopher | Pruebas técnicas | 8 casos, 124 pruebas automatizadas, D-01 antes y después | "El recorrido encontró que salir con Atrás perdía cambios sin avisar; ahora la app pregunta." | Resultados técnicos |
-| 8 | 12:00 | Lucía | Pruebas con usuarios | Perfil de las 3 personas, éxito por tarea, facilidad promedio y **una frase textual**: la de P3, docente: «como es celular se me perdía el tema de las horas de clase […] no sabía qué día ni qué hora me asignaron las HC»; después, la matriz U-03 a U-07 | `[COMPLETAR con los resultados de las sesiones]` y "Con lo que vimos cambiamos la app: el recorrido guiado, qué se ubica con cada toque, firmar justo después de validar y editar mis datos (versiones 2.0.0+8 a +10). Una docente que llenó esta declaración por años en Excel la hizo sin ayuda con el recorrido, y por lo que nos dijo agregamos el horario de sus clases arriba de los días y el juramento del formulario oficial." | Resultados con usuarios |
-| 9 | 13:30 | Lucía | Lo que queda pendiente y por qué | `VALIDADA` en el cliente, zonaje solo consulta, sin conexión no se guarda | "Son decisiones, no olvidos: esto es lo que haríamos después y por qué no entró." | Dificultades y decisiones |
+| 8 | 12:00 | Lucía | Pruebas con usuarios | Perfil de las 3 personas, éxito por tarea, facilidad promedio y **una frase textual**: la de P3, docente: «como es celular se me perdía el tema de las horas de clase […] no sabía qué día ni qué hora me asignaron las HC»; después, la matriz U-01 a U-10 | "Probamos con tres personas; una era docente y llenó esta declaración por años en Excel. Las tres completaron las cuatro tareas, y la facilidad promedio fue 4,3 de 5. Lo más difícil fue entender la cuadrícula y saber cuándo eran las clases." y "Con lo que vimos cambiamos la app: el recorrido guiado, qué se ubica con cada toque, firmar justo después de validar y editar mis datos (versiones 2.0.0+8 a +11). La docente la hizo sin ayuda con el recorrido, y por lo que nos dijo agregamos el horario de sus clases arriba de los días, el juramento del formulario oficial y las observaciones con su formato." | Resultados con usuarios |
+| 9 | 13:30 | Lucía | Lo que queda pendiente y por qué | `VALIDADA` en el cliente, zonaje solo consulta, sin conexión no se guarda, el puesto se elige libre (U-02) y las observaciones sin el grupo del curso (U-10) | "Son decisiones, no olvidos: esto es lo que haríamos después y por qué no entró." | Dificultades y decisiones |
 | 10 | 14:30 | Lucía | Cierre y formulario | Enlace y QR del formulario en pantalla (`qr-formulario.svg`) | "Su opinión cambia la versión final: al menos dos mejoras van a salir de este formulario." | Instrumento |
 
 **Publicación:** subir el video al Drive del equipo (o a YouTube como *no listado*) y enviar al docente, en un
 mismo mensaje, el enlace al video y el del formulario. Anotar aquí: video `[COMPLETAR: enlace]`, enviado el
 `[COMPLETAR: fecha]`.
+
+## Antes de grabar
+
+- [ ] **Una declarante del equipo para la demostración.** Hoy el backend tiene solo la declarante que se le entrega
+  al docente: no se usa en el video, porque la firma no se deshace. Crearla con **Crear cuenta** y, en la web,
+  asignarle el superior y un curso en «III Ciclo - 2027» (`entregables/02-aplicacion-distribuible/instalacion.md` §6).
+- [ ] En el teléfono de Keity, la **2.0.0+11** del release; si no es el teléfono de desarrollo, sirve también para
+  **CP-08** (`entregables/05-informe-pruebas/pruebas-tecnicas.md`): capturar la versión al pie del inicio de sesión.
+- [ ] Ver el recorrido guiado una vez antes de grabar, para saber dónde tocar.
+- [ ] Durante la grabación, después de firmar, abrir el PDF y hacer una captura de pantalla: reemplaza
+  `entregables/07-guia-uso/capturas/10-pdf.png`, que muestra las etiquetas anteriores a la 2.0.0+11.
+- [ ] Tener a mano el QR del formulario (`entregables/06-socializacion/qr-formulario.png`) y su enlace para el
+  bloque 10.
 
 ## Guion de la demostración (6 minutos de video)
 
@@ -66,5 +79,8 @@ No hay ronda de preguntas en vivo, así que vale la pena contestarlas de una vez
   mientras la app siga abierta.
 - *¿Quién garantiza que las horas son correctas?* El validador del P1 en la app, y las reglas de Firestore para
   el formato y los permisos. La pieza que falta es recalcular en el servidor (limitación conocida).
+- *¿Por qué no sale el grupo del curso ni se fija el puesto?* Porque el Proyecto 1 no guarda esos datos: la
+  Coordinación asigna el curso sin grupo y nadie registra el puesto de la persona. Agregarlos es un cambio de la
+  web y del esquema, no del teléfono (matriz U-02 y U-10).
 - *¿Es accesible?* Contraste AA con la paleta del Centro de Informática, letra grande sin cortes y, desde la
   2.0.0+7, la cuadrícula funciona con TalkBack.

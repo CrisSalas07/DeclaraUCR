@@ -25,8 +25,9 @@ corrigió.
 | 2.0.0+10 | `60d5813` ([release](https://github.com/CrisSalas07/DeclaraUCR/releases/tag/v2.0.0%2B10), PR #37) | Horario de las clases sobre los días y juramento del formulario oficial; los cambios se probaron en un Samsung Galaxy A34 (build de depuración) contra el backend real, y el flujo completo en el emulador (§3) |
 | 2.0.0+11 | `b64791b` ([release](https://github.com/CrisSalas07/DeclaraUCR/releases/tag/v2.0.0%2B11), PR #38) | Observaciones y etiquetas del PDF como el formulario oficial (U-10); pruebas repetidas (§3) |
 
-Las sesiones con usuarios deben hacerse **todas con la misma versión** (§8). La recomendada es la 2.0.0+7,
-porque ya trae la corrección de D-01, que afecta justo la tarea 1 del guion.
+P1 y P2 usaron la 2.0.0+7, que ya traía la corrección de D-01 (afecta justo la tarea 1 del guion). P3 usó la
+2.0.0+9: P1 y P2 habían mostrado que sin una guía la primera vez no se entendía la app (U-06), y se quiso ver
+con una docente si el recorrido guiado lo resolvía (§6.4).
 
 ## 2. Casos técnicos (§7)
 
@@ -155,7 +156,7 @@ La bitácora de las tres sesiones (guion, consentimiento, perfil, tareas, ayudas
 `sesiones-usuarios/bitacora-sesiones.docx`. Las capturas de cada tarea están en `capturas/` (`P1-T0-inicio.png` …).
 
 
-- **Versión:** 2.0.0+7, la misma para todas las sesiones.
+- **Versión:** 2.0.0+7 para P1 y P2; 2.0.0+9, con el recorrido guiado, para P3 (§6.4).
 - **Cuentas:** cada participante crea la suya en la sesión (T0) con su correo `@ucr.ac.cr` y su propia
   contraseña; el equipo no las conoce. Cédula y teléfono **ficticios**, de una tarjeta que da el equipo.
   Después del registro, el equipo asigna en la web el superior y los mismos cursos de prueba a todas.
@@ -284,8 +285,13 @@ P1 (`integration_test/release_8_rules_test.dart`).
 
 ## 7. Conclusión
 
-`[COMPLETAR al terminar las sesiones: 3 o 4 líneas. Qué tan bien completaron las tareas, qué fue lo más
-difícil, qué se corrigió y qué quedó pendiente con su justificación.]`
+Las tres personas completaron las cuatro tareas (T0 a T3). P1 y P2, que no son del perfil previsto, necesitaron
+ayuda con la 2.0.0+7: P1 en todas las tareas y P2 en la primera. P3, docente que llenó esta declaración por años
+en Excel, las hizo sin ayuda con el recorrido guiado de la 2.0.0+9. La facilidad promedio fue 4,3 de 5 y la
+utilidad, 5. Lo más difícil fue entender la cuadrícula (U-03), no tener una guía la primera vez (U-06) y no ver
+cuándo eran las clases (U-09). De los 10 hallazgos se corrigieron 9 en las versiones 2.0.0+8 a +11. Quedan
+pendientes con justificación el puesto libre (U-02) y el grupo del curso en las observaciones (U-10), porque el
+Proyecto 1 no guarda esos datos. Falta la nueva comprobación con P2 (§6.7).
 
 ## Anexo: capturas
 
