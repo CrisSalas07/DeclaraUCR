@@ -18,7 +18,8 @@ sign), unless noted:
 08-historial.png      Historial by year, with a zonaje request
 09-firma.png          Signing: official-form oath accepted, "Firmar y enviar a mi superior"
                       (27/11/2026, PR #37, Medium Phone emulator)
-10-pdf.png            PDF of the signed declaration ("COPIA PARA REVISIÓN"), official-form oath
+10-pdf.png            PDF of the signed declaration ("COPIA PARA REVISIÓN"), official-form oath;
+                      still with the labels before 2.0.0+11 ("Carrera:", "Superior Carrera")
                       (27/11/2026, PR #37, Medium Phone emulator)
 11-recorrido.png      Guided tour: one part in focus, the rest dimmed (demo teacher)
 12-mis-datos.png      Editar mis datos: name, cédula and phone

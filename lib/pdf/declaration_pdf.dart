@@ -10,7 +10,10 @@ import 'package:pdf/widgets.dart' as pw;
 /// The declaration PDF on the official form of the Oficina de Recursos
 /// Humanos, "Declaración jurada de horario y jornada de trabajo": the same
 /// document the web of the Proyecto 1 prints (`PdfBuilderService` of
-/// DeclaraHorario), built here from the same stored data.
+/// DeclaraHorario), built here from the same stored data. Two labels follow
+/// the official Excel form instead of the web (U-10): "Unidad Académica o
+/// Administrativa:" and "Superior Jerárquico Unidad". The HR signature,
+/// absent from the form, stays because the Proyecto 1 process ends there.
 ///
 /// Landscape letter page with the person's data, the appointments at the
 /// university and the other institutions (per day, "De"/"A"), observations,

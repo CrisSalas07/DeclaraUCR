@@ -3,7 +3,10 @@ import 'package:declara_ucr/models/schedule_task.dart';
 import 'package:declara_ucr/models/weekday.dart';
 
 /// The observations of a declaration, written from its schedule; reused
-/// from DeclaraHorario (`ScheduleObservations`). Pure Dart.
+/// from DeclaraHorario (`ScheduleObservations`), except that ranges are
+/// joined with "y" as in the official Excel form (U-10), where the web uses
+/// commas. The form also writes the course group ("IF0004 G2"); the
+/// Proyecto 1 schema does not store it. Pure Dart.
 ///
 /// One line per course, project and job at another institution, in the
 /// style of the official form:

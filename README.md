@@ -18,19 +18,22 @@ Proyecto 2 deliverables, are in Spanish.
 
 ## Current status (27/11/2026)
 
-- **Version 2.0.0+10** is the final one ([`v2.0.0+10`](https://github.com/CrisSalas07/DeclaraUCR/releases/tag/v2.0.0%2B10)), signed with the
+- **Version 2.0.0+10** is the latest release ([`v2.0.0+10`](https://github.com/CrisSalas07/DeclaraUCR/releases/tag/v2.0.0%2B10)), signed with the
   team key, against the real Proyecto 1 backend: the lessons of each course
-  above the schedule days and the oath of the official form in the PDF, on top
-  of 2.0.0+9 (guided tour) and 2.0.0+8 ("Superior" role, fixes from the user
-  sessions U-01, U-03 to U-07). The user sessions used 2.0.0+7.
-- 121 automated tests pass; technical cases CP-01 to CP-07 passed, CP-08
+  above the schedule days (U-09) and the oath of the official form (U-08),
+  both asked by P3, a teacher; on top of 2.0.0+9 (guided tour) and 2.0.0+8
+  ("Superior" role, fixes U-01, U-03 to U-07). Sessions P1 and P2 used
+  2.0.0+7, P3 used 2.0.0+9.
+- **2.0.0+11** is in the code, not released yet: observations and PDF labels
+  as in the official Excel form (U-10). The course group of the form is not
+  in the Proyecto 1 schema.
+- 124 automated tests pass; technical cases CP-01 to CP-07 passed, CP-08
   (clean install on another phone) pending.
 - The production backend was cleaned on 27/11/2026: only the administration
   account is left, plus the catalogs (campuses, units, courses, periods). The
   team is creating new evaluation accounts to run the whole flow again.
-- Left: the new evaluation accounts, session P3 in the test report, the retest
-  with a participant, CP-08 with 2.0.0+10 and the socialization (video,
-  synthesis and its improvements in the matrix).
+- Left: release 2.0.0+11, the retest with P2 (P3 cannot retest), CP-08 and the
+  socialization (video, synthesis and its improvements in the matrix).
 
 ## Where to find what
 
